@@ -1,0 +1,61 @@
+{
+  "file": "D:\\CodexOutputs\\Approved_Theatre_Corridor_20261020\\Theatre_Corridor_Logo_marked_layout.blend",
+  "theatreTranslationBlender": [
+    0.010995,
+    -26,
+    0.02
+  ],
+  "theatreScale": 1,
+  "theatreFrontY": -26.2,
+  "projectorFloorY": [
+    0.6689509999999999,
+    15.020546000000003
+  ],
+  "slides": [
+    {
+      "name": "Slide A | Behind theatre marked end",
+      "base": [
+        0.010994999669492245,
+        -27,
+        0
+      ],
+      "flat_start": [
+        0.010994999669492245,
+        -15,
+        0
+      ],
+      "straight_length": 12,
+      "end": [
+        0.010994999669492245,
+        -55.32788848876953,
+        0
+      ],
+      "height": 28.32789,
+      "width": 17.02198,
+      "surface_triangles": 98
+    },
+    {
+      "name": "Slide B | Opposite corridor end",
+      "base": [
+        -160.32785034179688,
+        112.54246520996094,
+        0
+      ],
+      "flat_start": [
+        -160.32785034179688,
+        112.54246520996094,
+        0
+      ],
+      "straight_length": 0,
+      "end": [
+        -188.02044677734375,
+        106.57681274414062,
+        0
+      ],
+      "height": 28.32789,
+      "width": 17.470228047359125,
+      "surface_triangles": 96
+    }
+  ],
+  "verification": "D:\\CodexOutputs\\Approved_Theatre_Corridor_20261020\\verification.json"
+}

@@ -1,0 +1,2663 @@
+{
+  "version": 1,
+  "capturedAt": "2026-10-25T08:06:23.442Z",
+  "elapsed": 27548.3,
+  "route": "/",
+  "environment": {
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.0.0 Safari/537.36",
+    "hardwareConcurrency": 12,
+    "deviceMemoryGB": 16,
+    "viewport": [
+      1280,
+      720
+    ],
+    "devicePixelRatio": 1,
+    "connection": {
+      "effectiveType": "4g",
+      "downlinkMbpsEstimate": 10,
+      "rttMsEstimate": 0,
+      "saveData": false
+    }
+  },
+  "navigation": {
+    "type": "navigate",
+    "responseStart": 31.7,
+    "responseEnd": 32.2,
+    "domContentLoaded": 81.6,
+    "loadEventEnd": 114.1,
+    "transferBytes": 3493,
+    "encodedBytes": 3193
+  },
+  "marks": {
+    "Diagnostics module evaluated": 119.4,
+    "Application mounted": 121.1,
+    "Scene import requested": 121.9,
+    "Scene module evaluated": 190.3,
+    "Scene import resolved": 190.3,
+    "Canvas created": 413.2,
+    "Opening asset preloads started": 413.3,
+    "Opening scene committed": 1872.1,
+    "Theatre committed": 1872.3,
+    "Opening render submitted": 2010.7,
+    "Existing first-frame metric": 2012.1,
+    "Opening paint opportunity": 2012.2,
+    "Projector deferred loading started": 2012.5,
+    "Corridor background loading started": 2013.2,
+    "Opening loading card removed": 2140.5,
+    "Corridor committed": 2940.7
+  },
+  "summary": {
+    "latestOpeningResourceEnd": 507.3,
+    "openingObservedTransferBytes": 24410610,
+    "openingObservedBodyBytes": 24395010,
+    "resourcesObserved": 78
+  },
+  "spans": [
+    {
+      "id": 0,
+      "name": "/models/theatre-marked.glb",
+      "kind": "GLB load + processing",
+      "start": 409.4,
+      "detail": {},
+      "end": 534.2,
+      "duration": 124.8
+    },
+    {
+      "id": 1,
+      "name": "/models/projector-floor-marked.glb",
+      "kind": "GLB load + processing",
+      "start": 410.5,
+      "detail": {},
+      "end": 486.5,
+      "duration": 76
+    },
+    {
+      "id": 2,
+      "name": "/models/theatre/ceiling-uv-fixed.glb",
+      "kind": "GLB load + processing",
+      "start": 413.3,
+      "detail": {},
+      "end": 489.1,
+      "duration": 75.8
+    },
+    {
+      "id": 3,
+      "name": "/models/theatre/sofa/sofa-baked-draco.glb",
+      "kind": "GLB load + processing",
+      "start": 413.8,
+      "detail": {},
+      "end": 488.1,
+      "duration": 74.3
+    },
+    {
+      "id": 4,
+      "name": "Basis transcoder initialization",
+      "kind": "decoder initialization",
+      "start": 415.6,
+      "detail": {},
+      "end": 446.6,
+      "duration": 31
+    },
+    {
+      "id": 5,
+      "name": "/textures/theatre/ceiling/ceiling-compressed-6k.ktx2",
+      "kind": "KTX2 load + processing",
+      "start": 415.9,
+      "detail": {
+        "format": 36492,
+        "width": 6144,
+        "height": 6144
+      },
+      "end": 1234.3,
+      "duration": 818.4
+    },
+    {
+      "id": 6,
+      "name": "/textures/theatre/left-wall/left-wall-light-2k.ktx2",
+      "kind": "KTX2 load + processing",
+      "start": 416.1,
+      "detail": {
+        "format": 36492,
+        "width": 2048,
+        "height": 2048
+      },
+      "end": 882.2,
+      "duration": 466.1
+    },
+    {
+      "id": 7,
+      "name": "/textures/theatre/right-wall/right-wall-light-2k.ktx2",
+      "kind": "KTX2 load + processing",
+      "start": 417.7,
+      "detail": {
+        "format": 36492,
+        "width": 2048,
+        "height": 2048
+      },
+      "end": 941.5,
+      "duration": 523.8
+    },
+    {
+      "id": 8,
+      "name": "/textures/theatre/front-wall/front-wall.ktx2",
+      "kind": "KTX2 load + processing",
+      "start": 417.8,
+      "detail": {
+        "format": 36492,
+        "width": 1024,
+        "height": 2048
+      },
+      "end": 778.2,
+      "duration": 360.4
+    },
+    {
+      "id": 9,
+      "name": "/textures/theatre/screen/screen.ktx2",
+      "kind": "KTX2 load + processing",
+      "start": 417.9,
+      "detail": {
+        "format": 36492,
+        "width": 1024,
+        "height": 2048
+      },
+      "end": 814.7,
+      "duration": 396.8
+    },
+    {
+      "id": 10,
+      "name": "/textures/theatre/stage/stage.ktx2",
+      "kind": "KTX2 load + processing",
+      "start": 418.1,
+      "detail": {
+        "format": 36492,
+        "width": 1024,
+        "height": 2048
+      },
+      "end": 778,
+      "duration": 359.9
+    },
+    {
+      "id": 11,
+      "name": "/textures/theatre/floor/floor-slab-compressed-6k.ktx2",
+      "kind": "KTX2 load + processing",
+      "start": 418.1,
+      "detail": {
+        "format": 36492,
+        "width": 6144,
+        "height": 6144
+      },
+      "end": 1859,
+      "duration": 1440.9
+    },
+    {
+      "id": 12,
+      "name": "/textures/theatre/light-fixtures/light-fixtures.ktx2",
+      "kind": "KTX2 load + processing",
+      "start": 418.3,
+      "detail": {
+        "format": 36492,
+        "width": 512,
+        "height": 1024
+      },
+      "end": 950.1,
+      "duration": 531.8
+    },
+    {
+      "id": 13,
+      "name": "/textures/theatre/wall-trim/wall-trim.ktx2",
+      "kind": "KTX2 load + processing",
+      "start": 418.4,
+      "detail": {
+        "format": 36492,
+        "width": 1024,
+        "height": 2048
+      },
+      "end": 980,
+      "duration": 561.6
+    },
+    {
+      "id": 14,
+      "name": "/textures/theatre/step-nosings/step-nosings.ktx2",
+      "kind": "KTX2 load + processing",
+      "start": 418.5,
+      "detail": {
+        "format": 36492,
+        "width": 2048,
+        "height": 2048
+      },
+      "end": 1067.4,
+      "duration": 648.9
+    },
+    {
+      "id": 15,
+      "name": "/textures/theatre/aisle-lights/aisle-lights.ktx2",
+      "kind": "KTX2 load + processing",
+      "start": 418.7,
+      "detail": {
+        "format": 36492,
+        "width": 2048,
+        "height": 2048
+      },
+      "end": 1198,
+      "duration": 779.3
+    },
+    {
+      "id": 16,
+      "name": "/textures/theatre/acoustic-slats/acoustic-slats.ktx2",
+      "kind": "KTX2 load + processing",
+      "start": 418.8,
+      "detail": {
+        "format": 36492,
+        "width": 2048,
+        "height": 2048
+      },
+      "end": 1129.7,
+      "duration": 710.9
+    },
+    {
+      "id": 17,
+      "name": "/textures/theatre/speakers/speakers.ktx2",
+      "kind": "KTX2 load + processing",
+      "start": 418.9,
+      "detail": {
+        "format": 36492,
+        "width": 1024,
+        "height": 1024
+      },
+      "end": 1005.3,
+      "duration": 586.4
+    },
+    {
+      "id": 18,
+      "name": "/textures/theatre/terraces/terraces-light-2k.ktx2",
+      "kind": "KTX2 load + processing",
+      "start": 419,
+      "detail": {
+        "format": 36492,
+        "width": 1024,
+        "height": 2048
+      },
+      "end": 1223.2,
+      "duration": 804.2
+    },
+    {
+      "id": 19,
+      "name": "/textures/theatre/moon-steel-border/moon-steel-border-light-2k.ktx2",
+      "kind": "KTX2 load + processing",
+      "start": 419.1,
+      "detail": {
+        "format": 36492,
+        "width": 2048,
+        "height": 2048
+      },
+      "end": 1282.7,
+      "duration": 863.6
+    },
+    {
+      "id": 20,
+      "name": "/textures/projector-floor/projector-floor.ktx2",
+      "kind": "KTX2 load + processing",
+      "start": 419.5,
+      "detail": {
+        "format": 36492,
+        "width": 2048,
+        "height": 2048
+      },
+      "end": 1347.3,
+      "duration": 927.8
+    },
+    {
+      "id": 21,
+      "name": "/textures/theatre/sofa/upholstery-base-1k.ktx2",
+      "kind": "KTX2 load + processing",
+      "start": 419.8,
+      "detail": {
+        "format": 36492,
+        "width": 1024,
+        "height": 1024
+      },
+      "end": 1254.6,
+      "duration": 834.8
+    },
+    {
+      "id": 22,
+      "name": "/textures/theatre/sofa/upholstery-metal-rough-1k.ktx2",
+      "kind": "KTX2 load + processing",
+      "start": 419.9,
+      "detail": {
+        "format": 36492,
+        "width": 1024,
+        "height": 1024
+      },
+      "end": 1274.3,
+      "duration": 854.4
+    },
+    {
+      "id": 23,
+      "name": "Render before opening committed",
+      "kind": "render submission",
+      "start": 421.8,
+      "detail": {},
+      "end": 423.6,
+      "duration": 1.8
+    },
+    {
+      "id": 24,
+      "name": "Render before opening committed",
+      "kind": "render submission",
+      "start": 425.9,
+      "detail": {},
+      "end": 426.1,
+      "duration": 0.2
+    },
+    {
+      "id": 25,
+      "name": "GLB parse/decode including dependencies",
+      "kind": "GLB processing",
+      "start": 428.1,
+      "detail": {
+        "inputBytes": 1784
+      },
+      "end": 486.4,
+      "duration": 58.3
+    },
+    {
+      "id": 26,
+      "name": "GLB parse/decode including dependencies",
+      "kind": "GLB processing",
+      "start": 430.6,
+      "detail": {
+        "inputBytes": 55860
+      },
+      "end": 489.1,
+      "duration": 58.5
+    },
+    {
+      "id": 27,
+      "name": "GLB parse/decode including dependencies",
+      "kind": "GLB processing",
+      "start": 431.1,
+      "detail": {
+        "inputBytes": 39484
+      },
+      "end": 488.1,
+      "duration": 57
+    },
+    {
+      "id": 28,
+      "name": "Render before opening committed",
+      "kind": "render submission",
+      "start": 435.5,
+      "detail": {},
+      "end": 435.8,
+      "duration": 0.3
+    },
+    {
+      "id": 29,
+      "name": "GLB parse/decode including dependencies",
+      "kind": "GLB processing",
+      "start": 440.1,
+      "detail": {
+        "inputBytes": 700892
+      },
+      "end": 534.2,
+      "duration": 94.1
+    },
+    {
+      "id": 30,
+      "name": "KTX2 parse/transcode including worker queue/init",
+      "kind": "KTX2 processing",
+      "start": 459.8,
+      "detail": {
+        "inputBytes": 533786,
+        "format": 36492,
+        "width": 1024,
+        "height": 2048
+      },
+      "end": 778,
+      "duration": 318.2
+    },
+    {
+      "id": 31,
+      "name": "KTX2 parse/transcode including worker queue/init",
+      "kind": "KTX2 processing",
+      "start": 461.1,
+      "detail": {
+        "inputBytes": 491610,
+        "format": 36492,
+        "width": 1024,
+        "height": 2048
+      },
+      "end": 778.2,
+      "duration": 317.1
+    },
+    {
+      "id": 32,
+      "name": "KTX2 parse/transcode including worker queue/init",
+      "kind": "KTX2 processing",
+      "start": 461.6,
+      "detail": {
+        "inputBytes": 4138235,
+        "format": 36492,
+        "width": 6144,
+        "height": 6144
+      },
+      "end": 1234.3,
+      "duration": 772.7
+    },
+    {
+      "id": 33,
+      "name": "KTX2 parse/transcode including worker queue/init",
+      "kind": "KTX2 processing",
+      "start": 461.7,
+      "detail": {
+        "inputBytes": 654628,
+        "format": 36492,
+        "width": 1024,
+        "height": 2048
+      },
+      "end": 814.7,
+      "duration": 353
+    },
+    {
+      "id": 34,
+      "name": "KTX2 parse/transcode including worker queue/init",
+      "kind": "KTX2 processing",
+      "start": 464.8,
+      "detail": {
+        "inputBytes": 1680069,
+        "format": 36492,
+        "width": 2048,
+        "height": 2048
+      },
+      "end": 882.1,
+      "duration": 417.3
+    },
+    {
+      "id": 35,
+      "name": "KTX2 parse/transcode including worker queue/init",
+      "kind": "KTX2 processing",
+      "start": 467.9,
+      "detail": {
+        "inputBytes": 1164679,
+        "format": 36492,
+        "width": 2048,
+        "height": 2048
+      },
+      "end": 941.5,
+      "duration": 473.6
+    },
+    {
+      "id": 36,
+      "name": "KTX2 parse/transcode including worker queue/init",
+      "kind": "KTX2 processing",
+      "start": 477.3,
+      "detail": {
+        "inputBytes": 271214,
+        "format": 36492,
+        "width": 512,
+        "height": 1024
+      },
+      "end": 950.1,
+      "duration": 472.8
+    },
+    {
+      "id": 37,
+      "name": "KTX2 parse/transcode including worker queue/init",
+      "kind": "KTX2 processing",
+      "start": 479.1,
+      "detail": {
+        "inputBytes": 392674,
+        "format": 36492,
+        "width": 1024,
+        "height": 2048
+      },
+      "end": 980,
+      "duration": 500.9
+    },
+    {
+      "id": 38,
+      "name": "KTX2 parse/transcode including worker queue/init",
+      "kind": "KTX2 processing",
+      "start": 492,
+      "detail": {
+        "inputBytes": 452179,
+        "format": 36492,
+        "width": 1024,
+        "height": 1024
+      },
+      "end": 1005.2,
+      "duration": 513.2
+    },
+    {
+      "id": 39,
+      "name": "KTX2 parse/transcode including worker queue/init",
+      "kind": "KTX2 processing",
+      "start": 492.3,
+      "detail": {
+        "inputBytes": 1078097,
+        "format": 36492,
+        "width": 2048,
+        "height": 2048
+      },
+      "end": 1067.4,
+      "duration": 575.1
+    },
+    {
+      "id": 40,
+      "name": "KTX2 parse/transcode including worker queue/init",
+      "kind": "KTX2 processing",
+      "start": 494.8,
+      "detail": {
+        "inputBytes": 982368,
+        "format": 36492,
+        "width": 2048,
+        "height": 2048
+      },
+      "end": 1129.7,
+      "duration": 634.9
+    },
+    {
+      "id": 41,
+      "name": "KTX2 parse/transcode including worker queue/init",
+      "kind": "KTX2 processing",
+      "start": 495.3,
+      "detail": {
+        "inputBytes": 1131219,
+        "format": 36492,
+        "width": 2048,
+        "height": 2048
+      },
+      "end": 1198,
+      "duration": 702.7
+    },
+    {
+      "id": 42,
+      "name": "KTX2 parse/transcode including worker queue/init",
+      "kind": "KTX2 processing",
+      "start": 497.1,
+      "detail": {
+        "inputBytes": 281130,
+        "format": 36492,
+        "width": 1024,
+        "height": 2048
+      },
+      "end": 1223.2,
+      "duration": 726.1
+    },
+    {
+      "id": 43,
+      "name": "KTX2 parse/transcode including worker queue/init",
+      "kind": "KTX2 processing",
+      "start": 507.9,
+      "detail": {
+        "inputBytes": 1249187,
+        "format": 36492,
+        "width": 2048,
+        "height": 2048
+      },
+      "end": 1282.7,
+      "duration": 774.8
+    },
+    {
+      "id": 44,
+      "name": "KTX2 parse/transcode including worker queue/init",
+      "kind": "KTX2 processing",
+      "start": 508.5,
+      "detail": {
+        "inputBytes": 457539,
+        "format": 36492,
+        "width": 1024,
+        "height": 1024
+      },
+      "end": 1254.6,
+      "duration": 746.1
+    },
+    {
+      "id": 45,
+      "name": "KTX2 parse/transcode including worker queue/init",
+      "kind": "KTX2 processing",
+      "start": 509.2,
+      "detail": {
+        "inputBytes": 533992,
+        "format": 36492,
+        "width": 1024,
+        "height": 1024
+      },
+      "end": 1274.3,
+      "duration": 765.1
+    },
+    {
+      "id": 46,
+      "name": "KTX2 parse/transcode including worker queue/init",
+      "kind": "KTX2 processing",
+      "start": 509.2,
+      "detail": {
+        "inputBytes": 1302292,
+        "format": 36492,
+        "width": 2048,
+        "height": 2048
+      },
+      "end": 1347.3,
+      "duration": 838.1
+    },
+    {
+      "id": 47,
+      "name": "KTX2 parse/transcode including worker queue/init",
+      "kind": "KTX2 processing",
+      "start": 511.2,
+      "detail": {
+        "inputBytes": 5591046,
+        "format": 36492,
+        "width": 6144,
+        "height": 6144
+      },
+      "end": 1859,
+      "duration": 1347.8
+    },
+    {
+      "id": 48,
+      "name": "Clone prepared theatre for mount",
+      "kind": "cpu",
+      "start": 534.7,
+      "detail": {},
+      "end": 777.2,
+      "duration": 242.5
+    },
+    {
+      "id": 49,
+      "name": "Construct theatre surface geometry",
+      "kind": "cpu",
+      "start": 534.9,
+      "detail": {},
+      "end": 774.3,
+      "duration": 239.4
+    },
+    {
+      "id": 50,
+      "name": "Clone prepared theatre for mount",
+      "kind": "cpu",
+      "start": 780.3,
+      "detail": {},
+      "end": 784.7,
+      "duration": 4.4
+    },
+    {
+      "id": 51,
+      "name": "Clone prepared theatre for mount",
+      "kind": "cpu",
+      "start": 882.5,
+      "detail": {},
+      "end": 884.9,
+      "duration": 2.4
+    },
+    {
+      "id": 52,
+      "name": "Clone prepared theatre for mount",
+      "kind": "cpu",
+      "start": 885.2,
+      "detail": {},
+      "end": 888.2,
+      "duration": 3
+    },
+    {
+      "id": 53,
+      "name": "Construct left wall material",
+      "kind": "cpu",
+      "start": 888.3,
+      "detail": {},
+      "end": 889,
+      "duration": 0.7
+    },
+    {
+      "id": 54,
+      "name": "Clone prepared theatre for mount",
+      "kind": "cpu",
+      "start": 1234.9,
+      "detail": {},
+      "end": 1238.7,
+      "duration": 3.8
+    },
+    {
+      "id": 55,
+      "name": "Construct ceiling materials",
+      "kind": "cpu",
+      "start": 1238.8,
+      "detail": {},
+      "end": 1239,
+      "duration": 0.2
+    },
+    {
+      "id": 56,
+      "name": "Construct left wall material",
+      "kind": "cpu",
+      "start": 1239,
+      "detail": {},
+      "end": 1239.1,
+      "duration": 0.1
+    },
+    {
+      "id": 57,
+      "name": "Clone prepared theatre for mount",
+      "kind": "cpu",
+      "start": 1239.7,
+      "detail": {},
+      "end": 1242.9,
+      "duration": 3.2
+    },
+    {
+      "id": 58,
+      "name": "Construct ceiling materials",
+      "kind": "cpu",
+      "start": 1243,
+      "detail": {},
+      "end": 1243.1,
+      "duration": 0.1
+    },
+    {
+      "id": 59,
+      "name": "Construct left wall material",
+      "kind": "cpu",
+      "start": 1243.1,
+      "detail": {},
+      "end": 1243.2,
+      "duration": 0.1
+    },
+    {
+      "id": 60,
+      "name": "Clone prepared theatre for mount",
+      "kind": "cpu",
+      "start": 1274.5,
+      "detail": {},
+      "end": 1277.4,
+      "duration": 2.9
+    },
+    {
+      "id": 61,
+      "name": "Construct ceiling materials",
+      "kind": "cpu",
+      "start": 1277.6,
+      "detail": {},
+      "end": 1277.6,
+      "duration": 0
+    },
+    {
+      "id": 62,
+      "name": "Construct left wall material",
+      "kind": "cpu",
+      "start": 1277.6,
+      "detail": {},
+      "end": 1277.7,
+      "duration": 0.1
+    },
+    {
+      "id": 63,
+      "name": "Clone prepared theatre for mount",
+      "kind": "cpu",
+      "start": 1278.2,
+      "detail": {},
+      "end": 1280.4,
+      "duration": 2.2
+    },
+    {
+      "id": 64,
+      "name": "Construct ceiling materials",
+      "kind": "cpu",
+      "start": 1280.5,
+      "detail": {},
+      "end": 1280.6,
+      "duration": 0.1
+    },
+    {
+      "id": 65,
+      "name": "Construct left wall material",
+      "kind": "cpu",
+      "start": 1280.6,
+      "detail": {},
+      "end": 1280.6,
+      "duration": 0
+    },
+    {
+      "id": 66,
+      "name": "Construct sofa instances",
+      "kind": "cpu",
+      "start": 1281.2,
+      "detail": {},
+      "end": 1282.4,
+      "duration": 1.2
+    },
+    {
+      "id": 67,
+      "name": "Clone prepared theatre for mount",
+      "kind": "cpu",
+      "start": 1347.6,
+      "detail": {},
+      "end": 1351.1,
+      "duration": 3.5
+    },
+    {
+      "id": 68,
+      "name": "Construct ceiling materials",
+      "kind": "cpu",
+      "start": 1351.3,
+      "detail": {},
+      "end": 1351.4,
+      "duration": 0.1
+    },
+    {
+      "id": 69,
+      "name": "Construct left wall material",
+      "kind": "cpu",
+      "start": 1351.4,
+      "detail": {},
+      "end": 1351.4,
+      "duration": 0
+    },
+    {
+      "id": 70,
+      "name": "Clone prepared theatre for mount",
+      "kind": "cpu",
+      "start": 1351.9,
+      "detail": {},
+      "end": 1355.8,
+      "duration": 3.9
+    },
+    {
+      "id": 71,
+      "name": "Construct ceiling materials",
+      "kind": "cpu",
+      "start": 1356,
+      "detail": {},
+      "end": 1356.1,
+      "duration": 0.1
+    },
+    {
+      "id": 72,
+      "name": "Construct left wall material",
+      "kind": "cpu",
+      "start": 1356.1,
+      "detail": {},
+      "end": 1356.1,
+      "duration": 0
+    },
+    {
+      "id": 73,
+      "name": "Construct baked materials/UVs: projector-floor",
+      "kind": "cpu",
+      "start": 1356.6,
+      "detail": {},
+      "end": 1356.7,
+      "duration": 0.1
+    },
+    {
+      "id": 74,
+      "name": "Construct sofa instances",
+      "kind": "cpu",
+      "start": 1356.8,
+      "detail": {},
+      "end": 1357.3,
+      "duration": 0.5
+    },
+    {
+      "id": 75,
+      "name": "Clone prepared theatre for mount",
+      "kind": "cpu",
+      "start": 1859.5,
+      "detail": {},
+      "end": 1863,
+      "duration": 3.5
+    },
+    {
+      "id": 76,
+      "name": "Construct ceiling materials",
+      "kind": "cpu",
+      "start": 1863,
+      "detail": {},
+      "end": 1863.1,
+      "duration": 0.1
+    },
+    {
+      "id": 77,
+      "name": "Construct left wall material",
+      "kind": "cpu",
+      "start": 1863.1,
+      "detail": {},
+      "end": 1863.1,
+      "duration": 0
+    },
+    {
+      "id": 78,
+      "name": "Construct baked materials/UVs: theatre",
+      "kind": "cpu",
+      "start": 1863.5,
+      "detail": {},
+      "end": 1870.6,
+      "duration": 7.1
+    },
+    {
+      "id": 79,
+      "name": "Construct baked materials/UVs: projector-floor",
+      "kind": "cpu",
+      "start": 1871,
+      "detail": {},
+      "end": 1871,
+      "duration": 0
+    },
+    {
+      "id": 80,
+      "name": "Construct sofa instances",
+      "kind": "cpu",
+      "start": 1871.2,
+      "detail": {},
+      "end": 1871.4,
+      "duration": 0.2
+    },
+    {
+      "id": 81,
+      "name": "Opening render submission",
+      "kind": "render submission",
+      "start": 1876.8,
+      "detail": {},
+      "end": 2010.7,
+      "duration": 133.9
+    },
+    {
+      "id": 82,
+      "name": "Opening render submission",
+      "kind": "render submission",
+      "start": 2011.4,
+      "detail": {},
+      "end": 2012.1,
+      "duration": 0.7
+    },
+    {
+      "id": 83,
+      "name": "/models/corridor/curtain/curtain-dome-draco.glb",
+      "kind": "GLB load + processing",
+      "start": 2014.3,
+      "detail": {},
+      "end": 2041.8,
+      "duration": 27.5
+    },
+    {
+      "id": 84,
+      "name": "/textures/corridor/curtain/blue-curtain.ktx2",
+      "kind": "KTX2 load + processing",
+      "start": 2015,
+      "detail": {
+        "format": 36492,
+        "width": 1024,
+        "height": 1024
+      },
+      "end": 2096.5,
+      "duration": 81.5
+    },
+    {
+      "id": 85,
+      "name": "/textures/corridor/pathway-lights/corridor-pathway-lights.ktx2",
+      "kind": "KTX2 load + processing",
+      "start": 2015.6,
+      "detail": {
+        "format": 36492,
+        "width": 2048,
+        "height": 2048
+      },
+      "end": 2194.7,
+      "duration": 179.1
+    },
+    {
+      "id": 86,
+      "name": "/textures/corridor/floor-joints/corridor-floor-joints.ktx2",
+      "kind": "KTX2 load + processing",
+      "start": 2015.7,
+      "detail": {
+        "format": 36492,
+        "width": 1024,
+        "height": 2048
+      },
+      "end": 2105.6,
+      "duration": 89.9
+    },
+    {
+      "id": 87,
+      "name": "/textures/corridor/wall-red/corridor-wall-red-compressed-6k.ktx2",
+      "kind": "KTX2 load + processing",
+      "start": 2015.8,
+      "detail": {
+        "format": 36492,
+        "width": 6144,
+        "height": 6144
+      },
+      "end": 2873.8,
+      "duration": 858
+    },
+    {
+      "id": 88,
+      "name": "/textures/corridor/wall-connecting/corridor-wall-connecting-light-2k.ktx2",
+      "kind": "KTX2 load + processing",
+      "start": 2015.8,
+      "detail": {
+        "format": 36492,
+        "width": 2048,
+        "height": 2048
+      },
+      "end": 2197.7,
+      "duration": 181.9
+    },
+    {
+      "id": 89,
+      "name": "/textures/corridor/roof-datums/corridor-roof-datums.ktx2",
+      "kind": "KTX2 load + processing",
+      "start": 2015.8,
+      "detail": {
+        "format": 36492,
+        "width": 512,
+        "height": 1024
+      },
+      "end": 2122.5,
+      "duration": 106.7
+    },
+    {
+      "id": 90,
+      "name": "/textures/corridor/wall-caps/corridor-wall-caps.ktx2",
+      "kind": "KTX2 load + processing",
+      "start": 2015.8,
+      "detail": {
+        "format": 36492,
+        "width": 512,
+        "height": 1024
+      },
+      "end": 2123.9,
+      "duration": 108.1
+    },
+    {
+      "id": 91,
+      "name": "/textures/corridor/floor/corridor-floor-compressed-6k.ktx2",
+      "kind": "KTX2 load + processing",
+      "start": 2015.9,
+      "detail": {
+        "format": 36492,
+        "width": 6144,
+        "height": 6144
+      },
+      "end": 2822.7,
+      "duration": 806.8
+    },
+    {
+      "id": 92,
+      "name": "/models/corridor-ribbons-balanced.glb",
+      "kind": "GLB load + processing",
+      "start": 2016.5,
+      "detail": {},
+      "end": 2096.1,
+      "duration": 79.6
+    },
+    {
+      "id": 93,
+      "name": "Opening render submission",
+      "kind": "render submission",
+      "start": 2020,
+      "detail": {},
+      "end": 2020.6,
+      "duration": 0.6
+    },
+    {
+      "id": 94,
+      "name": "/models/projector/projector-materials-draco.glb",
+      "kind": "GLB load + processing",
+      "start": 2023.2,
+      "detail": {},
+      "end": 2574.4,
+      "duration": 551.2
+    },
+    {
+      "id": 95,
+      "name": "Projector motion fetch + streamed decompression",
+      "kind": "motion processing",
+      "start": 2023.6,
+      "detail": {
+        "compressed": true,
+        "outputBytes": 1603680
+      },
+      "end": 2046.3,
+      "duration": 22.7
+    },
+    {
+      "id": 96,
+      "name": "/textures/projector/brushed-base.ktx2",
+      "kind": "KTX2 load + processing",
+      "start": 2023.7,
+      "detail": {
+        "format": 36492,
+        "width": 1024,
+        "height": 1024
+      },
+      "end": 2212.7,
+      "duration": 189
+    },
+    {
+      "id": 97,
+      "name": "/textures/projector/brushed-metal-rough-spec.ktx2",
+      "kind": "KTX2 load + processing",
+      "start": 2023.8,
+      "detail": {
+        "format": 36492,
+        "width": 1024,
+        "height": 1024
+      },
+      "end": 2216.7,
+      "duration": 192.9
+    },
+    {
+      "id": 98,
+      "name": "/textures/projector/brushed-normal.ktx2",
+      "kind": "KTX2 load + processing",
+      "start": 2023.9,
+      "detail": {
+        "format": 36492,
+        "width": 1024,
+        "height": 1024
+      },
+      "end": 2229.3,
+      "duration": 205.4
+    },
+    {
+      "id": 99,
+      "name": "GLB parse/decode including dependencies",
+      "kind": "GLB processing",
+      "start": 2027.4,
+      "detail": {
+        "inputBytes": 168788
+      },
+      "end": 2041.8,
+      "duration": 14.4
+    },
+    {
+      "id": 100,
+      "name": "KTX2 parse/transcode including worker queue/init",
+      "kind": "KTX2 processing",
+      "start": 2029.2,
+      "detail": {
+        "inputBytes": 976505,
+        "format": 36492,
+        "width": 1024,
+        "height": 1024
+      },
+      "end": 2096.5,
+      "duration": 67.3
+    },
+    {
+      "id": 101,
+      "name": "KTX2 parse/transcode including worker queue/init",
+      "kind": "KTX2 processing",
+      "start": 2032,
+      "detail": {
+        "inputBytes": 248596,
+        "format": 36492,
+        "width": 1024,
+        "height": 2048
+      },
+      "end": 2105.6,
+      "duration": 73.6
+    },
+    {
+      "id": 102,
+      "name": "KTX2 parse/transcode including worker queue/init",
+      "kind": "KTX2 processing",
+      "start": 2037.6,
+      "detail": {
+        "inputBytes": 76174,
+        "format": 36492,
+        "width": 512,
+        "height": 1024
+      },
+      "end": 2122.5,
+      "duration": 84.9
+    },
+    {
+      "id": 103,
+      "name": "KTX2 parse/transcode including worker queue/init",
+      "kind": "KTX2 processing",
+      "start": 2037.8,
+      "detail": {
+        "inputBytes": 161313,
+        "format": 36492,
+        "width": 512,
+        "height": 1024
+      },
+      "end": 2123.9,
+      "duration": 86.1
+    },
+    {
+      "id": 104,
+      "name": "KTX2 parse/transcode including worker queue/init",
+      "kind": "KTX2 processing",
+      "start": 2039.2,
+      "detail": {
+        "inputBytes": 1011614,
+        "format": 36492,
+        "width": 2048,
+        "height": 2048
+      },
+      "end": 2194.7,
+      "duration": 155.5
+    },
+    {
+      "id": 105,
+      "name": "KTX2 parse/transcode including worker queue/init",
+      "kind": "KTX2 processing",
+      "start": 2042,
+      "detail": {
+        "inputBytes": 872645,
+        "format": 36492,
+        "width": 2048,
+        "height": 2048
+      },
+      "end": 2197.7,
+      "duration": 155.7
+    },
+    {
+      "id": 106,
+      "name": "KTX2 parse/transcode including worker queue/init",
+      "kind": "KTX2 processing",
+      "start": 2052.7,
+      "detail": {
+        "inputBytes": 522460,
+        "format": 36492,
+        "width": 1024,
+        "height": 1024
+      },
+      "end": 2212.7,
+      "duration": 160
+    },
+    {
+      "id": 107,
+      "name": "GLB parse/decode including dependencies",
+      "kind": "GLB processing",
+      "start": 2052.9,
+      "detail": {
+        "inputBytes": 328232
+      },
+      "end": 2096.1,
+      "duration": 43.2
+    },
+    {
+      "id": 108,
+      "name": "KTX2 parse/transcode including worker queue/init",
+      "kind": "KTX2 processing",
+      "start": 2075.8,
+      "detail": {
+        "inputBytes": 924914,
+        "format": 36492,
+        "width": 1024,
+        "height": 1024
+      },
+      "end": 2216.7,
+      "duration": 140.9
+    },
+    {
+      "id": 109,
+      "name": "KTX2 parse/transcode including worker queue/init",
+      "kind": "KTX2 processing",
+      "start": 2103.4,
+      "detail": {
+        "inputBytes": 147817,
+        "format": 36492,
+        "width": 1024,
+        "height": 1024
+      },
+      "end": 2229.3,
+      "duration": 125.9
+    },
+    {
+      "id": 110,
+      "name": "Construct corridor surface geometry",
+      "kind": "cpu",
+      "start": 2110.4,
+      "detail": {},
+      "end": 2118.5,
+      "duration": 8.1
+    },
+    {
+      "id": 111,
+      "name": "KTX2 parse/transcode including worker queue/init",
+      "kind": "KTX2 processing",
+      "start": 2123.8,
+      "detail": {
+        "inputBytes": 5964611,
+        "format": 36492,
+        "width": 6144,
+        "height": 6144
+      },
+      "end": 2822.7,
+      "duration": 698.9
+    },
+    {
+      "id": 112,
+      "name": "KTX2 parse/transcode including worker queue/init",
+      "kind": "KTX2 processing",
+      "start": 2127.5,
+      "detail": {
+        "inputBytes": 7384866,
+        "format": 36492,
+        "width": 6144,
+        "height": 6144
+      },
+      "end": 2873.8,
+      "duration": 746.3
+    },
+    {
+      "id": 113,
+      "name": "GLB parse/decode including dependencies",
+      "kind": "GLB processing",
+      "start": 2148.5,
+      "detail": {
+        "inputBytes": 5265476
+      },
+      "end": 2574.4,
+      "duration": 425.9
+    },
+    {
+      "id": 114,
+      "name": "Construct corridor surface geometry",
+      "kind": "cpu",
+      "start": 2328.1,
+      "detail": {},
+      "end": 2333,
+      "duration": 4.9
+    },
+    {
+      "id": 115,
+      "name": "Construct projector geometry/materials/motion texture",
+      "kind": "cpu",
+      "start": 2574.8,
+      "detail": {},
+      "end": 2627.2,
+      "duration": 52.4
+    },
+    {
+      "id": 116,
+      "name": "Construct corridor surface geometry",
+      "kind": "cpu",
+      "start": 2632.2,
+      "detail": {},
+      "end": 2637.8,
+      "duration": 5.6
+    },
+    {
+      "id": 117,
+      "name": "Shader compileAsync",
+      "kind": "shader preparation",
+      "start": 2640,
+      "detail": {},
+      "end": 2675.8,
+      "duration": 35.8
+    },
+    {
+      "id": 118,
+      "name": "Shader compileAsync",
+      "kind": "shader preparation",
+      "start": 2643.1,
+      "detail": {},
+      "end": 2675.9,
+      "duration": 32.8
+    },
+    {
+      "id": 119,
+      "name": "Construct corridor surface geometry",
+      "kind": "cpu",
+      "start": 2644,
+      "detail": {},
+      "end": 2650.8,
+      "duration": 6.8
+    },
+    {
+      "id": 120,
+      "name": "Construct corridor surface geometry",
+      "kind": "cpu",
+      "start": 2676.7,
+      "detail": {},
+      "end": 2680.1,
+      "duration": 3.4
+    },
+    {
+      "id": 121,
+      "name": "Construct corridor surface geometry",
+      "kind": "cpu",
+      "start": 2874,
+      "detail": {},
+      "end": 2879.3,
+      "duration": 5.3
+    },
+    {
+      "id": 122,
+      "name": "Construct baked materials/UVs: corridor",
+      "kind": "cpu",
+      "start": 2879.5,
+      "detail": {},
+      "end": 2881.6,
+      "duration": 2.1
+    }
+  ],
+  "resources": [
+    {
+      "path": "/_next/static/media/797e433ab948586e-s.p.0r6juujl39pe6.woff2",
+      "category": "font",
+      "start": 37.2,
+      "requestStart": 42.8,
+      "responseStart": 47.4,
+      "end": 47.9,
+      "duration": 10.7,
+      "transferBytes": 23408,
+      "encodedBytes": 23108,
+      "decodedBytes": 23108,
+      "protocol": "http/1.1",
+      "deliveryType": "",
+      "status": 200
+    },
+    {
+      "path": "/_next/static/media/caa3a2e1cccd8315-s.p.0wgildi0cnwt9.woff2",
+      "category": "font",
+      "start": 37.3,
+      "requestStart": 42.9,
+      "responseStart": 48.1,
+      "end": 49.2,
+      "duration": 11.9,
+      "transferBytes": 29588,
+      "encodedBytes": 29288,
+      "decodedBytes": 29288,
+      "protocol": "http/1.1",
+      "deliveryType": "",
+      "status": 200
+    },
+    {
+      "path": "/_next/static/chunks/35dihs7tfzk_-.css",
+      "category": "other",
+      "start": 37.5,
+      "requestStart": 43.5,
+      "responseStart": 49.2,
+      "end": 50.5,
+      "duration": 13,
+      "transferBytes": 5639,
+      "encodedBytes": 5339,
+      "decodedBytes": 20295,
+      "protocol": "http/1.1",
+      "deliveryType": "",
+      "status": 200
+    },
+    {
+      "path": "/draco/draco_wasm_wrapper.js",
+      "category": "decoder",
+      "start": 37.6,
+      "requestStart": 43.5,
+      "responseStart": 48.8,
+      "end": 50.2,
+      "duration": 12.6,
+      "transferBytes": 12048,
+      "encodedBytes": 11748,
+      "decodedBytes": 58456,
+      "protocol": "http/1.1",
+      "deliveryType": "",
+      "status": 200
+    },
+    {
+      "path": "/_next/static/chunks/2-vdi639rkioj.js",
+      "category": "JavaScript",
+      "start": 37.6,
+      "requestStart": 54.2,
+      "responseStart": 55.7,
+      "end": 56.7,
+      "duration": 19.1,
+      "transferBytes": 7663,
+      "encodedBytes": 7363,
+      "decodedBytes": 21846,
+      "protocol": "http/1.1",
+      "deliveryType": "",
+      "status": 200
+    },
+    {
+      "path": "/_next/static/chunks/turbopack-3-ry682tkyiqk.js",
+      "category": "JavaScript",
+      "start": 37.6,
+      "requestStart": 55.5,
+      "responseStart": 57.8,
+      "end": 58.2,
+      "duration": 20.6,
+      "transferBytes": 4240,
+      "encodedBytes": 3940,
+      "decodedBytes": 10030,
+      "protocol": "http/1.1",
+      "deliveryType": "",
+      "status": 200
+    },
+    {
+      "path": "/_next/static/chunks/0czjt906aluwy.js",
+      "category": "JavaScript",
+      "start": 37.6,
+      "requestStart": 55.6,
+      "responseStart": 58,
+      "end": 58.4,
+      "duration": 20.8,
+      "transferBytes": 3901,
+      "encodedBytes": 3601,
+      "decodedBytes": 14094,
+      "protocol": "http/1.1",
+      "deliveryType": "",
+      "status": 200
+    },
+    {
+      "path": "/_next/static/chunks/3b73m627ezaqa.js",
+      "category": "JavaScript",
+      "start": 37.6,
+      "requestStart": 55.7,
+      "responseStart": 58,
+      "end": 58.7,
+      "duration": 21.1,
+      "transferBytes": 9591,
+      "encodedBytes": 9291,
+      "decodedBytes": 26627,
+      "protocol": "http/1.1",
+      "deliveryType": "",
+      "status": 200
+    },
+    {
+      "path": "/_next/static/chunks/05fd-xzs7yfpd.js",
+      "category": "JavaScript",
+      "start": 37.6,
+      "requestStart": 55.1,
+      "responseStart": 58.5,
+      "end": 60.9,
+      "duration": 23.3,
+      "transferBytes": 49094,
+      "encodedBytes": 48794,
+      "decodedBytes": 181790,
+      "protocol": "http/1.1",
+      "deliveryType": "",
+      "status": 200
+    },
+    {
+      "path": "/_next/static/chunks/1dhj4xuey8c3j.js",
+      "category": "JavaScript",
+      "start": 37.6,
+      "requestStart": 55.5,
+      "responseStart": 59,
+      "end": 62.9,
+      "duration": 25.3,
+      "transferBytes": 72295,
+      "encodedBytes": 71995,
+      "decodedBytes": 229839,
+      "protocol": "http/1.1",
+      "deliveryType": "",
+      "status": 200
+    },
+    {
+      "path": "/draco/draco_decoder.wasm",
+      "category": "decoder",
+      "start": 37.7,
+      "requestStart": 43.6,
+      "responseStart": 50.5,
+      "end": 54.1,
+      "duration": 16.4,
+      "transferBytes": 63758,
+      "encodedBytes": 63458,
+      "decodedBytes": 192420,
+      "protocol": "http/1.1",
+      "deliveryType": "",
+      "status": 200
+    },
+    {
+      "path": "/favicon.ico",
+      "category": "other",
+      "start": 117,
+      "requestStart": 118.1,
+      "responseStart": 133.9,
+      "end": 134.3,
+      "duration": 17.3,
+      "transferBytes": 15386,
+      "encodedBytes": 15086,
+      "decodedBytes": 15086,
+      "protocol": "http/1.1",
+      "deliveryType": "",
+      "status": 200
+    },
+    {
+      "path": "/_next/static/chunks/3_uwmv90--dq6.js",
+      "category": "JavaScript",
+      "start": 122,
+      "requestStart": 122.8,
+      "responseStart": 126.5,
+      "end": 126.8,
+      "duration": 4.8,
+      "transferBytes": 616,
+      "encodedBytes": 316,
+      "decodedBytes": 316,
+      "protocol": "http/1.1",
+      "deliveryType": "",
+      "status": 200
+    },
+    {
+      "path": "/_next/static/chunks/39jcv-e2bd3qs.js",
+      "category": "JavaScript",
+      "start": 122.1,
+      "requestStart": 123,
+      "responseStart": 127.3,
+      "end": 129.9,
+      "duration": 7.8,
+      "transferBytes": 50936,
+      "encodedBytes": 50636,
+      "decodedBytes": 208666,
+      "protocol": "http/1.1",
+      "deliveryType": "",
+      "status": 200
+    },
+    {
+      "path": "/_next/static/chunks/3aq88fjdq86sq.js",
+      "category": "JavaScript",
+      "start": 122.1,
+      "requestStart": 122.8,
+      "responseStart": 128,
+      "end": 148.3,
+      "duration": 26.2,
+      "transferBytes": 291919,
+      "encodedBytes": 291619,
+      "decodedBytes": 1062682,
+      "protocol": "http/1.1",
+      "deliveryType": "",
+      "status": 200
+    },
+    {
+      "path": "/models/theatre-marked.glb",
+      "category": "model",
+      "start": 410.5,
+      "requestStart": 411.4,
+      "responseStart": 413.6,
+      "end": 425.9,
+      "duration": 15.4,
+      "transferBytes": 264167,
+      "encodedBytes": 263867,
+      "decodedBytes": 700892,
+      "protocol": "http/1.1",
+      "deliveryType": "",
+      "status": 200
+    },
+    {
+      "path": "/models/projector-floor-marked.glb",
+      "category": "model",
+      "start": 410.7,
+      "requestStart": 411.5,
+      "responseStart": 413.3,
+      "end": 413.6,
+      "duration": 2.9,
+      "transferBytes": 1391,
+      "encodedBytes": 1091,
+      "decodedBytes": 1784,
+      "protocol": "http/1.1",
+      "deliveryType": "",
+      "status": 200
+    },
+    {
+      "path": "/models/theatre/ceiling-uv-fixed.glb",
+      "category": "model",
+      "start": 413.7,
+      "requestStart": 414.5,
+      "responseStart": 416.4,
+      "end": 417.5,
+      "duration": 3.8,
+      "transferBytes": 37246,
+      "encodedBytes": 36946,
+      "decodedBytes": 55860,
+      "protocol": "http/1.1",
+      "deliveryType": "",
+      "status": 200
+    },
+    {
+      "path": "/models/theatre/sofa/sofa-baked-draco.glb",
+      "category": "model",
+      "start": 413.9,
+      "requestStart": 414.6,
+      "responseStart": 416.5,
+      "end": 417.8,
+      "duration": 3.9,
+      "transferBytes": 33383,
+      "encodedBytes": 33083,
+      "decodedBytes": 39484,
+      "protocol": "http/1.1",
+      "deliveryType": "",
+      "status": 200
+    },
+    {
+      "path": "/basis/basis_transcoder.js",
+      "category": "decoder",
+      "start": 415.8,
+      "requestStart": 416.5,
+      "responseStart": 418.8,
+      "end": 421.9,
+      "duration": 6.1,
+      "transferBytes": 15469,
+      "encodedBytes": 15169,
+      "decodedBytes": 57529,
+      "protocol": "http/1.1",
+      "deliveryType": "",
+      "status": 200
+    },
+    {
+      "path": "/basis/basis_transcoder.wasm",
+      "category": "decoder",
+      "start": 415.9,
+      "requestStart": 416.9,
+      "responseStart": 419.5,
+      "end": 432.1,
+      "duration": 16.2,
+      "transferBytes": 247919,
+      "encodedBytes": 247619,
+      "decodedBytes": 527333,
+      "protocol": "http/1.1",
+      "deliveryType": "",
+      "status": 200
+    },
+    {
+      "path": "/textures/theatre/ceiling/ceiling-compressed-6k.ktx2",
+      "category": "texture",
+      "start": 416.1,
+      "requestStart": 419.4,
+      "responseStart": 420.6,
+      "end": 449.8,
+      "duration": 33.7,
+      "transferBytes": 4138535,
+      "encodedBytes": 4138235,
+      "decodedBytes": 4138235,
+      "protocol": "http/1.1",
+      "deliveryType": "",
+      "status": 200
+    },
+    {
+      "path": "/textures/theatre/left-wall/left-wall-light-2k.ktx2",
+      "category": "texture",
+      "start": 416.2,
+      "requestStart": 421.3,
+      "responseStart": 422.9,
+      "end": 455.5,
+      "duration": 39.3,
+      "transferBytes": 1680369,
+      "encodedBytes": 1680069,
+      "decodedBytes": 1680069,
+      "protocol": "http/1.1",
+      "deliveryType": "",
+      "status": 200
+    },
+    {
+      "path": "/textures/theatre/right-wall/right-wall-uv.bin",
+      "category": "UV/texture sidecar",
+      "start": 416.3,
+      "requestStart": 421.3,
+      "responseStart": 422.8,
+      "end": 424,
+      "duration": 7.7,
+      "transferBytes": 656,
+      "encodedBytes": 356,
+      "decodedBytes": 356,
+      "protocol": "http/1.1",
+      "deliveryType": "",
+      "status": 200
+    },
+    {
+      "path": "/textures/theatre/front-wall/front-wall-uv.bin",
+      "category": "UV/texture sidecar",
+      "start": 416.5,
+      "requestStart": 422.2,
+      "responseStart": 423.4,
+      "end": 428.7,
+      "duration": 12.2,
+      "transferBytes": 656,
+      "encodedBytes": 356,
+      "decodedBytes": 356,
+      "protocol": "http/1.1",
+      "deliveryType": "",
+      "status": 200
+    },
+    {
+      "path": "/textures/theatre/screen/screen-uv.bin",
+      "category": "UV/texture sidecar",
+      "start": 416.6,
+      "requestStart": 424.3,
+      "responseStart": 426,
+      "end": 431.9,
+      "duration": 15.3,
+      "transferBytes": 1984,
+      "encodedBytes": 1684,
+      "decodedBytes": 1684,
+      "protocol": "http/1.1",
+      "deliveryType": "",
+      "status": 200
+    },
+    {
+      "path": "/textures/theatre/stage/stage-uv.bin",
+      "category": "UV/texture sidecar",
+      "start": 416.7,
+      "requestStart": 426.4,
+      "responseStart": 428.3,
+      "end": 432,
+      "duration": 15.3,
+      "transferBytes": 3728,
+      "encodedBytes": 3428,
+      "decodedBytes": 3428,
+      "protocol": "http/1.1",
+      "deliveryType": "",
+      "status": 200
+    },
+    {
+      "path": "/textures/theatre/floor/floor-slab-uv.bin",
+      "category": "UV/texture sidecar",
+      "start": 416.8,
+      "requestStart": 429.4,
+      "responseStart": 431,
+      "end": 433.5,
+      "duration": 16.7,
+      "transferBytes": 656,
+      "encodedBytes": 356,
+      "decodedBytes": 356,
+      "protocol": "http/1.1",
+      "deliveryType": "",
+      "status": 200
+    },
+    {
+      "path": "/textures/theatre/light-fixtures/light-fixtures-uv.bin",
+      "category": "UV/texture sidecar",
+      "start": 416.9,
+      "requestStart": 432.4,
+      "responseStart": 434.8,
+      "end": 435.7,
+      "duration": 18.8,
+      "transferBytes": 4472,
+      "encodedBytes": 4172,
+      "decodedBytes": 4172,
+      "protocol": "http/1.1",
+      "deliveryType": "",
+      "status": 200
+    },
+    {
+      "path": "/textures/theatre/wall-trim/wall-trim-uv.bin",
+      "category": "UV/texture sidecar",
+      "start": 417,
+      "requestStart": 432.4,
+      "responseStart": 434.6,
+      "end": 435,
+      "duration": 18,
+      "transferBytes": 2336,
+      "encodedBytes": 2036,
+      "decodedBytes": 2036,
+      "protocol": "http/1.1",
+      "deliveryType": "",
+      "status": 200
+    },
+    {
+      "path": "/textures/theatre/step-nosings/step-nosings-uv.bin",
+      "category": "UV/texture sidecar",
+      "start": 417,
+      "requestStart": 432.5,
+      "responseStart": 434.9,
+      "end": 435.8,
+      "duration": 18.8,
+      "transferBytes": 14704,
+      "encodedBytes": 14404,
+      "decodedBytes": 14404,
+      "protocol": "http/1.1",
+      "deliveryType": "",
+      "status": 200
+    },
+    {
+      "path": "/textures/theatre/aisle-lights/aisle-lights-uv.bin",
+      "category": "UV/texture sidecar",
+      "start": 417.1,
+      "requestStart": 433.8,
+      "responseStart": 435.5,
+      "end": 436.8,
+      "duration": 19.7,
+      "transferBytes": 26784,
+      "encodedBytes": 26484,
+      "decodedBytes": 26484,
+      "protocol": "http/1.1",
+      "deliveryType": "",
+      "status": 200
+    },
+    {
+      "path": "/textures/theatre/acoustic-slats/acoustic-slats-uv.bin",
+      "category": "UV/texture sidecar",
+      "start": 417.3,
+      "requestStart": 435.1,
+      "responseStart": 437.4,
+      "end": 439.6,
+      "duration": 22.3,
+      "transferBytes": 103808,
+      "encodedBytes": 103508,
+      "decodedBytes": 103508,
+      "protocol": "http/1.1",
+      "deliveryType": "",
+      "status": 200
+    },
+    {
+      "path": "/textures/theatre/speakers/speakers-uv.bin",
+      "category": "UV/texture sidecar",
+      "start": 417.4,
+      "requestStart": 435.8,
+      "responseStart": 437.8,
+      "end": 439.6,
+      "duration": 22.2,
+      "transferBytes": 9056,
+      "encodedBytes": 8756,
+      "decodedBytes": 8756,
+      "protocol": "http/1.1",
+      "deliveryType": "",
+      "status": 200
+    },
+    {
+      "path": "/textures/theatre/terraces/terraces-uv.bin",
+      "category": "UV/texture sidecar",
+      "start": 417.5,
+      "requestStart": 435.8,
+      "responseStart": 438.2,
+      "end": 439.7,
+      "duration": 22.2,
+      "transferBytes": 12752,
+      "encodedBytes": 12452,
+      "decodedBytes": 12452,
+      "protocol": "http/1.1",
+      "deliveryType": "",
+      "status": 200
+    },
+    {
+      "path": "/textures/theatre/moon-steel-border/moon-steel-border-uv.bin",
+      "category": "UV/texture sidecar",
+      "start": 417.5,
+      "requestStart": 436.9,
+      "responseStart": 438.4,
+      "end": 439.9,
+      "duration": 22.4,
+      "transferBytes": 4256,
+      "encodedBytes": 3956,
+      "decodedBytes": 3956,
+      "protocol": "http/1.1",
+      "deliveryType": "",
+      "status": 200
+    },
+    {
+      "path": "/textures/theatre/right-wall/right-wall-light-2k.ktx2",
+      "category": "texture",
+      "start": 417.8,
+      "requestStart": 439.9,
+      "responseStart": 441.4,
+      "end": 456.9,
+      "duration": 39.1,
+      "transferBytes": 1164979,
+      "encodedBytes": 1164679,
+      "decodedBytes": 1164679,
+      "protocol": "http/1.1",
+      "deliveryType": "",
+      "status": 200
+    },
+    {
+      "path": "/textures/theatre/front-wall/front-wall.ktx2",
+      "category": "texture",
+      "start": 417.9,
+      "requestStart": 440,
+      "responseStart": 441.8,
+      "end": 445.2,
+      "duration": 27.3,
+      "transferBytes": 491910,
+      "encodedBytes": 491610,
+      "decodedBytes": 491610,
+      "protocol": "http/1.1",
+      "deliveryType": "",
+      "status": 200
+    },
+    {
+      "path": "/textures/theatre/stage/stage.ktx2",
+      "category": "texture",
+      "start": 418.1,
+      "requestStart": 440,
+      "responseStart": 441.7,
+      "end": 445.5,
+      "duration": 27.4,
+      "transferBytes": 534086,
+      "encodedBytes": 533786,
+      "decodedBytes": 533786,
+      "protocol": "http/1.1",
+      "deliveryType": "",
+      "status": 200
+    },
+    {
+      "path": "/textures/theatre/screen/screen.ktx2",
+      "category": "texture",
+      "start": 418.1,
+      "requestStart": 440,
+      "responseStart": 441.9,
+      "end": 450.1,
+      "duration": 32,
+      "transferBytes": 654928,
+      "encodedBytes": 654628,
+      "decodedBytes": 654628,
+      "protocol": "http/1.1",
+      "deliveryType": "",
+      "status": 200
+    },
+    {
+      "path": "/textures/theatre/floor/floor-slab-compressed-6k.ktx2",
+      "category": "texture",
+      "start": 418.3,
+      "requestStart": 445.6,
+      "responseStart": 447.7,
+      "end": 507.3,
+      "duration": 89,
+      "transferBytes": 5591346,
+      "encodedBytes": 5591046,
+      "decodedBytes": 5591046,
+      "protocol": "http/1.1",
+      "deliveryType": "",
+      "status": 200
+    },
+    {
+      "path": "/textures/theatre/light-fixtures/light-fixtures.ktx2",
+      "category": "texture",
+      "start": 418.4,
+      "requestStart": 445.7,
+      "responseStart": 448,
+      "end": 457.2,
+      "duration": 38.8,
+      "transferBytes": 271514,
+      "encodedBytes": 271214,
+      "decodedBytes": 271214,
+      "protocol": "http/1.1",
+      "deliveryType": "",
+      "status": 200
+    },
+    {
+      "path": "/textures/theatre/wall-trim/wall-trim.ktx2",
+      "category": "texture",
+      "start": 418.5,
+      "requestStart": 450.5,
+      "responseStart": 452.5,
+      "end": 460.9,
+      "duration": 42.4,
+      "transferBytes": 392974,
+      "encodedBytes": 392674,
+      "decodedBytes": 392674,
+      "protocol": "http/1.1",
+      "deliveryType": "",
+      "status": 200
+    },
+    {
+      "path": "/textures/theatre/step-nosings/step-nosings.ktx2",
+      "category": "texture",
+      "start": 418.7,
+      "requestStart": 450.6,
+      "responseStart": 452.6,
+      "end": 471.3,
+      "duration": 52.6,
+      "transferBytes": 1078397,
+      "encodedBytes": 1078097,
+      "decodedBytes": 1078097,
+      "protocol": "http/1.1",
+      "deliveryType": "",
+      "status": 200
+    },
+    {
+      "path": "/textures/theatre/aisle-lights/aisle-lights.ktx2",
+      "category": "texture",
+      "start": 418.8,
+      "requestStart": 455.7,
+      "responseStart": 459.5,
+      "end": 477.2,
+      "duration": 58.4,
+      "transferBytes": 1131519,
+      "encodedBytes": 1131219,
+      "decodedBytes": 1131219,
+      "protocol": "http/1.1",
+      "deliveryType": "",
+      "status": 200
+    },
+    {
+      "path": "/textures/theatre/acoustic-slats/acoustic-slats.ktx2",
+      "category": "texture",
+      "start": 418.9,
+      "requestStart": 457.4,
+      "responseStart": 459.9,
+      "end": 474.1,
+      "duration": 55.2,
+      "transferBytes": 982668,
+      "encodedBytes": 982368,
+      "decodedBytes": 982368,
+      "protocol": "http/1.1",
+      "deliveryType": "",
+      "status": 200
+    },
+    {
+      "path": "/textures/theatre/speakers/speakers.ktx2",
+      "category": "texture",
+      "start": 419,
+      "requestStart": 457.6,
+      "responseStart": 460,
+      "end": 466.1,
+      "duration": 47.1,
+      "transferBytes": 452479,
+      "encodedBytes": 452179,
+      "decodedBytes": 452179,
+      "protocol": "http/1.1",
+      "deliveryType": "",
+      "status": 200
+    },
+    {
+      "path": "/textures/theatre/terraces/terraces-light-2k.ktx2",
+      "category": "texture",
+      "start": 419.1,
+      "requestStart": 461.3,
+      "responseStart": 463,
+      "end": 473.9,
+      "duration": 54.8,
+      "transferBytes": 281430,
+      "encodedBytes": 281130,
+      "decodedBytes": 281130,
+      "protocol": "http/1.1",
+      "deliveryType": "",
+      "status": 200
+    },
+    {
+      "path": "/textures/theatre/moon-steel-border/moon-steel-border-light-2k.ktx2",
+      "category": "texture",
+      "start": 419.3,
+      "requestStart": 466.6,
+      "responseStart": 468.7,
+      "end": 488,
+      "duration": 68.7,
+      "transferBytes": 1249487,
+      "encodedBytes": 1249187,
+      "decodedBytes": 1249187,
+      "protocol": "http/1.1",
+      "deliveryType": "",
+      "status": 200
+    },
+    {
+      "path": "/textures/projector-floor/projector-floor-uv.bin",
+      "category": "UV/texture sidecar",
+      "start": 419.4,
+      "requestStart": 471.7,
+      "responseStart": 475.8,
+      "end": 479.8,
+      "duration": 60.4,
+      "transferBytes": 464,
+      "encodedBytes": 164,
+      "decodedBytes": 164,
+      "protocol": "http/1.1",
+      "deliveryType": "",
+      "status": 200
+    },
+    {
+      "path": "/textures/projector-floor/projector-floor.ktx2",
+      "category": "texture",
+      "start": 419.5,
+      "requestStart": 474.7,
+      "responseStart": 476.8,
+      "end": 494.6,
+      "duration": 75.1,
+      "transferBytes": 1302592,
+      "encodedBytes": 1302292,
+      "decodedBytes": 1302292,
+      "protocol": "http/1.1",
+      "deliveryType": "",
+      "status": 200
+    },
+    {
+      "path": "/textures/shared/blender-view.bin.gz",
+      "category": "UV/texture sidecar",
+      "start": 419.7,
+      "requestStart": 474.8,
+      "responseStart": 477.6,
+      "end": 485.3,
+      "duration": 65.6,
+      "transferBytes": 614322,
+      "encodedBytes": 614022,
+      "decodedBytes": 614022,
+      "protocol": "http/1.1",
+      "deliveryType": "",
+      "status": 200
+    },
+    {
+      "path": "/textures/theatre/sofa/upholstery-base-1k.ktx2",
+      "category": "texture",
+      "start": 419.9,
+      "requestStart": 477.7,
+      "responseStart": 479.3,
+      "end": 488.4,
+      "duration": 68.5,
+      "transferBytes": 457839,
+      "encodedBytes": 457539,
+      "decodedBytes": 457539,
+      "protocol": "http/1.1",
+      "deliveryType": "",
+      "status": 200
+    },
+    {
+      "path": "/textures/theatre/sofa/upholstery-metal-rough-1k.ktx2",
+      "category": "texture",
+      "start": 420.1,
+      "requestStart": 480.1,
+      "responseStart": 482.8,
+      "end": 493.3,
+      "duration": 73.2,
+      "transferBytes": 534292,
+      "encodedBytes": 533992,
+      "decodedBytes": 533992,
+      "protocol": "http/1.1",
+      "deliveryType": "",
+      "status": 200
+    },
+    {
+      "path": "/_next/static/chunks/0l26uwj6-w3z1.js",
+      "category": "JavaScript",
+      "start": 2012.9,
+      "requestStart": 2014,
+      "responseStart": 2016.9,
+      "end": 2019.1,
+      "duration": 6.2,
+      "transferBytes": 39193,
+      "encodedBytes": 38893,
+      "decodedBytes": 135232,
+      "protocol": "http/1.1",
+      "deliveryType": "",
+      "status": 200
+    },
+    {
+      "path": "/models/corridor/curtain/curtain-dome-draco.glb",
+      "category": "model",
+      "start": 2014.7,
+      "requestStart": 2015.8,
+      "responseStart": 2018.2,
+      "end": 2022,
+      "duration": 7.3,
+      "transferBytes": 131771,
+      "encodedBytes": 131471,
+      "decodedBytes": 168788,
+      "protocol": "http/1.1",
+      "deliveryType": "",
+      "status": 200
+    },
+    {
+      "path": "/textures/corridor/curtain/blue-curtain.ktx2",
+      "category": "texture",
+      "start": 2015.1,
+      "requestStart": 2016.7,
+      "responseStart": 2018.8,
+      "end": 2025.1,
+      "duration": 10,
+      "transferBytes": 976805,
+      "encodedBytes": 976505,
+      "decodedBytes": 976505,
+      "protocol": "http/1.1",
+      "deliveryType": "",
+      "status": 200
+    },
+    {
+      "path": "/textures/corridor/pathway-lights/corridor-pathway-lights-uv.bin",
+      "category": "UV/texture sidecar",
+      "start": 2015.2,
+      "requestStart": 2017,
+      "responseStart": 2018.6,
+      "end": 2019.4,
+      "duration": 4.2,
+      "transferBytes": 28600,
+      "encodedBytes": 28300,
+      "decodedBytes": 28300,
+      "protocol": "http/1.1",
+      "deliveryType": "",
+      "status": 200
+    },
+    {
+      "path": "/textures/corridor/floor-joints/corridor-floor-joints-uv.bin",
+      "category": "UV/texture sidecar",
+      "start": 2015.3,
+      "requestStart": 2017.1,
+      "responseStart": 2019.2,
+      "end": 2023.2,
+      "duration": 7.9,
+      "transferBytes": 992,
+      "encodedBytes": 692,
+      "decodedBytes": 692,
+      "protocol": "http/1.1",
+      "deliveryType": "",
+      "status": 200
+    },
+    {
+      "path": "/textures/corridor/wall-red/corridor-wall-red-uv.bin",
+      "category": "UV/texture sidecar",
+      "start": 2015.3,
+      "requestStart": 2017.1,
+      "responseStart": 2019.2,
+      "end": 2023.4,
+      "duration": 8.1,
+      "transferBytes": 1520,
+      "encodedBytes": 1220,
+      "decodedBytes": 1220,
+      "protocol": "http/1.1",
+      "deliveryType": "",
+      "status": 200
+    },
+    {
+      "path": "/textures/corridor/wall-connecting/corridor-wall-connecting-uv.bin",
+      "category": "UV/texture sidecar",
+      "start": 2015.4,
+      "requestStart": 2019.2,
+      "responseStart": 2020.1,
+      "end": 2023.5,
+      "duration": 8.1,
+      "transferBytes": 1520,
+      "encodedBytes": 1220,
+      "decodedBytes": 1220,
+      "protocol": "http/1.1",
+      "deliveryType": "",
+      "status": 200
+    },
+    {
+      "path": "/textures/corridor/roof-datums/corridor-roof-datums-uv.bin",
+      "category": "UV/texture sidecar",
+      "start": 2015.4,
+      "requestStart": 2019.4,
+      "responseStart": 2020.6,
+      "end": 2023.7,
+      "duration": 8.3,
+      "transferBytes": 7312,
+      "encodedBytes": 7012,
+      "decodedBytes": 7012,
+      "protocol": "http/1.1",
+      "deliveryType": "",
+      "status": 200
+    },
+    {
+      "path": "/textures/corridor/wall-caps/corridor-wall-caps-uv.bin",
+      "category": "UV/texture sidecar",
+      "start": 2015.4,
+      "requestStart": 2022.2,
+      "responseStart": 2023.9,
+      "end": 2026.8,
+      "duration": 11.4,
+      "transferBytes": 5840,
+      "encodedBytes": 5540,
+      "decodedBytes": 5540,
+      "protocol": "http/1.1",
+      "deliveryType": "",
+      "status": 200
+    },
+    {
+      "path": "/textures/corridor/floor/corridor-floor-uv.bin",
+      "category": "UV/texture sidecar",
+      "start": 2015.4,
+      "requestStart": 2023.6,
+      "responseStart": 2025.3,
+      "end": 2027.2,
+      "duration": 11.8,
+      "transferBytes": 2716,
+      "encodedBytes": 2416,
+      "decodedBytes": 2416,
+      "protocol": "http/1.1",
+      "deliveryType": "",
+      "status": 200
+    },
+    {
+      "path": "/textures/corridor/pathway-lights/corridor-pathway-lights.ktx2",
+      "category": "texture",
+      "start": 2015.6,
+      "requestStart": 2023.8,
+      "responseStart": 2025.7,
+      "end": 2037,
+      "duration": 21.4,
+      "transferBytes": 1011914,
+      "encodedBytes": 1011614,
+      "decodedBytes": 1011614,
+      "protocol": "http/1.1",
+      "deliveryType": "",
+      "status": 200
+    },
+    {
+      "path": "/textures/corridor/floor-joints/corridor-floor-joints.ktx2",
+      "category": "texture",
+      "start": 2015.7,
+      "requestStart": 2023.9,
+      "responseStart": 2025.5,
+      "end": 2028,
+      "duration": 12.3,
+      "transferBytes": 248896,
+      "encodedBytes": 248596,
+      "decodedBytes": 248596,
+      "protocol": "http/1.1",
+      "deliveryType": "",
+      "status": 200
+    },
+    {
+      "path": "/textures/corridor/roof-datums/corridor-roof-datums.ktx2",
+      "category": "texture",
+      "start": 2015.8,
+      "requestStart": 2026.8,
+      "responseStart": 2028.2,
+      "end": 2033.5,
+      "duration": 17.7,
+      "transferBytes": 76474,
+      "encodedBytes": 76174,
+      "decodedBytes": 76174,
+      "protocol": "http/1.1",
+      "deliveryType": "",
+      "status": 200
+    },
+    {
+      "path": "/textures/corridor/wall-connecting/corridor-wall-connecting-light-2k.ktx2",
+      "category": "texture",
+      "start": 2015.8,
+      "requestStart": 2025.3,
+      "responseStart": 2027.1,
+      "end": 2039.5,
+      "duration": 23.7,
+      "transferBytes": 872945,
+      "encodedBytes": 872645,
+      "decodedBytes": 872645,
+      "protocol": "http/1.1",
+      "deliveryType": "",
+      "status": 200
+    },
+    {
+      "path": "/textures/corridor/wall-red/corridor-wall-red-compressed-6k.ktx2",
+      "category": "texture",
+      "start": 2015.8,
+      "requestStart": 2024.1,
+      "responseStart": 2026.3,
+      "end": 2104.1,
+      "duration": 88.3,
+      "transferBytes": 7385166,
+      "encodedBytes": 7384866,
+      "decodedBytes": 7384866,
+      "protocol": "http/1.1",
+      "deliveryType": "",
+      "status": 200
+    },
+    {
+      "path": "/textures/corridor/wall-caps/corridor-wall-caps.ktx2",
+      "category": "texture",
+      "start": 2015.9,
+      "requestStart": 2027.2,
+      "responseStart": 2028.6,
+      "end": 2033.8,
+      "duration": 17.9,
+      "transferBytes": 161613,
+      "encodedBytes": 161313,
+      "decodedBytes": 161313,
+      "protocol": "http/1.1",
+      "deliveryType": "",
+      "status": 200
+    },
+    {
+      "path": "/textures/corridor/floor/corridor-floor-compressed-6k.ktx2",
+      "category": "texture",
+      "start": 2015.9,
+      "requestStart": 2028.2,
+      "responseStart": 2029.9,
+      "end": 2082.8,
+      "duration": 66.9,
+      "transferBytes": 5964911,
+      "encodedBytes": 5964611,
+      "decodedBytes": 5964611,
+      "protocol": "http/1.1",
+      "deliveryType": "",
+      "status": 200
+    },
+    {
+      "path": "/models/corridor-ribbons-balanced.glb",
+      "category": "model",
+      "start": 2016.6,
+      "requestStart": 2034,
+      "responseStart": 2039,
+      "end": 2049.6,
+      "duration": 33,
+      "transferBytes": 259111,
+      "encodedBytes": 258811,
+      "decodedBytes": 328232,
+      "protocol": "http/1.1",
+      "deliveryType": "",
+      "status": 200
+    },
+    {
+      "path": "/models/projector/projector-materials-draco.glb",
+      "category": "model",
+      "start": 2023.5,
+      "requestStart": 2034.3,
+      "responseStart": 2039.9,
+      "end": 2146.2,
+      "duration": 122.7,
+      "transferBytes": 3226645,
+      "encodedBytes": 3226345,
+      "decodedBytes": 5265476,
+      "protocol": "http/1.1",
+      "deliveryType": "",
+      "status": 200
+    },
+    {
+      "path": "/models/projector/projector-poses.bin.gz",
+      "category": "motion/data",
+      "start": 2023.7,
+      "requestStart": 2037.4,
+      "responseStart": 2039.8,
+      "end": 2043,
+      "duration": 19.3,
+      "transferBytes": 50586,
+      "encodedBytes": 50286,
+      "decodedBytes": 50286,
+      "protocol": "http/1.1",
+      "deliveryType": "",
+      "status": 200
+    },
+    {
+      "path": "/textures/projector/brushed-base.ktx2",
+      "category": "texture",
+      "start": 2023.8,
+      "requestStart": 2039.8,
+      "responseStart": 2041.7,
+      "end": 2049.2,
+      "duration": 25.4,
+      "transferBytes": 522760,
+      "encodedBytes": 522460,
+      "decodedBytes": 522460,
+      "protocol": "http/1.1",
+      "deliveryType": "",
+      "status": 200
+    },
+    {
+      "path": "/textures/projector/brushed-metal-rough-spec.ktx2",
+      "category": "texture",
+      "start": 2023.9,
+      "requestStart": 2043.3,
+      "responseStart": 2044.7,
+      "end": 2055.4,
+      "duration": 31.5,
+      "transferBytes": 925214,
+      "encodedBytes": 924914,
+      "decodedBytes": 924914,
+      "protocol": "http/1.1",
+      "deliveryType": "",
+      "status": 200
+    },
+    {
+      "path": "/textures/projector/brushed-normal.ktx2",
+      "category": "texture",
+      "start": 2024,
+      "requestStart": 2050.3,
+      "responseStart": 2052.3,
+      "end": 2055.2,
+      "duration": 31.2,
+      "transferBytes": 148117,
+      "encodedBytes": 147817,
+      "decodedBytes": 147817,
+      "protocol": "http/1.1",
+      "deliveryType": "",
+      "status": 200
+    },
+    {
+      "path": "/models/projector/trajectories-laptop.bin.gz",
+      "category": "motion/data",
+      "start": 2024.1,
+      "requestStart": 2050.4,
+      "responseStart": 2052.3,
+      "end": 2074.5,
+      "duration": 50.4,
+      "transferBytes": 2952533,
+      "encodedBytes": 2952233,
+      "decodedBytes": 2952233,
+      "protocol": "http/1.1",
+      "deliveryType": "",
+      "status": 200
+    }
+  ],
+  "longTasks": [
+    {
+      "start": 534.4,
+      "duration": 243
+    },
+    {
+      "start": 1876.4,
+      "duration": 134
+    },
+    {
+      "start": 2574.6,
+      "duration": 52
+    },
+    {
+      "start": 2953.5,
+      "duration": 96
+    }
+  ],
+  "visibility": [
+    {
+      "at": 119.5,
+      "state": "visible"
+    }
+  ],
+  "errors": [],
+  "supportedEntryTypes": [
+    "element",
+    "event",
+    "first-input",
+    "interaction-contentful-paint",
+    "largest-contentful-paint",
+    "layout-shift",
+    "long-animation-frame",
+    "longtask",
+    "mark",
+    "measure",
+    "navigation",
+    "paint",
+    "resource",
+    "soft-navigation",
+    "visibility-state"
+  ],
+  "notes": [
+    "Milliseconds from navigation; parallel spans overlap and must not be added together.",
+    "Resource durations include queue/connection/server/transfer. Zero transfer bytes may mean cache or unavailable timing, not zero asset size.",
+    "GLB parse/decode includes internal dependencies; KTX processing includes worker queue/init. These are not pure decoder CPU measurements.",
+    "Render spans measure CPU/driver submission, not isolated GPU execution. Next animation frame is a paint opportunity, not proof of screen presentation.",
+    "Long-task support varies. Hidden/background time is recorded. No forced cache clearing, shader warmup, quality change or artificial wait."
+  ]
+}

@@ -1,0 +1,179 @@
+<div id="nw-lens-comparison">
+  <style>
+    #nw-lens-comparison { display: grid; gap: 16px; color: var(--foreground); }
+    #nw-lens-comparison .comparison-header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; }
+    #nw-lens-comparison .comparison-modes { display: flex; flex-wrap: wrap; gap: 8px; }
+    #nw-lens-comparison .comparison-field { display: grid; gap: 8px; min-width: 0; }
+    #nw-lens-comparison .comparison-size { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+    #nw-lens-comparison .comparison-stage { width: 100%; margin-inline: auto; min-width: 0; }
+    #nw-lens-comparison .comparison-stage[data-size="phone"] { max-width: 360px; }
+    #nw-lens-comparison canvas { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; }
+    #nw-lens-comparison .comparison-footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; }
+    #nw-lens-comparison [hidden] { display: none !important; }
+  </style>
+  <div class="comparison-header">
+    <div class="comparison-modes" role="group" aria-label="Screen appearance">
+      <button class="btn" type="button" data-mode="lenses" aria-pressed="true">Through lenses</button>
+      <button class="btn" type="button" data-mode="ghosted" aria-pressed="false">Without glasses</button>
+      <button class="btn" type="button" data-mode="clean" aria-pressed="false">Clean image</button>
+    </div>
+    <label class="comparison-size form-label">View size
+      <select class="form-select" aria-label="View size">
+        <option value="wide">Wide</option>
+        <option value="phone">Phone · 360 px</option>
+      </select>
+    </label>
+  </div>
+  <div class="comparison-stage" data-size="wide">
+    <canvas width="1472" height="828" role="img" aria-label="The clean brand image is visible through two lens shapes; the current ghosted image is visible outside. Both images have identical placement and scale."></canvas>
+  </div>
+  <div class="comparison-field">
+    <label class="form-label" for="nw-lens-position">Lens position</label>
+    <input id="nw-lens-position" class="form-range" aria-label="Lens position" type="range" min="27" max="73" value="39" step="1">
+  </div>
+  <div class="comparison-footer text-small">
+    <span data-state aria-live="polite">Loading supplied images…</span>
+    <span>Mask comparison · not the final 3D glasses</span>
+  </div>
+  <script>
+    (() => {
+      const root = document.getElementById('nw-lens-comparison');
+      const canvas = root.querySelector('canvas');
+      const context = canvas.getContext('2d');
+      const stage = root.querySelector('.comparison-stage');
+      const sizeSelect = root.querySelector('select');
+      const position = root.querySelector('input');
+      const positionField = root.querySelector('.comparison-field');
+      const status = root.querySelector('[data-state]');
+      const modeButtons = [...root.querySelectorAll('[data-mode]')];
+      const clean = new Image();
+      const ghosted = new Image();
+      let mode = 'lenses';
+      let ready = false;
+      let redrawRequest = 0;
+
+      function lensOutline(x, y, w, h, mirror) {
+        const path = new Path2D();
+        const point = (px, py) => [x + (mirror ? 1 - px : px) * w, y + py * h];
+        path.moveTo(...point(0.12, 0));
+        path.bezierCurveTo(...point(0.38, -0.04), ...point(0.77, -0.01), ...point(0.91, 0.035));
+        path.quadraticCurveTo(...point(1.01, 0.07), ...point(0.985, 0.26));
+        path.lineTo(...point(0.94, 0.77));
+        path.quadraticCurveTo(...point(0.93, 0.95), ...point(0.78, 0.98));
+        path.bezierCurveTo(...point(0.58, 1.035), ...point(0.29, 1.01), ...point(0.15, 0.965));
+        path.quadraticCurveTo(...point(0.045, 0.93), ...point(0.035, 0.74));
+        path.lineTo(...point(0.005, 0.20));
+        path.quadraticCurveTo(...point(-0.005, 0.015), ...point(0.12, 0));
+        path.closePath();
+        return path;
+      }
+
+      function draw() {
+        redrawRequest = 0;
+        if (!ready || !context) return;
+        const width = stage.getBoundingClientRect().width;
+        if (width <= 0) return;
+        const height = width * 9 / 16;
+        const pixelRatio = Math.min(window.devicePixelRatio || 1, 2);
+        canvas.width = Math.round(width * pixelRatio);
+        canvas.height = Math.round(height * pixelRatio);
+        context.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
+        context.imageSmoothingEnabled = true;
+        context.imageSmoothingQuality = 'high';
+        context.drawImage(mode === 'clean' ? clean : ghosted, 0, 0, width, height);
+
+        if (mode === 'lenses') {
+          const centre = Number(position.value) / 100 * width;
+          const lensWidth = width * 0.235;
+          const lensHeight = height * 0.34;
+          const bridgeWidth = width * 0.028;
+          const top = height * 0.50 - lensHeight * 0.50;
+          const left = centre - lensWidth - bridgeWidth * 0.50;
+          const right = centre + bridgeWidth * 0.50;
+          const leftPath = lensOutline(left, top, lensWidth, lensHeight, false);
+          const rightPath = lensOutline(right, top, lensWidth, lensHeight, true);
+          const combined = new Path2D();
+          combined.addPath(leftPath);
+          combined.addPath(rightPath);
+          context.save();
+          context.clip(combined);
+          // Same draw rectangle: there is no image zoom, shift or lens refraction.
+          context.drawImage(clean, 0, 0, width, height);
+          context.restore();
+          // Fixed frame colour represents the reference's physical dark eyewear.
+          context.strokeStyle = '#171b23';
+          context.lineWidth = Math.max(2.4, width * 0.009);
+          context.lineJoin = 'round';
+          context.lineCap = 'round';
+          context.stroke(leftPath);
+          context.stroke(rightPath);
+          context.beginPath();
+          context.moveTo(left + lensWidth * 0.99, top + lensHeight * 0.24);
+          context.quadraticCurveTo(centre, top + lensHeight * 0.01, right + lensWidth * 0.01, top + lensHeight * 0.24);
+          context.stroke();
+        }
+        const modeLabel = { lenses: 'Clean inside · ghosted outside', ghosted: 'Current ghosted candidate', clean: 'Approved clean master' }[mode];
+        status.textContent = `${modeLabel} · ${Math.round(width)} px image width`;
+        canvas.dataset.mode = mode;
+        canvas.dataset.ready = 'true';
+        canvas.setAttribute('aria-label', mode === 'lenses'
+          ? 'Aligned clean artwork through two lens shapes, with the supplied ghosted candidate outside.'
+          : mode === 'clean' ? 'Approved clean New Wings Solutions artwork.' : 'Supplied ghosted New Wings Solutions candidate.');
+      }
+
+      function scheduleDraw() {
+        if (!redrawRequest) redrawRequest = requestAnimationFrame(draw);
+      }
+
+      function saveState() {
+        if (window.openai?.setWidgetState) {
+          window.openai.setWidgetState({
+            modelContent: { appearance: mode, viewSize: sizeSelect.value },
+            privateContent: { lensPosition: Number(position.value) }
+          }).catch(() => {});
+        }
+      }
+
+      function applyState(saved) {
+        const incomingMode = saved?.modelContent?.appearance;
+        if (['lenses', 'ghosted', 'clean'].includes(incomingMode)) mode = incomingMode;
+        const incomingSize = saved?.modelContent?.viewSize;
+        if (['wide', 'phone'].includes(incomingSize)) sizeSelect.value = incomingSize;
+        const incomingPosition = saved?.privateContent?.lensPosition;
+        if (Number.isFinite(incomingPosition)) position.value = String(Math.max(27, Math.min(73, incomingPosition)));
+        stage.dataset.size = sizeSelect.value;
+        modeButtons.forEach(button => button.setAttribute('aria-pressed', String(button.dataset.mode === mode)));
+        positionField.hidden = mode !== 'lenses';
+        scheduleDraw();
+      }
+
+      modeButtons.forEach(button => button.addEventListener('click', () => {
+        mode = button.dataset.mode;
+        applyState(null);
+        saveState();
+      }));
+      sizeSelect.addEventListener('change', () => {
+        stage.dataset.size = sizeSelect.value;
+        scheduleDraw();
+        saveState();
+      });
+      position.addEventListener('input', scheduleDraw);
+      position.addEventListener('change', saveState);
+      window.addEventListener('openai:set_globals', event => {
+        const saved = event.detail?.globals?.widgetState;
+        if (saved) applyState(saved);
+      });
+      new ResizeObserver(scheduleDraw).observe(stage);
+      applyState(window.openai?.widgetState);
+      clean.src = '__CLEAN_IMAGE_DATA__';
+      ghosted.src = '__GHOST_IMAGE_DATA__';
+      Promise.all([clean.decode(), ghosted.decode()]).then(() => {
+        ready = true;
+        scheduleDraw();
+      }).catch(() => {
+        status.textContent = 'Image loading failed.';
+        status.setAttribute('role', 'alert');
+      });
+    })();
+  </script>
+</div>

@@ -1,0 +1,18 @@
+{
+  "walnut": {
+    "size": 1024,
+    "layers": 51,
+    "gpuBytes": 213909504,
+    "alignedInteriorSamples": 396,
+    "candidateSamples": 516,
+    "relativeRgb9e5Error": 0.0015049631459224772
+  },
+  "basalt": {
+    "size": 1024,
+    "layers": 51,
+    "gpuBytes": 213909504,
+    "alignedInteriorSamples": 2486,
+    "candidateSamples": 2486,
+    "relativeRgb9e5Error": 0.0007927496772566727
+  }
+}

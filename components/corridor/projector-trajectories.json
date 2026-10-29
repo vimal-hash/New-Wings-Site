@@ -1,0 +1,25 @@
+{
+  "width": 256,
+  "frames": 97,
+  "startFrame": 1,
+  "endFrame": 96,
+  "format": "three sequential RGBA16F atlases: head.xyz/radius, tail.xyz/coverage, source colour.rgb/emission",
+  "profiles": {
+    "laptop": {
+      "count": 6656,
+      "dataCount": 6144,
+      "rows": 26,
+      "path": "/models/projector/trajectories-laptop.bin.gz",
+      "bytes": 2952233,
+      "decodedBytes": 15495168
+    },
+    "mobile": {
+      "count": 2176,
+      "dataCount": 2048,
+      "rows": 9,
+      "path": "/models/projector/trajectories-mobile.bin.gz",
+      "bytes": 929438,
+      "decodedBytes": 5363712
+    }
+  }
+}

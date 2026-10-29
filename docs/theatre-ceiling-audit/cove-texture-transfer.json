@@ -1,0 +1,17 @@
+[
+  {
+    "map": "irradiance-uv-fixed.exr",
+    "nonCoveSurfaceMaxChange": 0.0,
+    "resolution": 2048
+  },
+  {
+    "map": "specular-uv-fixed.exr",
+    "nonCoveSurfaceMaxChange": 0.0,
+    "resolution": 1024
+  },
+  {
+    "map": "normal-uv-fixed.png",
+    "nonCoveSurfaceMaxChange": 0.0,
+    "resolution": 1024
+  }
+]

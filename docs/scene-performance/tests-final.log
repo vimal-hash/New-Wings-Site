@@ -1,0 +1,87 @@
+(node:24368) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///D:/New%20folio/new%20site%20code/new_site_three/components/corridor/journey.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to D:\New folio\new site code\new_site_three\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ camera remains on the exported centreline, including both exact stops (6.5168ms)
+✔ reversing scroll cannot leave camera orientation lagging behind position (1.0272ms)
+✔ orientation stays level and continuous through the full curved corridor (3.7524ms)
+✔ the live viewport height cannot change a fixed scroll stop; rubber-band values are clamped (0.2534ms)
+✔ theatre placement preserves original proportions without independent floor stretching (0.5587ms)
+✔ Blender layout is used directly and camera framing moves with the theatre (1.5227ms)
+✔ connected upgraded route remains level and smooth at the platform join (7.7425ms)
+(node:4228) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///D:/New%20folio/new%20site%20code/new_site_three/components/corridor/reveal-scroll.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to D:\New folio\new site code\new_site_three\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ slide, turn and pullback require three separate gestures (2.9844ms)
+✔ upward scroll reverses slide travel; turn input cannot skip the next stop (0.1826ms)
+(node:17080) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///D:/New%20folio/new%20site%20code/new_site_three/components/corridor/frame-statistics.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to D:\New folio\new site code\new_site_three\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ long foreground freezes are retained instead of discarded (1.0007ms)
+(node:9832) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///D:/New%20folio/new%20site%20code/new_site_three/components/corridor/logo-reveal.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to D:\New folio\new site code\new_site_three\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ exit begins at the corridor stop and follows the authored slide with head clearance (1.4593ms)
+✔ slide and exterior meet without a position or velocity jump (0.2283ms)
+✔ pitch speed stays continuous at the slide lip (0.244ms)
+✔ slide aim lifts above the incoming view instead of looking down at the floor (0.1475ms)
+✔ dense sampling has no orientation cuts (2.5365ms)
+✔ the exterior turn keeps the logo centre in view rather than empty sky (2.1329ms)
+✔ final logo is upright, centred and fully framed on portrait and wide screens (2.0157ms)
+(node:6748) [THREE_CJS_DEPRECATED] DeprecationWarning: `require("three")` is deprecated and will be removed.
+Replace `const THREE = require("three")` with `import * as THREE from "three"`.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+✔ cropped mirror keeps projection inverse coherent and restores hidden objects on render failure (4.1535ms)
+(node:20416) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///D:/New%20folio/new%20site%20code/new_site_three/components/corridor/page-exit.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to D:\New folio\new site code\new_site_three\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ arriving at the bottom and continuing momentum cannot exit the page (0.9904ms)
+✔ small trackpad deltas accumulate only within a fresh bottom gesture (0.1704ms)
+✔ a new swipe or key press works at the bottom; upward scrolling resets the gate (0.1634ms)
+✔ reopening at the bottom ignores momentum during the handoff (0.1408ms)
+(node:25880) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///D:/New%20folio/new%20site%20code/new_site_three/components/corridor/projector-controls.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to D:\New folio\new site code\new_site_three\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ manual particle formation holds exploded until assemble, and replay rejects stale completion (2.0231ms)
+(node:24264) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///D:/New%20folio/new%20site%20code/new_site_three/components/corridor/return-input.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to D:\New folio\new site code\new_site_three\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ long closing momentum cannot reopen the panel after the cooldown (1.0622ms)
+✔ a separate gesture works after settling; a later return resets the protection (0.4893ms)
+(node:21612) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///D:/New%20folio/new%20site%20code/new_site_three/components/corridor/reveal-scroll.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to D:\New folio\new site code\new_site_three\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ scroll destination clamps and reverses from either end (0.769ms)
+✔ smoothing is independent of refresh rate and never overshoots (0.4134ms)
+✔ page-return loading runs critical mounts while movement still defers background work (1.962ms)
+(node:24532) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///D:/New%20folio/new%20site%20code/new_site_three/components/corridor/stage-lighting.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to D:\New folio\new site code\new_site_three\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ formation dims the room, flashes once, and holds local light through assembly (0.7575ms)
+✔ return restores room and local key continuously without a brightness cut (0.4475ms)
+(node:5172) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///D:/New%20folio/new%20site%20code/new_site_three/components/corridor/logo-reveal.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to D:\New folio\new site code\new_site_three\package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ both staged camera joins match exactly and slide heading stays steady (1.4158ms)
+(node:27668) [THREE_CJS_DEPRECATED] DeprecationWarning: `require("three")` is deprecated and will be removed.
+Replace `const THREE = require("three")` with `import * as THREE from "three"`.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+✔ shared partition preserves original triangle order and rejects wrong counts (1.4945ms)
+✔ phones, tablets and unsupported GPUs never select a 6K atlas (2.8691ms)
+ℹ tests 33
+ℹ suites 0
+ℹ pass 33
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 474.2053

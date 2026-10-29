@@ -1,0 +1,40 @@
+{
+  "parts": 514,
+  "frames": 65,
+  "textureWidth": 1542,
+  "textureFloats": 400920,
+  "bounds": [
+    [
+      -1.626704216003418,
+      2.74399995803833,
+      -8.839250564575195
+    ],
+    [
+      1.4789958000183105,
+      4.496000289916992,
+      -6.289749622344971
+    ]
+  ],
+  "triangles": 430417,
+  "modelBytes": 5265476,
+  "motionBytes": 50286,
+  "motionRawBytes": 1603680,
+  "modelUrl": "/models/projector/projector-materials-draco.glb",
+  "dataUrl": "/models/projector/projector-poses.bin.gz",
+  "fallbackUrl": "/models/projector/projector-poses.bin",
+  "particleSeconds": 4,
+  "assemblySeconds": 2,
+  "source": "D:\\CodexOutputs\\Theatre_Optimization_20261017\\Theatre_Moon_Projector_optimized.blend",
+  "sourceFrames": [
+    96,
+    576
+  ],
+  "translation": [
+    0.10749572515487671,
+    -22.273250579833984,
+    0.019999999552965164
+  ],
+  "particleCountMobile": 32768,
+  "particleCountDesktop": 65536,
+  "motionFormat": "65 original Blender assembly poses; exact source particle field stored separately"
+}

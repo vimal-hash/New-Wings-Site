@@ -1,0 +1,229 @@
+{
+  "frames": 44,
+  "largestBrightnessIncrease": {
+    "ceiling": 0,
+    "screen": 0
+  },
+  "samples": [
+    {
+      "ms": 0,
+      "ceiling": 68.954,
+      "screen": 179.162
+    },
+    {
+      "ms": 82,
+      "ceiling": 63.638,
+      "screen": 166.594
+    },
+    {
+      "ms": 128,
+      "ceiling": 61.341,
+      "screen": 161.057
+    },
+    {
+      "ms": 158,
+      "ceiling": 58.905,
+      "screen": 155.107
+    },
+    {
+      "ms": 200,
+      "ceiling": 56.17,
+      "screen": 148.519
+    },
+    {
+      "ms": 236,
+      "ceiling": 54.243,
+      "screen": 143.875
+    },
+    {
+      "ms": 267,
+      "ceiling": 51.098,
+      "screen": 136.337
+    },
+    {
+      "ms": 306,
+      "ceiling": 47.709,
+      "screen": 128.251
+    },
+    {
+      "ms": 344,
+      "ceiling": 45.458,
+      "screen": 122.605
+    },
+    {
+      "ms": 365,
+      "ceiling": 42.944,
+      "screen": 116.641
+    },
+    {
+      "ms": 400,
+      "ceiling": 38.992,
+      "screen": 107.107
+    },
+    {
+      "ms": 430,
+      "ceiling": 36.358,
+      "screen": 100.724
+    },
+    {
+      "ms": 466,
+      "ceiling": 32.098,
+      "screen": 90.306
+    },
+    {
+      "ms": 499,
+      "ceiling": 29.067,
+      "screen": 82.765
+    },
+    {
+      "ms": 529,
+      "ceiling": 26.005,
+      "screen": 75.291
+    },
+    {
+      "ms": 559,
+      "ceiling": 23.051,
+      "screen": 67.893
+    },
+    {
+      "ms": 586,
+      "ceiling": 17.867,
+      "screen": 55.192
+    },
+    {
+      "ms": 622,
+      "ceiling": 14.424,
+      "screen": 46.8
+    },
+    {
+      "ms": 652,
+      "ceiling": 9.949,
+      "screen": 34.521
+    },
+    {
+      "ms": 684,
+      "ceiling": 6.877,
+      "screen": 25.801
+    },
+    {
+      "ms": 715,
+      "ceiling": 4.908,
+      "screen": 18.33
+    },
+    {
+      "ms": 746,
+      "ceiling": 3.646,
+      "screen": 12.734
+    },
+    {
+      "ms": 778,
+      "ceiling": 3.646,
+      "screen": 12.734
+    },
+    {
+      "ms": 809,
+      "ceiling": 3.646,
+      "screen": 12.734
+    },
+    {
+      "ms": 839,
+      "ceiling": 3.646,
+      "screen": 12.734
+    },
+    {
+      "ms": 871,
+      "ceiling": 3.646,
+      "screen": 12.734
+    },
+    {
+      "ms": 902,
+      "ceiling": 3.646,
+      "screen": 12.734
+    },
+    {
+      "ms": 932,
+      "ceiling": 3.646,
+      "screen": 12.734
+    },
+    {
+      "ms": 963,
+      "ceiling": 3.646,
+      "screen": 12.734
+    },
+    {
+      "ms": 995,
+      "ceiling": 3.646,
+      "screen": 12.734
+    },
+    {
+      "ms": 1025,
+      "ceiling": 3.646,
+      "screen": 12.734
+    },
+    {
+      "ms": 1066,
+      "ceiling": 3.646,
+      "screen": 12.734
+    },
+    {
+      "ms": 1102,
+      "ceiling": 3.646,
+      "screen": 12.734
+    },
+    {
+      "ms": 1133,
+      "ceiling": 3.646,
+      "screen": 12.734
+    },
+    {
+      "ms": 1164,
+      "ceiling": 3.646,
+      "screen": 12.734
+    },
+    {
+      "ms": 1195,
+      "ceiling": 3.646,
+      "screen": 12.734
+    },
+    {
+      "ms": 1226,
+      "ceiling": 3.646,
+      "screen": 12.734
+    },
+    {
+      "ms": 1258,
+      "ceiling": 3.646,
+      "screen": 12.734
+    },
+    {
+      "ms": 1288,
+      "ceiling": 3.646,
+      "screen": 12.734
+    },
+    {
+      "ms": 1319,
+      "ceiling": 3.646,
+      "screen": 12.734
+    },
+    {
+      "ms": 1350,
+      "ceiling": 3.646,
+      "screen": 12.734
+    },
+    {
+      "ms": 1381,
+      "ceiling": 3.646,
+      "screen": 12.734
+    },
+    {
+      "ms": 1413,
+      "ceiling": 3.646,
+      "screen": 12.734
+    },
+    {
+      "ms": 1444,
+      "ceiling": 3.646,
+      "screen": 12.734
+    }
+  ]
+}

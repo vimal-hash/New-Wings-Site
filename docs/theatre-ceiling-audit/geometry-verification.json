@@ -1,0 +1,11 @@
+{
+  "sourceTriangles": 63788,
+  "replacementCeilingTriangles": 4992,
+  "retainedDiagnosticTriangles": 58796,
+  "nonCeilingBuffersUnchanged": true,
+  "originalModelFilesUnchanged": 20,
+  "checkedVertices": 4485,
+  "maximumPositionErrorMetres": 0.0000088120787748729,
+  "materialCount": 3,
+  "totalBytes": 3416116
+}

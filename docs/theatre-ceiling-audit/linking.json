@@ -1,0 +1,2336 @@
+[
+  {
+    "name": "Ceiling PBR | HALO II | Slim floating soffit",
+    "collections": [
+      "Scene Collection"
+    ],
+    "linkedReceivers": null,
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": true,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "Ceiling PBR | HALO II | 90mm perimeter fascia",
+    "collections": [
+      "Scene Collection"
+    ],
+    "linkedReceivers": null,
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": true,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "Ceiling PBR | HALO II | Continuous rolled plaster cove",
+    "collections": [
+      "Scene Collection"
+    ],
+    "linkedReceivers": null,
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": true,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "Ceiling PBR | HALO II | Floating acoustic inset",
+    "collections": [
+      "Scene Collection"
+    ],
+    "linkedReceivers": null,
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": true,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "Ceiling PBR | HALO II | Backing above ceiling",
+    "collections": [
+      "Scene Collection"
+    ],
+    "linkedReceivers": null,
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": true,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "Ceiling PBR | HALO II | Hidden inner LED shelf",
+    "collections": [
+      "Scene Collection"
+    ],
+    "linkedReceivers": null,
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": true,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "Ceiling PBR | HALO II | Outer concealed LED shelf",
+    "collections": [
+      "Scene Collection"
+    ],
+    "linkedReceivers": null,
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": true,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "Ceiling PBR | HALO II | Perimeter cove upper receiver",
+    "collections": [
+      "Scene Collection"
+    ],
+    "linkedReceivers": null,
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": true,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "Ceiling PBR | HALO II | Wall crown closure",
+    "collections": [
+      "Scene Collection"
+    ],
+    "linkedReceivers": null,
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": true,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "Ceiling PBR | HALO II | Wall crown closure.001",
+    "collections": [
+      "Scene Collection"
+    ],
+    "linkedReceivers": null,
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": true,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "ET | NOIR large soft key",
+    "collections": [
+      "ET 08 | Architectural lighting"
+    ],
+    "linkedReceivers": "LL | everything except design moon",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": false,
+    "shadow": true
+  },
+  {
+    "name": "ET | NOIR soft rear fill",
+    "collections": [
+      "ET 08 | Architectural lighting"
+    ],
+    "linkedReceivers": "LL | everything except design moon",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": false,
+    "shadow": true
+  },
+  {
+    "name": "ET | NOIR screen bounce",
+    "collections": [
+      "ET 08 | Architectural lighting"
+    ],
+    "linkedReceivers": "LL | everything except design moon",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": false,
+    "shadow": true
+  },
+  {
+    "name": "ET | NOIR wall graze",
+    "collections": [
+      "ET 08 | Architectural lighting"
+    ],
+    "linkedReceivers": "LL | everything except design moon",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "ET | NOIR wall graze.001",
+    "collections": [
+      "ET 08 | Architectural lighting"
+    ],
+    "linkedReceivers": "LL | everything except design moon",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "ET | NOIR wall graze.002",
+    "collections": [
+      "ET 08 | Architectural lighting"
+    ],
+    "linkedReceivers": "LL | everything except design moon",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "ET | NOIR wall graze.003",
+    "collections": [
+      "ET 08 | Architectural lighting"
+    ],
+    "linkedReceivers": "LL | everything except design moon",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "ET | NOIR wall graze.004",
+    "collections": [
+      "ET 08 | Architectural lighting"
+    ],
+    "linkedReceivers": "LL | everything except design moon",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "ET | NOIR wall graze.005",
+    "collections": [
+      "ET 08 | Architectural lighting"
+    ],
+    "linkedReceivers": "LL | everything except design moon",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "ET | 919 warm sconce pool",
+    "collections": [
+      "ET 08 | Architectural lighting"
+    ],
+    "linkedReceivers": "LL | everything except design moon",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "ET | 919 warm sconce pool.003",
+    "collections": [
+      "ET 08 | Architectural lighting"
+    ],
+    "linkedReceivers": "LL | everything except design moon",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "ET | 919 warm sconce pool.004",
+    "collections": [
+      "ET 08 | Architectural lighting"
+    ],
+    "linkedReceivers": "LL | everything except design moon",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "ET | 919 warm sconce pool.007",
+    "collections": [
+      "ET 08 | Architectural lighting"
+    ],
+    "linkedReceivers": "LL | everything except design moon",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "ET | 919 downlight",
+    "collections": [
+      "ET 08 | Architectural lighting"
+    ],
+    "linkedReceivers": "LL | everything except design moon",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "ET | 919 downlight.001",
+    "collections": [
+      "ET 08 | Architectural lighting"
+    ],
+    "linkedReceivers": "LL | everything except design moon",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "ET | 919 downlight.002",
+    "collections": [
+      "ET 08 | Architectural lighting"
+    ],
+    "linkedReceivers": "LL | everything except design moon",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "ET | 919 downlight.003",
+    "collections": [
+      "ET 08 | Architectural lighting"
+    ],
+    "linkedReceivers": "LL | everything except design moon",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "ET | 919 downlight.004",
+    "collections": [
+      "ET 08 | Architectural lighting"
+    ],
+    "linkedReceivers": "LL | everything except design moon",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "ET | 919 downlight.005",
+    "collections": [
+      "ET 08 | Architectural lighting"
+    ],
+    "linkedReceivers": "LL | everything except design moon",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "CINE | Projector throw",
+    "collections": [
+      "ET 10 | Cinematic lighting"
+    ],
+    "linkedReceivers": "LL | projector receivers",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "CINE | Entry floor warm glow",
+    "collections": [
+      "ET 10 | Cinematic lighting"
+    ],
+    "linkedReceivers": "LL | everything except design moon",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": false,
+    "shadow": true
+  },
+  {
+    "name": "CINE | Sofa rim from screen side",
+    "collections": [
+      "ET 10 | Cinematic lighting"
+    ],
+    "linkedReceivers": "LL | sofas only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "CINE | Projector hero key",
+    "collections": [
+      "ET 10 | Cinematic lighting"
+    ],
+    "linkedReceivers": "LL | second floor only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "CINE | PRJ key softbox",
+    "collections": [
+      "ET 10 | Cinematic lighting"
+    ],
+    "linkedReceivers": "LL | projector product rig",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "CINE | PRJ top gradient strip",
+    "collections": [
+      "ET 10 | Cinematic lighting"
+    ],
+    "linkedReceivers": "LL | projector product rig",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "CINE | PRJ kicker left",
+    "collections": [
+      "ET 10 | Cinematic lighting"
+    ],
+    "linkedReceivers": "LL | projector product rig",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "CINE | PRJ kicker right",
+    "collections": [
+      "ET 10 | Cinematic lighting"
+    ],
+    "linkedReceivers": "LL | projector product rig",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "CINE | PRJ front gradient",
+    "collections": [
+      "ET 10 | Cinematic lighting"
+    ],
+    "linkedReceivers": "LL | projector product rig",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "CINE | PRJ lens glint",
+    "collections": [
+      "ET 10 | Cinematic lighting"
+    ],
+    "linkedReceivers": "LL | projector product rig",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "CINE | PRJ top edge line",
+    "collections": [
+      "ET 10 | Cinematic lighting"
+    ],
+    "linkedReceivers": "LL | projector product rig",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "KEEP | ET | NOIR large soft key",
+    "collections": [
+      "ET 10a | Circle-preserve lights (original values)"
+    ],
+    "linkedReceivers": "LL | design moon only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "KEEP | ET | NOIR soft rear fill",
+    "collections": [
+      "ET 10a | Circle-preserve lights (original values)"
+    ],
+    "linkedReceivers": "LL | design moon only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "KEEP | ET | NOIR screen bounce",
+    "collections": [
+      "ET 10a | Circle-preserve lights (original values)"
+    ],
+    "linkedReceivers": "LL | design moon only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "KEEP | ET | 919 warm sconce pool",
+    "collections": [
+      "ET 10a | Circle-preserve lights (original values)"
+    ],
+    "linkedReceivers": "LL | design moon only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "KEEP | ET | 919 warm sconce pool.003",
+    "collections": [
+      "ET 10a | Circle-preserve lights (original values)"
+    ],
+    "linkedReceivers": "LL | design moon only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "KEEP | ET | 919 warm sconce pool.004",
+    "collections": [
+      "ET 10a | Circle-preserve lights (original values)"
+    ],
+    "linkedReceivers": "LL | design moon only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "KEEP | ET | 919 warm sconce pool.007",
+    "collections": [
+      "ET 10a | Circle-preserve lights (original values)"
+    ],
+    "linkedReceivers": "LL | design moon only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "KEEP | ET | 919 downlight",
+    "collections": [
+      "ET 10a | Circle-preserve lights (original values)"
+    ],
+    "linkedReceivers": "LL | design moon only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "KEEP | ET | 919 downlight.001",
+    "collections": [
+      "ET 10a | Circle-preserve lights (original values)"
+    ],
+    "linkedReceivers": "LL | design moon only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "KEEP | ET | 919 downlight.002",
+    "collections": [
+      "ET 10a | Circle-preserve lights (original values)"
+    ],
+    "linkedReceivers": "LL | design moon only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "KEEP | ET | 919 downlight.003",
+    "collections": [
+      "ET 10a | Circle-preserve lights (original values)"
+    ],
+    "linkedReceivers": "LL | design moon only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "KEEP | ET | 919 downlight.004",
+    "collections": [
+      "ET 10a | Circle-preserve lights (original values)"
+    ],
+    "linkedReceivers": "LL | design moon only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "KEEP | ET | 919 downlight.005",
+    "collections": [
+      "ET 10a | Circle-preserve lights (original values)"
+    ],
+    "linkedReceivers": "LL | design moon only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "KEEP | ET | NOIR wall graze",
+    "collections": [
+      "ET 10a | Circle-preserve lights (original values)"
+    ],
+    "linkedReceivers": "LL | design moon only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "KEEP | ET | NOIR wall graze.001",
+    "collections": [
+      "ET 10a | Circle-preserve lights (original values)"
+    ],
+    "linkedReceivers": "LL | design moon only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "KEEP | ET | NOIR wall graze.002",
+    "collections": [
+      "ET 10a | Circle-preserve lights (original values)"
+    ],
+    "linkedReceivers": "LL | design moon only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "KEEP | ET | NOIR wall graze.003",
+    "collections": [
+      "ET 10a | Circle-preserve lights (original values)"
+    ],
+    "linkedReceivers": "LL | design moon only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "KEEP | ET | NOIR wall graze.004",
+    "collections": [
+      "ET 10a | Circle-preserve lights (original values)"
+    ],
+    "linkedReceivers": "LL | design moon only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "KEEP | ET | NOIR wall graze.005",
+    "collections": [
+      "ET 10a | Circle-preserve lights (original values)"
+    ],
+    "linkedReceivers": "LL | design moon only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "KEEP | Sun",
+    "collections": [
+      "ET 10a | Circle-preserve lights (original values)"
+    ],
+    "linkedReceivers": "LL | design moon only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO | Concealed side uplight",
+    "collections": [
+      "ET 11 | HALO architectural ceiling"
+    ],
+    "linkedReceivers": "LL | HALO theater only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO | Soft upper wall wash",
+    "collections": [
+      "ET 11 | HALO architectural ceiling"
+    ],
+    "linkedReceivers": "LL | HALO theater only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO | Concealed side uplight.001",
+    "collections": [
+      "ET 11 | HALO architectural ceiling"
+    ],
+    "linkedReceivers": "LL | HALO theater only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO | Soft upper wall wash.001",
+    "collections": [
+      "ET 11 | HALO architectural ceiling"
+    ],
+    "linkedReceivers": "LL | HALO theater only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO | Concealed side uplight.002",
+    "collections": [
+      "ET 11 | HALO architectural ceiling"
+    ],
+    "linkedReceivers": "LL | HALO theater only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO | Soft upper wall wash.002",
+    "collections": [
+      "ET 11 | HALO architectural ceiling"
+    ],
+    "linkedReceivers": "LL | HALO theater only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO | Concealed side uplight.003",
+    "collections": [
+      "ET 11 | HALO architectural ceiling"
+    ],
+    "linkedReceivers": "LL | HALO theater only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO | Soft upper wall wash.003",
+    "collections": [
+      "ET 11 | HALO architectural ceiling"
+    ],
+    "linkedReceivers": "LL | HALO theater only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO | Concealed side uplight.004",
+    "collections": [
+      "ET 11 | HALO architectural ceiling"
+    ],
+    "linkedReceivers": "LL | HALO theater only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO | Soft upper wall wash.004",
+    "collections": [
+      "ET 11 | HALO architectural ceiling"
+    ],
+    "linkedReceivers": "LL | HALO theater only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO | Inner recess bounce",
+    "collections": [
+      "ET 11 | HALO architectural ceiling"
+    ],
+    "linkedReceivers": "LL | HALO theater only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO | Inner recess bounce.001",
+    "collections": [
+      "ET 11 | HALO architectural ceiling"
+    ],
+    "linkedReceivers": "LL | HALO theater only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO | Inner recess bounce.002",
+    "collections": [
+      "ET 11 | HALO architectural ceiling"
+    ],
+    "linkedReceivers": "LL | HALO theater only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO | Concealed side uplight.005",
+    "collections": [
+      "ET 11 | HALO architectural ceiling"
+    ],
+    "linkedReceivers": "LL | HALO theater only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO | Soft upper wall wash.005",
+    "collections": [
+      "ET 11 | HALO architectural ceiling"
+    ],
+    "linkedReceivers": "LL | HALO theater only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO | Concealed side uplight.006",
+    "collections": [
+      "ET 11 | HALO architectural ceiling"
+    ],
+    "linkedReceivers": "LL | HALO theater only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO | Soft upper wall wash.006",
+    "collections": [
+      "ET 11 | HALO architectural ceiling"
+    ],
+    "linkedReceivers": "LL | HALO theater only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO | Concealed side uplight.007",
+    "collections": [
+      "ET 11 | HALO architectural ceiling"
+    ],
+    "linkedReceivers": "LL | HALO theater only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO | Soft upper wall wash.007",
+    "collections": [
+      "ET 11 | HALO architectural ceiling"
+    ],
+    "linkedReceivers": "LL | HALO theater only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO | Concealed side uplight.008",
+    "collections": [
+      "ET 11 | HALO architectural ceiling"
+    ],
+    "linkedReceivers": "LL | HALO theater only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO | Soft upper wall wash.008",
+    "collections": [
+      "ET 11 | HALO architectural ceiling"
+    ],
+    "linkedReceivers": "LL | HALO theater only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO | Concealed side uplight.009",
+    "collections": [
+      "ET 11 | HALO architectural ceiling"
+    ],
+    "linkedReceivers": "LL | HALO theater only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO | Soft upper wall wash.009",
+    "collections": [
+      "ET 11 | HALO architectural ceiling"
+    ],
+    "linkedReceivers": "LL | HALO theater only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO | Inner recess bounce.003",
+    "collections": [
+      "ET 11 | HALO architectural ceiling"
+    ],
+    "linkedReceivers": "LL | HALO theater only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO | Inner recess bounce.004",
+    "collections": [
+      "ET 11 | HALO architectural ceiling"
+    ],
+    "linkedReceivers": "LL | HALO theater only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO | Inner recess bounce.005",
+    "collections": [
+      "ET 11 | HALO architectural ceiling"
+    ],
+    "linkedReceivers": "LL | HALO theater only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO | End cove bounce",
+    "collections": [
+      "ET 11 | HALO architectural ceiling"
+    ],
+    "linkedReceivers": "LL | HALO theater only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO | End cove bounce.001",
+    "collections": [
+      "ET 11 | HALO architectural ceiling"
+    ],
+    "linkedReceivers": "LL | HALO theater only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO | Warm architectural bounce",
+    "collections": [
+      "ET 11 | HALO architectural ceiling"
+    ],
+    "linkedReceivers": "LL | HALO theater only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO | Aisle step spill",
+    "collections": [
+      "ET 11 | HALO architectural ceiling"
+    ],
+    "linkedReceivers": "LL | HALO theater only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO | Aisle step spill.001",
+    "collections": [
+      "ET 11 | HALO architectural ceiling"
+    ],
+    "linkedReceivers": "LL | HALO theater only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO | Aisle step spill.002",
+    "collections": [
+      "ET 11 | HALO architectural ceiling"
+    ],
+    "linkedReceivers": "LL | HALO theater only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO | Aisle step spill.003",
+    "collections": [
+      "ET 11 | HALO architectural ceiling"
+    ],
+    "linkedReceivers": "LL | HALO theater only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO | Aisle step spill.004",
+    "collections": [
+      "ET 11 | HALO architectural ceiling"
+    ],
+    "linkedReceivers": "LL | HALO theater only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO | Aisle step spill.005",
+    "collections": [
+      "ET 11 | HALO architectural ceiling"
+    ],
+    "linkedReceivers": "LL | HALO theater only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO | Aisle step spill.006",
+    "collections": [
+      "ET 11 | HALO architectural ceiling"
+    ],
+    "linkedReceivers": "LL | HALO theater only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO | Aisle step spill.007",
+    "collections": [
+      "ET 11 | HALO architectural ceiling"
+    ],
+    "linkedReceivers": "LL | HALO theater only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO | Aisle step spill.008",
+    "collections": [
+      "ET 11 | HALO architectural ceiling"
+    ],
+    "linkedReceivers": "LL | HALO theater only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO | Aisle step spill.009",
+    "collections": [
+      "ET 11 | HALO architectural ceiling"
+    ],
+    "linkedReceivers": "LL | HALO theater only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO | Aisle step spill.010",
+    "collections": [
+      "ET 11 | HALO architectural ceiling"
+    ],
+    "linkedReceivers": "LL | HALO theater only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO | Aisle step spill.011",
+    "collections": [
+      "ET 11 | HALO architectural ceiling"
+    ],
+    "linkedReceivers": "LL | HALO theater only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO | Aisle step spill.012",
+    "collections": [
+      "ET 11 | HALO architectural ceiling"
+    ],
+    "linkedReceivers": "LL | HALO theater only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO | Aisle step spill.013",
+    "collections": [
+      "ET 11 | HALO architectural ceiling"
+    ],
+    "linkedReceivers": "LL | HALO theater only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO | Aisle step spill.014",
+    "collections": [
+      "ET 11 | HALO architectural ceiling"
+    ],
+    "linkedReceivers": "LL | HALO theater only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO | Aisle step spill.015",
+    "collections": [
+      "ET 11 | HALO architectural ceiling"
+    ],
+    "linkedReceivers": "LL | HALO theater only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO | Aisle step spill.016",
+    "collections": [
+      "ET 11 | HALO architectural ceiling"
+    ],
+    "linkedReceivers": "LL | HALO theater only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO | Aisle step spill.017",
+    "collections": [
+      "ET 11 | HALO architectural ceiling"
+    ],
+    "linkedReceivers": "LL | HALO theater only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO | Aisle step spill.018",
+    "collections": [
+      "ET 11 | HALO architectural ceiling"
+    ],
+    "linkedReceivers": "LL | HALO theater only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO | Aisle step spill.019",
+    "collections": [
+      "ET 11 | HALO architectural ceiling"
+    ],
+    "linkedReceivers": "LL | HALO theater only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO | Aisle step spill.020",
+    "collections": [
+      "ET 11 | HALO architectural ceiling"
+    ],
+    "linkedReceivers": "LL | HALO theater only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO | Aisle step spill.021",
+    "collections": [
+      "ET 11 | HALO architectural ceiling"
+    ],
+    "linkedReceivers": "LL | HALO theater only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO | Aisle step spill.022",
+    "collections": [
+      "ET 11 | HALO architectural ceiling"
+    ],
+    "linkedReceivers": "LL | HALO theater only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO | Aisle step spill.023",
+    "collections": [
+      "ET 11 | HALO architectural ceiling"
+    ],
+    "linkedReceivers": "LL | HALO theater only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO | Aisle step spill.024",
+    "collections": [
+      "ET 11 | HALO architectural ceiling"
+    ],
+    "linkedReceivers": "LL | HALO theater only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO | Aisle step spill.025",
+    "collections": [
+      "ET 11 | HALO architectural ceiling"
+    ],
+    "linkedReceivers": "LL | HALO theater only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO | Aisle step spill.026",
+    "collections": [
+      "ET 11 | HALO architectural ceiling"
+    ],
+    "linkedReceivers": "LL | HALO theater only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO | Continuous inner cove",
+    "collections": [
+      "ET 11 | HALO architectural ceiling"
+    ],
+    "linkedReceivers": "LL | HALO theater only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO | Continuous inner cove.001",
+    "collections": [
+      "ET 11 | HALO architectural ceiling"
+    ],
+    "linkedReceivers": "LL | HALO theater only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO II | Slim floating soffit",
+    "collections": [
+      "ET 12 | HALO refined ceiling and aisles",
+      "LL | HALO II ceiling only",
+      "LL | HALO theater only"
+    ],
+    "linkedReceivers": null,
+    "linkedBlockers": null,
+    "hidden": true,
+    "camera": true,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO II | 90mm perimeter fascia",
+    "collections": [
+      "ET 12 | HALO refined ceiling and aisles",
+      "LL | HALO II ceiling only",
+      "LL | HALO theater only"
+    ],
+    "linkedReceivers": null,
+    "linkedBlockers": null,
+    "hidden": true,
+    "camera": true,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO II | Continuous rolled plaster cove",
+    "collections": [
+      "ET 12 | HALO refined ceiling and aisles",
+      "LL | HALO II ceiling only",
+      "LL | HALO theater only"
+    ],
+    "linkedReceivers": null,
+    "linkedBlockers": null,
+    "hidden": true,
+    "camera": true,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO II | Floating acoustic inset",
+    "collections": [
+      "ET 12 | HALO refined ceiling and aisles",
+      "LL | HALO II ceiling only",
+      "LL | HALO theater only"
+    ],
+    "linkedReceivers": null,
+    "linkedBlockers": null,
+    "hidden": true,
+    "camera": true,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO II | Backing above ceiling",
+    "collections": [
+      "ET 12 | HALO refined ceiling and aisles",
+      "LL | HALO II ceiling only",
+      "LL | HALO theater only"
+    ],
+    "linkedReceivers": null,
+    "linkedBlockers": null,
+    "hidden": true,
+    "camera": true,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO II | Hidden inner LED shelf",
+    "collections": [
+      "ET 12 | HALO refined ceiling and aisles",
+      "LL | HALO II ceiling only",
+      "LL | HALO theater only"
+    ],
+    "linkedReceivers": null,
+    "linkedBlockers": null,
+    "hidden": true,
+    "camera": true,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO II | Outer concealed LED shelf",
+    "collections": [
+      "ET 12 | HALO refined ceiling and aisles",
+      "LL | HALO II ceiling only",
+      "LL | HALO theater only"
+    ],
+    "linkedReceivers": null,
+    "linkedBlockers": null,
+    "hidden": true,
+    "camera": true,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO II | Perimeter cove upper receiver",
+    "collections": [
+      "ET 12 | HALO refined ceiling and aisles",
+      "LL | HALO II ceiling only",
+      "LL | HALO theater only"
+    ],
+    "linkedReceivers": null,
+    "linkedBlockers": null,
+    "hidden": true,
+    "camera": true,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO II | Wall crown closure",
+    "collections": [
+      "ET 12 | HALO refined ceiling and aisles",
+      "LL | HALO II ceiling only",
+      "LL | HALO theater only"
+    ],
+    "linkedReceivers": null,
+    "linkedBlockers": null,
+    "hidden": true,
+    "camera": true,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO II | Wall crown closure.001",
+    "collections": [
+      "ET 12 | HALO refined ceiling and aisles",
+      "LL | HALO II ceiling only",
+      "LL | HALO theater only"
+    ],
+    "linkedReceivers": null,
+    "linkedBlockers": null,
+    "hidden": true,
+    "camera": true,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO II | Continuous inner indirect",
+    "collections": [
+      "ET 12 | HALO refined ceiling and aisles"
+    ],
+    "linkedReceivers": "LL | HALO II ceiling only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO II | Outer indirect ceiling",
+    "collections": [
+      "ET 12 | HALO refined ceiling and aisles"
+    ],
+    "linkedReceivers": "LL | HALO II ceiling only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO II | Restrained broad wall wash",
+    "collections": [
+      "ET 12 | HALO refined ceiling and aisles"
+    ],
+    "linkedReceivers": "LL | HALO theater only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO II | Outer indirect ceiling.001",
+    "collections": [
+      "ET 12 | HALO refined ceiling and aisles"
+    ],
+    "linkedReceivers": "LL | HALO II ceiling only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO II | Restrained broad wall wash.001",
+    "collections": [
+      "ET 12 | HALO refined ceiling and aisles"
+    ],
+    "linkedReceivers": "LL | HALO theater only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO II | Outer indirect ceiling.002",
+    "collections": [
+      "ET 12 | HALO refined ceiling and aisles"
+    ],
+    "linkedReceivers": "LL | HALO II ceiling only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO II | Restrained broad wall wash.002",
+    "collections": [
+      "ET 12 | HALO refined ceiling and aisles"
+    ],
+    "linkedReceivers": "LL | HALO theater only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO II | Outer indirect ceiling.003",
+    "collections": [
+      "ET 12 | HALO refined ceiling and aisles"
+    ],
+    "linkedReceivers": "LL | HALO II ceiling only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO II | Restrained broad wall wash.003",
+    "collections": [
+      "ET 12 | HALO refined ceiling and aisles"
+    ],
+    "linkedReceivers": "LL | HALO theater only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO II | Outer indirect ceiling.004",
+    "collections": [
+      "ET 12 | HALO refined ceiling and aisles"
+    ],
+    "linkedReceivers": "LL | HALO II ceiling only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO II | Restrained broad wall wash.004",
+    "collections": [
+      "ET 12 | HALO refined ceiling and aisles"
+    ],
+    "linkedReceivers": "LL | HALO theater only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO II | Continuous inner indirect.001",
+    "collections": [
+      "ET 12 | HALO refined ceiling and aisles"
+    ],
+    "linkedReceivers": "LL | HALO II ceiling only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO II | Outer indirect ceiling.005",
+    "collections": [
+      "ET 12 | HALO refined ceiling and aisles"
+    ],
+    "linkedReceivers": "LL | HALO II ceiling only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO II | Restrained broad wall wash.005",
+    "collections": [
+      "ET 12 | HALO refined ceiling and aisles"
+    ],
+    "linkedReceivers": "LL | HALO theater only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO II | Outer indirect ceiling.006",
+    "collections": [
+      "ET 12 | HALO refined ceiling and aisles"
+    ],
+    "linkedReceivers": "LL | HALO II ceiling only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO II | Restrained broad wall wash.006",
+    "collections": [
+      "ET 12 | HALO refined ceiling and aisles"
+    ],
+    "linkedReceivers": "LL | HALO theater only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO II | Outer indirect ceiling.007",
+    "collections": [
+      "ET 12 | HALO refined ceiling and aisles"
+    ],
+    "linkedReceivers": "LL | HALO II ceiling only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO II | Restrained broad wall wash.007",
+    "collections": [
+      "ET 12 | HALO refined ceiling and aisles"
+    ],
+    "linkedReceivers": "LL | HALO theater only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO II | Outer indirect ceiling.008",
+    "collections": [
+      "ET 12 | HALO refined ceiling and aisles"
+    ],
+    "linkedReceivers": "LL | HALO II ceiling only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO II | Restrained broad wall wash.008",
+    "collections": [
+      "ET 12 | HALO refined ceiling and aisles"
+    ],
+    "linkedReceivers": "LL | HALO theater only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO II | Outer indirect ceiling.009",
+    "collections": [
+      "ET 12 | HALO refined ceiling and aisles"
+    ],
+    "linkedReceivers": "LL | HALO II ceiling only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO II | Restrained broad wall wash.009",
+    "collections": [
+      "ET 12 | HALO refined ceiling and aisles"
+    ],
+    "linkedReceivers": "LL | HALO theater only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO II | Soft reflected room light",
+    "collections": [
+      "ET 12 | HALO refined ceiling and aisles"
+    ],
+    "linkedReceivers": "LL | HALO II ceiling only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO II | Recess end bounce",
+    "collections": [
+      "ET 12 | HALO refined ceiling and aisles"
+    ],
+    "linkedReceivers": "LL | HALO II ceiling only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO II | Recess end bounce.001",
+    "collections": [
+      "ET 12 | HALO refined ceiling and aisles"
+    ],
+    "linkedReceivers": "LL | HALO II ceiling only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO II | Aisle floor wash",
+    "collections": [
+      "ET 12 | HALO refined ceiling and aisles"
+    ],
+    "linkedReceivers": "LL | HALO theater only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO II | Aisle floor wash.001",
+    "collections": [
+      "ET 12 | HALO refined ceiling and aisles"
+    ],
+    "linkedReceivers": "LL | HALO theater only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO II | Aisle floor wash.002",
+    "collections": [
+      "ET 12 | HALO refined ceiling and aisles"
+    ],
+    "linkedReceivers": "LL | HALO theater only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO II | Aisle floor wash.003",
+    "collections": [
+      "ET 12 | HALO refined ceiling and aisles"
+    ],
+    "linkedReceivers": "LL | HALO theater only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO II | Aisle floor wash.004",
+    "collections": [
+      "ET 12 | HALO refined ceiling and aisles"
+    ],
+    "linkedReceivers": "LL | HALO theater only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO II | Aisle floor wash.005",
+    "collections": [
+      "ET 12 | HALO refined ceiling and aisles"
+    ],
+    "linkedReceivers": "LL | HALO theater only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO II | Aisle floor wash.006",
+    "collections": [
+      "ET 12 | HALO refined ceiling and aisles"
+    ],
+    "linkedReceivers": "LL | HALO theater only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO II | Aisle floor wash.007",
+    "collections": [
+      "ET 12 | HALO refined ceiling and aisles"
+    ],
+    "linkedReceivers": "LL | HALO theater only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO II | Aisle floor wash.008",
+    "collections": [
+      "ET 12 | HALO refined ceiling and aisles"
+    ],
+    "linkedReceivers": "LL | HALO theater only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO II | Aisle floor wash.009",
+    "collections": [
+      "ET 12 | HALO refined ceiling and aisles"
+    ],
+    "linkedReceivers": "LL | HALO theater only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO II | Aisle floor wash.010",
+    "collections": [
+      "ET 12 | HALO refined ceiling and aisles"
+    ],
+    "linkedReceivers": "LL | HALO theater only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO II | Aisle floor wash.011",
+    "collections": [
+      "ET 12 | HALO refined ceiling and aisles"
+    ],
+    "linkedReceivers": "LL | HALO theater only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO FINAL | Continuous perimeter bounce",
+    "collections": [
+      "ET 12 | HALO refined ceiling and aisles"
+    ],
+    "linkedReceivers": "LL | HALO II ceiling only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "HALO FINAL | Continuous perimeter bounce.001",
+    "collections": [
+      "ET 12 | HALO refined ceiling and aisles"
+    ],
+    "linkedReceivers": "LL | HALO II ceiling only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "REFINED | Soft ceiling return",
+    "collections": [
+      "ET 12 | HALO refined ceiling and aisles"
+    ],
+    "linkedReceivers": "LL | HALO theater only",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "DETAIL V2 | Fixture reflected fill",
+    "collections": [
+      "ET 12 | HALO refined ceiling and aisles"
+    ],
+    "linkedReceivers": "LL | DETAIL V2 theatre fixtures",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "DETAIL V2 | Fixture reflected fill.001",
+    "collections": [
+      "ET 12 | HALO refined ceiling and aisles"
+    ],
+    "linkedReceivers": "LL | DETAIL V2 theatre fixtures",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "Sun",
+    "collections": [
+      "Projector_animation"
+    ],
+    "linkedReceivers": "LL | everything except design moon",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "FX_Glow_Red",
+    "collections": [
+      "PRJ FX | Laser Particle Formation"
+    ],
+    "linkedReceivers": null,
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "FX_Glow_Green",
+    "collections": [
+      "PRJ FX | Laser Particle Formation"
+    ],
+    "linkedReceivers": null,
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "FX_Glow_Blue",
+    "collections": [
+      "PRJ FX | Laser Particle Formation"
+    ],
+    "linkedReceivers": null,
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "FX_Glow_Core",
+    "collections": [
+      "PRJ FX | Laser Particle Formation"
+    ],
+    "linkedReceivers": null,
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "FX_Key_Soft",
+    "collections": [
+      "PRJ FX | Laser Particle Formation"
+    ],
+    "linkedReceivers": null,
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "INT | Key",
+    "collections": [
+      "INT | Inspection softboxes"
+    ],
+    "linkedReceivers": "INT | Internal lighting receivers",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  },
+  {
+    "name": "INT | Rim",
+    "collections": [
+      "INT | Inspection softboxes"
+    ],
+    "linkedReceivers": "INT | Internal lighting receivers",
+    "linkedBlockers": null,
+    "hidden": false,
+    "camera": false,
+    "diffuse": true,
+    "glossy": true,
+    "shadow": true
+  }
+]

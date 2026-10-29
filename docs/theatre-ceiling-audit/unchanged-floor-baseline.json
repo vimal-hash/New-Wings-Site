@@ -1,0 +1,15 @@
+{
+  "components/corridor/theatre-floor-assets.json": "abc9e4505c3aa3e9536dd477975384b1e1ed537eb54024bad88a245322f5dc25",
+  "components/corridor/theatre-floor.tsx": "d4c24a2aaa0a48725ba5b24c37f2b8d30beb5229df7aa7e7cc220f5476fed8d0",
+  "components/corridor/theatre-floor-radiance.ts": "bdfa1a17d12337ab69127cd2804cf21b57b35ac4b738d9f934b4cbc09b7fbe4c",
+  "public/models/theatre-floor-detail.glb": "00cba79286d1b7ca1a4f291fedd851d465b8e340a7a1fefb054ef79f9eb27952",
+  "public/textures/theatre-floor-quality/walnut-radiance.bin.gz": "f2345a09064b7575d0c59d9ffb856d0e33826967c15c42ea3912c064c2a39a59",
+  "public/textures/theatre-floor-quality/basalt-radiance.bin.gz": "78c109f384a94c82c3d86d7d246f3edc9e86b777d68813ec632d76a3f545f30e",
+  "public/textures/theatre-floor-quality/walnut-diffuse.exr": "1a8404fdbfba4ef3adc67d93480d5840d692ea1d408d1d2d378436d3df883bbf",
+  "public/textures/theatre-floor-quality/basalt-diffuse.exr": "406ffd18bcff6d2f001a84e0aef6add2ca136e13104e3a63cd8f7f6251344097",
+  "public/textures/theatre-floor-quality/floor-display-lut.png": "22c1e4ff3ac4c58a8b8f52095e97c77a9c678117b7957ab22e89b6b9853df86f",
+  "public/textures/theatre-floor-quality/walnut-native-detail.png": "737d5c56cfab2c1148eecbe9ce96dc729b31d5a4769eff216832bbfa0ab5c8a3",
+  "public/textures/theatre-floor-quality/walnut-opening-mask.png": "b955441dc5b6676e529ce19093fb68ff7310067afff915e4d46458fa87d7f149",
+  "public/textures/theatre-floor-quality/basalt-opening-mask.png": "93b3437f284020c049c4ae9da85a59f778cf3aa43f69f3d8f2238e5634ba58ee",
+  "public/textures/theatre-floor-quality/floor-opening-detail.exr": "4405729f6b091359d571d1b32057973cc9ec2e38c21fdaaa410410660cff65e2"
+}

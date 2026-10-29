@@ -1,0 +1,277 @@
+{
+ "recorded": "2026-10-24T05:47:21.444Z",
+ "files": {
+  "components/corridor/baked-surfaces.json": {
+   "bytes": 127882,
+   "sha256": "2dceb4b7150602a3c61de4d9daee3badfcbb33795ee9d1e1752753bdf9efd7cc"
+  },
+  "components/corridor/theatre-ceiling-assets.json": {
+   "bytes": 427,
+   "sha256": "4c00875e7ee9e6f3376961547095c19bf1ed9dbb0254ed38cec263372f61e2ab"
+  },
+  "components/corridor/theatre-left-wall-assets.json": {
+   "bytes": 90,
+   "sha256": "37d54301fb6909503c9241552bc1fe696c545957ed8b8531479a6b65ec9bbdc4"
+  },
+  "public/models/corridor-marked.glb": {
+   "bytes": 436148,
+   "sha256": "751e51243cd02ffc1c6b5a079ccbb56510d23a7fceee1871b2ec005e8209e6d8"
+  },
+  "public/models/corridor-original.glb": {
+   "bytes": 2022928,
+   "sha256": "3f8c66e7a7aed213e74183582dc7b2ec8ab3ef7f606bd83f0915841c3db27626"
+  },
+  "public/models/corridor-ribbons-balanced.glb": {
+   "bytes": 328232,
+   "sha256": "edf753005aacf863faa503251d25e9acb9a4bd622e840afc7c3a7e8bacea7bc3"
+  },
+  "public/models/corridor-ribbons-thin.glb": {
+   "bytes": 328212,
+   "sha256": "475bf341418eb21b62d2612f41c8783d2d8ec733e9a188c5e700bd1b4eab5afe"
+  },
+  "public/models/corridor-ribbons.glb": {
+   "bytes": 329064,
+   "sha256": "a0614c8ef2248f31336e173e3af24826ae288fdb627149b4a9dc186a75ae75c4"
+  },
+  "public/models/corridor-upgraded.glb": {
+   "bytes": 619448,
+   "sha256": "adfc975ad6542751128a087a100a3cb8d52e71cd6b43a3f5188d8101b540d3b1"
+  },
+  "public/models/corridor.glb": {
+   "bytes": 645252,
+   "sha256": "fb33df25a91e6da2de0bf61008d536d0355f53e8d4257568fbec42c1915c104d"
+  },
+  "public/models/moon-original.glb": {
+   "bytes": 43852,
+   "sha256": "7d0d198b078d92e41024da3777cd20fe1228ee4ae83f4a49ac9c26a3cac8aeed"
+  },
+  "public/models/moon-steel-original.glb": {
+   "bytes": 45128,
+   "sha256": "c7f355142af3eb1f7c2fb6d529900e55f20fdea39a9ce9e9c2989ac2f268cc59"
+  },
+  "public/models/projector-animated.glb": {
+   "bytes": 3600200,
+   "sha256": "eb3fff1225129c4ca463475acb2cf50e7d538365babd55695b7fa300a4d5e6e4"
+  },
+  "public/models/projector-floor-marked.glb": {
+   "bytes": 1784,
+   "sha256": "bd0df223c77d1e16229aa26e68ffa26cbccd49ac9b4d365711a335f791609cde"
+  },
+  "public/models/projector-floor-upgraded.glb": {
+   "bytes": 1476,
+   "sha256": "3894d14c35a4fa0facba13d06ca0cb81e571b9bdb52f67deb49545c5e9669d2f"
+  },
+  "public/models/projector-floor.glb": {
+   "bytes": 1476,
+   "sha256": "3894d14c35a4fa0facba13d06ca0cb81e571b9bdb52f67deb49545c5e9669d2f"
+  },
+  "public/models/projector-marked.glb": {
+   "bytes": 3292124,
+   "sha256": "59515788519cc42d9e1f73655b949076fad2e77363fda091c95b5cf48f30f61d"
+  },
+  "public/models/projector-motion.bin": {
+   "bytes": 2003680,
+   "sha256": "270edc164d371e9b5fe94a39eb8b2b503c39b0dbcdaeb5a9ae8d61b7ae9470ff"
+  },
+  "public/models/projector-motion.bin.gz": {
+   "bytes": 389501,
+   "sha256": "3495022c51a6cafeae187876103c47792ae5ecc91902df328e913b0ccbc89995"
+  },
+  "public/models/sofa-lowpoly-draco.glb": {
+   "bytes": 12320,
+   "sha256": "189c72f66e4f3074f5b8e539e8bc9fe372989579a1c404bb485f710820ebcb4c"
+  },
+  "public/models/theatre-marked.glb": {
+   "bytes": 700892,
+   "sha256": "1f749cad975e17bc229db227b6f0226cc4cfc1703a296b16d5edfedf5f3416ae"
+  },
+  "public/models/theatre-upgraded.glb": {
+   "bytes": 705048,
+   "sha256": "229a905055cfff1a70ec803fbff266d9293e4e0dc96cb778d2fbf7451b1871d8"
+  },
+  "public/models/theatre.glb": {
+   "bytes": 693000,
+   "sha256": "f01e9480717dd1b5fdbca164e55d60f7459efcbb22bc891a958815f1a325969e"
+  },
+  "public/models/theatre/ceiling-uv-fixed.glb": {
+   "bytes": 55860,
+   "sha256": "e050ac207b4af089f08677a6398d70fdf856dcfc537a311c1b429e54533c59fb"
+  },
+  "public/textures/corridor/floor-joints/corridor-floor-joints-uv.bin": {
+   "bytes": 692,
+   "sha256": "b73ed8a76ced8b03dae3638cddcd59691e0722c922f5572b3d931bdbcf888808"
+  },
+  "public/textures/corridor/floor-joints/corridor-floor-joints.ktx2": {
+   "bytes": 248596,
+   "sha256": "5434618f8d6a9066190ee22440acc5d78db9ec12adf1d02f0e15e84ff42b00c4"
+  },
+  "public/textures/corridor/floor/corridor-floor-uv.bin": {
+   "bytes": 2416,
+   "sha256": "337ac7ab9fcd32b73550d962d12b360fdf992980af61cb8b8fa9a1b262fc685d"
+  },
+  "public/textures/corridor/floor/corridor-floor.ktx2": {
+   "bytes": 2117651,
+   "sha256": "8da85fd1d2952313d9a563f0b2bf27c3f0e0ba92b39af774e9690db22705481d"
+  },
+  "public/textures/corridor/pathway-lights/corridor-pathway-lights-uv.bin": {
+   "bytes": 28300,
+   "sha256": "43b43d4501a0370fefe0d72c342836331b7b5ed7deb25367a483a1cca5863cea"
+  },
+  "public/textures/corridor/pathway-lights/corridor-pathway-lights.ktx2": {
+   "bytes": 1011614,
+   "sha256": "9cd513874c20255d72ec31094ad2d2f401096f6aeb4bea2eedc9793d3bbc5e20"
+  },
+  "public/textures/corridor/roof-datums/corridor-roof-datums-uv.bin": {
+   "bytes": 7012,
+   "sha256": "27d76bcd1366854c4ae72103751fd3c343f79706306bc31e384cf13d1ecb8bc2"
+  },
+  "public/textures/corridor/roof-datums/corridor-roof-datums.ktx2": {
+   "bytes": 76174,
+   "sha256": "5746ea0edb1b198d0aa1e2900fb64d82a93ad9552b42c8fea574487205aea65d"
+  },
+  "public/textures/corridor/wall-caps/corridor-wall-caps-uv.bin": {
+   "bytes": 5540,
+   "sha256": "8333fd6e45ca48d52464cb7f0926186d362cdbaa44d31c90084b27e5c01a4016"
+  },
+  "public/textures/corridor/wall-caps/corridor-wall-caps.ktx2": {
+   "bytes": 161313,
+   "sha256": "49b784db92657220c51f84479c2e85051a767a6626cb6b6b35928425c2887829"
+  },
+  "public/textures/corridor/wall-connecting/corridor-wall-connecting-uv.bin": {
+   "bytes": 1220,
+   "sha256": "5d7861f0c281bac2d3c79bd7ce4fcce1637a20172fd04437d1a533b03771e11b"
+  },
+  "public/textures/corridor/wall-connecting/corridor-wall-connecting.ktx2": {
+   "bytes": 677576,
+   "sha256": "f12f2af8694cc1dbfd7960ad8689fa6c2087c97beae13c294a86faa0241a924f"
+  },
+  "public/textures/corridor/wall-red/corridor-wall-red-uv.bin": {
+   "bytes": 1220,
+   "sha256": "61a026b00b0334e103482df4d0965394b9b69b5ce892787fe3aefc0148702add"
+  },
+  "public/textures/corridor/wall-red/corridor-wall-red.ktx2": {
+   "bytes": 541989,
+   "sha256": "a4b3ac095831f3e7f492ea8425c2473b9aff4d00b5c1b7daf9cd17988dbd0dba"
+  },
+  "public/textures/projector-floor/projector-floor-uv.bin": {
+   "bytes": 164,
+   "sha256": "93473b7cad7c4805152fe38822292a45066cce57394f876eb0bcc0bf4565da0c"
+  },
+  "public/textures/projector-floor/projector-floor.ktx2": {
+   "bytes": 1302292,
+   "sha256": "9031393d7008139ebd7a34b0d5b03452a45990b6dfd9a172d49a712a6f100d39"
+  },
+  "public/textures/theatre/acoustic-slats/acoustic-slats-uv.bin": {
+   "bytes": 103508,
+   "sha256": "4bf86c630ad49a47ee47e28e6617c6a8986c8e1564629301004c257efb8372b3"
+  },
+  "public/textures/theatre/acoustic-slats/acoustic-slats.ktx2": {
+   "bytes": 982368,
+   "sha256": "0dabc3c5a06e428c656dfa2bd0fae9d88c41cf48d3fcc191b0daba1da82c77c2"
+  },
+  "public/textures/theatre/aisle-lights/aisle-lights-uv.bin": {
+   "bytes": 26484,
+   "sha256": "b2831ba544f85e4fe379bdfaf988844bf42623add258c9daefc1f20a302e96c4"
+  },
+  "public/textures/theatre/aisle-lights/aisle-lights.ktx2": {
+   "bytes": 1131219,
+   "sha256": "dbebc492dbd140e44e3a228875873590b4f0e316e241d95aba210c14f8720844"
+  },
+  "public/textures/theatre/ceiling/ceiling-surface-edges.ktx2": {
+   "bytes": 3360256,
+   "sha256": "89b1208ac1b960d973264a8388a976d8d1859402dc86900a141c93ccd2ad16db"
+  },
+  "public/textures/theatre/floor/floor-slab-uv.bin": {
+   "bytes": 356,
+   "sha256": "b0be36840325f101d278e6a56fb9da8c2a92016d309827fac3cd7998dce9b4ce"
+  },
+  "public/textures/theatre/floor/floor-slab.ktx2": {
+   "bytes": 1078351,
+   "sha256": "07ac5bdcea35ad881567525c155e6a2fddef203f89a0017a12e2499b5663d5b3"
+  },
+  "public/textures/theatre/front-wall/front-wall-uv.bin": {
+   "bytes": 356,
+   "sha256": "24e8caa6541e5a5ec1231b84e21d226c8306dd1132b33af32de09719e9b226ca"
+  },
+  "public/textures/theatre/front-wall/front-wall.ktx2": {
+   "bytes": 491610,
+   "sha256": "49ebb97d31a7b0826fb3b025f9b5b8032b62888dd7aecc722db8b77b0e187b19"
+  },
+  "public/textures/theatre/left-wall/left-wall-surface.ktx2": {
+   "bytes": 3882754,
+   "sha256": "137687ed9dc39927ba3d46315732471694e6a4c61a6abf946111c6e0052faed3"
+  },
+  "public/textures/theatre/light-fixtures/light-fixtures-uv.bin": {
+   "bytes": 4172,
+   "sha256": "2430ef582b1a06b6fa21691bf74eec54e2bd169ad8cb52cdb29d770abe6cb96a"
+  },
+  "public/textures/theatre/light-fixtures/light-fixtures.ktx2": {
+   "bytes": 271214,
+   "sha256": "640b64209e614950a1842892c977b505ef98b9e82315da706946677e7860be65"
+  },
+  "public/textures/theatre/moon-steel-border/moon-steel-border-uv.bin": {
+   "bytes": 3956,
+   "sha256": "e6d21e16a3346b049a1d0ef89f858946c4c2040e0d72d6bd8bbf9e8f36b6c745"
+  },
+  "public/textures/theatre/moon-steel-border/moon-steel-border.ktx2": {
+   "bytes": 12376809,
+   "sha256": "0f1bc8dca23813705132d859e54df4499f1ffe876effddf0cc5e9b91deaf1410"
+  },
+  "public/textures/theatre/right-wall/right-wall-uv.bin": {
+   "bytes": 356,
+   "sha256": "4ea803544c29d54acd868a3a6cb48d6c855b4b6e9f9c76178fc2c13e76a8a319"
+  },
+  "public/textures/theatre/right-wall/right-wall.ktx2": {
+   "bytes": 2932905,
+   "sha256": "025205064f0bfe2bfa16b8c53e91e15f319405e8b026b736995030407a1020a6"
+  },
+  "public/textures/theatre/screen/screen-uv.bin": {
+   "bytes": 1684,
+   "sha256": "9cdd4436ca92829adaf5b1de83902c1b0f4105a73d28017593dd16731d1bb376"
+  },
+  "public/textures/theatre/screen/screen.ktx2": {
+   "bytes": 654628,
+   "sha256": "51fbff6d7b6d2363cf7ac4c1ca633638db212455c36e0c04d21f1a7f01ee158a"
+  },
+  "public/textures/theatre/speakers/speakers-uv.bin": {
+   "bytes": 8756,
+   "sha256": "ef8b8d20522c4f406757e2a42e8fb556d0eb13616b123578f978f6d484c444f7"
+  },
+  "public/textures/theatre/speakers/speakers.ktx2": {
+   "bytes": 452179,
+   "sha256": "e436145735897827e30a9e06dc20cdde2231e7ab4d9e8e164777b21cec0756aa"
+  },
+  "public/textures/theatre/stage/stage-uv.bin": {
+   "bytes": 3428,
+   "sha256": "18ba3d44568c69fb26e56b468907aad0ee8e76f55d54dc99f4eddfc49c321b95"
+  },
+  "public/textures/theatre/stage/stage.ktx2": {
+   "bytes": 533786,
+   "sha256": "a4dc6323c77d25a8f504bfb8232a988223765a52bb4333da22a01468bad50e20"
+  },
+  "public/textures/theatre/step-nosings/step-nosings-uv.bin": {
+   "bytes": 14404,
+   "sha256": "330558134e9e0309af0bcc05ee7d92fc0b1d9ba7b0d5b19d2e094bdcab533434"
+  },
+  "public/textures/theatre/step-nosings/step-nosings.ktx2": {
+   "bytes": 1078097,
+   "sha256": "29d938f2921a77a69dd4cf0a7b42f9c88630c70d6b333aa42c1e8688a9131351"
+  },
+  "public/textures/theatre/terraces/terraces-uv.bin": {
+   "bytes": 12452,
+   "sha256": "0cc8cbece3cde20d93b61a042bd581ba415b744d2d864de1bd0675fa01547f6f"
+  },
+  "public/textures/theatre/terraces/terraces.ktx2": {
+   "bytes": 1939686,
+   "sha256": "7d08b9485aef4b61cd1e9596c832030345a0de4287747ba332f69925eeeb0eb5"
+  },
+  "public/textures/theatre/wall-trim/wall-trim-uv.bin": {
+   "bytes": 2036,
+   "sha256": "e45df1f0ffd98aeaa5045429c7d129dc8995110bfa8499f472947ab2248884d4"
+  },
+  "public/textures/theatre/wall-trim/wall-trim.ktx2": {
+   "bytes": 392674,
+   "sha256": "7d066f7998ae46b6fa24f57ec36a37afafef9ea684feb877b0976b84da6f17ed"
+  }
+ }
+}

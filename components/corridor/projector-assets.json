@@ -1,0 +1,43 @@
+{
+  "file": "D:\\CodexOutputs\\Approved_Theatre_Corridor_20261020\\projector-layout-draco.glb",
+  "bytes": 3292124,
+  "reference_bytes": 20305608,
+  "triangles": 395966,
+  "source_triangles": 400138,
+  "source_objects": 507,
+  "export_objects": 1,
+  "textures": 0,
+  "compression": "Draco level 10; position 24 bit; normal 12 bit",
+  "source": "D:\\CodexOutputs\\Theatre_Optimization_20261017\\Theatre_Moon_Projector_optimized.blend",
+  "frame": 576,
+  "scale": 1,
+  "bounds_blender": [
+    [
+      -0.6305057406425476,
+      0.6524957418441772
+    ],
+    [
+      7.482749938964844,
+      8.206748962402344
+    ],
+    [
+      2.999000072479248,
+      3.5460000038146973
+    ]
+  ],
+  "centre_blender": [
+    0.01099500060081482,
+    7.844749450683594,
+    3.2725000381469727
+  ],
+  "platform_centre_blender": [
+    0.010994911193847656,
+    7.844748497009277,
+    0.6958380416035652
+  ],
+  "centering_error_metres": 9.5367431640625e-7,
+  "size_error_metres": 0,
+  "source_parts": 514,
+  "visible_parts": 507,
+  "note": "Static assembled pose. Native orientation/height/size preserved. Diagnostic vertex colours; original animation source unchanged."
+}

@@ -1,0 +1,20 @@
+{
+  "sofa": {
+    "triangles": 1479,
+    "instances": 12,
+    "modelBytes": 39484,
+    "uvs": true,
+    "placementsUnchanged": true
+  },
+  "projector": {
+    "triangles": 430417,
+    "parts": 514,
+    "materialDefinitions": 59,
+    "modelBytes": 5265476,
+    "poseBytes": 1603680,
+    "poseCompressedBytes": 50286,
+    "poseDataByteIdentical": true,
+    "partIndexMaxError": 0.061553955078125,
+    "assembledBoundsMaxDifferenceMetres": 0
+  }
+}

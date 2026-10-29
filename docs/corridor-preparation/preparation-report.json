@@ -1,0 +1,1110 @@
+{
+  "preparedFile": "D:\\CodexOutputs\\Corridor_Bake_Preparation_20261024\\Corridor_Runtime_Material_Prepared.blend",
+  "layoutSource": "D:\\CodexOutputs\\Approved_Theatre_Corridor_20261020\\Logo_balanced_ribbon_gaps.blend",
+  "materialSource": "D:/CodexOutputs/Corridor_Optimization_20261018/Blue_Centre_Placement/Final_Geometry_Audit/Corridor_Logo_final_optimized_4K.blend",
+  "coordinateScale": 70.64605204264323,
+  "geometry": [
+    {
+      "name": "Connecting plane \u2022 joins yellow tip \u2022 restrained roof datum",
+      "runtimeTriangles": 920,
+      "layoutTriangles": 920,
+      "maxTriangleCentroidErrorMetres": 3.069957529078238e-05
+    },
+    {
+      "name": "Connecting plane \u2022 joins yellow tip",
+      "runtimeTriangles": 580,
+      "layoutTriangles": 580,
+      "maxTriangleCentroidErrorMetres": 3.1064028007676825e-05
+    },
+    {
+      "name": "FIX | Capped Connecting plane \u2022 joins yellow tip",
+      "runtimeTriangles": 580,
+      "layoutTriangles": 580,
+      "maxTriangleCentroidErrorMetres": 3.1456798751605675e-05
+    },
+    {
+      "name": "FIX | Capped Red corridor wall \u2022 separate from logo",
+      "runtimeTriangles": 580,
+      "layoutTriangles": 580,
+      "maxTriangleCentroidErrorMetres": 3.0517578125e-05
+    },
+    {
+      "name": "Floor \u2022 fine slab joint 015",
+      "runtimeTriangles": 8,
+      "layoutTriangles": 8,
+      "maxTriangleCentroidErrorMetres": 1.7060119716916233e-05
+    },
+    {
+      "name": "Floor \u2022 fine slab joint 033",
+      "runtimeTriangles": 8,
+      "layoutTriangles": 8,
+      "maxTriangleCentroidErrorMetres": 1.525885636510793e-05
+    },
+    {
+      "name": "Floor \u2022 fine slab joint 051",
+      "runtimeTriangles": 8,
+      "layoutTriangles": 8,
+      "maxTriangleCentroidErrorMetres": 1.525905645394232e-05
+    },
+    {
+      "name": "Floor \u2022 fine slab joint 069",
+      "runtimeTriangles": 8,
+      "layoutTriangles": 8,
+      "maxTriangleCentroidErrorMetres": 1.5258852727129124e-05
+    },
+    {
+      "name": "Floor \u2022 fine slab joint 087",
+      "runtimeTriangles": 8,
+      "layoutTriangles": 8,
+      "maxTriangleCentroidErrorMetres": 1.5259698557201773e-05
+    },
+    {
+      "name": "Floor \u2022 fine slab joint 105",
+      "runtimeTriangles": 8,
+      "layoutTriangles": 8,
+      "maxTriangleCentroidErrorMetres": 1.5260593499988317e-05
+    },
+    {
+      "name": "Floor \u2022 fine slab joint 123",
+      "runtimeTriangles": 8,
+      "layoutTriangles": 8,
+      "maxTriangleCentroidErrorMetres": 1.5260067812050693e-05
+    },
+    {
+      "name": "Floor \u2022 fine slab joint 141",
+      "runtimeTriangles": 8,
+      "layoutTriangles": 8,
+      "maxTriangleCentroidErrorMetres": 7.630673280800693e-06
+    },
+    {
+      "name": "Floor \u2022 fine slab joint 159",
+      "runtimeTriangles": 8,
+      "layoutTriangles": 8,
+      "maxTriangleCentroidErrorMetres": 7.62942545406986e-06
+    },
+    {
+      "name": "Floor \u2022 fine slab joint 177",
+      "runtimeTriangles": 8,
+      "layoutTriangles": 8,
+      "maxTriangleCentroidErrorMetres": 9.872019290924072e-08
+    },
+    {
+      "name": "Floor \u2022 fine slab joint 195",
+      "runtimeTriangles": 8,
+      "layoutTriangles": 8,
+      "maxTriangleCentroidErrorMetres": 2.2631138563156128e-07
+    },
+    {
+      "name": "Floor \u2022 fine slab joint 213",
+      "runtimeTriangles": 8,
+      "layoutTriangles": 8,
+      "maxTriangleCentroidErrorMetres": 7.634091161889955e-06
+    },
+    {
+      "name": "Pathway L 01 \u2022 slot assembly \u2022 amber diffuser",
+      "runtimeTriangles": 464,
+      "layoutTriangles": 464,
+      "maxTriangleCentroidErrorMetres": 3.4119690099032596e-05
+    },
+    {
+      "name": "Pathway L 01 \u2022 slot assembly \u2022 bronze face",
+      "runtimeTriangles": 400,
+      "layoutTriangles": 400,
+      "maxTriangleCentroidErrorMetres": 3.052130341529846e-05
+    },
+    {
+      "name": "Pathway L 01 \u2022 slot assembly \u2022 dark slot interior",
+      "runtimeTriangles": 2,
+      "layoutTriangles": 2,
+      "maxTriangleCentroidErrorMetres": 1.52587890625e-05
+    },
+    {
+      "name": "Pathway L 03 \u2022 slot assembly \u2022 amber diffuser",
+      "runtimeTriangles": 464,
+      "layoutTriangles": 464,
+      "maxTriangleCentroidErrorMetres": 3.0518509447574615e-05
+    },
+    {
+      "name": "Pathway L 03 \u2022 slot assembly \u2022 bronze face",
+      "runtimeTriangles": 400,
+      "layoutTriangles": 400,
+      "maxTriangleCentroidErrorMetres": 2.15791860682657e-05
+    },
+    {
+      "name": "Pathway L 03 \u2022 slot assembly \u2022 dark slot interior",
+      "runtimeTriangles": 2,
+      "layoutTriangles": 2,
+      "maxTriangleCentroidErrorMetres": 4.76837158203125e-07
+    },
+    {
+      "name": "Pathway L 05 \u2022 slot assembly \u2022 amber diffuser",
+      "runtimeTriangles": 464,
+      "layoutTriangles": 464,
+      "maxTriangleCentroidErrorMetres": 1.708648051135242e-05
+    },
+    {
+      "name": "Pathway L 05 \u2022 slot assembly \u2022 bronze face",
+      "runtimeTriangles": 400,
+      "layoutTriangles": 400,
+      "maxTriangleCentroidErrorMetres": 1.7066508007701486e-05
+    },
+    {
+      "name": "Pathway L 05 \u2022 slot assembly \u2022 dark slot interior",
+      "runtimeTriangles": 2,
+      "layoutTriangles": 2,
+      "maxTriangleCentroidErrorMetres": 7.62939453125e-06
+    },
+    {
+      "name": "Pathway L 07 \u2022 slot assembly \u2022 amber diffuser",
+      "runtimeTriangles": 464,
+      "layoutTriangles": 464,
+      "maxTriangleCentroidErrorMetres": 1.5728399375802837e-05
+    },
+    {
+      "name": "Pathway L 07 \u2022 slot assembly \u2022 bronze face",
+      "runtimeTriangles": 400,
+      "layoutTriangles": 400,
+      "maxTriangleCentroidErrorMetres": 1.7059845049516298e-05
+    },
+    {
+      "name": "Pathway L 07 \u2022 slot assembly \u2022 dark slot interior",
+      "runtimeTriangles": 2,
+      "layoutTriangles": 2,
+      "maxTriangleCentroidErrorMetres": 1.52587890625e-05
+    },
+    {
+      "name": "Pathway L 10 \u2022 slot assembly \u2022 amber diffuser",
+      "runtimeTriangles": 464,
+      "layoutTriangles": 464,
+      "maxTriangleCentroidErrorMetres": 7.64428114052862e-06
+    },
+    {
+      "name": "Pathway L 10 \u2022 slot assembly \u2022 bronze face",
+      "runtimeTriangles": 400,
+      "layoutTriangles": 400,
+      "maxTriangleCentroidErrorMetres": 7.68876816437114e-06
+    },
+    {
+      "name": "Pathway L 10 \u2022 slot assembly \u2022 dark slot interior",
+      "runtimeTriangles": 2,
+      "layoutTriangles": 2,
+      "maxTriangleCentroidErrorMetres": 3.932099843950709e-06
+    },
+    {
+      "name": "Pathway R 01 \u2022 slot assembly \u2022 amber diffuser",
+      "runtimeTriangles": 464,
+      "layoutTriangles": 464,
+      "maxTriangleCentroidErrorMetres": 3.0518509447574615e-05
+    },
+    {
+      "name": "Pathway R 01 \u2022 slot assembly \u2022 bronze face",
+      "runtimeTriangles": 400,
+      "layoutTriangles": 400,
+      "maxTriangleCentroidErrorMetres": 3.0517578125e-05
+    },
+    {
+      "name": "Pathway R 01 \u2022 slot assembly \u2022 dark slot interior",
+      "runtimeTriangles": 2,
+      "layoutTriangles": 2,
+      "maxTriangleCentroidErrorMetres": 2.160024996555876e-05
+    },
+    {
+      "name": "Pathway R 03 \u2022 slot assembly \u2022 amber diffuser",
+      "runtimeTriangles": 464,
+      "layoutTriangles": 464,
+      "maxTriangleCentroidErrorMetres": 1.7061511243809946e-05
+    },
+    {
+      "name": "Pathway R 03 \u2022 slot assembly \u2022 bronze face",
+      "runtimeTriangles": 400,
+      "layoutTriangles": 400,
+      "maxTriangleCentroidErrorMetres": 1.7059845049516298e-05
+    },
+    {
+      "name": "Pathway R 03 \u2022 slot assembly \u2022 dark slot interior",
+      "runtimeTriangles": 2,
+      "layoutTriangles": 2,
+      "maxTriangleCentroidErrorMetres": 0.0
+    },
+    {
+      "name": "Pathway R 05 \u2022 slot assembly \u2022 amber diffuser",
+      "runtimeTriangles": 464,
+      "layoutTriangles": 464,
+      "maxTriangleCentroidErrorMetres": 1.7059845049516298e-05
+    },
+    {
+      "name": "Pathway R 05 \u2022 slot assembly \u2022 bronze face",
+      "runtimeTriangles": 400,
+      "layoutTriangles": 400,
+      "maxTriangleCentroidErrorMetres": 1.7059845049516298e-05
+    },
+    {
+      "name": "Pathway R 05 \u2022 slot assembly \u2022 dark slot interior",
+      "runtimeTriangles": 2,
+      "layoutTriangles": 2,
+      "maxTriangleCentroidErrorMetres": 7.62939453125e-06
+    },
+    {
+      "name": "Pathway R 07 \u2022 slot assembly \u2022 amber diffuser",
+      "runtimeTriangles": 464,
+      "layoutTriangles": 464,
+      "maxTriangleCentroidErrorMetres": 1.5728399375802837e-05
+    },
+    {
+      "name": "Pathway R 07 \u2022 slot assembly \u2022 bronze face",
+      "runtimeTriangles": 400,
+      "layoutTriangles": 400,
+      "maxTriangleCentroidErrorMetres": 1.528856228105724e-05
+    },
+    {
+      "name": "Pathway R 07 \u2022 slot assembly \u2022 dark slot interior",
+      "runtimeTriangles": 2,
+      "layoutTriangles": 2,
+      "maxTriangleCentroidErrorMetres": 4.76837158203125e-07
+    },
+    {
+      "name": "Pathway R 10 \u2022 slot assembly \u2022 amber diffuser",
+      "runtimeTriangles": 464,
+      "layoutTriangles": 464,
+      "maxTriangleCentroidErrorMetres": 7.878642463765573e-06
+    },
+    {
+      "name": "Pathway R 10 \u2022 slot assembly \u2022 bronze face",
+      "runtimeTriangles": 400,
+      "layoutTriangles": 400,
+      "maxTriangleCentroidErrorMetres": 7.68876816437114e-06
+    },
+    {
+      "name": "Pathway R 10 \u2022 slot assembly \u2022 dark slot interior",
+      "runtimeTriangles": 2,
+      "layoutTriangles": 2,
+      "maxTriangleCentroidErrorMetres": 4.76837158203125e-07
+    },
+    {
+      "name": "Plain floor \u2022 red to connecting plane",
+      "runtimeTriangles": 1148,
+      "layoutTriangles": 1148,
+      "maxTriangleCentroidErrorMetres": 2.6787763999891467e-05
+    },
+    {
+      "name": "Red corridor wall \u2022 separate from logo \u2022 restrained roof datum",
+      "runtimeTriangles": 1056,
+      "layoutTriangles": 1056,
+      "maxTriangleCentroidErrorMetres": 3.053247564821504e-05
+    },
+    {
+      "name": "Red corridor wall \u2022 separate from logo",
+      "runtimeTriangles": 580,
+      "layoutTriangles": 580,
+      "maxTriangleCentroidErrorMetres": 3.147125244140625e-05
+    },
+    {
+      "name": "Slide A | Behind theatre marked end | Side 1",
+      "runtimeTriangles": 98,
+      "layoutTriangles": 98,
+      "maxTriangleCentroidErrorMetres": 7.864199687901419e-06
+    },
+    {
+      "name": "Slide A | Behind theatre marked end | Side -1",
+      "runtimeTriangles": 98,
+      "layoutTriangles": 98,
+      "maxTriangleCentroidErrorMetres": 1.1444091796875e-05
+    },
+    {
+      "name": "Slide A | Behind theatre marked end",
+      "runtimeTriangles": 98,
+      "layoutTriangles": 98,
+      "maxTriangleCentroidErrorMetres": 7.68876816437114e-06
+    },
+    {
+      "name": "Slide B | Opposite corridor end | Side 1",
+      "runtimeTriangles": 96,
+      "layoutTriangles": 96,
+      "maxTriangleCentroidErrorMetres": 3.075507265748456e-05
+    },
+    {
+      "name": "Slide B | Opposite corridor end | Side -1",
+      "runtimeTriangles": 96,
+      "layoutTriangles": 96,
+      "maxTriangleCentroidErrorMetres": 3.075507265748456e-05
+    },
+    {
+      "name": "Slide B | Opposite corridor end",
+      "runtimeTriangles": 96,
+      "layoutTriangles": 96,
+      "maxTriangleCentroidErrorMetres": 3.075507265748456e-05
+    },
+    {
+      "name": "Swoosh \u2022 Blue",
+      "runtimeTriangles": 5644,
+      "layoutTriangles": 5644,
+      "maxTriangleCentroidErrorMetres": 6.302913971012458e-05
+    },
+    {
+      "name": "Swoosh \u2022 Orange",
+      "runtimeTriangles": 2108,
+      "layoutTriangles": 2108,
+      "maxTriangleCentroidErrorMetres": 6.1893391830381e-05
+    },
+    {
+      "name": "Swoosh \u2022 Red",
+      "runtimeTriangles": 2876,
+      "layoutTriangles": 2876,
+      "maxTriangleCentroidErrorMetres": 6.834592204540968e-05
+    }
+  ],
+  "materialAssignments": [
+    {
+      "object": "Connecting plane \u2022 joins yellow tip \u2022 restrained roof datum",
+      "sourceObject": "Connecting plane \u2022 joins yellow tip \u2022 restrained roof datum",
+      "materials": [
+        "PREP | Connecting plane \u2022 joins yellow tip \u2022 restrained roof datum | Exterior \u2022 charcoal titanium roof datum.001"
+      ],
+      "shadingUVs": [
+        "UVMap"
+      ]
+    },
+    {
+      "object": "Connecting plane \u2022 joins yellow tip",
+      "sourceObject": "Connecting plane \u2022 joins yellow tip",
+      "materials": [
+        "PREP | Connecting plane \u2022 joins yellow tip | Corridor \u2022 right neutral soft fill / dark lower edge.001"
+      ],
+      "shadingUVs": [
+        "Steel grain \u2022 physical spacing",
+        "Steel PBR \u2022 physical vertical grain",
+        "BakeUV"
+      ]
+    },
+    {
+      "object": "FIX | Capped Connecting plane \u2022 joins yellow tip",
+      "sourceObject": "Connecting plane \u2022 joins yellow tip",
+      "materials": [
+        "PREP | FIX | Capped Connecting plane \u2022 joins yellow tip | Corridor \u2022 right neutral soft fill / dark lower edge.001"
+      ],
+      "shadingUVs": [
+        "Steel PBR \u2022 physical vertical grain"
+      ]
+    },
+    {
+      "object": "FIX | Capped Red corridor wall \u2022 separate from logo",
+      "sourceObject": "Red corridor wall \u2022 separate from logo",
+      "materials": [
+        "PREP | FIX | Capped Red corridor wall \u2022 separate from logo | Corridor \u2022 neutral soft fill / dark lower edge.001"
+      ],
+      "shadingUVs": [
+        "Steel PBR \u2022 physical vertical grain"
+      ]
+    },
+    {
+      "object": "Floor \u2022 fine slab joint 015",
+      "sourceObject": "Floor \u2022 fine slab joint 015",
+      "materials": [
+        "PREP | Floor \u2022 fine slab joint 015 | Pathway \u2022 recessed dark joints.001"
+      ],
+      "shadingUVs": [
+        "UVMap"
+      ]
+    },
+    {
+      "object": "Floor \u2022 fine slab joint 033",
+      "sourceObject": "Floor \u2022 fine slab joint 033",
+      "materials": [
+        "PREP | Floor \u2022 fine slab joint 033 | Pathway \u2022 recessed dark joints.001"
+      ],
+      "shadingUVs": [
+        "UVMap"
+      ]
+    },
+    {
+      "object": "Floor \u2022 fine slab joint 051",
+      "sourceObject": "Floor \u2022 fine slab joint 051",
+      "materials": [
+        "PREP | Floor \u2022 fine slab joint 051 | Pathway \u2022 recessed dark joints.001"
+      ],
+      "shadingUVs": [
+        "UVMap"
+      ]
+    },
+    {
+      "object": "Floor \u2022 fine slab joint 069",
+      "sourceObject": "Floor \u2022 fine slab joint 069",
+      "materials": [
+        "PREP | Floor \u2022 fine slab joint 069 | Pathway \u2022 recessed dark joints.001"
+      ],
+      "shadingUVs": [
+        "UVMap"
+      ]
+    },
+    {
+      "object": "Floor \u2022 fine slab joint 087",
+      "sourceObject": "Floor \u2022 fine slab joint 087",
+      "materials": [
+        "PREP | Floor \u2022 fine slab joint 087 | Pathway \u2022 recessed dark joints.001"
+      ],
+      "shadingUVs": [
+        "UVMap"
+      ]
+    },
+    {
+      "object": "Floor \u2022 fine slab joint 105",
+      "sourceObject": "Floor \u2022 fine slab joint 105",
+      "materials": [
+        "PREP | Floor \u2022 fine slab joint 105 | Pathway \u2022 recessed dark joints.001"
+      ],
+      "shadingUVs": [
+        "UVMap"
+      ]
+    },
+    {
+      "object": "Floor \u2022 fine slab joint 123",
+      "sourceObject": "Floor \u2022 fine slab joint 123",
+      "materials": [
+        "PREP | Floor \u2022 fine slab joint 123 | Pathway \u2022 recessed dark joints.001"
+      ],
+      "shadingUVs": [
+        "UVMap"
+      ]
+    },
+    {
+      "object": "Floor \u2022 fine slab joint 141",
+      "sourceObject": "Floor \u2022 fine slab joint 141",
+      "materials": [
+        "PREP | Floor \u2022 fine slab joint 141 | Pathway \u2022 recessed dark joints.001"
+      ],
+      "shadingUVs": [
+        "UVMap"
+      ]
+    },
+    {
+      "object": "Floor \u2022 fine slab joint 159",
+      "sourceObject": "Floor \u2022 fine slab joint 159",
+      "materials": [
+        "PREP | Floor \u2022 fine slab joint 159 | Pathway \u2022 recessed dark joints.001"
+      ],
+      "shadingUVs": [
+        "UVMap"
+      ]
+    },
+    {
+      "object": "Floor \u2022 fine slab joint 177",
+      "sourceObject": "Floor \u2022 fine slab joint 177",
+      "materials": [
+        "PREP | Floor \u2022 fine slab joint 177 | Pathway \u2022 recessed dark joints.001"
+      ],
+      "shadingUVs": [
+        "UVMap"
+      ]
+    },
+    {
+      "object": "Floor \u2022 fine slab joint 195",
+      "sourceObject": "Floor \u2022 fine slab joint 195",
+      "materials": [
+        "PREP | Floor \u2022 fine slab joint 195 | Pathway \u2022 recessed dark joints.001"
+      ],
+      "shadingUVs": [
+        "UVMap"
+      ]
+    },
+    {
+      "object": "Floor \u2022 fine slab joint 213",
+      "sourceObject": "Floor \u2022 fine slab joint 213",
+      "materials": [
+        "PREP | Floor \u2022 fine slab joint 213 | Pathway \u2022 recessed dark joints.001"
+      ],
+      "shadingUVs": [
+        "UVMap"
+      ]
+    },
+    {
+      "object": "Pathway L 01 \u2022 slot assembly \u2022 amber diffuser",
+      "sourceObject": "Pathway L 01 \u2022 slot assembly \u2022 amber diffuser",
+      "materials": [
+        "PREP | Pathway L 01 \u2022 slot assembly \u2022 amber diffuser | Pathway \u2022 warm amber opal light.001",
+        "PREP | Pathway L 01 \u2022 slot assembly \u2022 amber diffuser | Pathway \u2022 unlit black slot recess.001"
+      ],
+      "shadingUVs": [
+        "UVMap"
+      ]
+    },
+    {
+      "object": "Pathway L 01 \u2022 slot assembly \u2022 bronze face",
+      "sourceObject": "Pathway L 01 \u2022 slot assembly \u2022 bronze face",
+      "materials": [
+        "PREP | Pathway L 01 \u2022 slot assembly \u2022 bronze face | Pathway \u2022 satin champagne bronze.001",
+        "PREP | Pathway L 01 \u2022 slot assembly \u2022 bronze face | Pathway \u2022 unlit black slot recess.001",
+        "PREP | Pathway L 01 \u2022 slot assembly \u2022 bronze face | Pathway \u2022 finely machined champagne bevel.001"
+      ],
+      "shadingUVs": [
+        "UVMap"
+      ]
+    },
+    {
+      "object": "Pathway L 01 \u2022 slot assembly \u2022 dark slot interior",
+      "sourceObject": "Pathway L 01 \u2022 slot assembly \u2022 dark slot interior",
+      "materials": [
+        "PREP | Pathway L 01 \u2022 slot assembly \u2022 dark slot interior | Pathway \u2022 unlit black slot recess.001"
+      ],
+      "shadingUVs": []
+    },
+    {
+      "object": "Pathway L 03 \u2022 slot assembly \u2022 amber diffuser",
+      "sourceObject": "Pathway L 03 \u2022 slot assembly \u2022 amber diffuser",
+      "materials": [
+        "PREP | Pathway L 03 \u2022 slot assembly \u2022 amber diffuser | Pathway \u2022 warm amber opal light.001",
+        "PREP | Pathway L 03 \u2022 slot assembly \u2022 amber diffuser | Pathway \u2022 unlit black slot recess.001"
+      ],
+      "shadingUVs": [
+        "UVMap"
+      ]
+    },
+    {
+      "object": "Pathway L 03 \u2022 slot assembly \u2022 bronze face",
+      "sourceObject": "Pathway L 03 \u2022 slot assembly \u2022 bronze face",
+      "materials": [
+        "PREP | Pathway L 03 \u2022 slot assembly \u2022 bronze face | Pathway \u2022 satin champagne bronze.001",
+        "PREP | Pathway L 03 \u2022 slot assembly \u2022 bronze face | Pathway \u2022 unlit black slot recess.001",
+        "PREP | Pathway L 03 \u2022 slot assembly \u2022 bronze face | Pathway \u2022 finely machined champagne bevel.001"
+      ],
+      "shadingUVs": [
+        "UVMap"
+      ]
+    },
+    {
+      "object": "Pathway L 03 \u2022 slot assembly \u2022 dark slot interior",
+      "sourceObject": "Pathway L 03 \u2022 slot assembly \u2022 dark slot interior",
+      "materials": [
+        "PREP | Pathway L 03 \u2022 slot assembly \u2022 dark slot interior | Pathway \u2022 unlit black slot recess.001"
+      ],
+      "shadingUVs": []
+    },
+    {
+      "object": "Pathway L 05 \u2022 slot assembly \u2022 amber diffuser",
+      "sourceObject": "Pathway L 05 \u2022 slot assembly \u2022 amber diffuser",
+      "materials": [
+        "PREP | Pathway L 05 \u2022 slot assembly \u2022 amber diffuser | Pathway \u2022 warm amber opal light.001",
+        "PREP | Pathway L 05 \u2022 slot assembly \u2022 amber diffuser | Pathway \u2022 unlit black slot recess.001"
+      ],
+      "shadingUVs": [
+        "UVMap"
+      ]
+    },
+    {
+      "object": "Pathway L 05 \u2022 slot assembly \u2022 bronze face",
+      "sourceObject": "Pathway L 05 \u2022 slot assembly \u2022 bronze face",
+      "materials": [
+        "PREP | Pathway L 05 \u2022 slot assembly \u2022 bronze face | Pathway \u2022 satin champagne bronze.001",
+        "PREP | Pathway L 05 \u2022 slot assembly \u2022 bronze face | Pathway \u2022 unlit black slot recess.001",
+        "PREP | Pathway L 05 \u2022 slot assembly \u2022 bronze face | Pathway \u2022 finely machined champagne bevel.001"
+      ],
+      "shadingUVs": [
+        "UVMap"
+      ]
+    },
+    {
+      "object": "Pathway L 05 \u2022 slot assembly \u2022 dark slot interior",
+      "sourceObject": "Pathway L 05 \u2022 slot assembly \u2022 dark slot interior",
+      "materials": [
+        "PREP | Pathway L 05 \u2022 slot assembly \u2022 dark slot interior | Pathway \u2022 unlit black slot recess.001"
+      ],
+      "shadingUVs": []
+    },
+    {
+      "object": "Pathway L 07 \u2022 slot assembly \u2022 amber diffuser",
+      "sourceObject": "Pathway L 07 \u2022 slot assembly \u2022 amber diffuser",
+      "materials": [
+        "PREP | Pathway L 07 \u2022 slot assembly \u2022 amber diffuser | Pathway \u2022 warm amber opal light.001",
+        "PREP | Pathway L 07 \u2022 slot assembly \u2022 amber diffuser | Pathway \u2022 unlit black slot recess.001"
+      ],
+      "shadingUVs": [
+        "UVMap"
+      ]
+    },
+    {
+      "object": "Pathway L 07 \u2022 slot assembly \u2022 bronze face",
+      "sourceObject": "Pathway L 07 \u2022 slot assembly \u2022 bronze face",
+      "materials": [
+        "PREP | Pathway L 07 \u2022 slot assembly \u2022 bronze face | Pathway \u2022 satin champagne bronze.001",
+        "PREP | Pathway L 07 \u2022 slot assembly \u2022 bronze face | Pathway \u2022 unlit black slot recess.001",
+        "PREP | Pathway L 07 \u2022 slot assembly \u2022 bronze face | Pathway \u2022 finely machined champagne bevel.001"
+      ],
+      "shadingUVs": [
+        "UVMap"
+      ]
+    },
+    {
+      "object": "Pathway L 07 \u2022 slot assembly \u2022 dark slot interior",
+      "sourceObject": "Pathway L 07 \u2022 slot assembly \u2022 dark slot interior",
+      "materials": [
+        "PREP | Pathway L 07 \u2022 slot assembly \u2022 dark slot interior | Pathway \u2022 unlit black slot recess.001"
+      ],
+      "shadingUVs": []
+    },
+    {
+      "object": "Pathway L 10 \u2022 slot assembly \u2022 amber diffuser",
+      "sourceObject": "Pathway L 10 \u2022 slot assembly \u2022 amber diffuser",
+      "materials": [
+        "PREP | Pathway L 10 \u2022 slot assembly \u2022 amber diffuser | Pathway \u2022 warm amber opal light.001",
+        "PREP | Pathway L 10 \u2022 slot assembly \u2022 amber diffuser | Pathway \u2022 unlit black slot recess.001"
+      ],
+      "shadingUVs": [
+        "UVMap"
+      ]
+    },
+    {
+      "object": "Pathway L 10 \u2022 slot assembly \u2022 bronze face",
+      "sourceObject": "Pathway L 10 \u2022 slot assembly \u2022 bronze face",
+      "materials": [
+        "PREP | Pathway L 10 \u2022 slot assembly \u2022 bronze face | Pathway \u2022 satin champagne bronze.001",
+        "PREP | Pathway L 10 \u2022 slot assembly \u2022 bronze face | Pathway \u2022 unlit black slot recess.001",
+        "PREP | Pathway L 10 \u2022 slot assembly \u2022 bronze face | Pathway \u2022 finely machined champagne bevel.001"
+      ],
+      "shadingUVs": [
+        "UVMap"
+      ]
+    },
+    {
+      "object": "Pathway L 10 \u2022 slot assembly \u2022 dark slot interior",
+      "sourceObject": "Pathway L 10 \u2022 slot assembly \u2022 dark slot interior",
+      "materials": [
+        "PREP | Pathway L 10 \u2022 slot assembly \u2022 dark slot interior | Pathway \u2022 unlit black slot recess.001"
+      ],
+      "shadingUVs": []
+    },
+    {
+      "object": "Pathway R 01 \u2022 slot assembly \u2022 amber diffuser",
+      "sourceObject": "Pathway R 01 \u2022 slot assembly \u2022 amber diffuser",
+      "materials": [
+        "PREP | Pathway R 01 \u2022 slot assembly \u2022 amber diffuser | Pathway \u2022 warm amber opal light.001",
+        "PREP | Pathway R 01 \u2022 slot assembly \u2022 amber diffuser | Pathway \u2022 unlit black slot recess.001"
+      ],
+      "shadingUVs": [
+        "UVMap"
+      ]
+    },
+    {
+      "object": "Pathway R 01 \u2022 slot assembly \u2022 bronze face",
+      "sourceObject": "Pathway R 01 \u2022 slot assembly \u2022 bronze face",
+      "materials": [
+        "PREP | Pathway R 01 \u2022 slot assembly \u2022 bronze face | Pathway \u2022 satin champagne bronze.001",
+        "PREP | Pathway R 01 \u2022 slot assembly \u2022 bronze face | Pathway \u2022 unlit black slot recess.001",
+        "PREP | Pathway R 01 \u2022 slot assembly \u2022 bronze face | Pathway \u2022 finely machined champagne bevel.001"
+      ],
+      "shadingUVs": [
+        "UVMap"
+      ]
+    },
+    {
+      "object": "Pathway R 01 \u2022 slot assembly \u2022 dark slot interior",
+      "sourceObject": "Pathway R 01 \u2022 slot assembly \u2022 dark slot interior",
+      "materials": [
+        "PREP | Pathway R 01 \u2022 slot assembly \u2022 dark slot interior | Pathway \u2022 unlit black slot recess.001"
+      ],
+      "shadingUVs": []
+    },
+    {
+      "object": "Pathway R 03 \u2022 slot assembly \u2022 amber diffuser",
+      "sourceObject": "Pathway R 03 \u2022 slot assembly \u2022 amber diffuser",
+      "materials": [
+        "PREP | Pathway R 03 \u2022 slot assembly \u2022 amber diffuser | Pathway \u2022 warm amber opal light.001",
+        "PREP | Pathway R 03 \u2022 slot assembly \u2022 amber diffuser | Pathway \u2022 unlit black slot recess.001"
+      ],
+      "shadingUVs": [
+        "UVMap"
+      ]
+    },
+    {
+      "object": "Pathway R 03 \u2022 slot assembly \u2022 bronze face",
+      "sourceObject": "Pathway R 03 \u2022 slot assembly \u2022 bronze face",
+      "materials": [
+        "PREP | Pathway R 03 \u2022 slot assembly \u2022 bronze face | Pathway \u2022 satin champagne bronze.001",
+        "PREP | Pathway R 03 \u2022 slot assembly \u2022 bronze face | Pathway \u2022 unlit black slot recess.001",
+        "PREP | Pathway R 03 \u2022 slot assembly \u2022 bronze face | Pathway \u2022 finely machined champagne bevel.001"
+      ],
+      "shadingUVs": [
+        "UVMap"
+      ]
+    },
+    {
+      "object": "Pathway R 03 \u2022 slot assembly \u2022 dark slot interior",
+      "sourceObject": "Pathway R 03 \u2022 slot assembly \u2022 dark slot interior",
+      "materials": [
+        "PREP | Pathway R 03 \u2022 slot assembly \u2022 dark slot interior | Pathway \u2022 unlit black slot recess.001"
+      ],
+      "shadingUVs": []
+    },
+    {
+      "object": "Pathway R 05 \u2022 slot assembly \u2022 amber diffuser",
+      "sourceObject": "Pathway R 05 \u2022 slot assembly \u2022 amber diffuser",
+      "materials": [
+        "PREP | Pathway R 05 \u2022 slot assembly \u2022 amber diffuser | Pathway \u2022 warm amber opal light.001",
+        "PREP | Pathway R 05 \u2022 slot assembly \u2022 amber diffuser | Pathway \u2022 unlit black slot recess.001"
+      ],
+      "shadingUVs": [
+        "UVMap"
+      ]
+    },
+    {
+      "object": "Pathway R 05 \u2022 slot assembly \u2022 bronze face",
+      "sourceObject": "Pathway R 05 \u2022 slot assembly \u2022 bronze face",
+      "materials": [
+        "PREP | Pathway R 05 \u2022 slot assembly \u2022 bronze face | Pathway \u2022 satin champagne bronze.001",
+        "PREP | Pathway R 05 \u2022 slot assembly \u2022 bronze face | Pathway \u2022 unlit black slot recess.001",
+        "PREP | Pathway R 05 \u2022 slot assembly \u2022 bronze face | Pathway \u2022 finely machined champagne bevel.001"
+      ],
+      "shadingUVs": [
+        "UVMap"
+      ]
+    },
+    {
+      "object": "Pathway R 05 \u2022 slot assembly \u2022 dark slot interior",
+      "sourceObject": "Pathway R 05 \u2022 slot assembly \u2022 dark slot interior",
+      "materials": [
+        "PREP | Pathway R 05 \u2022 slot assembly \u2022 dark slot interior | Pathway \u2022 unlit black slot recess.001"
+      ],
+      "shadingUVs": []
+    },
+    {
+      "object": "Pathway R 07 \u2022 slot assembly \u2022 amber diffuser",
+      "sourceObject": "Pathway R 07 \u2022 slot assembly \u2022 amber diffuser",
+      "materials": [
+        "PREP | Pathway R 07 \u2022 slot assembly \u2022 amber diffuser | Pathway \u2022 warm amber opal light.001",
+        "PREP | Pathway R 07 \u2022 slot assembly \u2022 amber diffuser | Pathway \u2022 unlit black slot recess.001"
+      ],
+      "shadingUVs": [
+        "UVMap"
+      ]
+    },
+    {
+      "object": "Pathway R 07 \u2022 slot assembly \u2022 bronze face",
+      "sourceObject": "Pathway R 07 \u2022 slot assembly \u2022 bronze face",
+      "materials": [
+        "PREP | Pathway R 07 \u2022 slot assembly \u2022 bronze face | Pathway \u2022 satin champagne bronze.001",
+        "PREP | Pathway R 07 \u2022 slot assembly \u2022 bronze face | Pathway \u2022 unlit black slot recess.001",
+        "PREP | Pathway R 07 \u2022 slot assembly \u2022 bronze face | Pathway \u2022 finely machined champagne bevel.001"
+      ],
+      "shadingUVs": [
+        "UVMap"
+      ]
+    },
+    {
+      "object": "Pathway R 07 \u2022 slot assembly \u2022 dark slot interior",
+      "sourceObject": "Pathway R 07 \u2022 slot assembly \u2022 dark slot interior",
+      "materials": [
+        "PREP | Pathway R 07 \u2022 slot assembly \u2022 dark slot interior | Pathway \u2022 unlit black slot recess.001"
+      ],
+      "shadingUVs": []
+    },
+    {
+      "object": "Pathway R 10 \u2022 slot assembly \u2022 amber diffuser",
+      "sourceObject": "Pathway R 10 \u2022 slot assembly \u2022 amber diffuser",
+      "materials": [
+        "PREP | Pathway R 10 \u2022 slot assembly \u2022 amber diffuser | Pathway \u2022 warm amber opal light.001",
+        "PREP | Pathway R 10 \u2022 slot assembly \u2022 amber diffuser | Pathway \u2022 unlit black slot recess.001"
+      ],
+      "shadingUVs": [
+        "UVMap"
+      ]
+    },
+    {
+      "object": "Pathway R 10 \u2022 slot assembly \u2022 bronze face",
+      "sourceObject": "Pathway R 10 \u2022 slot assembly \u2022 bronze face",
+      "materials": [
+        "PREP | Pathway R 10 \u2022 slot assembly \u2022 bronze face | Pathway \u2022 satin champagne bronze.001",
+        "PREP | Pathway R 10 \u2022 slot assembly \u2022 bronze face | Pathway \u2022 unlit black slot recess.001",
+        "PREP | Pathway R 10 \u2022 slot assembly \u2022 bronze face | Pathway \u2022 finely machined champagne bevel.001"
+      ],
+      "shadingUVs": [
+        "UVMap"
+      ]
+    },
+    {
+      "object": "Pathway R 10 \u2022 slot assembly \u2022 dark slot interior",
+      "sourceObject": "Pathway R 10 \u2022 slot assembly \u2022 dark slot interior",
+      "materials": [
+        "PREP | Pathway R 10 \u2022 slot assembly \u2022 dark slot interior | Pathway \u2022 unlit black slot recess.001"
+      ],
+      "shadingUVs": []
+    },
+    {
+      "object": "Plain floor \u2022 red to connecting plane",
+      "sourceObject": "Plain floor \u2022 red to connecting plane",
+      "materials": [
+        "PREP | Plain floor \u2022 red to connecting plane | Floor | Slate 4K | Poly Haven.001"
+      ],
+      "shadingUVs": [
+        "Slate floor planar"
+      ]
+    },
+    {
+      "object": "Red corridor wall \u2022 separate from logo \u2022 restrained roof datum",
+      "sourceObject": "Red corridor wall \u2022 separate from logo \u2022 restrained roof datum",
+      "materials": [
+        "PREP | Red corridor wall \u2022 separate from logo \u2022 restrained roof datum | Exterior \u2022 charcoal titanium roof datum.001"
+      ],
+      "shadingUVs": [
+        "UVMap"
+      ]
+    },
+    {
+      "object": "Red corridor wall \u2022 separate from logo",
+      "sourceObject": "Red corridor wall \u2022 separate from logo",
+      "materials": [
+        "PREP | Red corridor wall \u2022 separate from logo | Corridor \u2022 neutral soft fill / dark lower edge.001"
+      ],
+      "shadingUVs": [
+        "Steel grain \u2022 physical spacing",
+        "Steel PBR \u2022 physical vertical grain",
+        "BakeUV"
+      ]
+    }
+  ],
+  "sourceShadingUVRepairs": [
+    {
+      "object": "FIX | Capped Connecting plane \u2022 joins yellow tip",
+      "source": "Connecting plane \u2022 joins yellow tip",
+      "layer": "Steel PBR \u2022 physical vertical grain",
+      "maxSurfaceDistanceMetres": 0.6358445882797241,
+      "purpose": "source shading only; NOT runtime bake UV"
+    },
+    {
+      "object": "FIX | Capped Red corridor wall \u2022 separate from logo",
+      "source": "Red corridor wall \u2022 separate from logo",
+      "layer": "Steel PBR \u2022 physical vertical grain",
+      "maxSurfaceDistanceMetres": 0.6358314752578735,
+      "purpose": "source shading only; NOT runtime bake UV"
+    }
+  ],
+  "lights": [
+    {
+      "name": "Corridor \u2022 Soft overhead material fill",
+      "position": [
+        0.9548969268798828,
+        24.965002059936523,
+        24.58477783203125
+      ],
+      "sourceEnergy": 1.100000023841858,
+      "layoutEnergy": 5489.951171875,
+      "receivers": [
+        "Plain floor \u2022 red to connecting plane",
+        "Swoosh \u2022 Red",
+        "Swoosh \u2022 Blue",
+        "Swoosh \u2022 Orange"
+      ],
+      "mapping": "authored global similarity transform; no arbitrary new fill lights"
+    },
+    {
+      "name": "Corridor | Soft stone wash A",
+      "position": [
+        -85.41841888427734,
+        111.54566192626953,
+        19.63924217224121
+      ],
+      "sourceEnergy": 1.0499999523162842,
+      "layoutEnergy": 5240.40771484375,
+      "receivers": [
+        "Plain floor \u2022 red to connecting plane"
+      ],
+      "mapping": "authored global similarity transform; no arbitrary new fill lights"
+    },
+    {
+      "name": "Corridor | Soft stone wash B",
+      "position": [
+        -10.744941711425781,
+        68.01749420166016,
+        19.639413833618164
+      ],
+      "sourceEnergy": 0.8500000238418579,
+      "layoutEnergy": 4242.23486328125,
+      "receivers": [
+        "Plain floor \u2022 red to connecting plane"
+      ],
+      "mapping": "authored global similarity transform; no arbitrary new fill lights"
+    },
+    {
+      "name": "Full logo \u2022 Key",
+      "position": [
+        -361.90802001953125,
+        234.8561553955078,
+        374.78411865234375
+      ],
+      "sourceEnergy": 42.0,
+      "layoutEnergy": 209616.3125,
+      "receivers": [
+        "Red corridor wall \u2022 separate from logo",
+        "Connecting plane \u2022 joins yellow tip",
+        "Plain floor \u2022 red to connecting plane",
+        "Swoosh \u2022 Red",
+        "Swoosh \u2022 Blue",
+        "Swoosh \u2022 Orange"
+      ],
+      "mapping": "authored global similarity transform; no arbitrary new fill lights"
+    },
+    {
+      "name": "Full logo \u2022 Fill",
+      "position": [
+        178.5834503173828,
+        -101.85848236083984,
+        374.7854919433594
+      ],
+      "sourceEnergy": 13.0,
+      "layoutEnergy": 64881.2421875,
+      "receivers": [
+        "Red corridor wall \u2022 separate from logo",
+        "Connecting plane \u2022 joins yellow tip",
+        "Plain floor \u2022 red to connecting plane",
+        "Swoosh \u2022 Red",
+        "Swoosh \u2022 Blue",
+        "Swoosh \u2022 Orange"
+      ],
+      "mapping": "authored global similarity transform; no arbitrary new fill lights"
+    },
+    {
+      "name": "Full logo \u2022 Edge",
+      "position": [
+        101.43229675292969,
+        107.79823303222656,
+        78.07135772705078
+      ],
+      "sourceEnergy": 20.0,
+      "layoutEnergy": 99817.296875,
+      "receivers": [
+        "Red corridor wall \u2022 separate from logo",
+        "Connecting plane \u2022 joins yellow tip",
+        "Plain floor \u2022 red to connecting plane",
+        "Swoosh \u2022 Red",
+        "Swoosh \u2022 Blue",
+        "Swoosh \u2022 Orange"
+      ],
+      "mapping": "authored global similarity transform; no arbitrary new fill lights"
+    },
+    {
+      "name": "Exterior \u2022 left satin grazing ribbon",
+      "position": [
+        5.8000383377075195,
+        33.811012268066406,
+        13.999995231628418
+      ],
+      "sourceEnergy": 0.4167614281177521,
+      "layoutEnergy": 2080.0,
+      "receivers": [
+        "Red corridor wall \u2022 separate from logo",
+        "Connecting plane \u2022 joins yellow tip",
+        "Red corridor wall \u2022 separate from logo \u2022 restrained roof datum",
+        "Connecting plane \u2022 joins yellow tip \u2022 restrained roof datum"
+      ],
+      "mapping": "authored global similarity transform; no arbitrary new fill lights"
+    },
+    {
+      "name": "Exterior \u2022 right satin grazing ribbon",
+      "position": [
+        -6.099981307983398,
+        32.81098937988281,
+        15.000102996826172
+      ],
+      "sourceEnergy": 0.4969078600406647,
+      "layoutEnergy": 2480.0,
+      "receivers": [
+        "Red corridor wall \u2022 separate from logo",
+        "Connecting plane \u2022 joins yellow tip",
+        "Red corridor wall \u2022 separate from logo \u2022 restrained roof datum",
+        "Connecting plane \u2022 joins yellow tip \u2022 restrained roof datum"
+      ],
+      "mapping": "authored global similarity transform; no arbitrary new fill lights"
+    },
+    {
+      "name": "Corridor \u2022 wall fill without reflected softbox",
+      "position": [
+        0.9548969268798828,
+        24.965002059936523,
+        24.58477783203125
+      ],
+      "sourceEnergy": 1.100000023841858,
+      "layoutEnergy": 5489.951171875,
+      "receivers": [
+        "Red corridor wall \u2022 separate from logo",
+        "Connecting plane \u2022 joins yellow tip",
+        "Red corridor wall \u2022 separate from logo \u2022 restrained roof datum",
+        "Connecting plane \u2022 joins yellow tip \u2022 restrained roof datum"
+      ],
+      "mapping": "authored global similarity transform; no arbitrary new fill lights"
+    }
+  ],
+  "captures": [
+    {
+      "label": "entry",
+      "camera": "PREP CAMERA | entry",
+      "position": [
+        -4.048210144042969,
+        56.60417938232422,
+        3.240000009536743
+      ],
+      "target": [
+        -8.917251586914062,
+        66.93704223632812,
+        3.240000009536743
+      ],
+      "fov": 40,
+      "resolution": [
+        1600,
+        900
+      ]
+    },
+    {
+      "label": "bend",
+      "camera": "PREP CAMERA | bend",
+      "position": [
+        -49.89191818237305,
+        105.67767333984375,
+        3.240000009536743
+      ],
+      "target": [
+        -60.17906188964844,
+        110.65523529052734,
+        3.240000009536743
+      ],
+      "fov": 40,
+      "resolution": [
+        1600,
+        900
+      ]
+    },
+    {
+      "label": "exit",
+      "camera": "PREP CAMERA | exit",
+      "position": [
+        -123.40933227539062,
+        121.41460418701172,
+        3.240000009536743
+      ],
+      "target": [
+        -134.7411346435547,
+        119.93868255615234,
+        3.240000009536743
+      ],
+      "fov": 40,
+      "resolution": [
+        1600,
+        900
+      ]
+    }
+  ],
+  "warnings": [
+    "Connecting plane \u2022 joins yellow tip: preserve camera-ray material branch for reference; COMBINED bake needs explicit camera-response validation",
+    "FIX | Capped Connecting plane \u2022 joins yellow tip: preserve camera-ray material branch for reference; COMBINED bake needs explicit camera-response validation",
+    "FIX | Capped Red corridor wall \u2022 separate from logo: preserve camera-ray material branch for reference; COMBINED bake needs explicit camera-response validation",
+    "Red corridor wall \u2022 separate from logo: preserve camera-ray material branch for reference; COMBINED bake needs explicit camera-response validation"
+  ],
+  "excluded": [
+    "Slide A | Behind theatre marked end | Side 1",
+    "Slide A | Behind theatre marked end | Side -1",
+    "Slide A | Behind theatre marked end",
+    "Slide B | Opposite corridor end | Side 1",
+    "Slide B | Opposite corridor end | Side -1",
+    "Slide B | Opposite corridor end",
+    "Swoosh \u2022 Blue",
+    "Swoosh \u2022 Orange",
+    "Swoosh \u2022 Red"
+  ],
+  "limitation": "Layout differs from original source. This is a source-material reference on the approved runtime layout, not pixel-identical original-corridor lighting. Source light rig transferred by the documented authored similarity transform; geometry changes naturally alter shadows/reflections."
+}

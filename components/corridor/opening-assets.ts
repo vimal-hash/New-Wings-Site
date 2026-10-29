@@ -1,0 +1,42 @@
+import { useLoader } from "@react-three/fiber";
+import { useGLTF } from "@react-three/drei";
+import type { WebGLRenderer } from "three";
+import { KTX2Loader } from "three/examples/jsm/loaders/KTX2Loader.js";
+import { loadCompressedBuffer } from "./compressed-buffer";
+import { preloadBakedSurfaces } from "./baked-surfaces";
+import { configureBakedTextureLoader } from "./baked-texture-loader";
+import { traceGLTF, traceMark } from "./loading-trace";
+import ceiling from "./theatre-ceiling-assets.json";
+import leftWall from "./theatre-left-wall-assets.json";
+import sofas from "./sofa-assets.json";
+
+export const THEATRE_MODELS = ["/models/theatre-marked.glb", "/models/projector-floor-marked.glb"];
+const started = new WeakMap<WebGLRenderer, { sofas: boolean }>();
+
+/** Match each consumer's exact loader/URL batch so Suspense reuses the work.
+ * Only opening assets belong here; the corridor still starts after first frame. */
+export function preloadOpeningAssets(gl: WebGLRenderer, includeSofas: boolean) {
+  let state = started.get(gl);
+  if (!state) {
+    state = { sofas: false };
+    started.set(gl, state);
+    traceMark("Opening asset preloads started");
+    // Queue critical models and motion before the much larger atlas batch.
+    useGLTF.preload(THEATRE_MODELS, "/draco/", false, traceGLTF);
+    useGLTF.preload(ceiling.model, "/draco/", false, traceGLTF);
+    if (includeSofas) {
+      state.sofas = true;
+      useGLTF.preload(sofas.model, "/draco/", false, traceGLTF);
+    }
+    useLoader.preload(KTX2Loader, ceiling.texture, loader => configureBakedTextureLoader(loader, gl));
+    useLoader.preload(KTX2Loader, leftWall.texture, loader => configureBakedTextureLoader(loader, gl));
+    preloadBakedSurfaces("theatre", gl);
+    void loadCompressedBuffer("/textures/shared/blender-view.bin.gz").catch(()=>{});
+    if(includeSofas)useLoader.preload(KTX2Loader,sofas.textures,loader=>configureBakedTextureLoader(loader,gl));
+  }
+  if (includeSofas && !state.sofas) {
+    state.sofas = true;
+    useGLTF.preload(sofas.model, "/draco/", false, traceGLTF);
+    useLoader.preload(KTX2Loader,sofas.textures,loader=>configureBakedTextureLoader(loader,gl));
+  }
+}

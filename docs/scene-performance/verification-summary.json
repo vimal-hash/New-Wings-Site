@@ -1,0 +1,33 @@
+[
+  {
+    "profile": "laptop",
+    "openingPaintMs": 1075.9,
+    "openingSettledMs": 5581.6,
+    "worstBrowserPauseMs": 106.8,
+    "freezes250ms": 0,
+    "errors": 0,
+    "particleResources": [
+      "/models/projector/trajectories-laptop.bin.gz"
+    ]
+  },
+  {
+    "profile": "mobile",
+    "openingPaintMs": 1163.9,
+    "openingSettledMs": 5666,
+    "worstBrowserPauseMs": 119.9,
+    "freezes250ms": 0,
+    "errors": 0,
+    "particleResources": []
+  },
+  {
+    "profile": "desktop",
+    "openingPaintMs": 1079.6,
+    "openingSettledMs": 5586.3,
+    "worstBrowserPauseMs": 106.6,
+    "freezes250ms": 0,
+    "errors": 0,
+    "particleResources": [
+      "/models/projector/particles-desktop.bin.gz"
+    ]
+  }
+]

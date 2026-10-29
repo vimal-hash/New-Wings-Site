@@ -1,0 +1,42 @@
+import fs from 'node:fs';
+import zlib from 'node:zlib';
+import assert from 'node:assert/strict';
+import {pathToFileURL} from 'node:url';
+const base='D:/New folio/new site code/new_si_two/node_modules/.pnpm/';
+const load=p=>import(pathToFileURL(base+p).href);
+const {NodeIO}=await load('@gltf-transform+core@4.5.0/node_modules/@gltf-transform/core/dist/index.js');
+const {ALL_EXTENSIONS}=await load('@gltf-transform+extensions@4.5.0/node_modules/@gltf-transform/extensions/dist/index.js');
+const {default:draco}=await load('draco3dgltf@1.5.7/node_modules/draco3dgltf/draco3dgltf.js');
+const io=new NodeIO().registerExtensions(ALL_EXTENSIONS).registerDependencies({'draco3d.decoder':await draco.createDecoderModule()});
+const meta=JSON.parse(fs.readFileSync('components/corridor/projector-animation.json'));
+const doc=await io.read('public'+meta.modelUrl);
+assert.equal(doc.getRoot().listMeshes().length,1);assert.equal(doc.getRoot().listTextures().length,0);
+const primitives=doc.getRoot().listMeshes()[0].listPrimitives();assert.equal(primitives.length,1);
+const primitive=primitives[0],position=primitive.getAttribute('POSITION').getArray(),ids=primitive.getAttribute('_PART').getArray();
+assert.ok(primitive.getAttribute('TEXCOORD_0'),'Source texture UVs are present');
+assert.ok(primitive.getAttribute('_SURFACE'),'Source material IDs are present');
+const bytes=zlib.gunzipSync(fs.readFileSync('public'+meta.dataUrl));
+const data=new Float32Array(bytes.buffer,bytes.byteOffset,bytes.byteLength/4);
+assert.equal(data.length,meta.textureFloats);assert.ok(data.every(Number.isFinite));
+const original=zlib.gunzipSync(fs.readFileSync('public/models/projector-motion.bin.gz'));
+assert.ok(bytes.equals(original.subarray(0,bytes.length)),'Every original assembly pose is unchanged');
+assert.equal(meta.assemblySeconds,2);assert.equal(meta.particleCountMobile,32768);assert.equal(meta.particleCountDesktop,65536);
+const bounds=[[Infinity,-Infinity],[Infinity,-Infinity],[Infinity,-Infinity]];let partError=0;
+for(let i=0;i<ids.length;i++) {
+ const part=Math.round(ids[i]);partError=Math.max(partError,Math.abs(part-ids[i]));assert.ok(part>=0&&part<meta.parts);
+ const off=((meta.frames-1)*meta.textureWidth+part*3)*4;
+ if(data[off+3]<.5)continue;
+ let x=position[i*3]*data[off+8],y=position[i*3+1]*data[off+9],z=position[i*3+2]*data[off+10];
+ const qx=data[off+4],qy=data[off+5],qz=data[off+6],qw=data[off+7];
+ const tx=2*(qy*z-qz*y),ty=2*(qz*x-qx*z),tz=2*(qx*y-qy*x);
+ const p=[x+qw*tx+qy*tz-qz*ty+data[off],y+qw*ty+qz*tx-qx*tz+data[off+1],z+qw*tz+qx*ty-qy*tx+data[off+2]];
+ for(let k=0;k<3;k++){bounds[k][0]=Math.min(bounds[k][0],p[k]);bounds[k][1]=Math.max(bounds[k][1],p[k]);}
+}
+assert.ok(partError<.25);
+const placement=JSON.parse(fs.readFileSync('components/corridor/projector-assets.json'));const b=placement.bounds_blender;
+const expected=[b[0],b[2],[-b[1][1],-b[1][0]]];let error=0;
+for(let k=0;k<3;k++)for(let j=0;j<2;j++)error=Math.max(error,Math.abs(bounds[k][j]-expected[k][j]));
+assert.ok(error<.0001,`Assembled GPU bounds differ from Blender by ${error}m`);
+const report={meshes:1,drawCalls:1,particleDrawCalls:2,particleCountMobile:meta.particleCountMobile,particleCountDesktop:meta.particleCountDesktop,triangles:primitive.getIndices().getCount()/3,assemblySeconds:2,maximumPartIndexError:partError,assembledBoundsErrorMetres:error,originalPosesUnchanged:true,motionCompressedBytes:fs.statSync('public'+meta.dataUrl).size,motionDecodedBytes:bytes.byteLength,actualBounds:bounds};
+fs.mkdirSync('docs/scene-finish',{recursive:true});
+fs.writeFileSync('docs/scene-finish/projector-animation-verification.json',JSON.stringify(report,null,2));console.log(report);

@@ -1,0 +1,15 @@
+{
+  "openingBytes": 6580052,
+  "corridorBytes": 4109560,
+  "totalBytes": 29265861,
+  "desktopOpeningBytes": 6580052,
+  "desktopCorridorBytes": 4109560,
+  "desktopTotalBytes": 50077975,
+  "mobileEffectsBytes": 0,
+  "laptopEffectsBytes": 672103,
+  "desktopEffectsBytes": 1335913,
+  "projectorCoreBytes": 6910953,
+  "desktopRefinementBytes": 29839041,
+  "deferredPlatformBytes": 1302456,
+  "baseRefinementBytes": 10362840
+}

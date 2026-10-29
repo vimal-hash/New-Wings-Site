@@ -1,0 +1,13 @@
+# Pupil front fill — 2026-10-28
+
+The user authorised the clean front-face fill only. Light emission and the iris reaction require their next approval. The earlier stand/contact/ray idea was scrapped. Do not add those effects as part of this change.
+
+`pupil-fill.ts` derives the largest closed front contour from the mounted blue Swoosh's actual GLB geometry. It triangulates that outline without its internal corridor channel, producing one front-only face (624 vertices / 622 triangles). The natural C opening and outer silhouette remain intact. No source GLB, texture, corridor wall or camera sampler is modified. The cap borrows the approved steel finish and existing environment; it owns and disposes only its small geometry and cloned material.
+
+The existing final pullback supplies progress. Fill is zero through View 1, the turn and View 2. It smoothly advances left to right from 8% through 82% of the 4.5-second pullback, completing about 0.8 seconds before settling. The reveal direction follows the final screen-right axis in world space. A 5.5% feather softens the transition. Review buttons/Restart reset the fill; reduced motion completes it immediately with the existing camera transition. There is no additional animation loop or particle/light change.
+
+`scene.tsx` updates cap visibility after the camera and before the existing renderer. Stationary idle jobs compile and privately draw its material before use. The private star extraction uses a matching black alpha mask so distant halos cannot leak over the filled face. Neither the new face nor the silver iris contributes colour to bloom.
+
+Verification and reversible pre-change source copies: `D:/CodexOutputs/Pupil_Fill_20261028/`. The production build, TypeScript and 69 tests pass. Native 3840×1890 before/after captures show close-view image differences of at most one code value on a handful of pixels. Live GPU observations confirm no cap submission at either close stop, intermediate reveal values, completion during pullback, and correct review reset/reduced-motion completion. Desktop, laptop and mobile quality configurations were checked on the workstation, not on physical low-tier devices. Final desktop cadence measured 13.3 ms median / 13.4 ms p95. The scene continues some rendering after dynamically enabling reduced motion in the final view; this check does not establish complete final-scene idle. The fill itself has no recurring invalidation.
+
+The `eye-one` checkpoint stays at `fe1ad8ec53c888be42f08c814ff0192513aae31a`. To revert only this task, use its saved versions of `scene.tsx`, `full-journey.tsx` and `star-bloom.tsx`, remove the new pupil module/test, and remove this task's documentation note. Preserve earlier silver/foreground/star work.

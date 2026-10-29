@@ -1,0 +1,167 @@
+[
+  {
+    "name": "Cylinder",
+    "decodedColor": [
+      0.6499999761581421,
+      0.29249998927116394,
+      0.29249998927116394
+    ],
+    "expectedTriangles": 184,
+    "role": "mirror",
+    "wall": "right"
+  },
+  {
+    "name": "Cylinder.001",
+    "decodedColor": [
+      0.29249998927116394,
+      0.39698922634124756,
+      0.6499999761581421
+    ],
+    "expectedTriangles": 24,
+    "role": "light",
+    "wall": "right"
+  },
+  {
+    "name": "Cylinder.002",
+    "decodedColor": [
+      0.5011290311813354,
+      0.6499999761581421,
+      0.29249998927116394
+    ],
+    "expectedTriangles": 16,
+    "role": "backing",
+    "wall": "right"
+  },
+  {
+    "name": "Cylinder.009",
+    "decodedColor": [
+      0.6499999761581421,
+      0.485752671957016,
+      0.29249998927116394
+    ],
+    "expectedTriangles": 322,
+    "role": "mirror",
+    "wall": "left"
+  },
+  {
+    "name": "Cylinder.010",
+    "decodedColor": [
+      0.3816128969192505,
+      0.29249998927116394,
+      0.6499999761581421
+    ],
+    "expectedTriangles": 24,
+    "role": "light",
+    "wall": "left"
+  },
+  {
+    "name": "Cylinder.011",
+    "decodedColor": [
+      0.307876318693161,
+      0.6499999761581421,
+      0.29249998927116394
+    ],
+    "expectedTriangles": 16,
+    "role": "backing",
+    "wall": "left"
+  },
+  {
+    "name": "Cylinder.019",
+    "decodedColor": [
+      0.29249998927116394,
+      0.6499999761581421,
+      0.47072577476501465
+    ],
+    "expectedTriangles": 22,
+    "role": "crescent",
+    "wall": "left"
+  },
+  {
+    "name": "Cylinder.012",
+    "decodedColor": [
+      0.6499999761581421,
+      0.29249998927116394,
+      0.4120161235332489
+    ],
+    "expectedTriangles": 322,
+    "role": "mirror",
+    "wall": "left"
+  },
+  {
+    "name": "Cylinder.013",
+    "decodedColor": [
+      0.29249998927116394,
+      0.5165053606033325,
+      0.6499999761581421
+    ],
+    "expectedTriangles": 24,
+    "role": "light",
+    "wall": "left"
+  },
+  {
+    "name": "Cylinder.014",
+    "decodedColor": [
+      0.6206451654434204,
+      0.6499999761581421,
+      0.29249998927116394
+    ],
+    "expectedTriangles": 16,
+    "role": "backing",
+    "wall": "left"
+  },
+  {
+    "name": "Cylinder.021",
+    "decodedColor": [
+      0.29249998927116394,
+      0.32290321588516235,
+      0.6499999761581421
+    ],
+    "expectedTriangles": 22,
+    "role": "crescent",
+    "wall": "left"
+  },
+  {
+    "name": "Cylinder.025",
+    "decodedColor": [
+      0.6499999761581421,
+      0.29249998927116394,
+      0.5315322279930115
+    ],
+    "expectedTriangles": 22,
+    "role": "crescent",
+    "wall": "right"
+  },
+  {
+    "name": "Cylinder.003",
+    "decodedColor": [
+      0.6499999761581421,
+      0.29249998927116394,
+      0.6056182384490967
+    ],
+    "expectedTriangles": 184,
+    "role": "mirror",
+    "wall": "right"
+  },
+  {
+    "name": "Cylinder.004",
+    "decodedColor": [
+      0.29249998927116394,
+      0.6499999761581421,
+      0.5902419090270996
+    ],
+    "expectedTriangles": 24,
+    "role": "light",
+    "wall": "right"
+  },
+  {
+    "name": "Cylinder.027",
+    "decodedColor": [
+      0.6499999761581421,
+      0.5598386526107788,
+      0.29249998927116394
+    ],
+    "expectedTriangles": 22,
+    "role": "crescent",
+    "wall": "right"
+  }
+]

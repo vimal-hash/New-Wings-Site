@@ -1,0 +1,47 @@
+{
+  "mode": "Deterministic source-layer compositing; no AI regeneration",
+  "width": 2048,
+  "height": 1152,
+  "output": "screen-ghosted-three-copy-v1.png",
+  "cleanUnchanged": true,
+  "rebuiltCleanMeanChannelError": 0,
+  "colourTreatment": "Original source RGB; no red/cyan or cool-tint recolouring",
+  "mainCopy": "Original source pixels at original coordinates, no blur or opacity reduction",
+  "thirdCopy": "Artistic faint contour, not a third physical eye channel",
+  "layers": [
+    {
+      "name": "background",
+      "file": "codex-clipboard-62ee8d9d-cc6b-41eb-b499-3aeea97fb795.png"
+    },
+    {
+      "name": "decorations",
+      "file": "codex-clipboard-3d30fe7d-cf79-4ffc-947f-bf601afd49f0.png",
+      "offset": 8,
+      "secondAlpha": 0.3,
+      "thirdOffset": 17,
+      "thirdAlpha": 0.15,
+      "secondSigma": 0.6,
+      "thirdSigma": 2
+    },
+    {
+      "name": "text",
+      "file": "codex-clipboard-ed88df88-f623-4b07-84e1-ca504133744b.png",
+      "offset": -14,
+      "secondAlpha": 0.32,
+      "thirdOffset": -29,
+      "thirdAlpha": 0.17,
+      "secondSigma": 0.8,
+      "thirdSigma": 2.6
+    },
+    {
+      "name": "logo",
+      "file": "codex-clipboard-fb396ca7-0c00-4da1-b1eb-3dfe5a8131cd.png",
+      "offset": -23,
+      "secondAlpha": 0.34,
+      "thirdOffset": -46,
+      "thirdAlpha": 0.18,
+      "secondSigma": 1,
+      "thirdSigma": 3.2
+    }
+  ]
+}

@@ -1,0 +1,106 @@
+[
+  {
+    "source": "/textures/theatre/left-wall/left-wall-light-2k.ktx2",
+    "preview": "/textures/theatre/left-wall/left-wall-light-2k-first-paint.ktx2",
+    "sourceBytes": 1680069,
+    "previewBytes": 461842,
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "source": "/textures/theatre/right-wall/right-wall-light-2k.ktx2",
+    "preview": "/textures/theatre/right-wall/right-wall-light-2k-first-paint.ktx2",
+    "sourceBytes": 1164679,
+    "previewBytes": 315735,
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "source": "/textures/theatre/front-wall/front-wall.ktx2",
+    "preview": "/textures/theatre/front-wall/front-wall-first-paint.ktx2",
+    "sourceBytes": 491610,
+    "previewBytes": 118804,
+    "width": 512,
+    "height": 1024
+  },
+  {
+    "source": "/textures/theatre/screen/screen.ktx2",
+    "preview": "/textures/theatre/screen/screen-first-paint.ktx2",
+    "sourceBytes": 654628,
+    "previewBytes": 151357,
+    "width": 512,
+    "height": 1024
+  },
+  {
+    "source": "/textures/theatre/stage/stage.ktx2",
+    "preview": "/textures/theatre/stage/stage-first-paint.ktx2",
+    "sourceBytes": 533786,
+    "previewBytes": 113433,
+    "width": 512,
+    "height": 1024
+  },
+  {
+    "source": "/textures/theatre/light-fixtures/light-fixtures.ktx2",
+    "preview": "/textures/theatre/light-fixtures/light-fixtures-first-paint.ktx2",
+    "sourceBytes": 271214,
+    "previewBytes": 73504,
+    "width": 256,
+    "height": 512
+  },
+  {
+    "source": "/textures/theatre/wall-trim/wall-trim.ktx2",
+    "preview": "/textures/theatre/wall-trim/wall-trim-first-paint.ktx2",
+    "sourceBytes": 392674,
+    "previewBytes": 57114,
+    "width": 512,
+    "height": 1024
+  },
+  {
+    "source": "/textures/theatre/step-nosings/step-nosings.ktx2",
+    "preview": "/textures/theatre/step-nosings/step-nosings-first-paint.ktx2",
+    "sourceBytes": 1078097,
+    "previewBytes": 223534,
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "source": "/textures/theatre/aisle-lights/aisle-lights.ktx2",
+    "preview": "/textures/theatre/aisle-lights/aisle-lights-first-paint.ktx2",
+    "sourceBytes": 1131219,
+    "previewBytes": 271859,
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "source": "/textures/theatre/acoustic-slats/acoustic-slats.ktx2",
+    "preview": "/textures/theatre/acoustic-slats/acoustic-slats-first-paint.ktx2",
+    "sourceBytes": 982368,
+    "previewBytes": 206625,
+    "width": 1024,
+    "height": 1024
+  },
+  {
+    "source": "/textures/theatre/speakers/speakers.ktx2",
+    "preview": "/textures/theatre/speakers/speakers-first-paint.ktx2",
+    "sourceBytes": 452179,
+    "previewBytes": 125035,
+    "width": 512,
+    "height": 512
+  },
+  {
+    "source": "/textures/theatre/terraces/terraces-light-2k.ktx2",
+    "preview": "/textures/theatre/terraces/terraces-light-2k-first-paint.ktx2",
+    "sourceBytes": 281130,
+    "previewBytes": 87704,
+    "width": 512,
+    "height": 1024
+  },
+  {
+    "source": "/textures/theatre/moon-steel-border/moon-steel-border-light-2k.ktx2",
+    "preview": "/textures/theatre/moon-steel-border/moon-steel-border-light-2k-first-paint.ktx2",
+    "sourceBytes": 1249187,
+    "previewBytes": 384538,
+    "width": 1024,
+    "height": 1024
+  }
+]

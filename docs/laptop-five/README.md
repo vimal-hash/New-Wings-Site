@@ -1,0 +1,39 @@
+# Laptop preparation, particles, light and camera continuity — 26 October 2026
+
+Preview: http://192.168.1.5:3000/ — diagnostics: http://192.168.1.5:3000/?diagnostics=1
+
+## Five changes
+
+1. **Opening and projector preparation.** The two supplied physical laptop reports put first paint at 16.08 s and 6.86 s. Projector fetching started only after the authored opening ended; readiness followed another 6.75 s / 5.65 s later. Thirteen theatre atlases now start with their existing compressed next mip. The opening asset set falls from **14,351,808 to 6,580,052 bytes (54.2% less)**. There is no re-bake, palette conversion or re-encoding. The ceiling, theatre floor and sofas keep their existing opening resolution. Projector import/fetch/worker decode starts at first paint and overlaps the opening camera. Heavy mounting, upload and private warmup remain at stationary stops. The shared cinema environment is prepared while opening downloads are pending. Content-versioned URLs and matching decoder preload hints permit repeat visits to reuse immutable files without serving stale edits.
+
+2. **Particle pauses.** The physical laptop reports showed repeated 50–66.8 ms formation pauses without a rise in shader count. The full source field previously ran for four vertices of each grain, including reflection draws. On compatible laptops it now runs once per grain into three small RGBA32F buffers; the existing quad shader reads those results. **All 32,768 main grains and the ambient field remain**, with the same paths, landing masks, timing, source colour, illumination and antialiasing. Unsupported hardware uses the original vertex path; desktop remains on its original 65,536-grain path and phones still use reveal/assembly without the flying field. No particle files or model files changed. Temporary runtime buffer cost is about 3.2 MiB on the laptop path; no extra downloads. The compute shader compiles asynchronously with its actual output target bound, and its first draw happens privately before readiness.
+
+3. **Walnut floor and light.** The original baked walnut texture remains unchanged. Before formation, its baked appearance remains fully present and the live diffuse contribution is zero. During formation its baked fill smoothly falls to 18%, while the existing shadowed key supplies surface light. Removed the tenfold diffuse amplification that washed the wood into a bright tan pool; its replacement preserves colour ratios and grain. The key is mainly white with a slight blue tint, with less blue rim light. Existing background, light placement, smooth one-way room dimming and projector-driven shadows remain.
+
+4. **Pearl.** Reduced from 90% to 72% of the original size (another 20% reduction). It fades in directly at the camera-centred position, without the previous vertical offset or growth. Continuous flow/spin, matte corridor shading, reduced-motion handling, morph and full-screen HTML coverage remain. The morph starts at exactly the new sphere size.
+
+5. **Exit input.** Slide endpoint now starts the rightward turn automatically, at the exact matching camera pose. There is no extra gesture or idle timeout at that join. Removed the extra 150 ms post-turn input lock. A fresh gesture at the next intended stop starts the final pullback; momentum still cannot skip that shot. Long pre-input idle periods remain excluded from the animation clock. The camera returns to demand rendering at its stops.
+
+## Evidence and validation
+
+- [Before projector lighting](projector-before.png), [after](projector-after.png), [smaller centred sphere](sphere-after.png).
+- `particle-cache-before-lighting.png` and `projector-before.png` are actual matched 1280×720 captures at formation frame 66. The optimized evaluation, before changing lighting, is **pixel-identical** (RMSE 0, maximum channel difference 0). This is a checked frame, not proof for every frame or every GPU.
+- The independent geometric landing test passes against the shipped current part positions, including the previously marked cover and panels. All 49 automated regressions pass, including exact camera joins, long idle clocks, the automatic slide/turn boundary, immediate post-turn input and no momentum skip.
+- `laptop-formation.json`: workstation browser forced to the laptop effect path, cached loopback delivery. First paint 0.79 s; projector downloads started 0.797 s, before opening settled at 5.309 s; projector GPU ready at 6.029 s. No pauses over 50 ms during approach/formation. An earlier stationary preparation submission was 160 ms. These are **not physical laptop timings** or a promise of its loading time.
+- Full laptop-profile journey: opening → first pullback → particle formation → assembly/return → screens → corridor → sphere → morph → three HTML sections → automatic page return → slide → automatic turn → next-gesture logo pullback. At the turn stop the panel showed `Paused · idle`; no extra turn gesture was sent.
+- The local `fx-test=mobile` diagnostic now exercises the device tier as well as the particle shader tier: phone textures, shadow resolution, sphere mesh and reveal-only UI. A narrow desktop viewport alone does not select the actual mobile texture path. This override requires localhost and diagnostics; public automatic device selection is unchanged. Real phone/tablet selection is covered by device-identity regressions.
+- The final 390×844 mobile-profile run also completed the full journey through the logo, with zero captured errors, no particle-data requests and no 6K requests (`mobile-full-journey.json`, `mobile-checks.json`). No pauses over 50 ms during the moving journey; its three recorded pauses were during initial load/stationary preparation, at most 93.4 ms. This is a desktop browser exercising the phone code path, **not a measurement on a physical phone**.
+- Production build and TypeScript pass. ESLint passes for changed source/scripts. The project-wide lint includes existing errors in legacy audit utilities and a bundled decoder; it is not globally clean.
+- `integrity.json` compares all 129 original public files to the pre-task SHA-256 snapshot: no differences, including all 21 GLBs. Only 13 first-paint sibling textures were added. Original full-resolution and 6K textures remain untouched.
+
+## Tradeoffs and reproduction
+
+The 13 smaller mip chains total 2,591,084 bytes. Full original atlases refine later at stationary stops after the projector sequence. This improves the **initial** download; a visitor who waits for all refinement downloads an additional 2.59 MB overall. It is not a reduction of the final complete asset set. Optional 6K continues only on permitted computers; phones keep the existing lower tier.
+
+- `node scripts/first-paint-mips.mjs` regenerates preview KTX2 containers by copying the approved lower compressed mip payloads. Zstd level data stays contiguous; each output is validated by the existing Basis tool. The byte-for-byte mip regression protects this.
+- `npm run build` runs `scripts/asset-revisions.mjs` automatically before Next builds. Re-run the build when assets change so their content versions change too. Conditional immutable headers apply only to versioned URLs.
+- `node --test scripts/*.test.mjs` runs the regressions.
+- Local frame inspector: `/?diagnostics=1&fx-test=laptop&formation-frame=66`; play the normal two-step approach. `particle-eval=vertex` selects the original evaluation for a local comparison. Do not use the frame inspector for timing the full formation.
+- Original source/config snapshot and public-file hashes: `D:/CodexOutputs/Laptop_Five_20261026/`. No source Blender file was opened or saved, no GLB re-export, no commit, no deployment.
+
+The small GPU pass uses Three.js [multiple colour attachments](https://threejs.org/docs/pages/RenderTarget.html); its rendering state is restored after every evaluation. No postprocessing, new environment capture or new shadow pass was added.

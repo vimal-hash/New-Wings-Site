@@ -1,0 +1,1131 @@
+{
+    "status":  "deleted",
+    "fileCount":  280,
+    "bytes":  1163701561,
+    "files":  [
+                  {
+                      "path":  "D:\\CodexOutputs\\Theatre_Ceiling_PBR_20261023\\approved-ceiling-atlas.png",
+                      "bytes":  2104884
+                  },
+                  {
+                      "path":  "D:\\CodexOutputs\\Theatre_Ceiling_PBR_20261023\\blender-reference.png",
+                      "bytes":  2044884
+                  },
+                  {
+                      "path":  "D:\\CodexOutputs\\Theatre_Ceiling_PBR_20261023\\Ceiling_PBR_baked.blend1",
+                      "bytes":  409658016
+                  },
+                  {
+                      "path":  "D:\\CodexOutputs\\Theatre_Ceiling_PBR_20261023\\Ceiling_PBR_prepared.blend1",
+                      "bytes":  409657339
+                  },
+                  {
+                      "path":  "D:\\CodexOutputs\\Theatre_Ceiling_PBR_20261023\\combined.exr",
+                      "bytes":  17233039
+                  },
+                  {
+                      "path":  "D:\\CodexOutputs\\Theatre_Ceiling_PBR_20261023\\combined-2k.exr",
+                      "bytes":  6708071
+                  },
+                  {
+                      "path":  "D:\\CodexOutputs\\Theatre_Ceiling_PBR_20261023\\combined-clean.exr",
+                      "bytes":  21521532
+                  },
+                  {
+                      "path":  "D:\\CodexOutputs\\Theatre_Ceiling_PBR_20261023\\cove-native.exr",
+                      "bytes":  2505755
+                  },
+                  {
+                      "path":  "D:\\CodexOutputs\\Theatre_Ceiling_PBR_20261023\\cove-native-clean.exr",
+                      "bytes":  2803642
+                  },
+                  {
+                      "path":  "D:\\CodexOutputs\\Theatre_Ceiling_PBR_20261023\\irradiance-camera.exr",
+                      "bytes":  7240177
+                  },
+                  {
+                      "path":  "D:\\CodexOutputs\\Theatre_Ceiling_PBR_20261023\\irradiance-camera-clean.exr",
+                      "bytes":  9439872
+                  },
+                  {
+                      "path":  "D:\\CodexOutputs\\Theatre_Ceiling_PBR_20261023\\irradiance-clean.exr",
+                      "bytes":  6590032
+                  },
+                  {
+                      "path":  "D:\\CodexOutputs\\Theatre_Ceiling_PBR_20261023\\irradiance-flat.exr",
+                      "bytes":  7241868
+                  },
+                  {
+                      "path":  "D:\\CodexOutputs\\Theatre_Ceiling_PBR_20261023\\irradiance-flat-clean.exr",
+                      "bytes":  7997008
+                  },
+                  {
+                      "path":  "D:\\CodexOutputs\\Theatre_Ceiling_PBR_20261023\\irradiance-polished.exr",
+                      "bytes":  3937917
+                  },
+                  {
+                      "path":  "D:\\CodexOutputs\\Theatre_Ceiling_PBR_20261023\\irradiance-section-test.exr",
+                      "bytes":  3938797
+                  },
+                  {
+                      "path":  "D:\\CodexOutputs\\Theatre_Ceiling_PBR_20261023\\irradiance-stitched.exr",
+                      "bytes":  3972068
+                  },
+                  {
+                      "path":  "D:\\CodexOutputs\\Theatre_Ceiling_PBR_20261023\\specular-clean.exr",
+                      "bytes":  2935285
+                  },
+                  {
+                      "path":  "D:\\CodexOutputs\\Theatre_Ceiling_PBR_20261023\\specular-flat.exr",
+                      "bytes":  2114774
+                  },
+                  {
+                      "path":  "D:\\CodexOutputs\\Theatre_Ceiling_PBR_20261023\\specular-flat-clean.exr",
+                      "bytes":  2643559
+                  },
+                  {
+                      "path":  "D:\\CodexOutputs\\Theatre_Ceiling_PBR_20261023\\specular-polished.exr",
+                      "bytes":  2210431
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\components\\corridor\\floor-radiance-loader.ts",
+                      "bytes":  1485
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\components\\corridor\\theatre-floor.tsx",
+                      "bytes":  6585
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\components\\corridor\\theatre-floor-assets.json",
+                      "bytes":  481
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\components\\corridor\\theatre-floor-geometry.ts",
+                      "bytes":  1761
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\components\\corridor\\theatre-floor-ids.json",
+                      "bytes":  843
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\components\\corridor\\theatre-floor-opening.json",
+                      "bytes":  642
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\components\\corridor\\theatre-floor-radiance.ts",
+                      "bytes":  6107
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\approved-atlas.log",
+                      "bytes":  947
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\approved-atlas-encode.log",
+                      "bytes":  2731
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\bake.log",
+                      "bytes":  4268
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\bake-linked.log",
+                      "bytes":  4268
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\before-1920.png",
+                      "bytes":  94215
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\before-section-test.tsx",
+                      "bytes":  7604
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\blender-current-matched.png",
+                      "bytes":  2047585
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\blender-linked-small.png",
+                      "bytes":  663512
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\blender-live-matched.png",
+                      "bytes":  947805
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\blender-new-small.png",
+                      "bytes":  638142
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\blender-reference-small.png",
+                      "bytes":  666059
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\camera-diffuse.log",
+                      "bytes":  0
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\camera-diffuse-clean.log",
+                      "bytes":  253
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\camera-diffuse-resume.log",
+                      "bytes":  1548
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\ceiling-before-normal-fix.glb",
+                      "bytes":  61440
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\ceiling-calibrated-1920.png",
+                      "bytes":  109852
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\ceiling-calibrated-small.png",
+                      "bytes":  370819
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\ceiling-camera-transition-fixed.png",
+                      "bytes":  68677
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\ceiling-clean-1920.png",
+                      "bytes":  121875
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\ceiling-clean-small.png",
+                      "bytes":  444231
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\ceiling-combined-1920.png",
+                      "bytes":  96326
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\ceiling-complete.png",
+                      "bytes":  65663
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\ceiling-corrected-final.png",
+                      "bytes":  93598
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\ceiling-corrected-pullback.png",
+                      "bytes":  90692
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\ceiling-crisp-final.png",
+                      "bytes":  58146
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\ceiling-final-1920.png",
+                      "bytes":  121419
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\ceiling-final-refinement.png",
+                      "bytes":  93158
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\ceiling-final-small.png",
+                      "bytes":  441976
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\ceiling-first-1920.png",
+                      "bytes":  171826
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\ceiling-first-small.png",
+                      "bytes":  531576
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\ceiling-floor-disabled-final.png",
+                      "bytes":  58427
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\ceiling-mobile-travel.png",
+                      "bytes":  24933
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\ceiling-polished-1920.png",
+                      "bytes":  107245
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\ceiling-polished-small.png",
+                      "bytes":  362110
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\ceiling-rebaked-final.png",
+                      "bytes":  93697
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\ceiling-rebaked-pullback.png",
+                      "bytes":  91122
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\ceiling-second-1920.png",
+                      "bytes":  109146
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\ceiling-second-small.png",
+                      "bytes":  364879
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\ceiling-third-1920.png",
+                      "bytes":  93896
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\ceiling-third-closeup.png",
+                      "bytes":  453060
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\ceiling-third-final.png",
+                      "bytes":  58000
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\ceiling-third-pullback.png",
+                      "bytes":  90693
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\combined-2k-encoding.log",
+                      "bytes":  2825
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\combined-4k.ktx2",
+                      "bytes":  7666820
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\combined-bake.log",
+                      "bytes":  1659
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\combined-component.txt",
+                      "bytes":  2329
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\combined-denoise.log",
+                      "bytes":  248
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\complete-atlas.log",
+                      "bytes":  947
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\complete-atlas-encode.log",
+                      "bytes":  2767
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\cove-texture-transfer.log",
+                      "bytes":  654
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\cove-uv-refinement.log",
+                      "bytes":  11435
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\denoise.log",
+                      "bytes":  237
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\denoise-specular.log",
+                      "bytes":  253
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\direct-atlas-preview.png",
+                      "bytes":  500594
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\direct-clean.log",
+                      "bytes":  375
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\direct-surface.log",
+                      "bytes":  1695
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\edge-bake.log",
+                      "bytes":  338
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\edge-clean.log",
+                      "bytes":  374
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\edge-irradiance-encode.log",
+                      "bytes":  2553
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\edge-specular-encode.log",
+                      "bytes":  2375
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\edge-stitch.log",
+                      "bytes":  221
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\extended-render.log",
+                      "bytes":  477
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\final-edge.log",
+                      "bytes":  412
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\flat-diffuse.log",
+                      "bytes":  1548
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\flat-diffuse-clean.log",
+                      "bytes":  253
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\flat-specular.log",
+                      "bytes":  1548
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\flat-specular-clean.log",
+                      "bytes":  257
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\inspect.log",
+                      "bytes":  26995
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\irradiance-before-stitch.ktx2",
+                      "bytes":  2020950
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\linking.log",
+                      "bytes":  45414
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\matched-render.log",
+                      "bytes":  475
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\native-cove.log",
+                      "bytes":  290
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\native-denoise.log",
+                      "bytes":  255
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\native-encoding.log",
+                      "bytes":  2544
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\normal-clean.log",
+                      "bytes":  211
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\pass-two-backup\\ceiling-before-combined.tsx",
+                      "bytes":  5940
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\pass-two-backup\\ceiling-floor-disabled-final.png",
+                      "bytes":  58427
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\pass-two-backup\\environment.ktx2",
+                      "bytes":  549815
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\pass-two-backup\\irradiance.ktx2",
+                      "bytes":  2215272
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\pass-two-backup\\normal.ktx2",
+                      "bytes":  200461
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\pass-two-backup\\specular.ktx2",
+                      "bytes":  834791
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\pass-two-backup\\theatre-ceiling-assets.json",
+                      "bytes":  441
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\polish.log",
+                      "bytes":  413
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\pre-crisp\\opening-final.webp",
+                      "bytes":  58076
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\pre-crisp\\theatre-ceiling.tsx",
+                      "bytes":  9535
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\pre-crisp\\theatre-ceiling-assets.json",
+                      "bytes":  547
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\pre-final\\irradiance.ktx2",
+                      "bytes":  2023891
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\pre-final\\opening-reference.webp",
+                      "bytes":  44910
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\pre-final\\specular.ktx2",
+                      "bytes":  826969
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\prepare.log",
+                      "bytes":  283
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\prepare-linked.log",
+                      "bytes":  283
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\r3f-current-matched.png",
+                      "bytes":  56882
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\section-diffuse-baseline.png",
+                      "bytes":  93321
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\section-encoding.log",
+                      "bytes":  2581
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\section-pbr-after.png",
+                      "bytes":  93670
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\section-pbr-before.png",
+                      "bytes":  93896
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\section-stitch-comparison.png",
+                      "bytes":  280269
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\section-stitched-after.png",
+                      "bytes":  93595
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\section-three-way.png",
+                      "bytes":  280436
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\specular.log",
+                      "bytes":  1548
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\specular-clean.log",
+                      "bytes":  253
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\stitch-encoding.log",
+                      "bytes":  2565
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\uv.log",
+                      "bytes":  480
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\uv-check-current.log",
+                      "bytes":  759
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\uv-encode-lighting.log",
+                      "bytes":  2565
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\uv-encode-normal.log",
+                      "bytes":  2379
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\uv-encode-specular.log",
+                      "bytes":  2387
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\uv-location.log",
+                      "bytes":  429
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-ceiling-audit\\wide-render.log",
+                      "bytes":  469
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-floor-audit\\bake.log",
+                      "bytes":  4517
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-floor-audit\\base-quality.log",
+                      "bytes":  641
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-floor-audit\\base-quality-v2.log",
+                      "bytes":  644
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-floor-audit\\browser-before.png",
+                      "bytes":  65806
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-floor-audit\\browser-floor-2k.png",
+                      "bytes":  69333
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-floor-audit\\browser-floor-4k.png",
+                      "bytes":  69508
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-floor-audit\\browser-floor-check.png",
+                      "bytes":  69695
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-floor-audit\\browser-floor-final-check.png",
+                      "bytes":  69228
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-floor-audit\\denoise-quality-v2.log",
+                      "bytes":  434
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-floor-audit\\dense-uv-measurements.log",
+                      "bytes":  6117
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-floor-audit\\dense-uv-measurements-v2.log",
+                      "bytes":  6127
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-floor-audit\\directional-dense.log",
+                      "bytes":  5789
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-floor-audit\\directional-quality.log",
+                      "bytes":  9050
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-floor-audit\\encode.log",
+                      "bytes":  615
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-floor-audit\\encode-quality.log",
+                      "bytes":  1206
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-floor-audit\\floor-before-quality-1920.png",
+                      "bytes":  92894
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-floor-audit\\floor-desktop.png",
+                      "bytes":  58317
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-floor-audit\\floor-front-angle.png",
+                      "bytes":  51682
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-floor-audit\\floor-mobile.png",
+                      "bytes":  31430
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-floor-audit\\floor-mobile-pullback.png",
+                      "bytes":  23730
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-floor-audit\\floor-pre-detail-refinement.tsx.txt",
+                      "bytes":  5902
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-floor-audit\\floor-quality-phone-sized.png",
+                      "bytes":  32170
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-floor-audit\\floor-quality-phone-travel.png",
+                      "bytes":  23458
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-floor-audit\\floor-quality-production.png",
+                      "bytes":  58756
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-floor-audit\\floor-quality-side.png",
+                      "bytes":  56377
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-floor-audit\\floor-side-angle.png",
+                      "bytes":  59668
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-floor-audit\\native-detail.log",
+                      "bytes":  1348
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-floor-audit\\native-detail-v2.log",
+                      "bytes":  1355
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-floor-audit\\opening-measurement.log",
+                      "bytes":  437
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-floor-audit\\pack-quality.log",
+                      "bytes":  521
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-floor-audit\\pack-quality-final.log",
+                      "bytes":  522
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-floor-audit\\pack-quality-opening.log",
+                      "bytes":  617
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-floor-audit\\pack-quality-v2.log",
+                      "bytes":  549
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-floor-audit\\polish.log",
+                      "bytes":  825
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-floor-audit\\quality-complete-1920.png",
+                      "bytes":  93756
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-floor-audit\\quality-dense-1920.png",
+                      "bytes":  94432
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-floor-audit\\quality-native-1920.png",
+                      "bytes":  93838
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-floor-audit\\quality-native-sharp-1920.png",
+                      "bytes":  94155
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-floor-audit\\quality-partial-desktop.png",
+                      "bytes":  93756
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-floor-audit\\quality-reference.log",
+                      "bytes":  351
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-floor-audit\\radiance-pre-detail-refinement.ts.txt",
+                      "bytes":  4867
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-floor-audit\\reference.log",
+                      "bytes":  353
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-floor-audit\\refine-crop-0.png",
+                      "bytes":  356771
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-floor-audit\\refine-crop-1.png",
+                      "bytes":  317361
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-floor-audit\\refined-opening-1920.png",
+                      "bytes":  94215
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-floor-audit\\refined-phone.png",
+                      "bytes":  37931
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-floor-audit\\refined-production.png",
+                      "bytes":  93853
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-floor-audit\\refined-pullback.png",
+                      "bytes":  94212
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-floor-audit\\refined-raised-production.png",
+                      "bytes":  103955
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-floor-audit\\refined-raised-small.png",
+                      "bytes":  297259
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-floor-audit\\refined-side.png",
+                      "bytes":  40312
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-floor-audit\\refined-side-small.png",
+                      "bytes":  81561
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-floor-audit\\review-copy.log",
+                      "bytes":  311
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-floor-audit\\theatre-floor-before-quality.tsx.txt",
+                      "bytes":  6113
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-floor-audit\\uv-density.log",
+                      "bytes":  449
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-floor-audit\\uv-density-v2.log",
+                      "bytes":  449
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-floor-audit\\wood-comparison.png",
+                      "bytes":  420356
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-floor-audit\\wood-dense-close.png",
+                      "bytes":  346547
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-floor-audit\\wood-native-close.png",
+                      "bytes":  323805
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\docs\\theatre-floor-audit\\wood-opening-close.png",
+                      "bytes":  365279
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\public\\models\\theatre\\ceiling.glb",
+                      "bytes":  61440
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\public\\models\\theatre\\ceiling-native-test.glb",
+                      "bytes":  244224
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\public\\models\\theatre\\ceiling-normal-test.glb",
+                      "bytes":  241212
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\public\\models\\theatre-floor.glb",
+                      "bytes":  85696
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\public\\models\\theatre-floor-detail.glb",
+                      "bytes":  133012
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\public\\textures\\theatre\\ceiling\\approved-atlas.ktx2",
+                      "bytes":  4040635
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\public\\textures\\theatre\\ceiling\\approved-atlas-complete.ktx2",
+                      "bytes":  6423129
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\public\\textures\\theatre\\ceiling\\ceiling-surface-final.ktx2",
+                      "bytes":  3309200
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\public\\textures\\theatre\\ceiling\\combined.ktx2",
+                      "bytes":  7666820
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\public\\textures\\theatre\\ceiling\\combined-2k.ktx2",
+                      "bytes":  2129619
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\public\\textures\\theatre\\ceiling\\cove-native.ktx2",
+                      "bytes":  1065562
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\public\\textures\\theatre\\ceiling\\direct-surface.ktx2",
+                      "bytes":  4002083
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\public\\textures\\theatre\\ceiling\\direct-surface-clean.ktx2",
+                      "bytes":  3446629
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\public\\textures\\theatre\\ceiling\\display-lut.png",
+                      "bytes":  22577
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\public\\textures\\theatre\\ceiling\\environment.ktx2",
+                      "bytes":  549815
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\public\\textures\\theatre\\ceiling\\irradiance.ktx2",
+                      "bytes":  2023891
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\public\\textures\\theatre\\ceiling\\irradiance-final.ktx2",
+                      "bytes":  2017302
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\public\\textures\\theatre\\ceiling\\irradiance-section-test.ktx2",
+                      "bytes":  2039099
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\public\\textures\\theatre\\ceiling\\irradiance-stitched.ktx2",
+                      "bytes":  2023891
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\public\\textures\\theatre\\ceiling\\irradiance-uv-fixed.ktx2",
+                      "bytes":  2034549
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\public\\textures\\theatre\\ceiling\\normal.ktx2",
+                      "bytes":  200461
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\public\\textures\\theatre\\ceiling\\normal-uv-fixed.ktx2",
+                      "bytes":  203237
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\public\\textures\\theatre\\ceiling\\opening-crisp.webp",
+                      "bytes":  388960
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\public\\textures\\theatre\\ceiling\\opening-final.webp",
+                      "bytes":  58076
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\public\\textures\\theatre\\ceiling\\opening-reference.png",
+                      "bytes":  825567
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\public\\textures\\theatre\\ceiling\\opening-reference.webp",
+                      "bytes":  44910
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\public\\textures\\theatre\\ceiling\\opening-wide.webp",
+                      "bytes":  650696
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\public\\textures\\theatre\\ceiling\\specular.ktx2",
+                      "bytes":  826969
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\public\\textures\\theatre\\ceiling\\specular-final.ktx2",
+                      "bytes":  832188
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\public\\textures\\theatre\\ceiling\\specular-uv-fixed.ktx2",
+                      "bytes":  836915
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\public\\textures\\theatre-floor\\basalt-diffuse.ktx2",
+                      "bytes":  63506
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\public\\textures\\theatre-floor\\basalt-normal.ktx2",
+                      "bytes":  4961
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\public\\textures\\theatre-floor\\basalt-roughness.ktx2",
+                      "bytes":  39042
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\public\\textures\\theatre-floor\\floor-display-lut.png",
+                      "bytes":  22577
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\public\\textures\\theatre-floor\\room-reflections.ktx2",
+                      "bytes":  591110
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\public\\textures\\theatre-floor\\walnut-diffuse.ktx2",
+                      "bytes":  1209259
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\public\\textures\\theatre-floor\\walnut-normal.ktx2",
+                      "bytes":  748998
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\public\\textures\\theatre-floor\\walnut-roughness.ktx2",
+                      "bytes":  263749
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\public\\textures\\theatre-floor-quality\\basalt-diffuse.exr",
+                      "bytes":  5529961
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\public\\textures\\theatre-floor-quality\\basalt-opening-mask.png",
+                      "bytes":  5496
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\public\\textures\\theatre-floor-quality\\basalt-radiance.bin.gz",
+                      "bytes":  77520995
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\public\\textures\\theatre-floor-quality\\floor-display-lut.png",
+                      "bytes":  22577
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\public\\textures\\theatre-floor-quality\\floor-opening-detail.exr",
+                      "bytes":  6541331
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\public\\textures\\theatre-floor-quality\\walnut-diffuse.exr",
+                      "bytes":  13824005
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\public\\textures\\theatre-floor-quality\\walnut-native-detail.png",
+                      "bytes":  213061
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\public\\textures\\theatre-floor-quality\\walnut-opening-mask.png",
+                      "bytes":  3508
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\public\\textures\\theatre-floor-quality\\walnut-radiance.bin.gz",
+                      "bytes":  39572745
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\public\\textures\\theatre-floor-quality\\walnut-radiance.ktx2",
+                      "bytes":  2073603
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\scripts\\audit-ceiling-normals.mjs",
+                      "bytes":  5440
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\scripts\\blender\\bake-cove-native-test.py",
+                      "bytes":  2322
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\scripts\\blender\\bake-floor-quality-base.py",
+                      "bytes":  2403
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\scripts\\blender\\bake-theatre-floor.py",
+                      "bytes":  13047
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\scripts\\blender\\check-directional-coverage.py",
+                      "bytes":  619
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\scripts\\blender\\check-floor-bakes.py",
+                      "bytes":  1095
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\scripts\\blender\\check-floor-display.py",
+                      "bytes":  1668
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\scripts\\blender\\denoise-ceiling-combined.py",
+                      "bytes":  3656
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\scripts\\blender\\denoise-floor-quality-base.py",
+                      "bytes":  2456
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\scripts\\blender\\export-floor-native-detail.py",
+                      "bytes":  3200
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\scripts\\blender\\export-floor-opening-detail.py",
+                      "bytes":  2198
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\scripts\\blender\\finalize-floor-copy.py",
+                      "bytes":  1298
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\scripts\\blender\\locate-ceiling-uv-distortion.py",
+                      "bytes":  1192
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\scripts\\blender\\measure-floor-directions.py",
+                      "bytes":  7076
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\scripts\\blender\\measure-floor-opening.py",
+                      "bytes":  3075
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\scripts\\blender\\pack-floor-directions.py",
+                      "bytes":  4976
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\scripts\\blender\\polish-theatre-floor-bakes.py",
+                      "bytes":  6033
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\scripts\\blender\\rebake-ceiling-combined.py",
+                      "bytes":  1832
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\scripts\\blender\\render-floor-quality-reference.py",
+                      "bytes":  1837
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\scripts\\blender\\repack-floor-visible-uv.py",
+                      "bytes":  3060
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\scripts\\blender\\resize-ceiling-combined.py",
+                      "bytes":  349
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\scripts\\blender\\test-ceiling-light-field.py",
+                      "bytes":  2881
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\scripts\\compare-ceiling-reference.mjs",
+                      "bytes":  1693
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\scripts\\compare-floor-quality.mjs",
+                      "bytes":  1244
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\scripts\\compare-floor-reference.mjs",
+                      "bytes":  2232
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\scripts\\encode-ceiling-combined.mjs",
+                      "bytes":  1208
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\scripts\\encode-floor-quality.mjs",
+                      "bytes":  1775
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\scripts\\encode-theatre-floor.mjs",
+                      "bytes":  2971
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\scripts\\export-ceiling-native-test.mjs",
+                      "bytes":  4085
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\scripts\\fix-ceiling-reference-normals.mjs",
+                      "bytes":  3821
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\scripts\\inspect-floor-ids.mjs",
+                      "bytes":  2261
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\scripts\\measure-ceiling-cleanup.mjs",
+                      "bytes":  1293
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\scripts\\verify-ceiling-third.mjs",
+                      "bytes":  1753
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\scripts\\verify-floor-radiance.mjs",
+                      "bytes":  2442
+                  },
+                  {
+                      "path":  "D:\\New folio\\new site code\\new_site_three\\scripts\\verify-theatre-floor.mjs",
+                      "bytes":  5568
+                  }
+              ],
+    "runtimeCeilingBytes":  3416116,
+    "protectedOriginalModels":  20,
+    "originalBlendFilesUntouched":  true,
+    "remainingDeletedFiles":  0
+}

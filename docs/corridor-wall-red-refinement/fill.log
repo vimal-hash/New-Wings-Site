@@ -1,0 +1,20 @@
+00:01.250  blend            | Read blend: "D:\CodexOutputs\Restoration_20261024\corridor\Corridor_prepared_work_copy.blend"
+Map Range op  [(0, 'Value', None), (1, 'From Min', 0.0), (2, 'From Max', 1.0), (3, 'To Min', 0.30000001192092896), (4, 'To Max', 0.4399999976158142)]
+Math op MULTIPLY_ADD [(0, 'Value', None), (1, 'Value', 0.04500000178813934), (2, 'Value', -0.02250000089406967)]
+Math.001 op ADD [(0, 'Value', None), (1, 'Value', None)]
+Wall fill • dark bottom fade op  [(0, 'Value', None), (1, 'From Min', -0.004999999888241291), (2, 'From Max', 0.07500000298023224), (3, 'To Min', 0.0), (4, 'To Max', 1.0)]
+Math.002 op MULTIPLY [(0, 'Value', None), (1, 'Value', None)]
+Wall fill • restrained neutral brightness op  [(0, 'Color', None), (1, 'Strength', None)]
+Wall fill • gentle corridor balance op  [(0, 'Value', None), (1, 'From Min', -0.800000011920929), (2, 'From Max', 0.3499999940395355), (3, 'To Min', 0.02250000089406967), (4, 'To Max', 0.14000000059604645)]
+Math.003 op MULTIPLY [(0, 'Value', None), (1, 'Value', None)]
+Wall glow • soft spectral spread op  [(0, 'Value', None), (1, 'From Min', -0.8500000238418579), (2, 'From Max', 0.3499999940395355), (3, 'To Min', 0.0024999999441206455), (4, 'To Max', 0.009999999776482582)]
+Wall glow • preserve dark bottom op MULTIPLY [(0, 'Value', None), (1, 'Value', None)]
+Wall glow • gentle blue surface op  [(0, 'Color', [0.11999999731779099, 0.2800000011920929, 0.6000000238418579, 1.0]), (1, 'Strength', None)]
+Marked blue • far end fade op  [(0, 'Value', None), (1, 'From Min', -0.03999999910593033), (2, 'From Max', 0.2199999988079071), (3, 'To Min', 0.0), (4, 'To Max', 1.0)]
+Marked blue • upper wall only op  [(0, 'Value', None), (1, 'From Min', 0.10000000149011612), (2, 'From Max', 0.1899999976158142), (3, 'To Min', 0.0), (4, 'To Max', 1.0)]
+Marked blue • localized upper corner op MULTIPLY [(0, 'Value', None), (1, 'Value', None)]
+Marked blue • camera surface only op MULTIPLY [(0, 'Value', None), (1, 'Value', None)]
+Marked blue • light spectral tint op  [(0, 'Color', [0.001500000013038516, 0.00800000037997961, 0.02500000037252903, 1.0]), (1, 'Strength', None)]
+Blender 5.2.0 LTS (hash fbe6228777e7 built 2026-07-14 01:35:40)
+
+Blender quit

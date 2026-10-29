@@ -1,0 +1,465 @@
+{
+  "rows": [
+    {
+      "item": "theatre-left-wall",
+      "mapping": "Actual runtime flat charts",
+      "triangles": 108,
+      "invalidUVValues": 0,
+      "outsideAtlasValues": 0,
+      "collapsedTriangles": 0,
+      "collapsedSurfacePercent": 0,
+      "uvRange": [
+        0.0008451021858491004,
+        0.9991551637649536
+      ],
+      "chartStretchMedian": 1.485351567398749,
+      "chartStretchP95": 1.485351567398749,
+      "chartStretchMax": 10.72958455293551
+    },
+    {
+      "item": "right-wall",
+      "texture": "/textures/theatre/right-wall/right-wall-light-2k.ktx2",
+      "mapping": "Bake-matched projected charts; chart metric uses original layout dimensions",
+      "triangles": 108,
+      "invalidUVValues": 0,
+      "outsideAtlasValues": 0,
+      "collapsedTriangles": 0,
+      "collapsedSurfacePercent": 0,
+      "uvRange": [
+        0.00390625,
+        0.998046875
+      ],
+      "chartStretchMedian": 1.0000009194622743,
+      "chartStretchP95": 1.0000215758156572,
+      "chartStretchMax": 1.1282733808855514
+    },
+    {
+      "item": "front-wall",
+      "texture": "/textures/theatre/front-wall/front-wall.ktx2",
+      "mapping": "Bake-matched projected charts; chart metric uses original layout dimensions",
+      "triangles": 108,
+      "invalidUVValues": 0,
+      "outsideAtlasValues": 0,
+      "collapsedTriangles": 0,
+      "collapsedSurfacePercent": 0,
+      "uvRange": [
+        0.003931285813450813,
+        0.99609375
+      ],
+      "chartStretchMedian": 1.0000000839111527,
+      "chartStretchP95": 1.0000069729653347,
+      "chartStretchMax": 1.1284884240512807
+    },
+    {
+      "item": "screen",
+      "texture": "/textures/theatre/screen/screen.ktx2",
+      "mapping": "Bake-matched projected charts; chart metric uses original layout dimensions",
+      "triangles": 772,
+      "invalidUVValues": 0,
+      "outsideAtlasValues": 0,
+      "collapsedTriangles": 0,
+      "collapsedSurfacePercent": 0,
+      "uvRange": [
+        0.0078125,
+        0.99609375
+      ],
+      "chartStretchMedian": 1.005694928768737,
+      "chartStretchP95": 1.019524409961798,
+      "chartStretchMax": 1.0212688126512215
+    },
+    {
+      "item": "stage",
+      "texture": "/textures/theatre/stage/stage.ktx2",
+      "mapping": "Bake-matched projected charts; chart metric uses original layout dimensions",
+      "triangles": 1644,
+      "invalidUVValues": 0,
+      "outsideAtlasValues": 0,
+      "collapsedTriangles": 0,
+      "collapsedSurfacePercent": 0,
+      "uvRange": [
+        0.003922706935554743,
+        0.99609375
+      ],
+      "chartStretchMedian": 1.0000011880242992,
+      "chartStretchP95": 1.0352922841437397,
+      "chartStretchMax": 1.420495844132166
+    },
+    {
+      "item": "floor-slab",
+      "texture": "/textures/theatre/floor/floor-slab-balanced-2048.ktx2",
+      "mapping": "Bake-matched projected charts; chart metric uses original layout dimensions",
+      "triangles": 108,
+      "invalidUVValues": 0,
+      "outsideAtlasValues": 0,
+      "collapsedTriangles": 0,
+      "collapsedSurfacePercent": 0,
+      "uvRange": [
+        0.0039062458090484142,
+        0.99609375
+      ],
+      "chartStretchMedian": 1.0000001177283688,
+      "chartStretchP95": 1.0000001177283688,
+      "chartStretchMax": 1.1282542559607072
+    },
+    {
+      "item": "light-fixtures",
+      "texture": "/textures/theatre/light-fixtures/light-fixtures.ktx2",
+      "mapping": "Bake-matched projected charts; chart metric uses original layout dimensions",
+      "triangles": 1296,
+      "invalidUVValues": 0,
+      "outsideAtlasValues": 0,
+      "collapsedTriangles": 0,
+      "collapsedSurfacePercent": null,
+      "uvRange": [
+        0.0078125586733222,
+        0.9921875
+      ],
+      "chartStretchMedian": 1.4121251098105958,
+      "chartStretchP95": 1.4121251098105958,
+      "chartStretchMax": 1.4121251098105958
+    },
+    {
+      "item": "wall-trim",
+      "texture": "/textures/theatre/wall-trim/wall-trim.ktx2",
+      "mapping": "Bake-matched projected charts; chart metric uses original layout dimensions",
+      "triangles": 648,
+      "invalidUVValues": 0,
+      "outsideAtlasValues": 0,
+      "collapsedTriangles": 0,
+      "collapsedSurfacePercent": 0,
+      "uvRange": [
+        0.0078124916180968285,
+        0.99609375
+      ],
+      "chartStretchMedian": 1.0000040602869933,
+      "chartStretchP95": 2.0862538427486363,
+      "chartStretchMax": 2.96517079859737
+    },
+    {
+      "item": "step-nosings",
+      "texture": "/textures/theatre/step-nosings/step-nosings.ktx2",
+      "mapping": "Bake-matched projected charts; chart metric uses original layout dimensions",
+      "triangles": 4132,
+      "invalidUVValues": 0,
+      "outsideAtlasValues": 0,
+      "collapsedTriangles": 0,
+      "collapsedSurfacePercent": 0,
+      "uvRange": [
+        0.0039062409196048975,
+        0.99609375
+      ],
+      "chartStretchMedian": 1.144097243629692,
+      "chartStretchP95": 14.780565009844098,
+      "chartStretchMax": 17.327877278870194
+    },
+    {
+      "item": "aisle-lights",
+      "texture": "/textures/theatre/aisle-lights/aisle-lights.ktx2",
+      "mapping": "Bake-matched projected charts; chart metric uses original layout dimensions",
+      "triangles": 8912,
+      "invalidUVValues": 0,
+      "outsideAtlasValues": 0,
+      "collapsedTriangles": 0,
+      "collapsedSurfacePercent": 0,
+      "uvRange": [
+        0.00390623533166945,
+        0.99609375
+      ],
+      "chartStretchMedian": 1.4734910677416742,
+      "chartStretchP95": 3.8249904536813815,
+      "chartStretchMax": 4.855842145176672
+    },
+    {
+      "item": "acoustic-slats",
+      "texture": "/textures/theatre/acoustic-slats/acoustic-slats.ktx2",
+      "mapping": "Bake-matched projected charts; chart metric uses original layout dimensions",
+      "triangles": 33264,
+      "invalidUVValues": 0,
+      "outsideAtlasValues": 0,
+      "collapsedTriangles": 0,
+      "collapsedSurfacePercent": 0,
+      "uvRange": [
+        0.001953125,
+        0.9980469346046448
+      ],
+      "chartStretchMedian": 1.0000064276784708,
+      "chartStretchP95": 1.5592927662987701,
+      "chartStretchMax": 1.6880282081008162
+    },
+    {
+      "item": "speakers",
+      "texture": "/textures/theatre/speakers/speakers.ktx2",
+      "mapping": "Bake-matched projected charts; chart metric uses original layout dimensions",
+      "triangles": 1608,
+      "invalidUVValues": 0,
+      "outsideAtlasValues": 0,
+      "collapsedTriangles": 0,
+      "collapsedSurfacePercent": 0,
+      "uvRange": [
+        0.007812485098838806,
+        0.9921875
+      ],
+      "chartStretchMedian": 1.0823826151340197,
+      "chartStretchP95": 1.128093606599259,
+      "chartStretchMax": 1.1281190070302776
+    },
+    {
+      "item": "corridor-pathway-lights",
+      "texture": "/textures/corridor/pathway-lights/corridor-pathway-lights.ktx2",
+      "mapping": "Bake-matched projected charts; chart metric uses original layout dimensions",
+      "triangles": 8660,
+      "invalidUVValues": 0,
+      "outsideAtlasValues": 0,
+      "collapsedTriangles": 0,
+      "collapsedSurfacePercent": 0,
+      "uvRange": [
+        0.003905759658664465,
+        0.9960938692092896
+      ],
+      "chartStretchMedian": 1.0514340864988752,
+      "chartStretchP95": 1.5271750734536496,
+      "chartStretchMax": 11.464746551765899
+    },
+    {
+      "item": "corridor-floor-joints",
+      "texture": "/textures/corridor/floor-joints/corridor-floor-joints.ktx2",
+      "mapping": "Bake-matched projected charts; chart metric uses original layout dimensions",
+      "triangles": 96,
+      "invalidUVValues": 0,
+      "outsideAtlasValues": 0,
+      "collapsedTriangles": 0,
+      "collapsedSurfacePercent": 0,
+      "uvRange": [
+        0.00418802909553051,
+        0.99609375
+      ],
+      "chartStretchMedian": 1.4143019305736655,
+      "chartStretchP95": 1.415144006132843,
+      "chartStretchMax": 1.4164313257117025
+    },
+    {
+      "item": "corridor-wall-red",
+      "texture": "/textures/corridor/wall-red/corridor-left-neutral-2k.ktx2",
+      "mapping": "Bake-matched projected charts; chart metric uses original layout dimensions",
+      "triangles": 580,
+      "invalidUVValues": 0,
+      "outsideAtlasValues": 0,
+      "collapsedTriangles": 0,
+      "collapsedSurfacePercent": 0,
+      "uvRange": [
+        0.003937344066798687,
+        0.9960938096046448
+      ],
+      "chartStretchMedian": 1.0335244752957036,
+      "chartStretchP95": 1.330997386364239,
+      "chartStretchMax": 1.4103815386801437
+    },
+    {
+      "item": "corridor-wall-connecting",
+      "texture": "/textures/corridor/wall-connecting/corridor-wall-connecting-light-2k.ktx2",
+      "mapping": "Bake-matched projected charts; chart metric uses original layout dimensions",
+      "triangles": 580,
+      "invalidUVValues": 0,
+      "outsideAtlasValues": 0,
+      "collapsedTriangles": 0,
+      "collapsedSurfacePercent": 0,
+      "uvRange": [
+        0.004089431371539831,
+        0.99609375
+      ],
+      "chartStretchMedian": 1.033094312327417,
+      "chartStretchP95": 1.3251177032838897,
+      "chartStretchMax": 1.410374813983911
+    },
+    {
+      "item": "corridor-roof-datums",
+      "texture": "/textures/corridor/roof-datums/corridor-roof-datums.ktx2",
+      "mapping": "Bake-matched projected charts; chart metric uses original layout dimensions",
+      "triangles": 1976,
+      "invalidUVValues": 0,
+      "outsideAtlasValues": 0,
+      "collapsedTriangles": 0,
+      "collapsedSurfacePercent": 0,
+      "uvRange": [
+        0.004011861979961395,
+        0.99609375
+      ],
+      "chartStretchMedian": 5.817203167049675,
+      "chartStretchP95": 18.136921222297754,
+      "chartStretchMax": 20.357957647333624
+    },
+    {
+      "item": "corridor-wall-caps",
+      "texture": "/textures/corridor/wall-caps/corridor-wall-caps.ktx2",
+      "mapping": "Bake-matched projected charts; chart metric uses original layout dimensions",
+      "triangles": 1160,
+      "invalidUVValues": 0,
+      "outsideAtlasValues": 0,
+      "collapsedTriangles": 0,
+      "collapsedSurfacePercent": 0,
+      "uvRange": [
+        0.0042022462002933025,
+        0.99609375
+      ],
+      "chartStretchMedian": 1.3403821424920366,
+      "chartStretchP95": 1.3404151895450709,
+      "chartStretchMax": 1.342658246469106
+    },
+    {
+      "item": "corridor-floor",
+      "texture": "/textures/corridor/floor/corridor-floor-light-2k.ktx2",
+      "mapping": "Bake-matched projected charts; chart metric uses original layout dimensions",
+      "triangles": 1148,
+      "invalidUVValues": 0,
+      "outsideAtlasValues": 0,
+      "collapsedTriangles": 0,
+      "collapsedSurfacePercent": 0,
+      "uvRange": [
+        0.003906235797330737,
+        0.998046875
+      ],
+      "chartStretchMedian": 1.0000027502757518,
+      "chartStretchP95": 1.0000091536120201,
+      "chartStretchMax": 1.0004418104223076
+    },
+    {
+      "item": "projector-floor",
+      "texture": "/textures/projector-floor/projector-floor.ktx2",
+      "mapping": "Bake-matched projected charts; chart metric uses original layout dimensions",
+      "triangles": 12,
+      "invalidUVValues": 0,
+      "outsideAtlasValues": 0,
+      "collapsedTriangles": 0,
+      "collapsedSurfacePercent": 0,
+      "uvRange": [
+        0.0039062434807419777,
+        0.99609375
+      ],
+      "chartStretchMedian": 1,
+      "chartStretchP95": 1.0000003026538113,
+      "chartStretchMax": 1.0000003073257
+    },
+    {
+      "item": "terraces",
+      "texture": "/textures/theatre/terraces/terraces-light-2k.ktx2",
+      "mapping": "Bake-matched projected charts; chart metric uses original layout dimensions",
+      "triangles": 3996,
+      "invalidUVValues": 0,
+      "outsideAtlasValues": 0,
+      "collapsedTriangles": 0,
+      "collapsedSurfacePercent": 0,
+      "uvRange": [
+        0.0034243997652083635,
+        0.998046875
+      ],
+      "chartStretchMedian": 1.0000002802992214,
+      "chartStretchP95": 1.0000022595495628,
+      "chartStretchMax": 1.128666363734644
+    },
+    {
+      "item": "moon-steel-border",
+      "texture": "/textures/theatre/moon-steel-border/moon-steel-border-light-2k.ktx2",
+      "mapping": "Bake-matched projected charts; chart metric uses original layout dimensions",
+      "triangles": 848,
+      "invalidUVValues": 0,
+      "outsideAtlasValues": 0,
+      "collapsedTriangles": 0,
+      "collapsedSurfacePercent": 0,
+      "uvRange": [
+        0.001302072312682867,
+        0.9986978769302368
+      ],
+      "chartStretchMedian": 1.0450461476252044,
+      "chartStretchP95": 1.2936925175788399,
+      "chartStretchMax": 1.293779560128771
+    },
+    {
+      "item": "sofas: Sofa",
+      "mapping": "Exported UVs",
+      "triangles": 1479,
+      "invalidUVValues": 0,
+      "outsideAtlasValues": 0,
+      "collapsedTriangles": 0,
+      "collapsedSurfacePercent": 0,
+      "uvRange": [
+        0.003620624542236328,
+        0.9962933659553528
+      ],
+      "chartStretchMedian": 1.010404694190491,
+      "chartStretchP95": 1.0840545884728574,
+      "chartStretchMax": 2.161359460968301
+    },
+    {
+      "item": "ceiling: THEATRE | Ceiling PBR",
+      "mapping": "Exported UVs",
+      "triangles": 3840,
+      "invalidUVValues": 0,
+      "outsideAtlasValues": 0,
+      "collapsedTriangles": 0,
+      "collapsedSurfacePercent": 0,
+      "uvRange": [
+        0.023978931829333305,
+        0.9937939643859863
+      ],
+      "chartStretchMedian": 1.0000205908639765,
+      "chartStretchP95": 1.0068296139979243,
+      "chartStretchMax": 1.4155197282351337
+    },
+    {
+      "item": "ceiling: THEATRE | Ceiling PBR",
+      "mapping": "Exported UVs",
+      "triangles": 384,
+      "invalidUVValues": 0,
+      "outsideAtlasValues": 0,
+      "collapsedTriangles": 0,
+      "collapsedSurfacePercent": 0,
+      "uvRange": [
+        0.006205265875905752,
+        0.9939972758293152
+      ],
+      "chartStretchMedian": 1.000001943130074,
+      "chartStretchP95": 1.0000137831005773,
+      "chartStretchMax": 1.3303322562518525
+    },
+    {
+      "item": "ceiling: THEATRE | Ceiling PBR",
+      "mapping": "Exported UVs",
+      "triangles": 768,
+      "invalidUVValues": 0,
+      "outsideAtlasValues": 0,
+      "collapsedTriangles": 0,
+      "collapsedSurfacePercent": 0,
+      "uvRange": [
+        0.006627451628446579,
+        0.9936254024505615
+      ],
+      "chartStretchMedian": 1.0010414503775438,
+      "chartStretchP95": 1.0043220990740764,
+      "chartStretchMax": 1.0393532023598553
+    }
+  ],
+  "errors": [],
+  "projectorImageMaps": [
+    {
+      "item": "projector-brushed-map",
+      "triangles": 44,
+      "invalidUVValues": 0,
+      "outsideAtlasValues": 0,
+      "collapsedTriangles": 0,
+      "collapsedSurfacePercent": 0,
+      "uvRange": [
+        0,
+        0.9999987483024597
+      ],
+      "chartStretchMedian": 1.0002041546343123,
+      "chartStretchP95": 1.0002041546343123,
+      "chartStretchMax": 1.8445050546046853
+    }
+  ],
+  "notes": [
+    "Chart anisotropy is not automatically visible stretching. Procedural material detail baked through these same charts compensates for the projection.",
+    "Texture aspect/resolution changes do not change the normalized UV mapping. Different texel density along two atlas axes is reported separately from physical source grain.",
+    "Projector image maps apply only to the source brushed material; zero UVs on constant-material parts are intentional. Original sofa UV correspondence was independently verified.",
+    "Finite mappings cannot prove source lighting is noise-free or that all reflections match at every viewpoint."
+  ]
+}

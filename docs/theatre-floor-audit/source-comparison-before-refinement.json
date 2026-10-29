@@ -1,0 +1,72 @@
+{
+  "source": "D:/CodexOutputs/Theatre_Floor_Quality_20261021/source-floor-matching.png",
+  "before": "docs/theatre-floor-audit/floor-before-quality-1920.png",
+  "after": "docs/theatre-floor-audit/quality-opening-1920.png",
+  "footer": {
+    "top": 1022.5,
+    "height": 57.5,
+    "endAlpha": 0.4,
+    "color": [
+      12,
+      17,
+      25
+    ]
+  },
+  "regions": {
+    "wood": {
+      "rectangle": [
+        875,
+        1025,
+        165,
+        50
+      ],
+      "referenceMean": [
+        61.80322719367485,
+        47.64629038208055,
+        41.3035895652182
+      ],
+      "beforeMean": [
+        58.200969696968855,
+        41.89054545454515,
+        33.32121212121154
+      ],
+      "afterMean": [
+        61.31963636363659,
+        47.24436363636326,
+        40.95163636363645
+      ],
+      "beforeRms": 6.779073127096063,
+      "afterRms": 3.4858907505276866
+    },
+    "basalt": {
+      "rectangle": [
+        930,
+        800,
+        60,
+        110
+      ],
+      "referenceMean": [
+        51.83409090909121,
+        44.83242424243006,
+        41.02924242424774
+      ],
+      "beforeMean": [
+        45.71878787879317,
+        38.904090909090975,
+        36.730909090908334
+      ],
+      "afterMean": [
+        52.66348484848455,
+        44.91136363636949,
+        41.86121212121811
+      ],
+      "beforeRms": 5.771774756379863,
+      "afterRms": 1.208220997913039
+    }
+  },
+  "nonFloorCeilingPatch": {
+    "checkedChannels": 600000,
+    "changedChannels": 0
+  },
+  "limit": "Two unobstructed floor regions at one matched camera, with the existing footer accounted for. This does not establish pixel-identical Cycles rendering at all angles."
+}

@@ -1,0 +1,89 @@
+{
+  "tests": 44,
+  "build": "pass",
+  "typecheck": "pass",
+  "targetedLint": "pass",
+  "protectedFiles": {
+    "checked": 127,
+    "changed": 0
+  },
+  "nativePage": {
+    "canvasRetained": true,
+    "mobileStatus": "Paused · idle"
+  },
+  "runs": {
+    "laptop": {
+      "viewport": [
+        1280,
+        720
+      ],
+      "returnStartDelayMs": 26,
+      "errors": [],
+      "movingPausesOver50ms": [],
+      "sceneConstructs": [
+        {
+          "name": "Liquid page GPU preflight",
+          "start": 5891.3
+        },
+        {
+          "name": "Construct projector geometry/materials/motion texture",
+          "start": 6515
+        }
+      ]
+    },
+    "mobile": {
+      "viewport": [
+        390,
+        844
+      ],
+      "returnStartDelayMs": 26,
+      "errors": [],
+      "movingPausesOver50ms": [],
+      "sceneConstructs": [
+        {
+          "name": "Liquid page GPU preflight",
+          "start": 5896.9
+        },
+        {
+          "name": "Construct projector geometry/materials/motion texture",
+          "start": 6491.7
+        }
+      ]
+    }
+  },
+  "particleFit": {
+    "method": "Area-weighted visible current-mesh targets, preserving original IDs and source flight math",
+    "source": "/models/projector/projector-materials-draco.glb",
+    "ownerParts": 489,
+    "runtimeParts": 514,
+    "sourcePose": 96,
+    "hiddenComponentsExcluded": [
+      "LH_Base_plate_plus_Scheimpflug_adjusters_plus_motor_PCB_components",
+      "LP_BLUE_DMD_board_plus_flex_tail_components",
+      "LP_GREEN_reference_DMD_board_plus_flex_tail_components",
+      "LP_RED_DMD_board_plus_flex_tail_components",
+      "LP_Satellite_formatter_board_BLUE_side_components",
+      "LP_Satellite_formatter_board_GREEN_top_components",
+      "LP_Satellite_formatter_board_RED_bottom_components"
+    ],
+    "normalOffsetMetres": 0.0006,
+    "profiles": {
+      "desktop": {
+        "count": 65536,
+        "bytes": 1335913,
+        "maxDistanceToOwnTriangleMetres": 0.0006000597722456792,
+        "oldParticlesOutsideOwnPartBounds": 53781,
+        "oldMaxDistanceToPartBoundsMetres": 0.6073295136468286,
+        "destination": "public/models/projector/particles-aligned-desktop-v2.bin.gz"
+      },
+      "laptop": {
+        "count": 32768,
+        "bytes": 672103,
+        "maxDistanceToOwnTriangleMetres": 0.0006000595248412139,
+        "oldParticlesOutsideOwnPartBounds": 26888,
+        "oldMaxDistanceToPartBoundsMetres": 0.6027473850959832,
+        "destination": "public/models/projector/particles-aligned-laptop-v2.bin.gz"
+      }
+    }
+  }
+}

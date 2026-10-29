@@ -1,0 +1,130 @@
+{
+  "tests": 43,
+  "build": "pass",
+  "typecheck": "pass",
+  "targetedLint": "pass",
+  "protectedAssets": {
+    "checked": 127,
+    "changed": 0
+  },
+  "newDownloads": {
+    "models": 0,
+    "textures": 0
+  },
+  "gpuGeometry": {
+    "computer": {
+      "triangles": 27648,
+      "bytes": 626880
+    },
+    "mobile": {
+      "triangles": 12288,
+      "bytes": 282816
+    }
+  },
+  "runs": {
+    "laptop": {
+      "viewport": [
+        1280,
+        720
+      ],
+      "errors": [],
+      "stages": [
+        {
+          "name": "entrance",
+          "durationMs": 1801,
+          "pausesOver50ms": []
+        },
+        {
+          "name": "morph",
+          "durationMs": 1106,
+          "pausesOver50ms": []
+        },
+        {
+          "name": "cover",
+          "durationMs": 1106,
+          "pausesOver50ms": []
+        }
+      ],
+      "preparation": [
+        {
+          "id": 105,
+          "name": "Liquid page GPU preflight",
+          "kind": "shader/resource preparation",
+          "start": 5751,
+          "detail": {},
+          "end": 5837.9,
+          "duration": 86.9
+        },
+        {
+          "id": 145,
+          "name": "Liquid page GPU preflight",
+          "kind": "shader/resource preparation",
+          "start": 213495.6,
+          "detail": {},
+          "end": 213667.3,
+          "duration": 171.7
+        }
+      ],
+      "allPausePhases": [
+        "intro",
+        "idle",
+        "pageReturnLoading"
+      ]
+    },
+    "mobile": {
+      "viewport": [
+        390,
+        844
+      ],
+      "errors": [],
+      "stages": [
+        {
+          "name": "entrance",
+          "durationMs": 1801,
+          "pausesOver50ms": []
+        },
+        {
+          "name": "morph",
+          "durationMs": 1107,
+          "pausesOver50ms": []
+        },
+        {
+          "name": "cover",
+          "durationMs": 1107,
+          "pausesOver50ms": []
+        }
+      ],
+      "preparation": [
+        {
+          "id": 106,
+          "name": "Liquid page GPU preflight",
+          "kind": "shader/resource preparation",
+          "start": 5731.5,
+          "detail": {
+            "triangles": 12288,
+            "mobile": true
+          },
+          "end": 5816.4,
+          "duration": 84.9
+        },
+        {
+          "id": 147,
+          "name": "Liquid page GPU preflight",
+          "kind": "shader/resource preparation",
+          "start": 318084.4,
+          "detail": {
+            "triangles": 12288,
+            "mobile": true
+          },
+          "end": 318330.6,
+          "duration": 246.2
+        }
+      ],
+      "allPausePhases": [
+        "intro",
+        "idle",
+        "pageReturnLoading"
+      ]
+    }
+  }
+}

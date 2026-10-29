@@ -1,0 +1,18 @@
+{
+  "build": "pass",
+  "typecheck": "pass",
+  "changedRuntimeEslintFiles": 19,
+  "eslint": "pass",
+  "regressionTests": 39,
+  "regressionFailures": 0,
+  "publicFilesChecked": 127,
+  "publicFilesChanged": 0,
+  "textureMappingsChecked": 26,
+  "textureAuditErrors": 0,
+  "finalLocalJourneyErrors": 0,
+  "finalLocalMovingPausesOver50ms": 0,
+  "finalLocalWorstPauseMs": 186.6,
+  "realPhoneAndLaptopTimingVerified": false,
+  "report": "final-complete.json",
+  "preview": "http://192.168.1.5:3000/"
+}

@@ -1,0 +1,69 @@
+{
+  "source": "D:/CodexOutputs/Theatre_Ceiling_PBR_20261023/blender-reference.png",
+  "after": "docs/theatre-ceiling-audit/ceiling-corrected-final.png",
+  "regions": {
+    "inset": {
+      "rectangle": [
+        810,
+        70,
+        300,
+        80
+      ],
+      "sourceMean": [
+        78.0822083333427,
+        56.48658333334229,
+        37.93166666666805
+      ],
+      "webMean": [
+        75.0491249999951,
+        55.21437500001802,
+        37.78258333333116
+      ],
+      "rgbRms": 3.0281709734498885
+    },
+    "outerSoffit": {
+      "rectangle": [
+        350,
+        40,
+        180,
+        40
+      ],
+      "sourceMean": [
+        131.75541666666493,
+        103.19236111111188,
+        75.89569444444442
+      ],
+      "webMean": [
+        112.96472222222246,
+        90.11958333333041,
+        67.6616666666662
+      ],
+      "rgbRms": 15.921133753599333
+    },
+    "frontCove": {
+      "rectangle": [
+        800,
+        220,
+        320,
+        24
+      ],
+      "sourceMean": [
+        145.1627604166657,
+        121.40208333333604,
+        100.44908854166832
+      ],
+      "webMean": [
+        145.14257812499838,
+        121.79088541666775,
+        99.99075520833439
+      ],
+      "rgbRms": 1.416069114171731
+    }
+  },
+  "nonCeilingPatch": {
+    "checkedChannels": 2520000,
+    "changedChannels": 467937,
+    "maxChannelDifference": 220
+  },
+  "limit": "Three limited regions at the approved camera, not proof of pixel-identical rendering at every camera position."
+}

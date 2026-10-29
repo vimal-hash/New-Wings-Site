@@ -1,0 +1,23 @@
+{
+  "matrix": [
+    1.1084045462167786,
+    0,
+    0.07750728424127207,
+    0,
+    0,
+    1.1111111405455043,
+    0,
+    0,
+    -0.07750728424127207,
+    0,
+    1.1084045462167786,
+    0,
+    -2.0151893902730738,
+    -0.0222222223142047,
+    28.818518201636245,
+    1
+  ],
+  "source": "Entire upgraded logo/corridor assembly aligned together around the theatre: uniform scale, rotation and translation only. All relative logo/corridor positions and mesh geometry are unchanged.",
+  "uniformScale": 1.1111111111111112,
+  "contact": "No intersections with corridor/logo surfaces above the walking datum; buried foundation/floor contact is allowed."
+}

@@ -1,0 +1,33 @@
+{
+  "preparedFile": "D:\\CodexOutputs\\Corridor_Left_Wall_Lighting_20261024\\Left_Wall_Lighting_Prepared.blend",
+  "source": "D:/CodexOutputs/Restoration_20261024/corridor/Corridor_prepared_work_copy.blend",
+  "targetObject": "Red corridor wall \u2022 separate from logo",
+  "materialOriginal": "PREP | Red corridor wall \u2022 separate from logo | Corridor \u2022 neutral soft fill / dark lower edge.001",
+  "materialPrepared": "LEFT WALL | Soft readable charcoal fill",
+  "change": "Wall-only camera-visible textured ambient fill, peak strength0.18; normalized height smootherstep0.008 to0.26; original physical shader preserved",
+  "previousHeightInput": [
+    [
+      "Separate XYZ",
+      "Z"
+    ]
+  ],
+  "floorJunction": "zero fill at base, smooth transition across lower26percent of wall height",
+  "camera": {
+    "eye": [
+      -160.32785,
+      112.54246500000002,
+      3.3725000381469727
+    ],
+    "target": [
+      -147.0107736477797,
+      116.86166370220566,
+      3.3725000381469727
+    ],
+    "fov": 40,
+    "width": 1600,
+    "height": 788
+  },
+  "bakeStarted": false,
+  "runtimeChanged": false,
+  "instruction": "Claude must bake corridor-wall-red only from this prepared copy, retaining existing runtime UV sidecar and single bake viewpoint. Do not replace global corridor source for other items."
+}

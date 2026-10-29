@@ -1,0 +1,1939 @@
+{
+  "objects": [
+    {
+      "name": "HALO II | Slim floating soffit",
+      "type": "MESH",
+      "hidden": false,
+      "triangles": 384,
+      "uvs": [
+        "UV_Atlas"
+      ],
+      "bounds": [
+        [
+          -7.349999904632568,
+          7.349999904632568
+        ],
+        [
+          0.949999988079071,
+          20.600000381469727
+        ],
+        [
+          6.320000171661377,
+          6.320000171661377
+        ]
+      ],
+      "materials": [
+        "HALO II | Matte mineral soffit"
+      ]
+    },
+    {
+      "name": "HALO II | 90mm perimeter fascia",
+      "type": "MESH",
+      "hidden": false,
+      "triangles": 384,
+      "uvs": [
+        "UV_Atlas"
+      ],
+      "bounds": [
+        [
+          -7.349999904632568,
+          7.349999904632568
+        ],
+        [
+          0.949999988079071,
+          20.600000381469727
+        ],
+        [
+          6.320000171661377,
+          6.409999847412109
+        ]
+      ],
+      "materials": [
+        "HALO II | Matte mineral soffit"
+      ]
+    },
+    {
+      "name": "HALO II | Continuous rolled plaster cove",
+      "type": "MESH",
+      "hidden": false,
+      "triangles": 2688,
+      "uvs": [
+        "UV_Atlas"
+      ],
+      "bounds": [
+        [
+          -3.9000000953674316,
+          3.9000000953674316
+        ],
+        [
+          3.0,
+          18.5
+        ],
+        [
+          6.320000171661377,
+          6.769999980926514
+        ]
+      ],
+      "materials": [
+        "HALO II | Matte mineral soffit"
+      ]
+    },
+    {
+      "name": "HALO II | Floating acoustic inset",
+      "type": "MESH",
+      "hidden": false,
+      "triangles": 190,
+      "uvs": [
+        "UV_Atlas"
+      ],
+      "bounds": [
+        [
+          -3.4800000190734863,
+          3.4800000190734863
+        ],
+        [
+          3.4200000762939453,
+          18.079999923706055
+        ],
+        [
+          6.909999847412109,
+          6.909999847412109
+        ]
+      ],
+      "materials": [
+        "HALO II | Recess acoustic plaster"
+      ]
+    },
+    {
+      "name": "HALO II | Backing above ceiling",
+      "type": "MESH",
+      "hidden": false,
+      "triangles": 190,
+      "uvs": [
+        "UV_Atlas"
+      ],
+      "bounds": [
+        [
+          -8.300000190734863,
+          8.300000190734863
+        ],
+        [
+          -0.05000000074505806,
+          21.5
+        ],
+        [
+          6.980000019073486,
+          6.980000019073486
+        ]
+      ],
+      "materials": [
+        "HALO II | Recess acoustic plaster"
+      ]
+    },
+    {
+      "name": "HALO II | Hidden inner LED shelf",
+      "type": "MESH",
+      "hidden": false,
+      "triangles": 384,
+      "uvs": [
+        "UV_Atlas"
+      ],
+      "bounds": [
+        [
+          -3.5299999713897705,
+          3.5299999713897705
+        ],
+        [
+          3.369999885559082,
+          18.1299991607666
+        ],
+        [
+          6.724999904632568,
+          6.724999904632568
+        ]
+      ],
+      "materials": [
+        "HALO II | Concealed warm tape"
+      ]
+    },
+    {
+      "name": "HALO II | Outer concealed LED shelf",
+      "type": "MESH",
+      "hidden": false,
+      "triangles": 384,
+      "uvs": [
+        "UV_Atlas"
+      ],
+      "bounds": [
+        [
+          -7.449999809265137,
+          7.449999809265137
+        ],
+        [
+          0.8500000238418579,
+          20.700000762939453
+        ],
+        [
+          6.445000171661377,
+          6.445000171661377
+        ]
+      ],
+      "materials": [
+        "HALO II | Concealed warm tape"
+      ]
+    },
+    {
+      "name": "HALO II | Perimeter cove upper receiver",
+      "type": "MESH",
+      "hidden": false,
+      "triangles": 384,
+      "uvs": [
+        "UV_Atlas"
+      ],
+      "bounds": [
+        [
+          -8.229999542236328,
+          8.229999542236328
+        ],
+        [
+          -0.029999999329447746,
+          21.479999542236328
+        ],
+        [
+          6.71999979019165,
+          6.71999979019165
+        ]
+      ],
+      "materials": [
+        "HALO II | Matte mineral soffit"
+      ]
+    },
+    {
+      "name": "HALO II | Wall crown closure",
+      "type": "MESH",
+      "hidden": false,
+      "triangles": 2,
+      "uvs": [
+        "UV_Atlas"
+      ],
+      "bounds": [
+        [
+          -8.220000267028809,
+          -8.220000267028809
+        ],
+        [
+          -0.029999999329447746,
+          21.479999542236328
+        ],
+        [
+          6.400000095367432,
+          6.980000019073486
+        ]
+      ],
+      "materials": [
+        "HALO II | Recess acoustic plaster"
+      ]
+    },
+    {
+      "name": "HALO II | Wall crown closure.001",
+      "type": "MESH",
+      "hidden": false,
+      "triangles": 2,
+      "uvs": [
+        "UV_Atlas"
+      ],
+      "bounds": [
+        [
+          8.220000267028809,
+          8.220000267028809
+        ],
+        [
+          -0.029999999329447746,
+          21.479999542236328
+        ],
+        [
+          6.400000095367432,
+          6.980000019073486
+        ]
+      ],
+      "materials": [
+        "HALO II | Recess acoustic plaster"
+      ]
+    },
+    {
+      "name": "HALO II | Recessed aisle light ribbon",
+      "type": "MESH",
+      "hidden": false,
+      "triangles": 2,
+      "uvs": [
+        "UV_Atlas"
+      ],
+      "bounds": [
+        [
+          -7.909999847412109,
+          -7.909999847412109
+        ],
+        [
+          7.036602020263672,
+          11.086602210998535
+        ],
+        [
+          0.054999999701976776,
+          0.07100000232458115
+        ]
+      ],
+      "materials": [
+        "HALO II | Soft aisle guide"
+      ]
+    },
+    {
+      "name": "HALO II | Aisle channel hood",
+      "type": "MESH",
+      "hidden": false,
+      "triangles": 2,
+      "uvs": [
+        "UV_Atlas"
+      ],
+      "bounds": [
+        [
+          -7.940000057220459,
+          -7.875
+        ],
+        [
+          7.036602020263672,
+          11.086602210998535
+        ],
+        [
+          0.09000000357627869,
+          0.09000000357627869
+        ]
+      ],
+      "materials": [
+        "HALO | Brushed champagne reveal"
+      ]
+    },
+    {
+      "name": "HALO II | Recessed aisle light ribbon.001",
+      "type": "MESH",
+      "hidden": false,
+      "triangles": 2,
+      "uvs": [
+        "UV_Atlas"
+      ],
+      "bounds": [
+        [
+          -7.909999847412109,
+          -7.909999847412109
+        ],
+        [
+          11.086602210998535,
+          13.41660213470459
+        ],
+        [
+          0.23499999940395355,
+          0.25099998712539673
+        ]
+      ],
+      "materials": [
+        "HALO II | Soft aisle guide"
+      ]
+    },
+    {
+      "name": "HALO II | Aisle channel hood.001",
+      "type": "MESH",
+      "hidden": false,
+      "triangles": 2,
+      "uvs": [
+        "UV_Atlas"
+      ],
+      "bounds": [
+        [
+          -7.940000057220459,
+          -7.875
+        ],
+        [
+          11.086602210998535,
+          13.41660213470459
+        ],
+        [
+          0.27000001072883606,
+          0.27000001072883606
+        ]
+      ],
+      "materials": [
+        "HALO | Brushed champagne reveal"
+      ]
+    },
+    {
+      "name": "HALO II | Recessed aisle light ribbon.002",
+      "type": "MESH",
+      "hidden": false,
+      "triangles": 2,
+      "uvs": [
+        "UV_Atlas"
+      ],
+      "bounds": [
+        [
+          -7.909999847412109,
+          -7.909999847412109
+        ],
+        [
+          13.41660213470459,
+          13.736601829528809
+        ],
+        [
+          0.41499999165534973,
+          0.4309999942779541
+        ]
+      ],
+      "materials": [
+        "HALO II | Soft aisle guide"
+      ]
+    },
+    {
+      "name": "HALO II | Aisle channel hood.002",
+      "type": "MESH",
+      "hidden": false,
+      "triangles": 2,
+      "uvs": [
+        "UV_Atlas"
+      ],
+      "bounds": [
+        [
+          -7.940000057220459,
+          -7.875
+        ],
+        [
+          13.41660213470459,
+          13.736601829528809
+        ],
+        [
+          0.44999998807907104,
+          0.44999998807907104
+        ]
+      ],
+      "materials": [
+        "HALO | Brushed champagne reveal"
+      ]
+    },
+    {
+      "name": "HALO II | Recessed aisle light ribbon.003",
+      "type": "MESH",
+      "hidden": false,
+      "triangles": 2,
+      "uvs": [
+        "UV_Atlas"
+      ],
+      "bounds": [
+        [
+          -7.909999847412109,
+          -7.909999847412109
+        ],
+        [
+          13.736601829528809,
+          16.066600799560547
+        ],
+        [
+          0.5950000286102295,
+          0.6110000014305115
+        ]
+      ],
+      "materials": [
+        "HALO II | Soft aisle guide"
+      ]
+    },
+    {
+      "name": "HALO II | Aisle channel hood.003",
+      "type": "MESH",
+      "hidden": false,
+      "triangles": 2,
+      "uvs": [
+        "UV_Atlas"
+      ],
+      "bounds": [
+        [
+          -7.940000057220459,
+          -7.875
+        ],
+        [
+          13.736601829528809,
+          16.066600799560547
+        ],
+        [
+          0.6299999952316284,
+          0.6299999952316284
+        ]
+      ],
+      "materials": [
+        "HALO | Brushed champagne reveal"
+      ]
+    },
+    {
+      "name": "HALO II | Recessed aisle light ribbon.004",
+      "type": "MESH",
+      "hidden": false,
+      "triangles": 2,
+      "uvs": [
+        "UV_Atlas"
+      ],
+      "bounds": [
+        [
+          -7.909999847412109,
+          -7.909999847412109
+        ],
+        [
+          16.066600799560547,
+          16.3866024017334
+        ],
+        [
+          0.7749999761581421,
+          0.7910000085830688
+        ]
+      ],
+      "materials": [
+        "HALO II | Soft aisle guide"
+      ]
+    },
+    {
+      "name": "HALO II | Aisle channel hood.004",
+      "type": "MESH",
+      "hidden": false,
+      "triangles": 2,
+      "uvs": [
+        "UV_Atlas"
+      ],
+      "bounds": [
+        [
+          -7.940000057220459,
+          -7.875
+        ],
+        [
+          16.066600799560547,
+          16.3866024017334
+        ],
+        [
+          0.8100000023841858,
+          0.8100000023841858
+        ]
+      ],
+      "materials": [
+        "HALO | Brushed champagne reveal"
+      ]
+    },
+    {
+      "name": "HALO II | Recessed aisle light ribbon.005",
+      "type": "MESH",
+      "hidden": false,
+      "triangles": 2,
+      "uvs": [
+        "UV_Atlas"
+      ],
+      "bounds": [
+        [
+          -7.909999847412109,
+          -7.909999847412109
+        ],
+        [
+          16.3866024017334,
+          18.716602325439453
+        ],
+        [
+          0.9549999833106995,
+          0.9710000157356262
+        ]
+      ],
+      "materials": [
+        "HALO II | Soft aisle guide"
+      ]
+    },
+    {
+      "name": "HALO II | Aisle channel hood.005",
+      "type": "MESH",
+      "hidden": false,
+      "triangles": 2,
+      "uvs": [
+        "UV_Atlas"
+      ],
+      "bounds": [
+        [
+          -7.940000057220459,
+          -7.875
+        ],
+        [
+          16.3866024017334,
+          18.716602325439453
+        ],
+        [
+          0.9900000095367432,
+          0.9900000095367432
+        ]
+      ],
+      "materials": [
+        "HALO | Brushed champagne reveal"
+      ]
+    },
+    {
+      "name": "HALO II | Recessed aisle light ribbon.006",
+      "type": "MESH",
+      "hidden": false,
+      "triangles": 2,
+      "uvs": [
+        "UV_Atlas"
+      ],
+      "bounds": [
+        [
+          -7.909999847412109,
+          -7.909999847412109
+        ],
+        [
+          18.716602325439453,
+          19.036602020263672
+        ],
+        [
+          1.1349999904632568,
+          1.1510000228881836
+        ]
+      ],
+      "materials": [
+        "HALO II | Soft aisle guide"
+      ]
+    },
+    {
+      "name": "HALO II | Aisle channel hood.006",
+      "type": "MESH",
+      "hidden": false,
+      "triangles": 2,
+      "uvs": [
+        "UV_Atlas"
+      ],
+      "bounds": [
+        [
+          -7.940000057220459,
+          -7.875
+        ],
+        [
+          18.716602325439453,
+          19.036602020263672
+        ],
+        [
+          1.1699999570846558,
+          1.1699999570846558
+        ]
+      ],
+      "materials": [
+        "HALO | Brushed champagne reveal"
+      ]
+    },
+    {
+      "name": "HALO II | Recessed aisle light ribbon.007",
+      "type": "MESH",
+      "hidden": false,
+      "triangles": 2,
+      "uvs": [
+        "UV_Atlas"
+      ],
+      "bounds": [
+        [
+          -7.909999847412109,
+          -7.909999847412109
+        ],
+        [
+          19.036602020263672,
+          21.366601943969727
+        ],
+        [
+          1.315000057220459,
+          1.3309999704360962
+        ]
+      ],
+      "materials": [
+        "HALO II | Soft aisle guide"
+      ]
+    },
+    {
+      "name": "HALO II | Aisle channel hood.007",
+      "type": "MESH",
+      "hidden": false,
+      "triangles": 2,
+      "uvs": [
+        "UV_Atlas"
+      ],
+      "bounds": [
+        [
+          -7.940000057220459,
+          -7.875
+        ],
+        [
+          19.036602020263672,
+          21.366601943969727
+        ],
+        [
+          1.350000023841858,
+          1.350000023841858
+        ]
+      ],
+      "materials": [
+        "HALO | Brushed champagne reveal"
+      ]
+    },
+    {
+      "name": "HALO II | Recessed aisle light ribbon.008",
+      "type": "MESH",
+      "hidden": false,
+      "triangles": 2,
+      "uvs": [
+        "UV_Atlas"
+      ],
+      "bounds": [
+        [
+          -7.909999847412109,
+          -7.909999847412109
+        ],
+        [
+          21.366601943969727,
+          21.686601638793945
+        ],
+        [
+          1.4950000047683716,
+          1.5110000371932983
+        ]
+      ],
+      "materials": [
+        "HALO II | Soft aisle guide"
+      ]
+    },
+    {
+      "name": "HALO II | Aisle channel hood.008",
+      "type": "MESH",
+      "hidden": false,
+      "triangles": 2,
+      "uvs": [
+        "UV_Atlas"
+      ],
+      "bounds": [
+        [
+          -7.940000057220459,
+          -7.875
+        ],
+        [
+          21.366601943969727,
+          21.686601638793945
+        ],
+        [
+          1.5299999713897705,
+          1.5299999713897705
+        ]
+      ],
+      "materials": [
+        "HALO | Brushed champagne reveal"
+      ]
+    },
+    {
+      "name": "HALO II | Recessed aisle light ribbon.009",
+      "type": "MESH",
+      "hidden": false,
+      "triangles": 2,
+      "uvs": [
+        "UV_Atlas"
+      ],
+      "bounds": [
+        [
+          -7.909999847412109,
+          -7.909999847412109
+        ],
+        [
+          21.686601638793945,
+          26.786602020263672
+        ],
+        [
+          1.6749999523162842,
+          1.690999984741211
+        ]
+      ],
+      "materials": [
+        "HALO II | Soft aisle guide"
+      ]
+    },
+    {
+      "name": "HALO II | Aisle channel hood.009",
+      "type": "MESH",
+      "hidden": false,
+      "triangles": 2,
+      "uvs": [
+        "UV_Atlas"
+      ],
+      "bounds": [
+        [
+          -7.940000057220459,
+          -7.875
+        ],
+        [
+          21.686601638793945,
+          26.786602020263672
+        ],
+        [
+          1.7100000381469727,
+          1.7100000381469727
+        ]
+      ],
+      "materials": [
+        "HALO | Brushed champagne reveal"
+      ]
+    },
+    {
+      "name": "HALO II | Recessed aisle light ribbon.010",
+      "type": "MESH",
+      "hidden": false,
+      "triangles": 2,
+      "uvs": [
+        "UV_Atlas"
+      ],
+      "bounds": [
+        [
+          7.909999847412109,
+          7.909999847412109
+        ],
+        [
+          7.036602020263672,
+          11.086602210998535
+        ],
+        [
+          0.054999999701976776,
+          0.07100000232458115
+        ]
+      ],
+      "materials": [
+        "HALO II | Soft aisle guide"
+      ]
+    },
+    {
+      "name": "HALO II | Aisle channel hood.010",
+      "type": "MESH",
+      "hidden": false,
+      "triangles": 2,
+      "uvs": [
+        "UV_Atlas"
+      ],
+      "bounds": [
+        [
+          7.875,
+          7.940000057220459
+        ],
+        [
+          7.036602020263672,
+          11.086602210998535
+        ],
+        [
+          0.09000000357627869,
+          0.09000000357627869
+        ]
+      ],
+      "materials": [
+        "HALO | Brushed champagne reveal"
+      ]
+    },
+    {
+      "name": "HALO II | Recessed aisle light ribbon.011",
+      "type": "MESH",
+      "hidden": false,
+      "triangles": 2,
+      "uvs": [
+        "UV_Atlas"
+      ],
+      "bounds": [
+        [
+          7.909999847412109,
+          7.909999847412109
+        ],
+        [
+          11.086602210998535,
+          13.41660213470459
+        ],
+        [
+          0.23499999940395355,
+          0.25099998712539673
+        ]
+      ],
+      "materials": [
+        "HALO II | Soft aisle guide"
+      ]
+    },
+    {
+      "name": "HALO II | Aisle channel hood.011",
+      "type": "MESH",
+      "hidden": false,
+      "triangles": 2,
+      "uvs": [
+        "UV_Atlas"
+      ],
+      "bounds": [
+        [
+          7.875,
+          7.940000057220459
+        ],
+        [
+          11.086602210998535,
+          13.41660213470459
+        ],
+        [
+          0.27000001072883606,
+          0.27000001072883606
+        ]
+      ],
+      "materials": [
+        "HALO | Brushed champagne reveal"
+      ]
+    },
+    {
+      "name": "HALO II | Recessed aisle light ribbon.012",
+      "type": "MESH",
+      "hidden": false,
+      "triangles": 2,
+      "uvs": [
+        "UV_Atlas"
+      ],
+      "bounds": [
+        [
+          7.909999847412109,
+          7.909999847412109
+        ],
+        [
+          13.41660213470459,
+          13.736601829528809
+        ],
+        [
+          0.41499999165534973,
+          0.4309999942779541
+        ]
+      ],
+      "materials": [
+        "HALO II | Soft aisle guide"
+      ]
+    },
+    {
+      "name": "HALO II | Aisle channel hood.012",
+      "type": "MESH",
+      "hidden": false,
+      "triangles": 2,
+      "uvs": [
+        "UV_Atlas"
+      ],
+      "bounds": [
+        [
+          7.875,
+          7.940000057220459
+        ],
+        [
+          13.41660213470459,
+          13.736601829528809
+        ],
+        [
+          0.44999998807907104,
+          0.44999998807907104
+        ]
+      ],
+      "materials": [
+        "HALO | Brushed champagne reveal"
+      ]
+    },
+    {
+      "name": "HALO II | Recessed aisle light ribbon.013",
+      "type": "MESH",
+      "hidden": false,
+      "triangles": 2,
+      "uvs": [
+        "UV_Atlas"
+      ],
+      "bounds": [
+        [
+          7.909999847412109,
+          7.909999847412109
+        ],
+        [
+          13.736601829528809,
+          16.066600799560547
+        ],
+        [
+          0.5950000286102295,
+          0.6110000014305115
+        ]
+      ],
+      "materials": [
+        "HALO II | Soft aisle guide"
+      ]
+    },
+    {
+      "name": "HALO II | Aisle channel hood.013",
+      "type": "MESH",
+      "hidden": false,
+      "triangles": 2,
+      "uvs": [
+        "UV_Atlas"
+      ],
+      "bounds": [
+        [
+          7.875,
+          7.940000057220459
+        ],
+        [
+          13.736601829528809,
+          16.066600799560547
+        ],
+        [
+          0.6299999952316284,
+          0.6299999952316284
+        ]
+      ],
+      "materials": [
+        "HALO | Brushed champagne reveal"
+      ]
+    },
+    {
+      "name": "HALO II | Recessed aisle light ribbon.014",
+      "type": "MESH",
+      "hidden": false,
+      "triangles": 2,
+      "uvs": [
+        "UV_Atlas"
+      ],
+      "bounds": [
+        [
+          7.909999847412109,
+          7.909999847412109
+        ],
+        [
+          16.066600799560547,
+          16.3866024017334
+        ],
+        [
+          0.7749999761581421,
+          0.7910000085830688
+        ]
+      ],
+      "materials": [
+        "HALO II | Soft aisle guide"
+      ]
+    },
+    {
+      "name": "HALO II | Aisle channel hood.014",
+      "type": "MESH",
+      "hidden": false,
+      "triangles": 2,
+      "uvs": [
+        "UV_Atlas"
+      ],
+      "bounds": [
+        [
+          7.875,
+          7.940000057220459
+        ],
+        [
+          16.066600799560547,
+          16.3866024017334
+        ],
+        [
+          0.8100000023841858,
+          0.8100000023841858
+        ]
+      ],
+      "materials": [
+        "HALO | Brushed champagne reveal"
+      ]
+    },
+    {
+      "name": "HALO II | Recessed aisle light ribbon.015",
+      "type": "MESH",
+      "hidden": false,
+      "triangles": 2,
+      "uvs": [
+        "UV_Atlas"
+      ],
+      "bounds": [
+        [
+          7.909999847412109,
+          7.909999847412109
+        ],
+        [
+          16.3866024017334,
+          18.716602325439453
+        ],
+        [
+          0.9549999833106995,
+          0.9710000157356262
+        ]
+      ],
+      "materials": [
+        "HALO II | Soft aisle guide"
+      ]
+    },
+    {
+      "name": "HALO II | Aisle channel hood.015",
+      "type": "MESH",
+      "hidden": false,
+      "triangles": 2,
+      "uvs": [
+        "UV_Atlas"
+      ],
+      "bounds": [
+        [
+          7.875,
+          7.940000057220459
+        ],
+        [
+          16.3866024017334,
+          18.716602325439453
+        ],
+        [
+          0.9900000095367432,
+          0.9900000095367432
+        ]
+      ],
+      "materials": [
+        "HALO | Brushed champagne reveal"
+      ]
+    },
+    {
+      "name": "HALO II | Recessed aisle light ribbon.016",
+      "type": "MESH",
+      "hidden": false,
+      "triangles": 2,
+      "uvs": [
+        "UV_Atlas"
+      ],
+      "bounds": [
+        [
+          7.909999847412109,
+          7.909999847412109
+        ],
+        [
+          18.716602325439453,
+          19.036602020263672
+        ],
+        [
+          1.1349999904632568,
+          1.1510000228881836
+        ]
+      ],
+      "materials": [
+        "HALO II | Soft aisle guide"
+      ]
+    },
+    {
+      "name": "HALO II | Aisle channel hood.016",
+      "type": "MESH",
+      "hidden": false,
+      "triangles": 2,
+      "uvs": [
+        "UV_Atlas"
+      ],
+      "bounds": [
+        [
+          7.875,
+          7.940000057220459
+        ],
+        [
+          18.716602325439453,
+          19.036602020263672
+        ],
+        [
+          1.1699999570846558,
+          1.1699999570846558
+        ]
+      ],
+      "materials": [
+        "HALO | Brushed champagne reveal"
+      ]
+    },
+    {
+      "name": "HALO II | Recessed aisle light ribbon.017",
+      "type": "MESH",
+      "hidden": false,
+      "triangles": 2,
+      "uvs": [
+        "UV_Atlas"
+      ],
+      "bounds": [
+        [
+          7.909999847412109,
+          7.909999847412109
+        ],
+        [
+          19.036602020263672,
+          21.366601943969727
+        ],
+        [
+          1.315000057220459,
+          1.3309999704360962
+        ]
+      ],
+      "materials": [
+        "HALO II | Soft aisle guide"
+      ]
+    },
+    {
+      "name": "HALO II | Aisle channel hood.017",
+      "type": "MESH",
+      "hidden": false,
+      "triangles": 2,
+      "uvs": [
+        "UV_Atlas"
+      ],
+      "bounds": [
+        [
+          7.875,
+          7.940000057220459
+        ],
+        [
+          19.036602020263672,
+          21.366601943969727
+        ],
+        [
+          1.350000023841858,
+          1.350000023841858
+        ]
+      ],
+      "materials": [
+        "HALO | Brushed champagne reveal"
+      ]
+    },
+    {
+      "name": "HALO II | Recessed aisle light ribbon.018",
+      "type": "MESH",
+      "hidden": false,
+      "triangles": 2,
+      "uvs": [
+        "UV_Atlas"
+      ],
+      "bounds": [
+        [
+          7.909999847412109,
+          7.909999847412109
+        ],
+        [
+          21.366601943969727,
+          21.686601638793945
+        ],
+        [
+          1.4950000047683716,
+          1.5110000371932983
+        ]
+      ],
+      "materials": [
+        "HALO II | Soft aisle guide"
+      ]
+    },
+    {
+      "name": "HALO II | Aisle channel hood.018",
+      "type": "MESH",
+      "hidden": false,
+      "triangles": 2,
+      "uvs": [
+        "UV_Atlas"
+      ],
+      "bounds": [
+        [
+          7.875,
+          7.940000057220459
+        ],
+        [
+          21.366601943969727,
+          21.686601638793945
+        ],
+        [
+          1.5299999713897705,
+          1.5299999713897705
+        ]
+      ],
+      "materials": [
+        "HALO | Brushed champagne reveal"
+      ]
+    },
+    {
+      "name": "HALO II | Recessed aisle light ribbon.019",
+      "type": "MESH",
+      "hidden": false,
+      "triangles": 2,
+      "uvs": [
+        "UV_Atlas"
+      ],
+      "bounds": [
+        [
+          7.909999847412109,
+          7.909999847412109
+        ],
+        [
+          21.686601638793945,
+          26.786602020263672
+        ],
+        [
+          1.6749999523162842,
+          1.690999984741211
+        ]
+      ],
+      "materials": [
+        "HALO II | Soft aisle guide"
+      ]
+    },
+    {
+      "name": "HALO II | Aisle channel hood.019",
+      "type": "MESH",
+      "hidden": false,
+      "triangles": 2,
+      "uvs": [
+        "UV_Atlas"
+      ],
+      "bounds": [
+        [
+          7.875,
+          7.940000057220459
+        ],
+        [
+          21.686601638793945,
+          26.786602020263672
+        ],
+        [
+          1.7100000381469727,
+          1.7100000381469727
+        ]
+      ],
+      "materials": [
+        "HALO | Brushed champagne reveal"
+      ]
+    }
+  ],
+  "materials": {
+    "HALO II | Matte mineral soffit": {
+      "nodes": [
+        {
+          "name": "Principled BSDF",
+          "type": "BSDF_PRINCIPLED",
+          "uv_map": null,
+          "image": null,
+          "inputs": {
+            "Base Color": [
+              0.30000001192092896,
+              0.25,
+              0.19499999284744263,
+              1.0
+            ],
+            "Metallic": 0.0,
+            "Roughness": 0.8600000143051147,
+            "IOR": 1.5,
+            "Alpha": 1.0,
+            "Thin Wall": false,
+            "Normal": "Bump:Normal",
+            "Weight": 0.0,
+            "Diffuse Roughness": 0.0,
+            "Subsurface Weight": 0.0,
+            "Subsurface Radius": [
+              1.0,
+              0.20000000298023224,
+              0.10000000149011612
+            ],
+            "Subsurface Scale": 0.004999999888241291,
+            "Subsurface IOR": 1.399999976158142,
+            "Subsurface Anisotropy": 0.0,
+            "Specular IOR Level": 0.11999999731779099,
+            "Specular Tint": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "Anisotropic": 0.0,
+            "Anisotropic Rotation": 0.0,
+            "Tangent": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "Transmission Weight": 0.0,
+            "Coat Weight": 0.0,
+            "Coat Roughness": 0.029999999329447746,
+            "Coat IOR": 1.5,
+            "Coat Tint": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "Coat Normal": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "Sheen Weight": 0.0,
+            "Sheen Roughness": 0.5,
+            "Sheen Tint": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "Emission Color": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "Emission Strength": 0.0,
+            "Thin Film Thickness": 0.0,
+            "Thin Film IOR": 1.3300000429153442
+          }
+        },
+        {
+          "name": "Material Output",
+          "type": "OUTPUT_MATERIAL",
+          "uv_map": null,
+          "image": null,
+          "inputs": {
+            "Displacement": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "Thickness": 0.0
+          }
+        },
+        {
+          "name": "Noise Texture",
+          "type": "TEX_NOISE",
+          "uv_map": null,
+          "image": null,
+          "inputs": {
+            "Vector": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "W": 0.0,
+            "Scale": 160.0,
+            "Detail": 2.0,
+            "Roughness": 0.5,
+            "Lacunarity": 2.0,
+            "Offset": 0.0,
+            "Gain": 1.0,
+            "Distortion": 0.0
+          }
+        },
+        {
+          "name": "Bump",
+          "type": "BUMP",
+          "uv_map": null,
+          "image": null,
+          "inputs": {
+            "Strength": 0.15000000596046448,
+            "Distance": 0.0003000000142492354,
+            "Filter Width": 0.10000000149011612,
+            "Height": "Noise Texture:Factor",
+            "Normal": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        }
+      ],
+      "diffuse": [
+        0.800000011920929,
+        0.800000011920929,
+        0.800000011920929,
+        1.0
+      ]
+    },
+    "HALO II | Recess acoustic plaster": {
+      "nodes": [
+        {
+          "name": "Principled BSDF",
+          "type": "BSDF_PRINCIPLED",
+          "uv_map": null,
+          "image": null,
+          "inputs": {
+            "Base Color": [
+              0.17000000178813934,
+              0.13500000536441803,
+              0.0949999988079071,
+              1.0
+            ],
+            "Metallic": 0.0,
+            "Roughness": 0.8600000143051147,
+            "IOR": 1.5,
+            "Alpha": 1.0,
+            "Thin Wall": false,
+            "Normal": "Bump:Normal",
+            "Weight": 0.0,
+            "Diffuse Roughness": 0.0,
+            "Subsurface Weight": 0.0,
+            "Subsurface Radius": [
+              1.0,
+              0.20000000298023224,
+              0.10000000149011612
+            ],
+            "Subsurface Scale": 0.004999999888241291,
+            "Subsurface IOR": 1.399999976158142,
+            "Subsurface Anisotropy": 0.0,
+            "Specular IOR Level": 0.11999999731779099,
+            "Specular Tint": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "Anisotropic": 0.0,
+            "Anisotropic Rotation": 0.0,
+            "Tangent": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "Transmission Weight": 0.0,
+            "Coat Weight": 0.0,
+            "Coat Roughness": 0.029999999329447746,
+            "Coat IOR": 1.5,
+            "Coat Tint": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "Coat Normal": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "Sheen Weight": 0.0,
+            "Sheen Roughness": 0.5,
+            "Sheen Tint": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "Emission Color": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "Emission Strength": 0.0,
+            "Thin Film Thickness": 0.0,
+            "Thin Film IOR": 1.3300000429153442
+          }
+        },
+        {
+          "name": "Material Output",
+          "type": "OUTPUT_MATERIAL",
+          "uv_map": null,
+          "image": null,
+          "inputs": {
+            "Displacement": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "Thickness": 0.0
+          }
+        },
+        {
+          "name": "Noise Texture",
+          "type": "TEX_NOISE",
+          "uv_map": null,
+          "image": null,
+          "inputs": {
+            "Vector": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "W": 0.0,
+            "Scale": 160.0,
+            "Detail": 2.0,
+            "Roughness": 0.5,
+            "Lacunarity": 2.0,
+            "Offset": 0.0,
+            "Gain": 1.0,
+            "Distortion": 0.0
+          }
+        },
+        {
+          "name": "Bump",
+          "type": "BUMP",
+          "uv_map": null,
+          "image": null,
+          "inputs": {
+            "Strength": 0.15000000596046448,
+            "Distance": 0.0003000000142492354,
+            "Filter Width": 0.10000000149011612,
+            "Height": "Noise Texture:Factor",
+            "Normal": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        }
+      ],
+      "diffuse": [
+        0.800000011920929,
+        0.800000011920929,
+        0.800000011920929,
+        1.0
+      ]
+    },
+    "HALO II | Concealed warm tape": {
+      "nodes": [
+        {
+          "name": "Principled BSDF",
+          "type": "BSDF_PRINCIPLED",
+          "uv_map": null,
+          "image": null,
+          "inputs": {
+            "Base Color": [
+              1.0,
+              0.6899999976158142,
+              0.3799999952316284,
+              1.0
+            ],
+            "Metallic": 0.0,
+            "Roughness": 0.6499999761581421,
+            "IOR": 1.5,
+            "Alpha": 1.0,
+            "Thin Wall": false,
+            "Normal": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "Weight": 0.0,
+            "Diffuse Roughness": 0.0,
+            "Subsurface Weight": 0.0,
+            "Subsurface Radius": [
+              1.0,
+              0.20000000298023224,
+              0.10000000149011612
+            ],
+            "Subsurface Scale": 0.004999999888241291,
+            "Subsurface IOR": 1.399999976158142,
+            "Subsurface Anisotropy": 0.0,
+            "Specular IOR Level": 0.5,
+            "Specular Tint": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "Anisotropic": 0.0,
+            "Anisotropic Rotation": 0.0,
+            "Tangent": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "Transmission Weight": 0.0,
+            "Coat Weight": 0.0,
+            "Coat Roughness": 0.029999999329447746,
+            "Coat IOR": 1.5,
+            "Coat Tint": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "Coat Normal": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "Sheen Weight": 0.0,
+            "Sheen Roughness": 0.5,
+            "Sheen Tint": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "Emission Color": [
+              1.0,
+              0.6899999976158142,
+              0.3799999952316284,
+              1.0
+            ],
+            "Emission Strength": 3.799999952316284,
+            "Thin Film Thickness": 0.0,
+            "Thin Film IOR": 1.3300000429153442
+          }
+        },
+        {
+          "name": "Material Output",
+          "type": "OUTPUT_MATERIAL",
+          "uv_map": null,
+          "image": null,
+          "inputs": {
+            "Displacement": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "Thickness": 0.0
+          }
+        }
+      ],
+      "diffuse": [
+        0.800000011920929,
+        0.800000011920929,
+        0.800000011920929,
+        1.0
+      ]
+    },
+    "HALO II | Soft aisle guide": {
+      "nodes": [
+        {
+          "name": "Principled BSDF",
+          "type": "BSDF_PRINCIPLED",
+          "uv_map": null,
+          "image": null,
+          "inputs": {
+            "Base Color": [
+              1.0,
+              0.6299999952316284,
+              0.2800000011920929,
+              1.0
+            ],
+            "Metallic": 0.0,
+            "Roughness": 0.6499999761581421,
+            "IOR": 1.5,
+            "Alpha": 1.0,
+            "Thin Wall": false,
+            "Normal": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "Weight": 0.0,
+            "Diffuse Roughness": 0.0,
+            "Subsurface Weight": 0.0,
+            "Subsurface Radius": [
+              1.0,
+              0.20000000298023224,
+              0.10000000149011612
+            ],
+            "Subsurface Scale": 0.004999999888241291,
+            "Subsurface IOR": 1.399999976158142,
+            "Subsurface Anisotropy": 0.0,
+            "Specular IOR Level": 0.5,
+            "Specular Tint": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "Anisotropic": 0.0,
+            "Anisotropic Rotation": 0.0,
+            "Tangent": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "Transmission Weight": 0.0,
+            "Coat Weight": 0.0,
+            "Coat Roughness": 0.029999999329447746,
+            "Coat IOR": 1.5,
+            "Coat Tint": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "Coat Normal": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "Sheen Weight": 0.0,
+            "Sheen Roughness": 0.5,
+            "Sheen Tint": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "Emission Color": [
+              1.0,
+              0.6299999952316284,
+              0.2800000011920929,
+              1.0
+            ],
+            "Emission Strength": 0.8500000238418579,
+            "Thin Film Thickness": 0.0,
+            "Thin Film IOR": 1.3300000429153442
+          }
+        },
+        {
+          "name": "Material Output",
+          "type": "OUTPUT_MATERIAL",
+          "uv_map": null,
+          "image": null,
+          "inputs": {
+            "Displacement": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "Thickness": 0.0
+          }
+        }
+      ],
+      "diffuse": [
+        0.800000011920929,
+        0.800000011920929,
+        0.800000011920929,
+        1.0
+      ]
+    },
+    "HALO | Brushed champagne reveal": {
+      "nodes": [
+        {
+          "name": "Principled BSDF",
+          "type": "BSDF_PRINCIPLED",
+          "uv_map": null,
+          "image": null,
+          "inputs": {
+            "Base Color": [
+              0.28999999165534973,
+              0.20000000298023224,
+              0.10499999672174454,
+              1.0
+            ],
+            "Metallic": 0.800000011920929,
+            "Roughness": 0.5199999809265137,
+            "IOR": 1.5,
+            "Alpha": 1.0,
+            "Thin Wall": false,
+            "Normal": "Bump:Normal",
+            "Weight": 0.0,
+            "Diffuse Roughness": 0.0,
+            "Subsurface Weight": 0.0,
+            "Subsurface Radius": [
+              1.0,
+              0.20000000298023224,
+              0.10000000149011612
+            ],
+            "Subsurface Scale": 0.004999999888241291,
+            "Subsurface IOR": 1.399999976158142,
+            "Subsurface Anisotropy": 0.0,
+            "Specular IOR Level": 0.5,
+            "Specular Tint": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "Anisotropic": 0.0,
+            "Anisotropic Rotation": 0.0,
+            "Tangent": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "Transmission Weight": 0.0,
+            "Coat Weight": 0.0,
+            "Coat Roughness": 0.029999999329447746,
+            "Coat IOR": 1.5,
+            "Coat Tint": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "Coat Normal": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "Sheen Weight": 0.0,
+            "Sheen Roughness": 0.5,
+            "Sheen Tint": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "Emission Color": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "Emission Strength": 0.0,
+            "Thin Film Thickness": 0.0,
+            "Thin Film IOR": 1.3300000429153442
+          }
+        },
+        {
+          "name": "Material Output",
+          "type": "OUTPUT_MATERIAL",
+          "uv_map": null,
+          "image": null,
+          "inputs": {
+            "Displacement": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "Thickness": 0.0
+          }
+        },
+        {
+          "name": "Noise Texture",
+          "type": "TEX_NOISE",
+          "uv_map": null,
+          "image": null,
+          "inputs": {
+            "Vector": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "W": 0.0,
+            "Scale": 160.0,
+            "Detail": 2.0,
+            "Roughness": 0.5,
+            "Lacunarity": 2.0,
+            "Offset": 0.0,
+            "Gain": 1.0,
+            "Distortion": 0.0
+          }
+        },
+        {
+          "name": "Bump",
+          "type": "BUMP",
+          "uv_map": null,
+          "image": null,
+          "inputs": {
+            "Strength": 0.15000000596046448,
+            "Distance": 0.0003000000142492354,
+            "Filter Width": 0.10000000149011612,
+            "Height": "Noise Texture:Factor",
+            "Normal": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        }
+      ],
+      "diffuse": [
+        0.800000011920929,
+        0.800000011920929,
+        0.800000011920929,
+        1.0
+      ]
+    }
+  },
+  "view": {
+    "transform": "AgX",
+    "look": "AgX - Medium High Contrast",
+    "exposure": 0.44999998807907104,
+    "gamma": 1.0
+  }
+}

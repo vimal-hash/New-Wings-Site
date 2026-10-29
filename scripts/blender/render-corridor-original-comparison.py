@@ -1,0 +1,9 @@
+import bpy,json,math
+from pathlib import Path
+from mathutils import Matrix,Vector
+P=Path('D:/CodexOutputs/Corridor_Bake_Preparation_20261024');R=Path('D:/New folio/new site code/new_site_three/docs/corridor-preparation');report=json.loads((P/'preparation-report.json').read_text());a=json.loads(Path('D:/CodexOutputs/Theatre_Optimization_20261017/Web_Export_20261019/upgraded-coordinate-map.json').read_text())['blenderMatrix'];B=Matrix([[a[c*4+r] for c in range(4)] for r in range(4)])
+bpy.ops.wm.open_mainfile(filepath=report['materialSource'],load_ui=False);s=bpy.context.scene;shot=report['captures'][1];pos=B.inverted()@Vector(shot['position']);target=B.inverted()@Vector(shot['target']);up=B.inverted().to_3x3()@Vector((0,0,1));f=(target-pos).normalized();right=f.cross(up).normalized();up=right.cross(f).normalized();rot=Matrix((right,up,-f)).transposed().to_quaternion()
+cd=bpy.data.cameras.new('Temporary source comparison');cd.sensor_fit='VERTICAL';cd.sensor_height=24;cd.lens=12/math.tan(math.radians(20));cd.clip_start=.0001;cd.clip_end=100;cam=bpy.data.objects.new(cd.name,cd);s.collection.objects.link(cam);cam.location=pos;cam.rotation_mode='QUATERNION';cam.rotation_quaternion=rot;s.camera=cam;s.render.resolution_x=1600;s.render.resolution_y=900;s.render.resolution_percentage=100;s.render.use_compositing=False;s.render.engine='CYCLES';s.cycles.samples=128;s.cycles.use_denoising=True
+prefs=bpy.context.preferences.addons['cycles'].preferences;prefs.compute_device_type='OPTIX';prefs.get_devices()
+for d in prefs.devices:d.use=d.type=='OPTIX'
+s.cycles.device='GPU';s.render.image_settings.file_format='PNG';s.render.image_settings.color_mode='RGB';s.render.image_settings.color_depth='8';s.render.filepath=str(R/'original-source-bend.png');bpy.ops.render.render(write_still=True);print('SOURCE_COMPARISON_SAVED',flush=True)

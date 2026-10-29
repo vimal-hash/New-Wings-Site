@@ -1,0 +1,76 @@
+Continue CORRIDOR TEXTURE BAKING using the verified runtime-matching working scene below. Do not restart from the original 4K corridor geometry.
+
+ACTIVE WEBSITE
+D:/New folio/new site code/new_site_three
+
+PREPARED BLENDER FILE — USE THIS FOR BAKING
+D:/CodexOutputs/Corridor_Bake_Preparation_20261024/Corridor_Runtime_Material_Prepared.blend
+
+READ FIRST
+- docs/corridor-preparation/README.md
+- docs/corridor-preparation/preparation-report.json
+- docs/corridor-preparation/saved-file-verification.json
+- docs/corridor-preparation/protected-verification.json
+- docs/restoration/inventory.md and existing per-item bake reports
+- AGENTS.md and relevant framework documentation before application edits.
+
+WHAT HAS BEEN RESOLVED
+The website corridor uses corridor-ribbons-balanced.glb. Its matching authoring source is Logo_balanced_ribbon_gaps.blend in D:/CodexOutputs/Approved_Theatre_Corridor_20261020/. It is not geometrically identical to the original 4K corridor source.
+
+The new prepared file keeps the matching layout geometry, restores the intended source materials, source-local shader coordinate references, original shading UVs, source world/AgX look and transformed source lights with light linking. Source matrix transforms were captured while evaluated in their original scene BEFORE library append. This matters: unlinked appended objects can otherwise return identity matrices and put every light in the wrong place.
+
+All58 runtime objects /25,410 triangles were checked after saving: maximum corner-position difference0.071mm and maximum normal difference0.056degrees, consistent with compressed runtime data. Runtime triangles also matched by centroid, not only overall bounds.49 corridor objects have restored source-material assignments.9 relevant source lights were transferred using the authored global similarity transform, scale70.646052. AREA energy was scaled by scale squared, sizes by scale, and orientations/positions transformed from original evaluated world matrices. No arbitrary extra fill lights were added.
+
+The original 4K source was used ONLY as material/lighting reference:
+D:/CodexOutputs/Corridor_Optimization_20261018/Blue_Centre_Placement/Final_Geometry_Audit/Corridor_Logo_final_optimized_4K.blend
+
+DO NOT fit this source geometry to the website, or change any runtime geometry. The prepared file already supplies the correct receiver geometry.
+
+NO BAKES HAVE BEEN STARTED. NO WEBSITE OR RUNTIME ASSETS WERE CHANGED DURING PREPARATION.
+
+SCOPE
+Bake the clearly included corridor surfaces item by item: the two main corridor walls, plain floor, two roof datums, two capped wall tops, pathway slot fixture assemblies and fine slab joints. Use exact object names, runtime aliases and materials from preparation-report.json and runtime-meshes.json in the authoring folder.
+
+EXCLUDE / PRESERVE
+- All red/blue/orange outer logo ribbons and centre emblem.
+- Blue curtain / spectral background; it is not present in the runtime corridor. Do not add it.
+- Entire completed theatre, accepted ceiling and left wall, sofas, projector, moon designs and surrounds.
+- Slide A/B surfaces/end walls remain PENDING USER SCOPE; keep untouched. They exist as reference/shadow context only.
+- PROJECTOR FLOOR remains untouched.
+
+The prepared file marks objects with bake_scope and records runtime_node/runtime_material aliases. Slide objects are tagged PENDING_USER_SCOPE. The absent centre emblem is hidden only in this disposable authoring file so it cannot add nonexistent runtime shadows. Never edit the original .blend masters or excluded runtime objects.
+
+MAPPING TO RUNTIME
+GLB: public/models/corridor-ribbons-balanced.glb
+Apply each node's world matrix when reading its vertices, then convert Three.js coordinates to prepared Blender coordinates:
+Blender(x,y,z) = Three.js(x,-z,y).
+No extra source fit, source inverse transform, theatre translation or70x scaling is needed on these runtime vertices.
+
+Use the existing runtime triangle-copy/UV-sidecar technique, with the same deterministic bake mapping in Blender. Preserve GLBs byte-for-byte, vertex positions, topology, normals, transforms, cameras and animations. Do not reuse the old source-corridor runtimeToBlender fit. Update only the NEW corridor configuration, not any completed theatre mapping.
+
+The source shading UVs already present in the prepared scene are NOT the runtime bake UVs. Preserve them and the COORD helper references when adding bake UVs. Generated caps lacked shading UVs; these were interpolated from their parent walls (up to0.636m away on the extended caps). Both repaired cap layers were checked with zero collapsed UV triangles. Inspect their grain visually before baking.
+
+MATERIAL WARNING — IMPORTANT
+The corridor walls use Light Path / Is Camera Ray branches for restrained neutral fill and localized spectral tint. A naive COMBINED bake may not capture the same branch as a camera render. Inspect the warnings in preparation-report.json and validate this explicitly before a full-resolution bake. If needed, use a disposable bake-material copy to evaluate the intended camera-visible response. Preserve other material branches and the reference scene. Do not simply crank brightness or bake the wrong branch.
+
+The prepared source is deliberately dark charcoal/slate with warm slot lights. Compare to prepared-bend.png and original-source-bend.png; do not invent a brighter style to compensate for a bad transfer.
+
+REFERENCES
+- docs/corridor-preparation/prepared-entry.png
+- docs/corridor-preparation/prepared-bend.png
+- docs/corridor-preparation/prepared-exit.png
+- docs/corridor-preparation/original-source-bend.png
+Reference camera poses, FOV40 and1600x900 resolution are in preparation-report.json. Temporary camera matching for validation must not change production camera behaviour.
+
+The source layout differs near the entrance/terminal, so shadows/reflections there may differ from the original unmodified corridor. This prepared reference is the intended source-material look on the approved website geometry, not a claim of pixel-identical original geometry. The matched bend reference was visually compared to the inverse-transformed original-source camera.
+
+WORKFLOW
+Use separate bakes, runtime texture folders under public/textures/corridor/<item>/, authoring subfolders and audit reports for every item. Do not combine unrelated surfaces or create new GLBs. Fixture assemblies may keep their diffuser/bronze/recess charts together in that assembly's own folder. Preserve each assembly's own lighting.
+
+Bake directly onto the surface. No screenshot/camera projection, multi-camera texture bundles, appearance switching or angle-dependent fallback. Preserve actual source texture detail; avoid global blur and unbaked black gaps. Use correctly encoded KTX2, mipmaps, safe gutters and filtering.4K is allowed only when justified by visible detail and coverage. Keep source EXR/PNG outside public.
+
+Proceed autonomously one item at a time. After each: compare matched Blender/R3F views, check scroll/orbit/edges, hashes and console, save screenshots plus size report, then mark Agent-verified—awaiting user review and continue. If an item cannot be resolved within scope, leave its last working state, document it and continue independent items. Do not change excluded surfaces or geometry to bypass defects.
+
+Preserve all current user/agent changes. Run meaningful scoped checks and a final integrated production build. Verify every existing GLB and accepted theatre asset remains unchanged. Check actual compressed textures and device loading/performance; browser mobile emulation is not real-phone evidence.
+
+Final delivery: screenshots, working preview link, completed/unresolved list, per-item texture counts/dimensions/exact bytes, total added bytes, known limitations and verification results. Do not claim100% matching without evidence. Do not commit/deploy. I will give visual approval after reviewing.

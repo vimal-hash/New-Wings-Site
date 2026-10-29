@@ -1,0 +1,2493 @@
+{
+ "authoringRoot": "D:/CodexOutputs/Restoration_20261024",
+ "sources": {
+  "theatre": {
+   "glb": "public/models/theatre-marked.glb",
+   "blend": "D:/CodexOutputs/Theatre_LeftWall_Bake_20261023/LeftWall_work_copy.blend",
+   "master": "D:/CodexOutputs/Theatre_Optimization_20261017/Theatre_Moon_Projector_optimized.blend",
+   "runtimeToBlender": [
+    1,
+    0,
+    0,
+    -0.010995,
+    0,
+    0,
+    -1,
+    26,
+    0,
+    1,
+    0,
+    -0.02,
+    0,
+    0,
+    0,
+    1
+   ],
+   "bakeEye": [
+    0,
+    22.2,
+    3.22
+   ],
+   "bakeTarget": [
+    0,
+    0.802,
+    3.22
+   ],
+   "viewpoints": [
+    [
+     0,
+     22.2,
+     3.22
+    ],
+    [
+     0,
+     10.4,
+     3.22
+    ],
+    [
+     6,
+     10,
+     3
+    ],
+    [
+     -6,
+     10,
+     3
+    ],
+    [
+     0,
+     3,
+     1.5
+    ],
+    [
+     0,
+     18,
+     5.6
+    ],
+    [
+     0,
+     15.6,
+     2.2
+    ],
+    [
+     5,
+     20,
+     2
+    ],
+    [
+     -5,
+     20,
+     2
+    ]
+   ]
+  },
+  "corridor": {
+   "glb": "public/models/corridor-ribbons-balanced.glb",
+   "merged": false,
+   "blend": "D:/CodexOutputs/Restoration_20261024/corridor/Corridor_prepared_work_copy.blend",
+   "master": "D:/CodexOutputs/Corridor_Bake_Preparation_20261024/Corridor_Runtime_Material_Prepared.blend",
+   "runtimeToBlender": [
+    1,
+    0,
+    0,
+    0,
+    0,
+    0,
+    -1,
+    0,
+    0,
+    1,
+    0,
+    0,
+    0,
+    0,
+    0,
+    1
+   ],
+   "bakeEye": [
+    -49.89191818237305,
+    105.67767333984375,
+    3.240000009536743
+   ],
+   "bakeTarget": [
+    -60.17906188964844,
+    110.65523529052734,
+    3.240000009536743
+   ],
+   "viewpoints": [
+    [
+     0.011,
+     -3.8,
+     3.24
+    ],
+    [
+     0.003,
+     8.744,
+     3.24
+    ],
+    [
+     -0.003,
+     22.24,
+     3.24
+    ],
+    [
+     0.011,
+     32.779,
+     3.24
+    ],
+    [
+     -0.567,
+     44.935,
+     3.24
+    ],
+    [
+     -4.048,
+     56.604,
+     3.24
+    ],
+    [
+     -9.292,
+     67.601,
+     3.24
+    ],
+    [
+     -16.061,
+     77.731,
+     3.24
+    ],
+    [
+     -24.141,
+     86.852,
+     3.24
+    ],
+    [
+     -33.294,
+     94.897,
+     3.24
+    ],
+    [
+     -43.297,
+     101.861,
+     3.24
+    ],
+    [
+     -53.955,
+     107.775,
+     3.24
+    ],
+    [
+     -65.116,
+     112.676,
+     3.24
+    ],
+    [
+     -76.668,
+     116.567,
+     3.24
+    ],
+    [
+     -88.519,
+     119.42,
+     3.24
+    ],
+    [
+     -100.579,
+     121.192,
+     3.24
+    ],
+    [
+     -112.751,
+     121.831,
+     3.24
+    ],
+    [
+     -124.927,
+     121.279,
+     3.24
+    ],
+    [
+     -136.988,
+     119.517,
+     3.24
+    ],
+    [
+     -147.342,
+     116.992,
+     3.24
+    ],
+    [
+     -160.328,
+     112.542,
+     3.24
+    ]
+   ]
+  },
+  "projector-floor": {
+   "glb": "public/models/projector-floor-marked.glb",
+   "merged": false,
+   "blend": "D:/CodexOutputs/Theatre_LeftWall_Bake_20261023/LeftWall_work_copy.blend",
+   "master": "D:/CodexOutputs/Theatre_Optimization_20261017/Theatre_Moon_Projector_optimized.blend",
+   "runtimeToBlender": [
+    1,
+    0,
+    0,
+    -0.010995,
+    0,
+    0,
+    -1,
+    26,
+    0,
+    1,
+    0,
+    -0.02,
+    0,
+    0,
+    0,
+    1
+   ],
+   "bakeEye": [
+    0,
+    39.845,
+    3.3525
+   ],
+   "bakeTarget": [
+    0,
+    33.845,
+    3.2525
+   ],
+   "viewpoints": [
+    [
+     0,
+     43.345,
+     3.5025
+    ],
+    [
+     -2.7,
+     36.545,
+     5.0525
+    ],
+    [
+     0,
+     39.845,
+     3.3525
+    ],
+    [
+     0,
+     22.2,
+     3.22
+    ],
+    [
+     0,
+     10.4,
+     3.22
+    ],
+    [
+     6,
+     40,
+     6
+    ],
+    [
+     -6,
+     40,
+     6
+    ]
+   ]
+  }
+ },
+ "items": {
+  "right-wall": {
+   "source": "theatre",
+   "runtimeFolder": "textures/theatre/right-wall",
+   "objects": [
+    "ET | Side structural wall -1"
+   ],
+   "texelsPerUnit": 196,
+   "maxSize": 4096,
+   "samples": 1024,
+   "poses": {
+    "opening": [
+     [
+      0,
+      22.2,
+      3.22
+     ],
+     [
+      0,
+      0.802,
+      3.22
+     ],
+     40,
+     800,
+     394
+    ],
+    "closeup": [
+     [
+      0,
+      22.2,
+      3.22
+     ],
+     [
+      -6,
+      10,
+      3.45
+     ],
+     48,
+     800,
+     450
+    ],
+    "midroom": [
+     [
+      0,
+      10.4,
+      3.22
+     ],
+     [
+      -8.2,
+      4,
+      3
+     ],
+     48,
+     800,
+     450
+    ],
+    "opening560": [
+     [
+      0,
+      22.2,
+      3.22
+     ],
+     [
+      0,
+      0.802,
+      3.22
+     ],
+     40,
+     560,
+     276
+    ],
+    "closeup560": [
+     [
+      0,
+      22.2,
+      3.22
+     ],
+     [
+      -6,
+      10,
+      3.45
+     ],
+     48,
+     560,
+     315
+    ],
+    "midroom560": [
+     [
+      0,
+      10.4,
+      3.22
+     ],
+     [
+      -8.2,
+      4,
+      3
+     ],
+     48,
+     560,
+     315
+    ],
+    "detail": [
+     [
+      -6.4,
+      16,
+      1.88
+     ],
+     [
+      -8.2,
+      15,
+      1.68
+     ],
+     40,
+     560,
+     315
+    ]
+   },
+   "title": "Theatre right wall (ET | Side structural wall -1)",
+   "notes": [
+    "Same Wine velvet material as the accepted left wall; baked from its own lighting, not mirrored.",
+    "Room face (+X) is one chart at 196 texels/m (5.1 mm), stored rotated in the atlas."
+   ],
+   "limitations": [
+    "Velvet sheen is frozen as seen from the opening camera (same accepted limitation as the left wall): looking straight at the wall in orbit (midroom pose) R3F reads redder than Blender."
+   ],
+   "status": "Agent-verified — awaiting user review."
+  },
+  "front-wall": {
+   "title": "Theatre front (screen) wall",
+   "source": "theatre",
+   "runtimeFolder": "textures/theatre/front-wall",
+   "objects": [
+    "ET | Front structural wall"
+   ],
+   "texelsPerUnit": 150,
+   "maxSize": 4096,
+   "samples": 1024,
+   "poses": {
+    "opening": [
+     [
+      0,
+      22.2,
+      3.22
+     ],
+     [
+      0,
+      0.802,
+      3.22
+     ],
+     40,
+     560,
+     276
+    ],
+    "closeup": [
+     [
+      0,
+      22.2,
+      3.22
+     ],
+     [
+      5,
+      0,
+      3.5
+     ],
+     48,
+     560,
+     315
+    ]
+   },
+   "notes": [
+    "Graphite wall backing around the screen; the room face is one chart, 5 non-visible faces at 1/8 density."
+   ],
+   "limitations": [
+    "Lighting and any sheen are frozen as seen from the opening camera; the material is matte, so off-axis change is small."
+   ],
+   "status": "Agent-verified — awaiting user review."
+  },
+  "screen": {
+   "title": "Cinema screen surface",
+   "source": "theatre",
+   "runtimeFolder": "textures/theatre/screen",
+   "objects": [
+    "ET | Blank curved CinemaScope screen"
+   ],
+   "texelsPerUnit": 128,
+   "maxSize": 4096,
+   "samples": 1024,
+   "poses": {
+    "opening": [
+     [
+      0,
+      22.2,
+      3.22
+     ],
+     [
+      0,
+      0.802,
+      3.22
+     ],
+     40,
+     560,
+     276
+    ],
+    "closeup": [
+     [
+      0,
+      22.2,
+      3.22
+     ],
+     [
+      0,
+      0.8,
+      3.2
+     ],
+     22,
+     560,
+     315
+    ]
+   },
+   "notes": [
+    "Only the physical surface is restored. The theatre screen has no runtime artwork or behaviour (checked in components/corridor); the corridor side screens (corridor-screens.tsx) are untouched.",
+    "The first bake was black because the object has an empty data material slot; the disposable copy gives empty slots Blender's default surface so the bake covers the object. Source unchanged."
+   ],
+   "limitations": [
+    "Matte material (roughness 0.94): close to view-independent, so orbit views should hold up best of all items."
+   ],
+   "status": "Agent-verified — awaiting user review."
+  },
+  "stage": {
+   "title": "Stage / floating screen dais",
+   "source": "theatre",
+   "runtimeFolder": "textures/theatre/stage",
+   "objects": [
+    "ET | Floating curved screen dais"
+   ],
+   "texelsPerUnit": 160,
+   "maxSize": 4096,
+   "samples": 1024,
+   "poses": {
+    "opening": [
+     [
+      0,
+      22.2,
+      3.22
+     ],
+     [
+      0,
+      0.802,
+      3.22
+     ],
+     40,
+     560,
+     276
+    ],
+    "closeup": [
+     [
+      0,
+      22.2,
+      3.22
+     ],
+     [
+      0,
+      1.5,
+      0.3
+     ],
+     20,
+     560,
+     315
+    ]
+   },
+   "notes": [
+    "Source is a Curve object; the disposable copy bakes a mesh twin in the same collections and light-link receiver sets, with the same ray visibility.",
+    "1 sliver triangle on a non-planar end cap is triangulated differently from the GLB; it is matched to the nearest runtime triangle (within 2 mm)."
+   ],
+   "limitations": [
+    "Blackened ash sheen/specular frozen at the opening view."
+   ],
+   "status": "Agent-verified — awaiting user review."
+  },
+  "floor-slab": {
+   "title": "Foundation floor slab",
+   "source": "theatre",
+   "runtimeFolder": "textures/theatre/floor",
+   "objects": [
+    "ET | Foundation slab"
+   ],
+   "texelsPerUnit": 96,
+   "maxSize": 4096,
+   "samples": 1024,
+   "poses": {
+    "opening": [
+     [
+      0,
+      22.2,
+      3.22
+     ],
+     [
+      0,
+      0.802,
+      3.22
+     ],
+     40,
+     560,
+     276
+    ],
+    "closeup": [
+     [
+      0,
+      22.2,
+      3.22
+     ],
+     [
+      0,
+      4,
+      0
+     ],
+     28,
+     560,
+     315
+    ],
+    "detail": [
+     [
+      0,
+      4,
+      1.4
+     ],
+     [
+      0,
+      2,
+      0
+     ],
+     40,
+     560,
+     315
+    ]
+   },
+   "notes": [
+    "Visible mostly in the front aisle between the stage and the first terrace."
+   ],
+   "limitations": [
+    "Honed basalt has soft reflections; they are frozen as seen from the opening camera and will not slide with camera movement.",
+    "Close-up outliers sit on the stage/seat silhouettes (excluded runtime seats differ from Blender seats)."
+   ],
+   "status": "Agent-verified — awaiting user review."
+  },
+  "terraces": {
+   "title": "Terraces, aisles and treads (smoked walnut)",
+   "source": "theatre",
+   "runtimeFolder": "textures/theatre/terraces",
+   "objects": [
+    "ET | Aisle -7.4 row 2 tread 1"
+   ],
+   "texelsPerUnit": 72,
+   "maxSize": 4096,
+   "samples": 1024,
+   "poses": {
+    "opening": [
+     [
+      0,
+      22.2,
+      3.22
+     ],
+     [
+      0,
+      0.802,
+      3.22
+     ],
+     40,
+     560,
+     276
+    ],
+    "closeup": [
+     [
+      0,
+      22.2,
+      3.22
+     ],
+     [
+      0,
+      12,
+      0.6
+     ],
+     30,
+     560,
+     315
+    ],
+    "detail": [
+     [
+      0,
+      22.2,
+      3.22
+     ],
+     [
+      0.5,
+      15.5,
+      0.95
+     ],
+     7,
+     560,
+     315
+    ]
+   },
+   "notes": [
+    "One object holding all five terraces, aisles and treads; 128 overlapping projections were split into separate charts.",
+    "12 differently triangulated slivers matched to the nearest runtime triangle (within 32 mm, max 1% allowed)."
+   ],
+   "limitations": [
+    "Texel size is 15.7 mm (63.5 texels/m) to keep the atlas at 2048x4096; walnut grain is softer than Blender in very close orbit views. Much of the tread area is hidden under seating.",
+    "Outliers sit on seat silhouettes and the aisle edge reveals."
+   ],
+   "status": "Agent-verified — awaiting user review."
+  },
+  "step-nosings": {
+   "title": "Stair nosings and aisle edge reveals",
+   "source": "theatre",
+   "runtimeFolder": "textures/theatre/step-nosings",
+   "objects": [
+    "ET | 919 flush metal step nosing",
+    "ET | 919 flush metal step nosing.001",
+    "ET | 919 flush metal step nosing.002",
+    "ET | 919 flush metal step nosing.003",
+    "ET | 919 flush metal step nosing.004",
+    "ET | 919 flush metal step nosing.005",
+    "ET | 919 flush metal step nosing.006",
+    "ET | 919 flush metal step nosing.007",
+    "ET | 919 flush metal step nosing.008",
+    "ET | 919 flush metal step nosing.009",
+    "ET | 919 flush metal step nosing.010",
+    "ET | 919 flush metal step nosing.011",
+    "ET | 919 flush metal step nosing.012",
+    "ET | 919 flush metal step nosing.013",
+    "ET | 919 flush metal step nosing.014",
+    "ET | 919 flush metal step nosing.015",
+    "ET | 919 flush metal step nosing.016",
+    "ET | 919 flush metal step nosing.017",
+    "ET | 919 flush metal step nosing.018",
+    "ET | 919 flush metal step nosing.019",
+    "ET | 919 flush metal step nosing.020",
+    "ET | 919 flush metal step nosing.021",
+    "ET | 919 flush metal step nosing.022",
+    "ET | 919 flush metal step nosing.023",
+    "ET | 919 flush metal step nosing.024",
+    "ET | 919 flush metal step nosing.025",
+    "ET | 919 flush metal step nosing.026",
+    "ET | Inlaid aisle edge reveal",
+    "ET | Inlaid aisle edge reveal.001",
+    "ET | Inlaid aisle edge reveal.002",
+    "ET | Inlaid aisle edge reveal.003"
+   ],
+   "texelsPerUnit": 128,
+   "maxSize": 4096,
+   "samples": 512,
+   "poses": {
+    "opening": [
+     [
+      0,
+      22.2,
+      3.22
+     ],
+     [
+      0,
+      0.802,
+      3.22
+     ],
+     40,
+     560,
+     276
+    ],
+    "closeup": [
+     [
+      0,
+      22.2,
+      3.22
+     ],
+     [
+      0,
+      13,
+      0.8
+     ],
+     30,
+     560,
+     315
+    ],
+    "detail": [
+     [
+      0,
+      22.2,
+      3.22
+     ],
+     [
+      0.5,
+      15.5,
+      0.95
+     ],
+     7,
+     560,
+     315
+    ],
+    "front": [
+     [
+      0,
+      5,
+      1.8
+     ],
+     [
+      0,
+      16,
+      1
+     ],
+     40,
+     560,
+     315
+    ]
+   },
+   "minDensity": 0.78,
+   "minTexelsAcross": 16,
+   "notes": [
+    "27 satin nickel step nosings plus four satin graphite inlaid aisle edge reveals. Both materials are fully metallic and use Object coordinates, so objects are baked unjoined.",
+    "Thin strips keep at least 16 texels across (anisotropic charts)."
+   ],
+   "limitations": [
+    "Fully metallic thin rims: Blender shows a narrow specular highlight along the aisle edge reveals that the frozen bake loses after texture filtering at grazing angles, so the reveals read darker (detail pose R3F 49 vs Blender 72 mean over the mask; the horizontal nosings match closely). Not fixable by more texels; it is view-dependent, and a second view-direction bake is not allowed.",
+    "Front-of-room views show the riser faces from the side the opening camera never sees."
+   ],
+   "status": "Agent-verified with a known limitation (dark edge-reveal rims) — awaiting user review."
+  },
+  "aisle-lights": {
+   "title": "Aisle, step and stage-cove lights",
+   "source": "theatre",
+   "runtimeFolder": "textures/theatre/aisle-lights",
+   "objects": [
+    "ET | Aisle tread optic",
+    "ET | Aisle tread optic.001",
+    "ET | Aisle tread optic.002",
+    "ET | Aisle tread optic.003",
+    "ET | Aisle tread optic.004",
+    "ET | Aisle tread optic.005",
+    "ET | Aisle tread optic.006",
+    "ET | Aisle tread optic.007",
+    "ET | Aisle tread optic.008",
+    "ET | Aisle tread optic.009",
+    "ET | Aisle tread optic.010",
+    "ET | Aisle tread optic.011",
+    "ET | Aisle tread optic.012",
+    "ET | Aisle tread optic.013",
+    "ET | Aisle tread optic.014",
+    "ET | Aisle tread optic.015",
+    "ET | Aisle tread optic.016",
+    "ET | Aisle tread optic.017",
+    "ET | Aisle tread optic.018",
+    "ET | Aisle tread optic.019",
+    "ET | Aisle tread optic.020",
+    "ET | Aisle tread optic.021",
+    "ET | Aisle tread optic.022",
+    "ET | Aisle tread optic.023",
+    "ET | First step recessed optic",
+    "ET | First step recessed optic.001",
+    "ET | First step recessed optic.002",
+    "ET | Recessed terrace nosing 0 -1",
+    "ET | Recessed terrace nosing 0 1",
+    "ET | Recessed terrace nosing 1 -1",
+    "ET | Recessed terrace nosing 1 1",
+    "ET | Recessed terrace nosing 2 -1",
+    "ET | Recessed terrace nosing 2 1",
+    "ET | Recessed terrace nosing 3 -1",
+    "ET | Recessed terrace nosing 3 1",
+    "ET | Recessed terrace nosing 4 -1",
+    "ET | Recessed terrace nosing 4 1",
+    "ET | Stage lower cove",
+    "ET | Step light recessed graphite channel",
+    "ET | Step light recessed graphite channel.001",
+    "ET | Step light recessed graphite channel.002",
+    "ET | Step light recessed graphite channel.003",
+    "ET | Step light recessed graphite channel.004",
+    "ET | Step light recessed graphite channel.005",
+    "ET | Step light recessed graphite channel.006",
+    "ET | Step light recessed graphite channel.007",
+    "ET | Step light recessed graphite channel.008",
+    "ET | Step light recessed graphite channel.009",
+    "ET | Step light recessed graphite channel.010",
+    "ET | Step light recessed graphite channel.011",
+    "ET | Step light recessed graphite channel.012",
+    "ET | Step light recessed graphite channel.013",
+    "ET | Step light recessed graphite channel.014",
+    "ET | Step light recessed graphite channel.015",
+    "ET | Step light recessed graphite channel.016",
+    "ET | Step light recessed graphite channel.017",
+    "ET | Step light recessed graphite channel.018",
+    "ET | Step light recessed graphite channel.019",
+    "ET | Step light recessed graphite channel.020",
+    "ET | Step light recessed graphite channel.021",
+    "ET | Step light recessed graphite channel.022",
+    "ET | Step light recessed graphite channel.023",
+    "ET | Step light recessed graphite channel.024",
+    "ET | Step light recessed graphite channel.025",
+    "ET | Step light recessed graphite channel.026",
+    "HALO II | Aisle channel hood",
+    "HALO II | Aisle channel hood.001",
+    "HALO II | Aisle channel hood.002",
+    "HALO II | Aisle channel hood.003",
+    "HALO II | Aisle channel hood.004",
+    "HALO II | Aisle channel hood.005",
+    "HALO II | Aisle channel hood.006",
+    "HALO II | Aisle channel hood.007",
+    "HALO II | Aisle channel hood.008",
+    "HALO II | Aisle channel hood.009",
+    "HALO II | Aisle channel hood.010",
+    "HALO II | Aisle channel hood.011",
+    "HALO II | Aisle channel hood.012",
+    "HALO II | Aisle channel hood.013",
+    "HALO II | Aisle channel hood.014",
+    "HALO II | Aisle channel hood.015",
+    "HALO II | Aisle channel hood.016",
+    "HALO II | Aisle channel hood.017",
+    "HALO II | Aisle channel hood.018",
+    "HALO II | Aisle channel hood.019",
+    "HALO II | Recessed aisle light ribbon",
+    "HALO II | Recessed aisle light ribbon.001",
+    "HALO II | Recessed aisle light ribbon.002",
+    "HALO II | Recessed aisle light ribbon.003",
+    "HALO II | Recessed aisle light ribbon.004",
+    "HALO II | Recessed aisle light ribbon.005",
+    "HALO II | Recessed aisle light ribbon.006",
+    "HALO II | Recessed aisle light ribbon.007",
+    "HALO II | Recessed aisle light ribbon.008",
+    "HALO II | Recessed aisle light ribbon.009",
+    "HALO II | Recessed aisle light ribbon.010",
+    "HALO II | Recessed aisle light ribbon.011",
+    "HALO II | Recessed aisle light ribbon.012",
+    "HALO II | Recessed aisle light ribbon.013",
+    "HALO II | Recessed aisle light ribbon.014",
+    "HALO II | Recessed aisle light ribbon.015",
+    "HALO II | Recessed aisle light ribbon.016",
+    "HALO II | Recessed aisle light ribbon.017",
+    "HALO II | Recessed aisle light ribbon.018",
+    "HALO II | Recessed aisle light ribbon.019"
+   ],
+   "texelsPerUnit": 160,
+   "maxSize": 4096,
+   "samples": 512,
+   "poses": {
+    "opening": [
+     [
+      0,
+      22.2,
+      3.22
+     ],
+     [
+      0,
+      0.802,
+      3.22
+     ],
+     40,
+     560,
+     276
+    ],
+    "front": [
+     [
+      0,
+      5,
+      1.8
+     ],
+     [
+      0,
+      16,
+      1
+     ],
+     40,
+     560,
+     315
+    ]
+   },
+   "minTexelsAcross": 12,
+   "notes": [
+    "Aisle tread optics, first-step optics, recessed terrace nosings, stage lower cove (emissive diffusers), step-light graphite channels, aisle light ribbons and champagne channel hoods: 105 objects joined into 30 bake passes, one 2048x2048 atlas.",
+    "No light intensity, colour or scene lighting is changed."
+   ],
+   "limitations": [
+    "These lights face the screen, away from the opening camera, so the opening pose cannot see them; the comparison uses a front-of-room pose (eye 0,5,1.8), which is off the bake eye.",
+    "From that front pose the diffusers read about 20% dimmer than Blender (R3F 189 vs Blender 233 mean): their view-dependent glossy/transmission terms are evaluated with the opening camera direction, which is behind these faces. The emissive core and placement match."
+   ],
+   "status": "Agent-verified with a known limitation (off-axis diffusers ~20% dimmer) — awaiting user review."
+  },
+  "wall-trim": {
+   "title": "Side wall caps and graphite end reveals",
+   "source": "theatre",
+   "runtimeFolder": "textures/theatre/wall-trim",
+   "objects": [
+    "ET | ATELIER graphite end reveal",
+    "ET | ATELIER graphite end reveal.001",
+    "ET | ATELIER graphite end reveal.002",
+    "ET | ATELIER graphite end reveal.003",
+    "ET | Side wall top graphite cap -1",
+    "ET | Side wall top graphite cap 1"
+   ],
+   "texelsPerUnit": 96,
+   "maxSize": 4096,
+   "samples": 512,
+   "poses": {
+    "opening": [
+     [
+      0,
+      22.2,
+      3.22
+     ],
+     [
+      0,
+      0.802,
+      3.22
+     ],
+     40,
+     560,
+     276
+    ],
+    "closeup": [
+     [
+      0,
+      22.2,
+      3.22
+     ],
+     [
+      -6,
+      10,
+      3.45
+     ],
+     48,
+     560,
+     315
+    ],
+    "detail": [
+     [
+      0,
+      22.2,
+      3.22
+     ],
+     [
+      8.2,
+      14,
+      6.35
+     ],
+     6,
+     560,
+     315
+    ]
+   },
+   "minTexelsAcross": 12,
+   "notes": [
+    "Top graphite caps of both side walls plus four graphite end reveals; caps are 20.8 m long, so they use 96 texels/m along their length with at least 12 texels across (anisotropic texels)."
+   ],
+   "limitations": [
+    "At normal framing the caps are 1-2 px lines; the detail pose (6 deg) is the meaningful comparison."
+   ],
+   "status": "Agent-verified — awaiting user review."
+  },
+  "acoustic-slats": {
+   "title": "Lower reeded ash acoustic slats",
+   "source": "theatre",
+   "runtimeFolder": "textures/theatre/acoustic-slats",
+   "objects": [
+    "ET | ATELIER reeded ash dado",
+    "ET | ATELIER reeded ash dado.001",
+    "ET | ATELIER reeded ash dado.002",
+    "ET | ATELIER reeded ash dado.003",
+    "ET | ATELIER reeded ash dado.004",
+    "ET | ATELIER reeded ash dado.005",
+    "ET | ATELIER reeded ash dado.006",
+    "ET | ATELIER reeded ash dado.007",
+    "ET | ATELIER reeded ash dado.008",
+    "ET | ATELIER reeded ash dado.009",
+    "ET | ATELIER reeded ash dado.010",
+    "ET | ATELIER reeded ash dado.011",
+    "ET | ATELIER reeded ash dado.012",
+    "ET | ATELIER reeded ash dado.013",
+    "ET | ATELIER reeded ash dado.014",
+    "ET | ATELIER reeded ash dado.015",
+    "ET | ATELIER reeded ash dado.016",
+    "ET | ATELIER reeded ash dado.017",
+    "ET | ATELIER reeded ash dado.018",
+    "ET | ATELIER reeded ash dado.019",
+    "ET | ATELIER reeded ash dado.020",
+    "ET | ATELIER reeded ash dado.021",
+    "ET | ATELIER reeded ash dado.022",
+    "ET | ATELIER reeded ash dado.023",
+    "ET | ATELIER reeded ash dado.024",
+    "ET | ATELIER reeded ash dado.025",
+    "ET | ATELIER reeded ash dado.026",
+    "ET | ATELIER reeded ash dado.027",
+    "ET | ATELIER reeded ash dado.028",
+    "ET | ATELIER reeded ash dado.029",
+    "ET | ATELIER reeded ash dado.030",
+    "ET | ATELIER reeded ash dado.031",
+    "ET | ATELIER reeded ash dado.032",
+    "ET | ATELIER reeded ash dado.033",
+    "ET | ATELIER reeded ash dado.034",
+    "ET | ATELIER reeded ash dado.035",
+    "ET | ATELIER reeded ash dado.036",
+    "ET | ATELIER reeded ash dado.037",
+    "ET | ATELIER reeded ash dado.038",
+    "ET | ATELIER reeded ash dado.039",
+    "ET | ATELIER reeded ash dado.040",
+    "ET | ATELIER reeded ash dado.041",
+    "ET | ATELIER reeded ash dado.042",
+    "ET | ATELIER reeded ash dado.043",
+    "ET | ATELIER reeded ash dado.044",
+    "ET | ATELIER reeded ash dado.045",
+    "ET | ATELIER reeded ash dado.046",
+    "ET | ATELIER reeded ash dado.047",
+    "ET | ATELIER reeded ash dado.048",
+    "ET | ATELIER reeded ash dado.049",
+    "ET | ATELIER reeded ash dado.050",
+    "ET | ATELIER reeded ash dado.051",
+    "ET | ATELIER reeded ash dado.052",
+    "ET | ATELIER reeded ash dado.053",
+    "ET | ATELIER reeded ash dado.054",
+    "ET | ATELIER reeded ash dado.055",
+    "ET | ATELIER reeded ash dado.056",
+    "ET | ATELIER reeded ash dado.057",
+    "ET | ATELIER reeded ash dado.058",
+    "ET | ATELIER reeded ash dado.059",
+    "ET | ATELIER reeded ash dado.060",
+    "ET | ATELIER reeded ash dado.061",
+    "ET | ATELIER reeded ash dado.062",
+    "ET | ATELIER reeded ash dado.063",
+    "ET | ATELIER reeded ash dado.064",
+    "ET | ATELIER reeded ash dado.065",
+    "ET | ATELIER reeded ash dado.066",
+    "ET | ATELIER reeded ash dado.067",
+    "ET | ATELIER reeded ash dado.068",
+    "ET | ATELIER reeded ash dado.069",
+    "ET | ATELIER reeded ash dado.070",
+    "ET | ATELIER reeded ash dado.071",
+    "ET | ATELIER reeded ash dado.072",
+    "ET | ATELIER reeded ash dado.073",
+    "ET | ATELIER reeded ash dado.074",
+    "ET | ATELIER reeded ash dado.075",
+    "ET | ATELIER reeded ash dado.076",
+    "ET | ATELIER reeded ash dado.077",
+    "ET | ATELIER reeded ash dado.078",
+    "ET | ATELIER reeded ash dado.079",
+    "ET | ATELIER reeded ash dado.080",
+    "ET | ATELIER reeded ash dado.081",
+    "ET | ATELIER reeded ash dado.082",
+    "ET | ATELIER reeded ash dado.083",
+    "ET | ATELIER reeded ash dado.084",
+    "ET | ATELIER reeded ash dado.085",
+    "ET | ATELIER reeded ash dado.086",
+    "ET | ATELIER reeded ash dado.087",
+    "ET | ATELIER reeded ash dado.088",
+    "ET | ATELIER reeded ash dado.089",
+    "ET | ATELIER reeded ash dado.090",
+    "ET | ATELIER reeded ash dado.091",
+    "ET | ATELIER reeded ash dado.092",
+    "ET | ATELIER reeded ash dado.093",
+    "ET | ATELIER reeded ash dado.094",
+    "ET | ATELIER reeded ash dado.095",
+    "ET | ATELIER reeded ash dado.096",
+    "ET | ATELIER reeded ash dado.097",
+    "ET | ATELIER reeded ash dado.098",
+    "ET | ATELIER reeded ash dado.099",
+    "ET | ATELIER reeded ash dado.100",
+    "ET | ATELIER reeded ash dado.101",
+    "ET | ATELIER reeded ash dado.102",
+    "ET | ATELIER reeded ash dado.103",
+    "ET | ATELIER reeded ash dado.104",
+    "ET | ATELIER reeded ash dado.105",
+    "ET | ATELIER reeded ash dado.106",
+    "ET | ATELIER reeded ash dado.107",
+    "ET | ATELIER reeded ash dado.108",
+    "ET | ATELIER reeded ash dado.109",
+    "ET | ATELIER reeded ash dado.110",
+    "ET | ATELIER reeded ash dado.111",
+    "ET | ATELIER reeded ash dado.112",
+    "ET | ATELIER reeded ash dado.113",
+    "ET | ATELIER reeded ash dado.114",
+    "ET | ATELIER reeded ash dado.115",
+    "ET | ATELIER reeded ash dado.116",
+    "ET | ATELIER reeded ash dado.117",
+    "ET | ATELIER reeded ash dado.118",
+    "ET | ATELIER reeded ash dado.119",
+    "ET | ATELIER reeded ash dado.120",
+    "ET | ATELIER reeded ash dado.121",
+    "ET | ATELIER reeded ash dado.122",
+    "ET | ATELIER reeded ash dado.123",
+    "ET | ATELIER reeded ash dado.124",
+    "ET | ATELIER reeded ash dado.125",
+    "ET | ATELIER reeded ash dado.126",
+    "ET | ATELIER reeded ash dado.127",
+    "ET | ATELIER reeded ash dado.128",
+    "ET | ATELIER reeded ash dado.129",
+    "ET | ATELIER reeded ash dado.130",
+    "ET | ATELIER reeded ash dado.131",
+    "ET | ATELIER reeded ash dado.132",
+    "ET | ATELIER reeded ash dado.133",
+    "ET | ATELIER reeded ash dado.134",
+    "ET | ATELIER reeded ash dado.135",
+    "ET | ATELIER reeded ash dado.136",
+    "ET | ATELIER reeded ash dado.137",
+    "ET | ATELIER reeded ash dado.138",
+    "ET | ATELIER reeded ash dado.139",
+    "ET | ATELIER reeded ash dado.140",
+    "ET | ATELIER reeded ash dado.141",
+    "ET | ATELIER reeded ash dado.142",
+    "ET | ATELIER reeded ash dado.143",
+    "ET | ATELIER reeded ash dado.144",
+    "ET | ATELIER reeded ash dado.145",
+    "ET | ATELIER reeded ash dado.146",
+    "ET | ATELIER reeded ash dado.147",
+    "ET | ATELIER reeded ash dado.148",
+    "ET | ATELIER reeded ash dado.149",
+    "ET | ATELIER reeded ash dado.150",
+    "ET | ATELIER reeded ash dado.151",
+    "ET | ATELIER reeded ash dado.152",
+    "ET | ATELIER reeded ash dado.153",
+    "ET | ATELIER reeded ash dado.154",
+    "ET | ATELIER reeded ash dado.155",
+    "ET | ATELIER reeded ash dado.156",
+    "ET | ATELIER reeded ash dado.157",
+    "ET | ATELIER reeded ash dado.158",
+    "ET | ATELIER reeded ash dado.159",
+    "ET | ATELIER reeded ash dado.160",
+    "ET | ATELIER reeded ash dado.161",
+    "ET | ATELIER reeded ash dado.162",
+    "ET | ATELIER reeded ash dado.163",
+    "ET | ATELIER reeded ash dado.164",
+    "ET | ATELIER reeded ash dado.165",
+    "ET | ATELIER reeded ash dado.166",
+    "ET | ATELIER reeded ash dado.167",
+    "ET | ATELIER reeded ash dado.168",
+    "ET | ATELIER reeded ash dado.169",
+    "ET | ATELIER reeded ash dado.170",
+    "ET | ATELIER reeded ash dado.171",
+    "ET | ATELIER reeded ash dado.172",
+    "ET | ATELIER reeded ash dado.173",
+    "ET | ATELIER reeded ash dado.174",
+    "ET | ATELIER reeded ash dado.175",
+    "ET | ATELIER reeded ash dado.176",
+    "ET | ATELIER reeded ash dado.177",
+    "ET | ATELIER reeded ash dado.178",
+    "ET | ATELIER reeded ash dado.179",
+    "ET | ATELIER reeded ash dado.180",
+    "ET | ATELIER reeded ash dado.181",
+    "ET | ATELIER reeded ash dado.182",
+    "ET | ATELIER reeded ash dado.183",
+    "ET | ATELIER reeded ash dado.184",
+    "ET | ATELIER reeded ash dado.185",
+    "ET | ATELIER reeded ash dado.186",
+    "ET | ATELIER reeded ash dado.187",
+    "ET | ATELIER reeded ash dado.188",
+    "ET | ATELIER reeded ash dado.189",
+    "ET | ATELIER reeded ash dado.190",
+    "ET | ATELIER reeded ash dado.191",
+    "ET | ATELIER reeded ash dado.192",
+    "ET | ATELIER reeded ash dado.193",
+    "ET | ATELIER reeded ash dado.194",
+    "ET | ATELIER reeded ash dado.195",
+    "ET | ATELIER reeded ash dado.196",
+    "ET | ATELIER reeded ash dado.197",
+    "ET | ATELIER reeded ash dado.198",
+    "ET | ATELIER reeded ash dado.199",
+    "ET | ATELIER reeded ash dado.200",
+    "ET | ATELIER reeded ash dado.201",
+    "ET | ATELIER reeded ash dado.202",
+    "ET | ATELIER reeded ash dado.203",
+    "ET | ATELIER reeded ash dado.204",
+    "ET | ATELIER reeded ash dado.205",
+    "ET | ATELIER reeded ash dado.206",
+    "ET | ATELIER reeded ash dado.207",
+    "ET | ATELIER reeded ash dado.208",
+    "ET | ATELIER reeded ash dado.209",
+    "ET | ATELIER reeded ash dado.210",
+    "ET | ATELIER reeded ash dado.211",
+    "ET | ATELIER reeded ash dado.212",
+    "ET | ATELIER reeded ash dado.213",
+    "ET | ATELIER reeded ash dado.214",
+    "ET | ATELIER reeded ash dado.215",
+    "ET | ATELIER reeded ash dado.216",
+    "ET | ATELIER reeded ash dado.217",
+    "ET | ATELIER reeded ash dado.218",
+    "ET | ATELIER reeded ash dado.219",
+    "ET | ATELIER reeded ash dado.220",
+    "ET | ATELIER reeded ash dado.221",
+    "ET | ATELIER reeded ash dado.222",
+    "ET | ATELIER reeded ash dado.223",
+    "ET | ATELIER reeded ash dado.224",
+    "ET | ATELIER reeded ash dado.225",
+    "ET | ATELIER reeded ash dado.226",
+    "ET | ATELIER reeded ash dado.227",
+    "ET | ATELIER reeded ash dado.228",
+    "ET | ATELIER reeded ash dado.229",
+    "ET | ATELIER reeded ash dado.230",
+    "ET | ATELIER reeded ash dado.231",
+    "ET | ATELIER reeded ash dado.232",
+    "ET | ATELIER reeded ash dado.233",
+    "ET | ATELIER reeded ash dado.234",
+    "ET | ATELIER reeded ash dado.235",
+    "ET | ATELIER reeded ash dado.236",
+    "ET | ATELIER reeded ash dado.237",
+    "ET | ATELIER reeded ash dado.238",
+    "ET | ATELIER reeded ash dado.239",
+    "ET | ATELIER reeded ash dado.240",
+    "ET | ATELIER reeded ash dado.241",
+    "ET | ATELIER reeded ash dado.242",
+    "ET | ATELIER reeded ash dado.243",
+    "ET | ATELIER reeded ash dado.244",
+    "ET | ATELIER reeded ash dado.245",
+    "ET | ATELIER reeded ash dado.246",
+    "ET | ATELIER reeded ash dado.247",
+    "ET | ATELIER reeded ash dado.248",
+    "ET | ATELIER reeded ash dado.249",
+    "ET | ATELIER reeded ash dado.250",
+    "ET | ATELIER reeded ash dado.251",
+    "ET | ATELIER reeded ash dado.252",
+    "ET | ATELIER reeded ash dado.253",
+    "ET | ATELIER reeded ash dado.254",
+    "ET | ATELIER reeded ash dado.255",
+    "ET | ATELIER reeded ash dado.256",
+    "ET | ATELIER reeded ash dado.257",
+    "ET | ATELIER reeded ash dado.258",
+    "ET | ATELIER reeded ash dado.259",
+    "ET | ATELIER reeded ash dado.260",
+    "ET | ATELIER reeded ash dado.261",
+    "ET | ATELIER reeded ash dado.262",
+    "ET | ATELIER reeded ash dado.263",
+    "ET | ATELIER reeded ash dado.264",
+    "ET | ATELIER reeded ash dado.265",
+    "ET | ATELIER reeded ash dado.266",
+    "ET | ATELIER reeded ash dado.267",
+    "ET | ATELIER reeded ash dado.268",
+    "ET | ATELIER reeded ash dado.269",
+    "ET | ATELIER reeded ash dado.270",
+    "ET | ATELIER reeded ash dado.271",
+    "ET | ATELIER reeded ash dado.272",
+    "ET | ATELIER reeded ash dado.273",
+    "ET | ATELIER reeded ash dado.274",
+    "ET | ATELIER reeded ash dado.275",
+    "ET | ATELIER reeded ash dado.276",
+    "ET | ATELIER reeded ash dado.277",
+    "ET | ATELIER reeded ash dado.278",
+    "ET | ATELIER reeded ash dado.279",
+    "ET | ATELIER reeded ash dado.280",
+    "ET | ATELIER reeded ash dado.281",
+    "ET | ATELIER reeded ash dado.282",
+    "ET | ATELIER reeded ash dado.283",
+    "ET | ATELIER reeded ash dado.284",
+    "ET | ATELIER reeded ash dado.285",
+    "ET | ATELIER reeded ash dado.286",
+    "ET | ATELIER reeded ash dado.287",
+    "ET | ATELIER reeded ash dado.288",
+    "ET | ATELIER reeded ash dado.289",
+    "ET | ATELIER reeded ash dado.290",
+    "ET | ATELIER reeded ash dado.291",
+    "ET | ATELIER reeded ash dado.292",
+    "ET | ATELIER reeded ash dado.293",
+    "ET | ATELIER reeded ash dado.294",
+    "ET | ATELIER reeded ash dado.295",
+    "ET | ATELIER reeded ash dado.296",
+    "ET | ATELIER reeded ash dado.297",
+    "ET | ATELIER reeded ash dado.298",
+    "ET | ATELIER reeded ash dado.299",
+    "ET | ATELIER reeded ash dado.300",
+    "ET | ATELIER reeded ash dado.301",
+    "ET | ATELIER reeded ash dado.302",
+    "ET | ATELIER reeded ash dado.303",
+    "ET | ATELIER reeded ash dado.304",
+    "ET | ATELIER reeded ash dado.305",
+    "ET | ATELIER reeded ash dado.306",
+    "ET | ATELIER reeded ash dado.307"
+   ],
+   "texelsPerUnit": 140,
+   "maxSize": 4096,
+   "samples": 512,
+   "poses": {
+    "opening": [
+     [
+      0,
+      22.2,
+      3.22
+     ],
+     [
+      0,
+      0.802,
+      3.22
+     ],
+     40,
+     560,
+     276
+    ],
+    "closeup": [
+     [
+      0,
+      22.2,
+      3.22
+     ],
+     [
+      -7,
+      12,
+      0.8
+     ],
+     30,
+     560,
+     315
+    ],
+    "aisle": [
+     [
+      0,
+      8.5,
+      1.5
+     ],
+     [
+      -8,
+      12.5,
+      0.7
+     ],
+     30,
+     560,
+     315
+    ]
+   },
+   "minTexelsAcross": 12,
+   "pad": 4,
+   "notes": [
+    "308 reeded ash slats. The material reads per-object data (Object coordinates), so objects are baked unjoined (308 passes, about 2 hours on this machine); joining would change the per-slat grain.",
+    "At least 12 texels across each slat face; 4 px padding (8 px gutters)."
+   ],
+   "limitations": [
+    "From the opening eye the slats are mostly hidden by the runtime seats (taller than Blender's), hence the many outliers; the low aisle pose (off the bake eye) is the most useful view: RMSE 3.9 excluding outliers.",
+    "A warm view-dependent highlight streak on the slats beside the seats is weaker in R3F at off-eye angles."
+   ],
+   "status": "Agent-verified — awaiting user review."
+  },
+  "speakers": {
+   "title": "Side surround speakers and grille slots",
+   "source": "theatre",
+   "runtimeFolder": "textures/theatre/speakers",
+   "objects": [
+    "ET | Side surround speaker",
+    "ET | Side surround speaker.001",
+    "ET | Side surround speaker.003",
+    "ET | Side surround speaker.004",
+    "ET | Side surround speaker.005",
+    "ET | Side surround speaker.007",
+    "ET | Speaker grille slot",
+    "ET | Speaker grille slot.001",
+    "ET | Speaker grille slot.002",
+    "ET | Speaker grille slot.003",
+    "ET | Speaker grille slot.004",
+    "ET | Speaker grille slot.005",
+    "ET | Speaker grille slot.006",
+    "ET | Speaker grille slot.007",
+    "ET | Speaker grille slot.008",
+    "ET | Speaker grille slot.009",
+    "ET | Speaker grille slot.010",
+    "ET | Speaker grille slot.011",
+    "ET | Speaker grille slot.012",
+    "ET | Speaker grille slot.013",
+    "ET | Speaker grille slot.014",
+    "ET | Speaker grille slot.015",
+    "ET | Speaker grille slot.016",
+    "ET | Speaker grille slot.017",
+    "ET | Speaker grille slot.018",
+    "ET | Speaker grille slot.019",
+    "ET | Speaker grille slot.030",
+    "ET | Speaker grille slot.031",
+    "ET | Speaker grille slot.032",
+    "ET | Speaker grille slot.033",
+    "ET | Speaker grille slot.034",
+    "ET | Speaker grille slot.035",
+    "ET | Speaker grille slot.036",
+    "ET | Speaker grille slot.037",
+    "ET | Speaker grille slot.038",
+    "ET | Speaker grille slot.039",
+    "ET | Speaker grille slot.040",
+    "ET | Speaker grille slot.041",
+    "ET | Speaker grille slot.042",
+    "ET | Speaker grille slot.043",
+    "ET | Speaker grille slot.044",
+    "ET | Speaker grille slot.045",
+    "ET | Speaker grille slot.046",
+    "ET | Speaker grille slot.047",
+    "ET | Speaker grille slot.048",
+    "ET | Speaker grille slot.049",
+    "ET | Speaker grille slot.050",
+    "ET | Speaker grille slot.051",
+    "ET | Speaker grille slot.052",
+    "ET | Speaker grille slot.053",
+    "ET | Speaker grille slot.054",
+    "ET | Speaker grille slot.055",
+    "ET | Speaker grille slot.056",
+    "ET | Speaker grille slot.057",
+    "ET | Speaker grille slot.058",
+    "ET | Speaker grille slot.059",
+    "ET | Speaker grille slot.070",
+    "ET | Speaker grille slot.071",
+    "ET | Speaker grille slot.072",
+    "ET | Speaker grille slot.073",
+    "ET | Speaker grille slot.074",
+    "ET | Speaker grille slot.075",
+    "ET | Speaker grille slot.076",
+    "ET | Speaker grille slot.077",
+    "ET | Speaker grille slot.078",
+    "ET | Speaker grille slot.079"
+   ],
+   "texelsPerUnit": 400,
+   "maxSize": 4096,
+   "samples": 512,
+   "poses": {
+    "opening": [
+     [
+      0,
+      22.2,
+      3.22
+     ],
+     [
+      0,
+      0.802,
+      3.22
+     ],
+     40,
+     560,
+     276
+    ],
+    "closeup": [
+     [
+      0,
+      22.2,
+      3.22
+     ],
+     [
+      -8,
+      9,
+      4.6
+     ],
+     18,
+     560,
+     315
+    ]
+   },
+   "notes": [
+    "Six surround speakers plus their 60 grille slot inserts share one 1024x1024 atlas (same baked-lighting needs, one draw call)."
+   ],
+   "limitations": [
+    "Powder-coat specular frozen at the opening view."
+   ],
+   "status": "Agent-verified — awaiting user review."
+  },
+  "light-fixtures": {
+   "title": "Wall sconces (carved backing and opal optics)",
+   "source": "theatre",
+   "runtimeFolder": "textures/theatre/light-fixtures",
+   "objects": [
+    "ET | Sconce carved backing",
+    "ET | Sconce carved backing.001",
+    "ET | Sconce carved backing.003",
+    "ET | Sconce carved backing.004",
+    "ET | Sconce carved backing.005",
+    "ET | Sconce carved backing.007",
+    "ET | Sconce vertical optic",
+    "ET | Sconce vertical optic.001",
+    "ET | Sconce vertical optic.003",
+    "ET | Sconce vertical optic.004",
+    "ET | Sconce vertical optic.005",
+    "ET | Sconce vertical optic.007"
+   ],
+   "texelsPerUnit": 400,
+   "maxSize": 4096,
+   "samples": 512,
+   "poses": {
+    "opening": [
+     [
+      0,
+      22.2,
+      3.22
+     ],
+     [
+      0,
+      0.802,
+      3.22
+     ],
+     40,
+     560,
+     276
+    ],
+    "closeup": [
+     [
+      0,
+      22.2,
+      3.22
+     ],
+     [
+      -8,
+      9,
+      3.1
+     ],
+     18,
+     560,
+     315
+    ],
+    "detail": [
+     [
+      0,
+      22.2,
+      3.22
+     ],
+     [
+      8.1,
+      17.8,
+      3.1
+     ],
+     5,
+     560,
+     315
+    ]
+   },
+   "minTexelsAcross": 16,
+   "notes": [
+    "Six carved graphite sconce backings and six opal optics (each optic has its own emissive material, so they bake as separate passes into one 512x1024 atlas).",
+    "No light intensity, colour or scene lighting is changed: the emissive appearance is the baked result only."
+   ],
+   "limitations": [
+    "At small sizes the bright optic core reads about 10/255 dimmer than Blender (2-px-wide strips, texture filtering); at the 5 deg detail pose the match is RMSE 3.4."
+   ],
+   "status": "Agent-verified — awaiting user review."
+  },
+  "corridor-wall-red": {
+   "title": "Corridor red-side wall (dark steel)",
+   "source": "corridor",
+   "runtimeFolder": "textures/corridor/wall-red",
+   "objects": [
+    "Red corridor wall • separate from logo"
+   ],
+   "texelsPerUnit": 16,
+   "maxSize": 4096,
+   "samples": 512,
+   "poses": {
+    "entry": [
+     [
+      -4.048210144042969,
+      56.60417938232422,
+      3.240000009536743
+     ],
+     [
+      -8.917251586914062,
+      66.93704223632812,
+      3.240000009536743
+     ],
+     40,
+     560,
+     315
+    ],
+    "bend": [
+     [
+      -49.89191818237305,
+      105.67767333984375,
+      3.240000009536743
+     ],
+     [
+      -60.17906188964844,
+      110.65523529052734,
+      3.240000009536743
+     ],
+     40,
+     560,
+     315
+    ],
+    "exit": [
+     [
+      -123.40933227539062,
+      121.41460418701172,
+      3.240000009536743
+     ],
+     [
+      -134.7411346435547,
+      119.93868255615234,
+      3.240000009536743
+     ],
+     40,
+     560,
+     315
+    ],
+    "aerial": [
+     [
+      -20,
+      30,
+      140
+     ],
+     [
+      -80,
+      95,
+      0
+     ],
+     45,
+     560,
+     315
+    ],
+    "page": [
+     [
+      -160.32785,
+      112.54246500000002,
+      3.3725000381469727
+     ],
+     [
+      -147.0107736477797,
+      116.86166370220566,
+      3.3725000381469727
+     ],
+     40,
+     560,
+     276
+    ]
+   },
+   "splitSparse": true,
+   "notes": [
+    "Baked in the prepared runtime-matching corridor scene (Corridor_Runtime_Material_Prepared.blend, disposable copy, never saved); runtime world to Blender is (x,-z,y). Glossy direction: the prepared bend camera. Validation: replaying the ACTIVE_CAMERA bake as pure emission at the bend camera reproduced the source render of the red wall (RMSE 0.32/255), confirming the Light Path > Is Camera Ray fill/tint branches are captured; an ABOVE_SURFACE bake did not (484 outliers) and was rejected.",
+    "The bend/exit views are near-black (mean about 1/255), as in the prepared reference."
+   ],
+   "limitations": [
+    "View-dependent steel response is frozen as seen from the bend camera; the entry view shows small differences (RMSE 3.1 excluding outliers).",
+    "Aerial outliers sit on edges next to the excluded logo ribbons."
+   ],
+   "status": "Agent-verified — awaiting user review.",
+   "sourceOverride": {
+    "blend": "D:/CodexOutputs/Restoration_6K_20261024/corridor-wall-red/Left_Wall_Lighting_work_copy.blend",
+    "master": "D:/CodexOutputs/Corridor_Left_Wall_Lighting_20261024/Left_Wall_Lighting_Prepared.blend"
+   }
+  },
+  "corridor-wall-connecting": {
+   "title": "Corridor connecting-plane wall (dark steel)",
+   "source": "corridor",
+   "runtimeFolder": "textures/corridor/wall-connecting",
+   "objects": [
+    "Connecting plane • joins yellow tip"
+   ],
+   "texelsPerUnit": 16,
+   "maxSize": 4096,
+   "samples": 512,
+   "poses": {
+    "entry": [
+     [
+      -4.048210144042969,
+      56.60417938232422,
+      3.240000009536743
+     ],
+     [
+      -8.917251586914062,
+      66.93704223632812,
+      3.240000009536743
+     ],
+     40,
+     560,
+     315
+    ],
+    "bend": [
+     [
+      -49.89191818237305,
+      105.67767333984375,
+      3.240000009536743
+     ],
+     [
+      -60.17906188964844,
+      110.65523529052734,
+      3.240000009536743
+     ],
+     40,
+     560,
+     315
+    ],
+    "exit": [
+     [
+      -123.40933227539062,
+      121.41460418701172,
+      3.240000009536743
+     ],
+     [
+      -134.7411346435547,
+      119.93868255615234,
+      3.240000009536743
+     ],
+     40,
+     560,
+     315
+    ],
+    "aerial": [
+     [
+      -20,
+      30,
+      140
+     ],
+     [
+      -80,
+      95,
+      0
+     ],
+     45,
+     560,
+     315
+    ]
+   },
+   "splitSparse": true,
+   "notes": [
+    "Baked in the prepared runtime-matching corridor scene (Corridor_Runtime_Material_Prepared.blend, disposable copy, never saved); runtime world to Blender is (x,-z,y). Glossy direction: the prepared bend camera. Validation: replaying the ACTIVE_CAMERA bake as pure emission at the bend camera reproduced the source render of the red wall (RMSE 0.32/255), confirming the Light Path > Is Camera Ray fill/tint branches are captured; an ABOVE_SURFACE bake did not (484 outliers) and was rejected."
+   ],
+   "limitations": [
+    "Frozen at the bend camera; exit view outliers sit on edges next to the pending Slide surfaces.",
+    "A sliver gap where wall pieces meet can show the still-diagnostic Slide geometry behind it (Slide scope pending)."
+   ],
+   "status": "Agent-verified — awaiting user review."
+  },
+  "corridor-floor": {
+   "title": "Corridor plain slate floor",
+   "source": "corridor",
+   "runtimeFolder": "textures/corridor/floor",
+   "objects": [
+    "Plain floor • red to connecting plane"
+   ],
+   "texelsPerUnit": 32,
+   "maxSize": 4096,
+   "samples": 1024,
+   "poses": {
+    "entry": [
+     [
+      -4.048210144042969,
+      56.60417938232422,
+      3.240000009536743
+     ],
+     [
+      -8.917251586914062,
+      66.93704223632812,
+      3.240000009536743
+     ],
+     40,
+     560,
+     315
+    ],
+    "bend": [
+     [
+      -49.89191818237305,
+      105.67767333984375,
+      3.240000009536743
+     ],
+     [
+      -60.17906188964844,
+      110.65523529052734,
+      3.240000009536743
+     ],
+     40,
+     560,
+     315
+    ],
+    "exit": [
+     [
+      -123.40933227539062,
+      121.41460418701172,
+      3.240000009536743
+     ],
+     [
+      -134.7411346435547,
+      119.93868255615234,
+      3.240000009536743
+     ],
+     40,
+     560,
+     315
+    ]
+   },
+   "splitSparse": true,
+   "minDensity": 0.75,
+   "notes": [
+    "Baked in the prepared runtime-matching corridor scene (Corridor_Runtime_Material_Prepared.blend, disposable copy, never saved); runtime world to Blender is (x,-z,y). Glossy direction: the prepared bend camera. Validation: replaying the ACTIVE_CAMERA bake as pure emission at the bend camera reproduced the source render of the red wall (RMSE 0.32/255), confirming the Light Path > Is Camera Ray fill/tint branches are captured; an ABOVE_SURFACE bake did not (484 outliers) and was rejected.",
+    "2048x4096 at 25.9 texels/unit (about 3.9 cm), 1024 samples."
+   ],
+   "limitations": [
+    "Slate reflections are frozen at the bend camera: from the entry camera the floor reads slightly brighter (R3F 14.8 vs Blender 12.7 mean; RMSE 5.2 excluding outliers)."
+   ],
+   "status": "Agent-verified — awaiting user review."
+  },
+  "corridor-roof-datums": {
+   "title": "Corridor restrained roof datums (charcoal titanium)",
+   "source": "corridor",
+   "runtimeFolder": "textures/corridor/roof-datums",
+   "objects": [
+    "Red corridor wall • separate from logo • restrained roof datum",
+    "Connecting plane • joins yellow tip • restrained roof datum"
+   ],
+   "texelsPerUnit": 8,
+   "maxSize": 4096,
+   "samples": 512,
+   "poses": {
+    "aerial": [
+     [
+      -20,
+      30,
+      140
+     ],
+     [
+      -80,
+      95,
+      0
+     ],
+     45,
+     560,
+     315
+    ]
+   },
+   "minTexelsAcross": 4,
+   "splitSparse": true,
+   "pad": 4,
+   "maskErode": 0,
+   "notes": [
+    "Baked in the prepared runtime-matching corridor scene (Corridor_Runtime_Material_Prepared.blend, disposable copy, never saved); runtime world to Blender is (x,-z,y). Glossy direction: the prepared bend camera. Validation: replaying the ACTIVE_CAMERA bake as pure emission at the bend camera reproduced the source render of the red wall (RMSE 0.32/255), confirming the Light Path > Is Camera Ray fill/tint branches are captured; an ABOVE_SURFACE bake did not (484 outliers) and was rejected.",
+    "Thin horizontal bands; 7 texels/unit with at least 4 across."
+   ],
+   "limitations": [
+    "Not visible from any journey pose tested (4 px from the aerial pose); baked for completeness at low resolution."
+   ],
+   "status": "Agent-verified — awaiting user review."
+  },
+  "corridor-wall-caps": {
+   "title": "Corridor capped wall tops",
+   "source": "corridor",
+   "runtimeFolder": "textures/corridor/wall-caps",
+   "objects": [
+    "FIX | Capped Red corridor wall • separate from logo",
+    "FIX | Capped Connecting plane • joins yellow tip"
+   ],
+   "texelsPerUnit": 24,
+   "maxSize": 4096,
+   "samples": 512,
+   "poses": {
+    "aerial": [
+     [
+      -20,
+      30,
+      140
+     ],
+     [
+      -80,
+      95,
+      0
+     ],
+     45,
+     560,
+     315
+    ]
+   },
+   "minTexelsAcross": 12,
+   "splitSparse": true,
+   "pad": 4,
+   "maskErode": 1,
+   "notes": [
+    "Baked in the prepared runtime-matching corridor scene (Corridor_Runtime_Material_Prepared.blend, disposable copy, never saved); runtime world to Blender is (x,-z,y). Glossy direction: the prepared bend camera. Validation: replaying the ACTIVE_CAMERA bake as pure emission at the bend camera reproduced the source render of the red wall (RMSE 0.32/255), confirming the Light Path > Is Camera Ray fill/tint branches are captured; an ABOVE_SURFACE bake did not (484 outliers) and was rejected.",
+    "Generated caps use the shading UVs interpolated from their parent walls (preparation step); runtime bake UVs are separate."
+   ],
+   "limitations": [
+    "Caps face upward and are invisible from inside the corridor; from the aerial pose they are 1-2 px edges beside the excluded logo ribbons, so the measured error is dominated by ribbon edges."
+   ],
+   "status": "Agent-verified — awaiting user review."
+  },
+  "corridor-pathway-lights": {
+   "title": "Corridor pathway slot light assemblies",
+   "source": "corridor",
+   "runtimeFolder": "textures/corridor/pathway-lights",
+   "objects": [
+    "Pathway L 01 • slot assembly • amber diffuser",
+    "Pathway L 01 • slot assembly • bronze face",
+    "Pathway L 01 • slot assembly • dark slot interior",
+    "Pathway L 03 • slot assembly • amber diffuser",
+    "Pathway L 03 • slot assembly • bronze face",
+    "Pathway L 03 • slot assembly • dark slot interior",
+    "Pathway L 05 • slot assembly • amber diffuser",
+    "Pathway L 05 • slot assembly • bronze face",
+    "Pathway L 05 • slot assembly • dark slot interior",
+    "Pathway L 07 • slot assembly • amber diffuser",
+    "Pathway L 07 • slot assembly • bronze face",
+    "Pathway L 07 • slot assembly • dark slot interior",
+    "Pathway L 10 • slot assembly • amber diffuser",
+    "Pathway L 10 • slot assembly • bronze face",
+    "Pathway L 10 • slot assembly • dark slot interior",
+    "Pathway R 01 • slot assembly • amber diffuser",
+    "Pathway R 01 • slot assembly • bronze face",
+    "Pathway R 01 • slot assembly • dark slot interior",
+    "Pathway R 03 • slot assembly • amber diffuser",
+    "Pathway R 03 • slot assembly • bronze face",
+    "Pathway R 03 • slot assembly • dark slot interior",
+    "Pathway R 05 • slot assembly • amber diffuser",
+    "Pathway R 05 • slot assembly • bronze face",
+    "Pathway R 05 • slot assembly • dark slot interior",
+    "Pathway R 07 • slot assembly • amber diffuser",
+    "Pathway R 07 • slot assembly • bronze face",
+    "Pathway R 07 • slot assembly • dark slot interior",
+    "Pathway R 10 • slot assembly • amber diffuser",
+    "Pathway R 10 • slot assembly • bronze face",
+    "Pathway R 10 • slot assembly • dark slot interior"
+   ],
+   "texelsPerUnit": 96,
+   "maxSize": 4096,
+   "samples": 512,
+   "poses": {
+    "entry": [
+     [
+      -4.048210144042969,
+      56.60417938232422,
+      3.240000009536743
+     ],
+     [
+      -8.917251586914062,
+      66.93704223632812,
+      3.240000009536743
+     ],
+     40,
+     560,
+     315
+    ],
+    "bend": [
+     [
+      -49.89191818237305,
+      105.67767333984375,
+      3.240000009536743
+     ],
+     [
+      -60.17906188964844,
+      110.65523529052734,
+      3.240000009536743
+     ],
+     40,
+     560,
+     315
+    ],
+    "exit": [
+     [
+      -123.40933227539062,
+      121.41460418701172,
+      3.240000009536743
+     ],
+     [
+      -134.7411346435547,
+      119.93868255615234,
+      3.240000009536743
+     ],
+     40,
+     560,
+     315
+    ],
+    "detail": [
+     [
+      -49.89191818237305,
+      105.67767333984375,
+      3.240000009536743
+     ],
+     [
+      -74.85,
+      107.2,
+      5.8
+     ],
+     6,
+     560,
+     315
+    ]
+   },
+   "minTexelsAcross": 12,
+   "splitSparse": true,
+   "notes": [
+    "Baked in the prepared runtime-matching corridor scene (Corridor_Runtime_Material_Prepared.blend, disposable copy, never saved); runtime world to Blender is (x,-z,y). Glossy direction: the prepared bend camera. Validation: replaying the ACTIVE_CAMERA bake as pure emission at the bend camera reproduced the source render of the red wall (RMSE 0.32/255), confirming the Light Path > Is Camera Ray fill/tint branches are captured; an ABOVE_SURFACE bake did not (484 outliers) and was rejected.",
+    "Ten slot assemblies (amber diffuser, bronze face, dark interior); 30 objects joined into 2 bake passes; at least 12 texels across thin faces.",
+    "No light intensity, colour or scene lighting is changed."
+   ],
+   "limitations": [
+    "At the 6 deg detail pose the glow gradient matches (RMSE 2.1 excluding outliers), but the hottest diffuser line is softened/shifted by 2-3 px by texture filtering, which dominates the thin mask (40% outliers). At normal framing this is sub-pixel."
+   ],
+   "status": "Agent-verified — awaiting user review."
+  },
+  "corridor-floor-joints": {
+   "title": "Corridor fine slab joints",
+   "source": "corridor",
+   "runtimeFolder": "textures/corridor/floor-joints",
+   "objects": [
+    "Floor • fine slab joint 015",
+    "Floor • fine slab joint 033",
+    "Floor • fine slab joint 051",
+    "Floor • fine slab joint 069",
+    "Floor • fine slab joint 087",
+    "Floor • fine slab joint 105",
+    "Floor • fine slab joint 123",
+    "Floor • fine slab joint 141",
+    "Floor • fine slab joint 159",
+    "Floor • fine slab joint 177",
+    "Floor • fine slab joint 195",
+    "Floor • fine slab joint 213"
+   ],
+   "texelsPerUnit": 48,
+   "maxSize": 4096,
+   "samples": 512,
+   "poses": {
+    "bend": [
+     [
+      -49.89191818237305,
+      105.67767333984375,
+      3.240000009536743
+     ],
+     [
+      -60.17906188964844,
+      110.65523529052734,
+      3.240000009536743
+     ],
+     40,
+     560,
+     315
+    ],
+    "down": [
+     [
+      -49.89191818237305,
+      105.67767333984375,
+      3.240000009536743
+     ],
+     [
+      -74.65,
+      116,
+      0
+     ],
+     25,
+     560,
+     315
+    ],
+    "aerial": [
+     [
+      -20,
+      30,
+      140
+     ],
+     [
+      -80,
+      95,
+      0
+     ],
+     45,
+     560,
+     315
+    ]
+   },
+   "minTexelsAcross": 8,
+   "splitSparse": true,
+   "maskErode": 0,
+   "notes": [
+    "Baked in the prepared runtime-matching corridor scene (Corridor_Runtime_Material_Prepared.blend, disposable copy, never saved); runtime world to Blender is (x,-z,y). Glossy direction: the prepared bend camera. Validation: replaying the ACTIVE_CAMERA bake as pure emission at the bend camera reproduced the source render of the red wall (RMSE 0.32/255), confirming the Light Path > Is Camera Ray fill/tint branches are captured; an ABOVE_SURFACE bake did not (484 outliers) and was rejected.",
+    "Twelve recessed joints; mask erosion 0 because they are 1-2 px wide."
+   ],
+   "limitations": [
+    "Only meaningful from the downward detail view (RMSE 3.6, no outliers)."
+   ],
+   "status": "Agent-verified — awaiting user review."
+  },
+  "projector-floor": {
+   "title": "Projector floor / platform (PROJECTOR FLOOR | Original = source Second_floor)",
+   "source": "projector-floor",
+   "runtimeFolder": "textures/projector-floor",
+   "objects": [
+    "Second_floor"
+   ],
+   "runtimeMaterials": [
+    "projector-floor | Vertex colours"
+   ],
+   "unhideForBake": [
+    "Second_floor"
+   ],
+   "texelsPerUnit": 110,
+   "maxSize": 4096,
+   "samples": 1024,
+   "minDensity": 0.8,
+   "docs": "projector-floor",
+   "poses": {
+    "wide": [
+     [
+      0,
+      43.345,
+      3.5025
+     ],
+     [
+      0,
+      33.845,
+      3.2525
+     ],
+     40,
+     560,
+     315
+    ],
+    "close": [
+     [
+      -2.7,
+      36.545,
+      5.0525
+     ],
+     [
+      0,
+      33.845,
+      3.2525
+     ],
+     40,
+     560,
+     315
+    ],
+    "returned": [
+     [
+      0,
+      39.845,
+      3.3525
+     ],
+     [
+      0,
+      33.845,
+      3.2525
+     ],
+     40,
+     560,
+     315
+    ]
+   },
+   "notes": [
+    "Target confirmed: runtime public/models/projector-floor-marked.glb node \"projector-floor\" (12 triangles, one box, no UVs) = layout object PROJECTOR FLOOR | Original = source object Second_floor in Theatre_Moon_Projector_optimized.blend (extract_native_floor.py + build_layout.py apply only the theatre translation (0.010995,-26,0.02)). Runtime bounds minus that translation equal Second_floor to 0.1 mm; every bake triangle matched within 0.002 mm.",
+    "Intended material: FLOOR V3 | Satin walnut PBR (object-linked slot; identical in the older live scene). Wood.117/Wood.003 in the native-world file and the corridor preparation are the unused data-level material underneath and were not used.",
+    "In the source, Second_floor and the whole projector are hidden from render and the floor's dedicated light (CINE | Projector hero key, LL | second floor only) has 0 energy. Only the floor is un-hidden, only in the disposable copy, for the bake and the matching Blender reference; no light was changed or added, and the projector (animated at runtime) casts no frozen shadow.",
+    "Runtime: the diagnostic node is hidden in the theatre route's own clone and a world-space copy is drawn with the baked atlas (components/corridor/baked-surfaces.tsx, extractNodeSurfaces). Projector code, materials, particles and controls untouched.",
+    "Single bake direction chosen by evidence: Blender replays of four candidate single bakes (wide, returned and close eyes; above-surface) were scored at all three journey views; the returned-view eye gave the lowest mean and worst-case error. Final result is ONE bake."
+   ],
+   "limitations": [
+    "Satin walnut sheen is view-dependent and frozen from the returned view: from the wide approach the deck reads darker than Blender (RMSE 6.1) and from the close high view brighter (RMSE 9.3); the returned view matches (RMSE 1.6).",
+    "For these comparisons the runtime projector was hidden temporarily (capture-only) because the source render hides it; the deck under the projector is therefore compared without it."
+   ],
+   "status": "Agent-verified — awaiting user review."
+  },
+  "moon-steel-border": {
+   "title": "Moon designs: polished steel border rings",
+   "source": "theatre",
+   "runtimeFolder": "textures/theatre/moon-steel-border",
+   "objects": [
+    "Cylinder.018",
+    "Cylinder.020",
+    "Cylinder.024",
+    "Cylinder.026"
+   ],
+   "texelsPerUnit": 4000,
+   "atlas": [
+    6144,
+    6144
+   ],
+   "maxSize": 6144,
+   "minTexelsAcross": 16,
+   "splitSparse": true,
+   "samples": 1024,
+   "mipSmallest": 12,
+   "poses": {
+    "opening": [
+     [
+      0,
+      22.2,
+      3.22
+     ],
+     [
+      0,
+      0.802,
+      3.22
+     ],
+     40,
+     560,
+     276
+    ],
+    "closeup": [
+     [
+      0,
+      22.2,
+      3.22
+     ],
+     [
+      -6,
+      10,
+      3.45
+     ],
+     48,
+     560,
+     315
+    ],
+    "detail": [
+     [
+      0,
+      22.2,
+      3.22
+     ],
+     [
+      -8.08,
+      13.65,
+      4.02
+     ],
+     8,
+     560,
+     315
+    ],
+    "projector": [
+     [
+      0,
+      39.845,
+      3.3525
+     ],
+     [
+      0,
+      33.845,
+      3.2525
+     ],
+     40,
+     560,
+     315
+    ],
+    "offaxis": [
+     [
+      0,
+      12,
+      3.22
+     ],
+     [
+      8.1,
+      13.6,
+      4
+     ],
+     30,
+     560,
+     315
+    ]
+   },
+   "notes": [
+    "Included objects (exactly four, all \"design moon\"): Cylinder.018, Cylinder.020 (left wall), Cylinder.024, Cylinder.026 (right wall); 212 runtime triangles each, 848 total. Each is an annular steel ring 1.63-2.35 m from its moon centre; no modifiers.",
+    "All four use the same material, MOON | Polished stainless steel - fine polish (4 users): metallic 1.0, roughness 0.09-0.15 from world-position micro-polish noise, bump, and planar/edge normal blending. Excluded: mirror discs (OPT | ... baked angle reflections), Material.005 parts, White plastic and material-less moon parts, walls, speakers and fixtures.",
+    "Fixed 6144x6144 atlas (user requirement): 1,053 texels/m (about 0.95 mm), 83.2% used; every ring has its own charts (112 charts, ring backs facing the wall at 1/8 density), at least 16 texels across thin rims, 8 px padding. 4 objects joined into 2 bake passes (no per-object material inputs).",
+    "Bake viewpoint chosen by evidence: Blender replays of three single-eye candidates scored at four journey views (RMSE opening/closeup/detail/projector): opening eye 17.2/13.6/4.9/25.4 (mean 15.3), mid-pullback 20.6/42.7/46.9/62.1, projector side 21.0/33.7/59.4/8.4. The opening eye was kept; one active bake.",
+    "KTX2: UASTC level 3, RDO 0.25, sRGB DFD, box mips stopped at 12x12 (10 levels: 6144 to 12) so every level stays 4x4-block aligned for WebGL compressed formats; three.js allocates exactly the provided levels. The 6K authoring bake (EXR and 16-bit display PNG) is kept outside public.",
+    "Change check: diffing the opening view before/after this item, all changed pixels lie on the ring perimeters (within a few px); nothing else changed."
+   ],
+   "limitations": [
+    "Mirror-polished steel is the most view-dependent material in the room: reflections are frozen as seen from the opening camera. From other angles they do not move; e.g. the off-axis view of a right ring reads cooler than Blender (RMSE 10.7 excluding outliers, blue channel 71 vs 41).",
+    "At normal framing the rings are 2-4 px wide; most masked error comes from the ring inner edge where Blender antialiasing blends the bright adjacent mirror glow while the site blends the still-diagnostic mirror. The ring itself matches at the 8 deg detail view (RMSE 3.3 excluding outliers).",
+    "Download 12.4 MB and about 48 MiB of GPU memory for this one texture (estimate for BC7/ASTC); devices without BC7/ASTC/ETC2 support would fall back to uncompressed RGBA (about 4x). This is the cost of the requested 6K runtime atlas."
+   ],
+   "status": "Agent-verified — awaiting user review."
+  },
+  "theatre-left-wall": {
+   "source": "theatre",
+   "verifyOnly": true,
+   "title": "Theatre left wall (accepted bake, 6K upgrade check)",
+   "objects": [
+    "ET | Side structural wall 1"
+   ],
+   "notes": [
+    "Verification entry only: the left wall is baked by scripts/blender/left-wall/bake-left-wall-direct.py and drawn by theatre-left-wall.tsx, not by the baked-surfaces manifest."
+   ],
+   "poses": {
+    "opening560": [
+     [
+      0,
+      22.2,
+      3.22
+     ],
+     [
+      0,
+      0.802,
+      3.22
+     ],
+     40,
+     560,
+     276
+    ],
+    "closeup560": [
+     [
+      0,
+      22.2,
+      3.22
+     ],
+     [
+      6,
+      10,
+      3.45
+     ],
+     48,
+     560,
+     315
+    ],
+    "midroom560": [
+     [
+      0,
+      10.4,
+      3.22
+     ],
+     [
+      8.2,
+      4,
+      3
+     ],
+     48,
+     560,
+     315
+    ],
+    "detail": [
+     [
+      6.4,
+      16,
+      1.88
+     ],
+     [
+      8.2,
+      15,
+      1.68
+     ],
+     40,
+     560,
+     315
+    ]
+   }
+  },
+  "theatre-ceiling": {
+   "source": "theatre",
+   "verifyOnly": true,
+   "title": "Theatre ceiling (accepted HALO II bake, 6K upgrade check)",
+   "objects": [
+    "HALO II | 90mm perimeter fascia",
+    "HALO II | Backing above ceiling",
+    "HALO II | Continuous rolled plaster cove",
+    "HALO II | Floating acoustic inset",
+    "HALO II | Hidden inner LED shelf",
+    "HALO II | Outer concealed LED shelf",
+    "HALO II | Perimeter cove upper receiver",
+    "HALO II | Slim floating soffit",
+    "HALO II | Wall crown closure",
+    "HALO II | Wall crown closure.001"
+   ],
+   "notes": [
+    "Verification entry only: the ceiling is baked by scripts/blender/ceiling-6k/1-4 from Ceiling_PBR_prepared.blend and drawn by theatre-ceiling.tsx (ceiling-uv-fixed.glb, uv1)."
+   ],
+   "poses": {
+    "opening560": [
+     [
+      0,
+      22.2,
+      3.22
+     ],
+     [
+      0,
+      0.802,
+      3.22
+     ],
+     40,
+     560,
+     276
+    ],
+    "up": [
+     [
+      0,
+      18,
+      3.2
+     ],
+     [
+      0,
+      8,
+      9.5
+     ],
+     50,
+     560,
+     315
+    ],
+    "cove": [
+     [
+      0,
+      14,
+      3.2
+     ],
+     [
+      6,
+      9,
+      8.5
+     ],
+     40,
+     560,
+     315
+    ],
+    "detail": [
+     [
+      5,
+      12,
+      4.5
+     ],
+     [
+      7.5,
+      10,
+      6.5
+     ],
+     40,
+     560,
+     315
+    ]
+   }
+  }
+ }
+}

@@ -1,0 +1,5614 @@
+{
+  "sources": {
+    "theatre": {
+      "runtimeToBlender": [
+        1,
+        0,
+        0,
+        -0.010995,
+        0,
+        0,
+        -1,
+        26,
+        0,
+        1,
+        0,
+        -0.02,
+        0,
+        0,
+        0,
+        1
+      ]
+    },
+    "corridor": {
+      "runtimeToBlender": [
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        -1,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1
+      ]
+    },
+    "projector-floor": {
+      "runtimeToBlender": [
+        1,
+        0,
+        0,
+        -0.010995,
+        0,
+        0,
+        -1,
+        26,
+        0,
+        1,
+        0,
+        -0.02,
+        0,
+        0,
+        0,
+        1
+      ]
+    }
+  },
+  "items": [
+    {
+      "item": "right-wall",
+      "active": true,
+      "source": "theatre",
+      "uv": "/textures/theatre/right-wall/right-wall-uv.bin",
+      "texture": "/textures/theatre/right-wall/right-wall-light-2k.ktx2",
+      "ids": [
+        {
+          "name": "ET | Side structural wall -1",
+          "decodedColor": [
+            0.6499999761581421,
+            0.5116128921508789,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        }
+      ],
+      "triangles": 108,
+      "atlas": [
+        2048,
+        4096
+      ],
+      "bytes": {
+        "uv": 356,
+        "texture": 1164679
+      },
+      "imageSize": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "item": "front-wall",
+      "active": true,
+      "source": "theatre",
+      "uv": "/textures/theatre/front-wall/front-wall-uv.bin",
+      "texture": "/textures/theatre/front-wall/front-wall.ktx2",
+      "ids": [
+        {
+          "name": "ET | Front structural wall",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.46827954053878784
+          ],
+          "expectedTriangles": 108
+        }
+      ],
+      "triangles": 108,
+      "atlas": [
+        1024,
+        2048
+      ],
+      "bytes": {
+        "uv": 356,
+        "texture": 491610
+      }
+    },
+    {
+      "item": "screen",
+      "active": true,
+      "source": "theatre",
+      "uv": "/textures/theatre/screen/screen-uv.bin",
+      "texture": "/textures/theatre/screen/screen.ktx2",
+      "ids": [
+        {
+          "name": "ET | Blank curved CinemaScope screen",
+          "decodedColor": [
+            0.3791666626930237,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 772
+        }
+      ],
+      "triangles": 772,
+      "atlas": [
+        1024,
+        2048
+      ],
+      "bytes": {
+        "uv": 1684,
+        "texture": 654628
+      }
+    },
+    {
+      "item": "stage",
+      "active": true,
+      "source": "theatre",
+      "uv": "/textures/theatre/stage/stage-uv.bin",
+      "texture": "/textures/theatre/stage/stage.ktx2",
+      "ids": [
+        {
+          "name": "ET | Floating curved screen dais",
+          "decodedColor": [
+            0.6230913400650024,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 1644
+        }
+      ],
+      "triangles": 1644,
+      "atlas": [
+        1024,
+        2048
+      ],
+      "bytes": {
+        "uv": 3428,
+        "texture": 533786
+      }
+    },
+    {
+      "item": "floor-slab",
+      "active": true,
+      "source": "theatre",
+      "uv": "/textures/theatre/floor/floor-slab-uv.bin",
+      "texture": "/textures/theatre/floor/floor-slab-balanced-2048.ktx2",
+      "ids": [
+        {
+          "name": "ET | Foundation slab",
+          "decodedColor": [
+            0.5724193453788757,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        }
+      ],
+      "triangles": 108,
+      "atlas": [
+        2048,
+        2048
+      ],
+      "bytes": {
+        "uv": 356,
+        "texture": 679508
+      },
+      "imageSize": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "item": "light-fixtures",
+      "active": true,
+      "source": "theatre",
+      "uv": "/textures/theatre/light-fixtures/light-fixtures-uv.bin",
+      "texture": "/textures/theatre/light-fixtures/light-fixtures.ktx2",
+      "ids": [
+        {
+          "name": "ET | Sconce carved backing",
+          "decodedColor": [
+            0.3333870768547058,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | Sconce carved backing.001",
+          "decodedColor": [
+            0.3557526767253876,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | Sconce carved backing.003",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.4602419137954712
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | Sconce carved backing.004",
+          "decodedColor": [
+            0.29249998927116394,
+            0.5647311210632324,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | Sconce carved backing.005",
+          "decodedColor": [
+            0.6499999761581421,
+            0.6311290264129639,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | Sconce carved backing.007",
+          "decodedColor": [
+            0.5266397595405579,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | Sconce vertical optic",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.42249998450279236
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | Sconce vertical optic.001",
+          "decodedColor": [
+            0.6499999761581421,
+            0.31801074743270874,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | Sconce vertical optic.003",
+          "decodedColor": [
+            0.29249998927116394,
+            0.37112903594970703,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | Sconce vertical optic.004",
+          "decodedColor": [
+            0.47561824321746826,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | Sconce vertical optic.005",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.5797580480575562
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | Sconce vertical optic.007",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.6157526969909668
+          ],
+          "expectedTriangles": 108
+        }
+      ],
+      "triangles": 1296,
+      "atlas": [
+        512,
+        1024
+      ],
+      "bytes": {
+        "uv": 4172,
+        "texture": 271214
+      }
+    },
+    {
+      "item": "wall-trim",
+      "active": true,
+      "source": "theatre",
+      "uv": "/textures/theatre/wall-trim/wall-trim-uv.bin",
+      "texture": "/textures/theatre/wall-trim/wall-trim.ktx2",
+      "ids": [
+        {
+          "name": "ET | ATELIER graphite end reveal",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.49903225898742676
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER graphite end reveal.001",
+          "decodedColor": [
+            0.6499999761581421,
+            0.39454299211502075,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER graphite end reveal.002",
+          "decodedColor": [
+            0.29249998927116394,
+            0.29459676146507263,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER graphite end reveal.003",
+          "decodedColor": [
+            0.39908599853515625,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | Side wall top graphite cap -1",
+          "decodedColor": [
+            0.6499999761581421,
+            0.39209675788879395,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | Side wall top graphite cap 1",
+          "decodedColor": [
+            0.29249998927116394,
+            0.29739245772361755,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        }
+      ],
+      "triangles": 648,
+      "atlas": [
+        1024,
+        2048
+      ],
+      "bytes": {
+        "uv": 2036,
+        "texture": 392674
+      }
+    },
+    {
+      "item": "step-nosings",
+      "active": true,
+      "source": "theatre",
+      "uv": "/textures/theatre/step-nosings/step-nosings-uv.bin",
+      "texture": "/textures/theatre/step-nosings/step-nosings.ktx2",
+      "ids": [
+        {
+          "name": "ET | 919 flush metal step nosing",
+          "decodedColor": [
+            0.4553494453430176,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | 919 flush metal step nosing.001",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.3512096703052521
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | 919 flush metal step nosing.002",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.3382795453071594
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | 919 flush metal step nosing.003",
+          "decodedColor": [
+            0.29249998927116394,
+            0.4424193501472473,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | 919 flush metal step nosing.004",
+          "decodedColor": [
+            0.5469086170196533,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | 919 flush metal step nosing.005",
+          "decodedColor": [
+            0.6489515900611877,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | 919 flush metal step nosing.006",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.5444623231887817
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | 919 flush metal step nosing.007",
+          "decodedColor": [
+            0.6499999761581421,
+            0.4403225779533386,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | 919 flush metal step nosing.008",
+          "decodedColor": [
+            0.3358333110809326,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | 919 flush metal step nosing.009",
+          "decodedColor": [
+            0.35330644249916077,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | 919 flush metal step nosing.010",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.4577956795692444
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | 919 flush metal step nosing.011",
+          "decodedColor": [
+            0.29249998927116394,
+            0.5619354248046875,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | 919 flush metal step nosing.012",
+          "decodedColor": [
+            0.6499999761581421,
+            0.6335752010345459,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | 919 flush metal step nosing.013",
+          "decodedColor": [
+            0.5294354557991028,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | 919 flush metal step nosing.014",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.42494621872901917
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | 919 flush metal step nosing.015",
+          "decodedColor": [
+            0.6499999761581421,
+            0.32080644369125366,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | 919 flush metal step nosing.016",
+          "decodedColor": [
+            0.29249998927116394,
+            0.36868277192115784,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | 919 flush metal step nosing.017",
+          "decodedColor": [
+            0.47282254695892334,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | 919 flush metal step nosing.018",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.5773118138313293
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | 919 flush metal step nosing.019",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.6185483932495117
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | 919 flush metal step nosing.020",
+          "decodedColor": [
+            0.6499999761581421,
+            0.5140591263771057,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | 919 flush metal step nosing.021",
+          "decodedColor": [
+            0.4099193215370178,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | 919 flush metal step nosing.022",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.3054300844669342
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | 919 flush metal step nosing.023",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.3837096691131592
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | 919 flush metal step nosing.024",
+          "decodedColor": [
+            0.29249998927116394,
+            0.4881989061832428,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | 919 flush metal step nosing.025",
+          "decodedColor": [
+            0.5923386812210083,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | 919 flush metal step nosing.026",
+          "decodedColor": [
+            0.6031720638275146,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | Inlaid aisle edge reveal",
+          "decodedColor": [
+            0.6499999761581421,
+            0.3637903034687042,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 304
+        },
+        {
+          "name": "ET | Inlaid aisle edge reveal.001",
+          "decodedColor": [
+            0.29249998927116394,
+            0.32534945011138916,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 304
+        },
+        {
+          "name": "ET | Inlaid aisle edge reveal.002",
+          "decodedColor": [
+            0.4298386871814728,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 304
+        },
+        {
+          "name": "ET | Inlaid aisle edge reveal.003",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.5339784622192383
+          ],
+          "expectedTriangles": 304
+        }
+      ],
+      "triangles": 4132,
+      "atlas": [
+        2048,
+        2048
+      ],
+      "bytes": {
+        "uv": 14404,
+        "texture": 1078097
+      }
+    },
+    {
+      "item": "aisle-lights",
+      "active": true,
+      "source": "theatre",
+      "uv": "/textures/theatre/aisle-lights/aisle-lights-uv.bin",
+      "texture": "/textures/theatre/aisle-lights/aisle-lights.ktx2",
+      "ids": [
+        {
+          "name": "ET | Aisle tread optic",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.5622849464416504
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | Aisle tread optic.001",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.6332257986068726
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | Aisle tread optic.002",
+          "decodedColor": [
+            0.6499999761581421,
+            0.5290859937667847,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | Aisle tread optic.003",
+          "decodedColor": [
+            0.42459675669670105,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | Aisle tread optic.004",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.32045698165893555
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | Aisle tread optic.005",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.36903223395347595
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | Aisle tread optic.006",
+          "decodedColor": [
+            0.29249998927116394,
+            0.47317200899124146,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | Aisle tread optic.007",
+          "decodedColor": [
+            0.5776612758636475,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | Aisle tread optic.008",
+          "decodedColor": [
+            0.6181988716125488,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | Aisle tread optic.009",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.5137096643447876
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | Aisle tread optic.010",
+          "decodedColor": [
+            0.6499999761581421,
+            0.4095698595046997,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | Aisle tread optic.011",
+          "decodedColor": [
+            0.3050806224346161,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | Aisle tread optic.012",
+          "decodedColor": [
+            0.3840591311454773,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | Aisle tread optic.013",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.4885483682155609
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | Aisle tread optic.014",
+          "decodedColor": [
+            0.29249998927116394,
+            0.5926881432533264,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | Aisle tread optic.015",
+          "decodedColor": [
+            0.6499999761581421,
+            0.6028225421905518,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | Aisle tread optic.016",
+          "decodedColor": [
+            0.49868279695510864,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | Aisle tread optic.017",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.39419353008270264
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | Aisle tread optic.018",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.29494622349739075
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | Aisle tread optic.019",
+          "decodedColor": [
+            0.29249998927116394,
+            0.39943546056747437,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | Aisle tread optic.020",
+          "decodedColor": [
+            0.5035752654075623,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | Aisle tread optic.021",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.6080645322799683
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | Aisle tread optic.022",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.5877956748008728
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | Aisle tread optic.023",
+          "decodedColor": [
+            0.6499999761581421,
+            0.4833064377307892,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | First step recessed optic",
+          "decodedColor": [
+            0.3103225827217102,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | First step recessed optic.001",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.4144623577594757
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | First step recessed optic.002",
+          "decodedColor": [
+            0.29249998927116394,
+            0.5189515948295593,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | Recessed terrace nosing 0 -1",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6384677290916443,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | Recessed terrace nosing 0 1",
+          "decodedColor": [
+            0.6499999761581421,
+            0.5573924779891968,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | Recessed terrace nosing 1 -1",
+          "decodedColor": [
+            0.45290321111679077,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | Recessed terrace nosing 1 1",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.34876343607902527
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | Recessed terrace nosing 2 -1",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.34072577953338623
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | Recessed terrace nosing 2 1",
+          "decodedColor": [
+            0.29249998927116394,
+            0.4448655843734741,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | Recessed terrace nosing 3 -1",
+          "decodedColor": [
+            0.5493547916412354,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | Recessed terrace nosing 3 1",
+          "decodedColor": [
+            0.6465053558349609,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | Recessed terrace nosing 4 -1",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.5420160889625549
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | Recessed terrace nosing 4 1",
+          "decodedColor": [
+            0.6499999761581421,
+            0.4378763437271118,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | Stage lower cove",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.3592472970485687
+          ],
+          "expectedTriangles": 1920
+        },
+        {
+          "name": "ET | Step light recessed graphite channel",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.32989245653152466
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | Step light recessed graphite channel.001",
+          "decodedColor": [
+            0.29249998927116394,
+            0.43438172340393066,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | Step light recessed graphite channel.002",
+          "decodedColor": [
+            0.5385214686393738,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | Step light recessed graphite channel.003",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.6430107355117798
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | Step light recessed graphite channel.004",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.5528494119644165
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | Step light recessed graphite channel.005",
+          "decodedColor": [
+            0.6499999761581421,
+            0.4483602046966553,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | Step light recessed graphite channel.006",
+          "decodedColor": [
+            0.34422042965888977,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | Step light recessed graphite channel.007",
+          "decodedColor": [
+            0.3452688157558441,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | Step light recessed graphite channel.008",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.4494085907936096
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | Step light recessed graphite channel.009",
+          "decodedColor": [
+            0.29249998927116394,
+            0.5538978576660156,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | Step light recessed graphite channel.010",
+          "decodedColor": [
+            0.6499999761581421,
+            0.6419623494148254,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | Step light recessed graphite channel.011",
+          "decodedColor": [
+            0.5374730825424194,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | Step light recessed graphite channel.012",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.4333333373069763
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | Step light recessed graphite channel.013",
+          "decodedColor": [
+            0.6499999761581421,
+            0.3288440704345703,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | Step light recessed graphite channel.014",
+          "decodedColor": [
+            0.29249998927116394,
+            0.36029568314552307,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | Step light recessed graphite channel.015",
+          "decodedColor": [
+            0.4647849202156067,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | Step light recessed graphite channel.016",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.5689246654510498
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | Step light recessed graphite channel.017",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.6265859603881836
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | Step light recessed graphite channel.018",
+          "decodedColor": [
+            0.6499999761581421,
+            0.5224462151527405,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | Step light recessed graphite channel.019",
+          "decodedColor": [
+            0.41795697808265686,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | Step light recessed graphite channel.020",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.31381720304489136
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | Step light recessed graphite channel.021",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.37567204236984253
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | Step light recessed graphite channel.022",
+          "decodedColor": [
+            0.29249998927116394,
+            0.47981181740760803,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | Step light recessed graphite channel.023",
+          "decodedColor": [
+            0.5843010544776917,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | Step light recessed graphite channel.024",
+          "decodedColor": [
+            0.6115591526031494,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | Step light recessed graphite channel.025",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.5070698857307434
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | Step light recessed graphite channel.026",
+          "decodedColor": [
+            0.6499999761581421,
+            0.4029300808906555,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "HALO II | Aisle channel hood",
+          "decodedColor": [
+            0.3906989097595215,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 2
+        },
+        {
+          "name": "HALO II | Aisle channel hood.001",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.4951881468296051
+          ],
+          "expectedTriangles": 2
+        },
+        {
+          "name": "HALO II | Aisle channel hood.002",
+          "decodedColor": [
+            0.29249998927116394,
+            0.5993279218673706,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 2
+        },
+        {
+          "name": "HALO II | Aisle channel hood.003",
+          "decodedColor": [
+            0.6499999761581421,
+            0.5961827635765076,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 2
+        },
+        {
+          "name": "HALO II | Aisle channel hood.004",
+          "decodedColor": [
+            0.49204298853874207,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 2
+        },
+        {
+          "name": "HALO II | Aisle channel hood.005",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.38755375146865845
+          ],
+          "expectedTriangles": 2
+        },
+        {
+          "name": "HALO II | Aisle channel hood.006",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.30158600211143494
+          ],
+          "expectedTriangles": 2
+        },
+        {
+          "name": "HALO II | Aisle channel hood.007",
+          "decodedColor": [
+            0.29249998927116394,
+            0.40607523918151855,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 2
+        },
+        {
+          "name": "HALO II | Aisle channel hood.008",
+          "decodedColor": [
+            0.5102150440216064,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 2
+        },
+        {
+          "name": "HALO II | Aisle channel hood.009",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.6147042512893677
+          ],
+          "expectedTriangles": 2
+        },
+        {
+          "name": "HALO II | Aisle channel hood.010",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.5811558961868286
+          ],
+          "expectedTriangles": 2
+        },
+        {
+          "name": "HALO II | Aisle channel hood.011",
+          "decodedColor": [
+            0.6499999761581421,
+            0.4766666293144226,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 2
+        },
+        {
+          "name": "HALO II | Aisle channel hood.012",
+          "decodedColor": [
+            0.3725268840789795,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 2
+        },
+        {
+          "name": "HALO II | Aisle channel hood.013",
+          "decodedColor": [
+            0.3169623613357544,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 2
+        },
+        {
+          "name": "HALO II | Aisle channel hood.014",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.4211021363735199
+          ],
+          "expectedTriangles": 2
+        },
+        {
+          "name": "HALO II | Aisle channel hood.015",
+          "decodedColor": [
+            0.29249998927116394,
+            0.5255913734436035,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 2
+        },
+        {
+          "name": "HALO II | Aisle channel hood.016",
+          "decodedColor": [
+            0.6297311782836914,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 2
+        },
+        {
+          "name": "HALO II | Aisle channel hood.017",
+          "decodedColor": [
+            0.5657795667648315,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 2
+        },
+        {
+          "name": "HALO II | Aisle channel hood.018",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.46163976192474365
+          ],
+          "expectedTriangles": 2
+        },
+        {
+          "name": "HALO II | Aisle channel hood.019",
+          "decodedColor": [
+            0.6499999761581421,
+            0.35715052485466003,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 2
+        },
+        {
+          "name": "HALO II | Recessed aisle light ribbon",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.3421236276626587
+          ],
+          "expectedTriangles": 2
+        },
+        {
+          "name": "HALO II | Recessed aisle light ribbon.001",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.3473655879497528
+          ],
+          "expectedTriangles": 2
+        },
+        {
+          "name": "HALO II | Recessed aisle light ribbon.002",
+          "decodedColor": [
+            0.29249998927116394,
+            0.4518548250198364,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 2
+        },
+        {
+          "name": "HALO II | Recessed aisle light ribbon.003",
+          "decodedColor": [
+            0.5559946298599243,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 2
+        },
+        {
+          "name": "HALO II | Recessed aisle light ribbon.004",
+          "decodedColor": [
+            0.6395161151885986,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 2
+        },
+        {
+          "name": "HALO II | Recessed aisle light ribbon.005",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.5353763103485107
+          ],
+          "expectedTriangles": 2
+        },
+        {
+          "name": "HALO II | Recessed aisle light ribbon.006",
+          "decodedColor": [
+            0.6499999761581421,
+            0.4308871030807495,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 2
+        },
+        {
+          "name": "HALO II | Recessed aisle light ribbon.007",
+          "decodedColor": [
+            0.3267472982406616,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 2
+        },
+        {
+          "name": "HALO II | Recessed aisle light ribbon.008",
+          "decodedColor": [
+            0.3627419173717499,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 2
+        },
+        {
+          "name": "HALO II | Recessed aisle light ribbon.009",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.4668816924095154
+          ],
+          "expectedTriangles": 2
+        },
+        {
+          "name": "HALO II | Recessed aisle light ribbon.010",
+          "decodedColor": [
+            0.29249998927116394,
+            0.5713709592819214,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 2
+        },
+        {
+          "name": "HALO II | Recessed aisle light ribbon.011",
+          "decodedColor": [
+            0.6499999761581421,
+            0.6244891881942749,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 2
+        },
+        {
+          "name": "HALO II | Recessed aisle light ribbon.012",
+          "decodedColor": [
+            0.5199999809265137,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 2
+        },
+        {
+          "name": "HALO II | Recessed aisle light ribbon.013",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.41586020588874817
+          ],
+          "expectedTriangles": 2
+        },
+        {
+          "name": "HALO II | Recessed aisle light ribbon.014",
+          "decodedColor": [
+            0.6499999761581421,
+            0.31137096881866455,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 2
+        },
+        {
+          "name": "HALO II | Recessed aisle light ribbon.015",
+          "decodedColor": [
+            0.29249998927116394,
+            0.3777688145637512,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 2
+        },
+        {
+          "name": "HALO II | Recessed aisle light ribbon.016",
+          "decodedColor": [
+            0.48225805163383484,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 2
+        },
+        {
+          "name": "HALO II | Recessed aisle light ribbon.017",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.5863978266716003
+          ],
+          "expectedTriangles": 2
+        },
+        {
+          "name": "HALO II | Recessed aisle light ribbon.018",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.6091128587722778
+          ],
+          "expectedTriangles": 2
+        },
+        {
+          "name": "HALO II | Recessed aisle light ribbon.019",
+          "decodedColor": [
+            0.6499999761581421,
+            0.5049731135368347,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 2
+        }
+      ],
+      "triangles": 8912,
+      "atlas": [
+        2048,
+        2048
+      ],
+      "bytes": {
+        "uv": 26484,
+        "texture": 1131219
+      }
+    },
+    {
+      "item": "acoustic-slats",
+      "active": true,
+      "source": "theatre",
+      "uv": "/textures/theatre/acoustic-slats/acoustic-slats-uv.bin",
+      "texture": "/textures/theatre/acoustic-slats/acoustic-slats.ktx2",
+      "ids": [
+        {
+          "name": "ET | ATELIER reeded ash dado",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.5032258033752441
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.001",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6077150106430054,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.002",
+          "decodedColor": [
+            0.6499999761581421,
+            0.5881451368331909,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.003",
+          "decodedColor": [
+            0.4836558997631073,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.004",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.3795161247253418
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.005",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.3099731206893921
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.006",
+          "decodedColor": [
+            0.29249998927116394,
+            0.4141128957271576,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.007",
+          "decodedColor": [
+            0.5186021327972412,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.008",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.6227419376373291
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.009",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.5727688074111938
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.010",
+          "decodedColor": [
+            0.6499999761581421,
+            0.46862900257110596,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.011",
+          "decodedColor": [
+            0.36413976550102234,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.012",
+          "decodedColor": [
+            0.32499998807907104,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.013",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.42948922514915466
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.014",
+          "decodedColor": [
+            0.29249998927116394,
+            0.5336290001869202,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.015",
+          "decodedColor": [
+            0.6381182670593262,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.016",
+          "decodedColor": [
+            0.5577418804168701,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.017",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.4532526731491089
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.018",
+          "decodedColor": [
+            0.6499999761581421,
+            0.34876343607902527,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.019",
+          "decodedColor": [
+            0.29249998927116394,
+            0.3403763175010681,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.020",
+          "decodedColor": [
+            0.4448655843734741,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.021",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.549005389213562
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.022",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.6465053558349609
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.023",
+          "decodedColor": [
+            0.6499999761581421,
+            0.542365550994873,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.024",
+          "decodedColor": [
+            0.4378763437271118,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.025",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.3337365388870239
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.026",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.3557526767253876
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.027",
+          "decodedColor": [
+            0.29249998927116394,
+            0.4598924517631531,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.028",
+          "decodedColor": [
+            0.5643817186355591,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.029",
+          "decodedColor": [
+            0.6314784288406372,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.030",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.526989221572876
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.031",
+          "decodedColor": [
+            0.6499999761581421,
+            0.4228494465351105,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.032",
+          "decodedColor": [
+            0.31836020946502686,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.033",
+          "decodedColor": [
+            0.3707795739173889,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.034",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.47526878118515015
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.035",
+          "decodedColor": [
+            0.29249998927116394,
+            0.579408586025238,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.036",
+          "decodedColor": [
+            0.6499999761581421,
+            0.6161020994186401,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.037",
+          "decodedColor": [
+            0.511962354183197,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.038",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.407473087310791
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.039",
+          "decodedColor": [
+            0.6499999761581421,
+            0.3033333122730255,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.040",
+          "decodedColor": [
+            0.29249998927116394,
+            0.386155903339386,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.041",
+          "decodedColor": [
+            0.4902956783771515,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.042",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.5947849154472351
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.043",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.6010752320289612
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.044",
+          "decodedColor": [
+            0.6499999761581421,
+            0.49658602476119995,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.045",
+          "decodedColor": [
+            0.39244621992111206,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.046",
+          "decodedColor": [
+            0.29704299569129944,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.047",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.40118277072906494
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.048",
+          "decodedColor": [
+            0.29249998927116394,
+            0.505672037601471,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.049",
+          "decodedColor": [
+            0.6098117828369141,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.050",
+          "decodedColor": [
+            0.5856989026069641,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.051",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.4815591275691986
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.052",
+          "decodedColor": [
+            0.6499999761581421,
+            0.377069890499115,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.053",
+          "decodedColor": [
+            0.29249998927116394,
+            0.3120698928833008,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.054",
+          "decodedColor": [
+            0.4165591299533844,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.055",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.5206989049911499
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.056",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6251881122589111,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.057",
+          "decodedColor": [
+            0.6499999761581421,
+            0.5706720352172852,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.058",
+          "decodedColor": [
+            0.46618276834487915,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.059",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.36204299330711365
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.060",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.32744622230529785
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.061",
+          "decodedColor": [
+            0.29249998927116394,
+            0.43158602714538574,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.062",
+          "decodedColor": [
+            0.536075234413147,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.063",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.6402150392532349
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.064",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.5552957057952881
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.065",
+          "decodedColor": [
+            0.6499999761581421,
+            0.4511559009552002,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.066",
+          "decodedColor": [
+            0.3466666638851166,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.067",
+          "decodedColor": [
+            0.3424730896949768,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.068",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.4469623565673828
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.069",
+          "decodedColor": [
+            0.29249998927116394,
+            0.5511021614074707,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.070",
+          "decodedColor": [
+            0.6499999761581421,
+            0.6444085836410522,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.071",
+          "decodedColor": [
+            0.5402687788009644,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.072",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.4357795715332031
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.073",
+          "decodedColor": [
+            0.6499999761581421,
+            0.33163976669311523,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.074",
+          "decodedColor": [
+            0.29249998927116394,
+            0.35784944891929626,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.075",
+          "decodedColor": [
+            0.46198922395706177,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.076",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.5664784908294678
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.077",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.6293816566467285
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.078",
+          "decodedColor": [
+            0.6499999761581421,
+            0.5248924493789673,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.079",
+          "decodedColor": [
+            0.4207526743412018,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.080",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.31626343727111816
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.081",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.3728763461112976
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.082",
+          "decodedColor": [
+            0.29249998927116394,
+            0.47736555337905884,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.083",
+          "decodedColor": [
+            0.5815053582191467,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.084",
+          "decodedColor": [
+            0.6140053272247314,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.085",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.5098655819892883
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.086",
+          "decodedColor": [
+            0.6499999761581421,
+            0.4053763151168823,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.087",
+          "decodedColor": [
+            0.3008870780467987,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.088",
+          "decodedColor": [
+            0.3882526755332947,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.089",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.4927419126033783
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.090",
+          "decodedColor": [
+            0.29249998927116394,
+            0.5968816876411438,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.091",
+          "decodedColor": [
+            0.6499999761581421,
+            0.5986289978027344,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.092",
+          "decodedColor": [
+            0.49448922276496887,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.093",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.38999998569488525
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.094",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.29913976788520813
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.095",
+          "decodedColor": [
+            0.29249998927116394,
+            0.40362900495529175,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.096",
+          "decodedColor": [
+            0.5077688097953796,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.097",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.6122580766677856
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.098",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.5836021304130554
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.099",
+          "decodedColor": [
+            0.6499999761581421,
+            0.4791128635406494,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.100",
+          "decodedColor": [
+            0.3749731183052063,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.101",
+          "decodedColor": [
+            0.3145161271095276,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.102",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.4186559021472931
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.103",
+          "decodedColor": [
+            0.29249998927116394,
+            0.5231451392173767,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.104",
+          "decodedColor": [
+            0.6272848844528198,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.105",
+          "decodedColor": [
+            0.5682257413864136,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.106",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.46408599615097046
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.107",
+          "decodedColor": [
+            0.6499999761581421,
+            0.35959675908088684,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.108",
+          "decodedColor": [
+            0.29249998927116394,
+            0.32954299449920654,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.109",
+          "decodedColor": [
+            0.43403226137161255,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.110",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.5381720066070557
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.111",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6426612734794617,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.112",
+          "decodedColor": [
+            0.6499999761581421,
+            0.5531989336013794,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.113",
+          "decodedColor": [
+            0.4487096667289734,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.114",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.3445698916912079
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.115",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.344919353723526
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.116",
+          "decodedColor": [
+            0.29249998927116394,
+            0.4490591287612915,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.117",
+          "decodedColor": [
+            0.5535483360290527,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.118",
+          "decodedColor": [
+            0.6423118114471436,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.119",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.5378225445747375
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.120",
+          "decodedColor": [
+            0.6499999761581421,
+            0.43368279933929443,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.121",
+          "decodedColor": [
+            0.3291935324668884,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.122",
+          "decodedColor": [
+            0.35994622111320496,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.123",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.4644354581832886
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.124",
+          "decodedColor": [
+            0.29249998927116394,
+            0.5685752630233765,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.125",
+          "decodedColor": [
+            0.6499999761581421,
+            0.6269354820251465,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.126",
+          "decodedColor": [
+            0.5227956771850586,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.127",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.418306440114975
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.128",
+          "decodedColor": [
+            0.6499999761581421,
+            0.3141666650772095,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.129",
+          "decodedColor": [
+            0.29249998927116394,
+            0.3753225803375244,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.130",
+          "decodedColor": [
+            0.47946232557296753,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.131",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.5839515924453735
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.132",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.6119085550308228
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.133",
+          "decodedColor": [
+            0.6499999761581421,
+            0.5074193477630615,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.134",
+          "decodedColor": [
+            0.40327954292297363,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.135",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.29879030585289
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.136",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.39034944772720337
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.137",
+          "decodedColor": [
+            0.29249998927116394,
+            0.494838684797287,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.138",
+          "decodedColor": [
+            0.5989784598350525,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.139",
+          "decodedColor": [
+            0.5965322256088257,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.140",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.4923924505710602
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.141",
+          "decodedColor": [
+            0.6499999761581421,
+            0.38790321350097656,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.142",
+          "decodedColor": [
+            0.29249998927116394,
+            0.3012365400791168,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.143",
+          "decodedColor": [
+            0.40572577714920044,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.144",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.5098655819892883
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.145",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6143548488616943,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.146",
+          "decodedColor": [
+            0.6499999761581421,
+            0.5815053582191467,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.147",
+          "decodedColor": [
+            0.4770160913467407,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.148",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.3728763461112976
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.149",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.3166128993034363
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.150",
+          "decodedColor": [
+            0.29249998927116394,
+            0.4207526743412018,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.151",
+          "decodedColor": [
+            0.5252419114112854,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.152",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.6293816566467285
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.153",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.5661289691925049
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.154",
+          "decodedColor": [
+            0.6499999761581421,
+            0.46163976192474365,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.155",
+          "decodedColor": [
+            0.35749998688697815,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.156",
+          "decodedColor": [
+            0.33198922872543335,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.157",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.43612903356552124
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.158",
+          "decodedColor": [
+            0.29249998927116394,
+            0.5406182408332825,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.159",
+          "decodedColor": [
+            0.6447580456733704,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.160",
+          "decodedColor": [
+            0.5507526397705078,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.161",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.4466128945350647
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.162",
+          "decodedColor": [
+            0.6499999761581421,
+            0.3421236276626587,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.163",
+          "decodedColor": [
+            0.29249998927116394,
+            0.3470161259174347,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.164",
+          "decodedColor": [
+            0.4515053629875183,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.165",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.5556451082229614
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.166",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.6398655772209167
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.167",
+          "decodedColor": [
+            0.6499999761581421,
+            0.5357257723808289,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.168",
+          "decodedColor": [
+            0.4312365651130676,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.169",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.32709676027297974
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.170",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.36239245533943176
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.171",
+          "decodedColor": [
+            0.29249998927116394,
+            0.46653223037719727,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.172",
+          "decodedColor": [
+            0.5710214972496033,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.173",
+          "decodedColor": [
+            0.6248387098312378,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.174",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.5203494429588318
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.175",
+          "decodedColor": [
+            0.6499999761581421,
+            0.4162096679210663,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.176",
+          "decodedColor": [
+            0.31172043085098267,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.177",
+          "decodedColor": [
+            0.3774193525314331,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.178",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.4819085896015167
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.179",
+          "decodedColor": [
+            0.29249998927116394,
+            0.5860483646392822,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.180",
+          "decodedColor": [
+            0.6499999761581421,
+            0.6094623804092407,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.181",
+          "decodedColor": [
+            0.5053225755691528,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.182",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.4008333086967468
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.183",
+          "decodedColor": [
+            0.6499999761581421,
+            0.2966935336589813,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.184",
+          "decodedColor": [
+            0.29249998927116394,
+            0.3927956819534302,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.185",
+          "decodedColor": [
+            0.49693548679351807,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.186",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.6014246940612793
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.187",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.594435453414917
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.188",
+          "decodedColor": [
+            0.6499999761581421,
+            0.4899462163448334,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.189",
+          "decodedColor": [
+            0.38580644130706787,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.190",
+          "decodedColor": [
+            0.30368277430534363,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.191",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.40782254934310913
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.192",
+          "decodedColor": [
+            0.29249998927116394,
+            0.5123118162155151,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.193",
+          "decodedColor": [
+            0.616451621055603,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.194",
+          "decodedColor": [
+            0.5790591239929199,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.195",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.47491931915283203
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.196",
+          "decodedColor": [
+            0.6499999761581421,
+            0.3704301118850708,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.197",
+          "decodedColor": [
+            0.29249998927116394,
+            0.31870967149734497,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.198",
+          "decodedColor": [
+            0.4231989085674286,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.199",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.5273386836051941
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.200",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6318279504776001,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.201",
+          "decodedColor": [
+            0.6499999761581421,
+            0.5640321969985962,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.202",
+          "decodedColor": [
+            0.45954298973083496,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.203",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.35540321469306946
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.204",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.33408600091934204
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.205",
+          "decodedColor": [
+            0.29249998927116394,
+            0.43822580575942993,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.206",
+          "decodedColor": [
+            0.5427150726318359,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.207",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.646854817867279
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.208",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.5486558675765991
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.209",
+          "decodedColor": [
+            0.6499999761581421,
+            0.444516122341156,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.210",
+          "decodedColor": [
+            0.34002685546875,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.211",
+          "decodedColor": [
+            0.3491128981113434,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.212",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.453602135181427
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.213",
+          "decodedColor": [
+            0.29249998927116394,
+            0.5577418804168701,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.214",
+          "decodedColor": [
+            0.6499999761581421,
+            0.6377688050270081,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.215",
+          "decodedColor": [
+            0.5336290001869202,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.216",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.42913976311683655
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.217",
+          "decodedColor": [
+            0.6499999761581421,
+            0.32499998807907104,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.218",
+          "decodedColor": [
+            0.29249998927116394,
+            0.36448922753334045,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.219",
+          "decodedColor": [
+            0.46862900257110596,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.220",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.573118269443512
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.221",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.6227419376373291
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.222",
+          "decodedColor": [
+            0.6499999761581421,
+            0.5182526707649231,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.223",
+          "decodedColor": [
+            0.4137634336948395,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.224",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.309623658657074
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.225",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.3798655867576599
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.226",
+          "decodedColor": [
+            0.29249998927116394,
+            0.4840053617954254,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.227",
+          "decodedColor": [
+            0.588494598865509,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.228",
+          "decodedColor": [
+            0.607365608215332,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.229",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.502876341342926
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.230",
+          "decodedColor": [
+            0.6499999761581421,
+            0.39873653650283813,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.231",
+          "decodedColor": [
+            0.2942472994327545,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.232",
+          "decodedColor": [
+            0.39489245414733887,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.233",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.4993817210197449
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.234",
+          "decodedColor": [
+            0.29249998927116394,
+            0.603521466255188,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.235",
+          "decodedColor": [
+            0.6499999761581421,
+            0.5919892191886902,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.236",
+          "decodedColor": [
+            0.4878494441509247,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.237",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.38336020708084106
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.238",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.3057795464992523
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.239",
+          "decodedColor": [
+            0.29249998927116394,
+            0.41026878356933594,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.240",
+          "decodedColor": [
+            0.5144085884094238,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.241",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.6188977956771851
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.242",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.5769623517990112
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.243",
+          "decodedColor": [
+            0.6499999761581421,
+            0.4724730849266052,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.244",
+          "decodedColor": [
+            0.3683333098888397,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.245",
+          "decodedColor": [
+            0.3211559057235718,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.246",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.4252956807613373
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.247",
+          "decodedColor": [
+            0.29249998927116394,
+            0.5297849178314209,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.248",
+          "decodedColor": [
+            0.6339247226715088,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.249",
+          "decodedColor": [
+            0.5615860223770142,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.250",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.45744621753692627
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.251",
+          "decodedColor": [
+            0.6499999761581421,
+            0.35295698046684265,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.252",
+          "decodedColor": [
+            0.29249998927116394,
+            0.33618277311325073,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.253",
+          "decodedColor": [
+            0.44067203998565674,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.254",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.5448118448257446
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.255",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6493010520935059,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.256",
+          "decodedColor": [
+            0.6499999761581421,
+            0.5465590953826904,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.257",
+          "decodedColor": [
+            0.4420698881149292,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.258",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.3379300832748413
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.259",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.3515591323375702
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.260",
+          "decodedColor": [
+            0.29249998927116394,
+            0.4556989073753357,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.261",
+          "decodedColor": [
+            0.5601881742477417,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.262",
+          "decodedColor": [
+            0.6356720328330994,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.263",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.5311827659606934
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.264",
+          "decodedColor": [
+            0.6499999761581421,
+            0.42704299092292786,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.265",
+          "decodedColor": [
+            0.32255375385284424,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.266",
+          "decodedColor": [
+            0.36658599972724915,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.267",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.47107523679733276
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.268",
+          "decodedColor": [
+            0.29249998927116394,
+            0.5752150416374207,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.269",
+          "decodedColor": [
+            0.6499999761581421,
+            0.6202956438064575,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.270",
+          "decodedColor": [
+            0.5161558985710144,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.271",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.4116666615009308
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.272",
+          "decodedColor": [
+            0.6499999761581421,
+            0.3075268566608429,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.273",
+          "decodedColor": [
+            0.29249998927116394,
+            0.3819623589515686,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.274",
+          "decodedColor": [
+            0.4861021339893341,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.275",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.5905913710594177
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.276",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.6052688360214233
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.277",
+          "decodedColor": [
+            0.6499999761581421,
+            0.5007795691490173,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.278",
+          "decodedColor": [
+            0.39663976430892944,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.279",
+          "decodedColor": [
+            0.29284945130348206,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.280",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.39698922634124756
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.281",
+          "decodedColor": [
+            0.29249998927116394,
+            0.5014784932136536,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.282",
+          "decodedColor": [
+            0.6056182384490967,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.283",
+          "decodedColor": [
+            0.5898924469947815,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.284",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.485752671957016
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.285",
+          "decodedColor": [
+            0.6499999761581421,
+            0.3812634348869324,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.286",
+          "decodedColor": [
+            0.29249998927116394,
+            0.307876318693161,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.287",
+          "decodedColor": [
+            0.412365585565567,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.288",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.5165053606033325
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.289",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6209945678710938,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.290",
+          "decodedColor": [
+            0.6499999761581421,
+            0.5745161175727844,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.291",
+          "decodedColor": [
+            0.47037631273269653,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.292",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.3658870756626129
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.293",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.32325267791748047
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.294",
+          "decodedColor": [
+            0.29249998927116394,
+            0.4277419149875641,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.295",
+          "decodedColor": [
+            0.5318816900253296,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.296",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.6363709568977356
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.297",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.5594892501831055
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.298",
+          "decodedColor": [
+            0.6499999761581421,
+            0.45499998331069946,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.299",
+          "decodedColor": [
+            0.35086020827293396,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.300",
+          "decodedColor": [
+            0.33862900733947754,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.301",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.44276881217956543
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.302",
+          "decodedColor": [
+            0.29249998927116394,
+            0.5472580194473267,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.303",
+          "decodedColor": [
+            0.6499999761581421,
+            0.6486021280288696,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.304",
+          "decodedColor": [
+            0.5441129207611084,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.305",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.4399731159210205
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.306",
+          "decodedColor": [
+            0.6499999761581421,
+            0.3354838490486145,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | ATELIER reeded ash dado.307",
+          "decodedColor": [
+            0.29249998927116394,
+            0.3536559045314789,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        }
+      ],
+      "triangles": 33264,
+      "atlas": [
+        2048,
+        2048
+      ],
+      "bytes": {
+        "uv": 103508,
+        "texture": 982368
+      }
+    },
+    {
+      "item": "speakers",
+      "active": true,
+      "source": "theatre",
+      "uv": "/textures/theatre/speakers/speakers-uv.bin",
+      "texture": "/textures/theatre/speakers/speakers.ktx2",
+      "ids": [
+        {
+          "name": "ET | Side surround speaker",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.3029838502407074
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | Side surround speaker.001",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.3865053653717041
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | Side surround speaker.003",
+          "decodedColor": [
+            0.29249998927116394,
+            0.4906451404094696,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | Side surround speaker.004",
+          "decodedColor": [
+            0.5951343774795532,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | Side surround speaker.005",
+          "decodedColor": [
+            0.6007257699966431,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | Side surround speaker.007",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.49623656272888184
+          ],
+          "expectedTriangles": 108
+        },
+        {
+          "name": "ET | Speaker grille slot",
+          "decodedColor": [
+            0.40153223276138306,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 16
+        },
+        {
+          "name": "ET | Speaker grille slot.001",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.5060214996337891
+          ],
+          "expectedTriangles": 16
+        },
+        {
+          "name": "ET | Speaker grille slot.002",
+          "decodedColor": [
+            0.29249998927116394,
+            0.610161304473877,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 16
+        },
+        {
+          "name": "ET | Speaker grille slot.003",
+          "decodedColor": [
+            0.6499999761581421,
+            0.585349440574646,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 16
+        },
+        {
+          "name": "ET | Speaker grille slot.004",
+          "decodedColor": [
+            0.4812096655368805,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 16
+        },
+        {
+          "name": "ET | Speaker grille slot.005",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.3767204284667969
+          ],
+          "expectedTriangles": 16
+        },
+        {
+          "name": "ET | Speaker grille slot.006",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.3124193549156189
+          ],
+          "expectedTriangles": 16
+        },
+        {
+          "name": "ET | Speaker grille slot.007",
+          "decodedColor": [
+            0.29249998927116394,
+            0.4169085919857025,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 16
+        },
+        {
+          "name": "ET | Speaker grille slot.008",
+          "decodedColor": [
+            0.521048367023468,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 16
+        },
+        {
+          "name": "ET | Speaker grille slot.009",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.625537633895874
+          ],
+          "expectedTriangles": 16
+        },
+        {
+          "name": "ET | Speaker grille slot.010",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.570322573184967
+          ],
+          "expectedTriangles": 16
+        },
+        {
+          "name": "ET | Speaker grille slot.011",
+          "decodedColor": [
+            0.6499999761581421,
+            0.46583330631256104,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 16
+        },
+        {
+          "name": "ET | Speaker grille slot.012",
+          "decodedColor": [
+            0.36169353127479553,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 16
+        },
+        {
+          "name": "ET | Speaker grille slot.013",
+          "decodedColor": [
+            0.32779568433761597,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 16
+        },
+        {
+          "name": "ET | Speaker grille slot.014",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.43193548917770386
+          ],
+          "expectedTriangles": 16
+        },
+        {
+          "name": "ET | Speaker grille slot.015",
+          "decodedColor": [
+            0.29249998927116394,
+            0.5364246964454651,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 16
+        },
+        {
+          "name": "ET | Speaker grille slot.016",
+          "decodedColor": [
+            0.640564501285553,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 16
+        },
+        {
+          "name": "ET | Speaker grille slot.017",
+          "decodedColor": [
+            0.5549461841583252,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 16
+        },
+        {
+          "name": "ET | Speaker grille slot.018",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.4508064389228821
+          ],
+          "expectedTriangles": 16
+        },
+        {
+          "name": "ET | Speaker grille slot.019",
+          "decodedColor": [
+            0.6499999761581421,
+            0.34631720185279846,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 16
+        },
+        {
+          "name": "ET | Speaker grille slot.030",
+          "decodedColor": [
+            0.29249998927116394,
+            0.3428225517272949,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 16
+        },
+        {
+          "name": "ET | Speaker grille slot.031",
+          "decodedColor": [
+            0.4473118185997009,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 16
+        },
+        {
+          "name": "ET | Speaker grille slot.032",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.551451563835144
+          ],
+          "expectedTriangles": 16
+        },
+        {
+          "name": "ET | Speaker grille slot.033",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.6440591216087341
+          ],
+          "expectedTriangles": 16
+        },
+        {
+          "name": "ET | Speaker grille slot.034",
+          "decodedColor": [
+            0.6499999761581421,
+            0.5399193167686462,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 16
+        },
+        {
+          "name": "ET | Speaker grille slot.035",
+          "decodedColor": [
+            0.435430109500885,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 16
+        },
+        {
+          "name": "ET | Speaker grille slot.036",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.3312903046607971
+          ],
+          "expectedTriangles": 16
+        },
+        {
+          "name": "ET | Speaker grille slot.037",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.3581989109516144
+          ],
+          "expectedTriangles": 16
+        },
+        {
+          "name": "ET | Speaker grille slot.038",
+          "decodedColor": [
+            0.29249998927116394,
+            0.4623386859893799,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 16
+        },
+        {
+          "name": "ET | Speaker grille slot.039",
+          "decodedColor": [
+            0.5668278932571411,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 16
+        },
+        {
+          "name": "ET | Speaker grille slot.040",
+          "decodedColor": [
+            0.6290322542190552,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 16
+        },
+        {
+          "name": "ET | Speaker grille slot.041",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.5245429873466492
+          ],
+          "expectedTriangles": 16
+        },
+        {
+          "name": "ET | Speaker grille slot.042",
+          "decodedColor": [
+            0.6499999761581421,
+            0.42040321230888367,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 16
+        },
+        {
+          "name": "ET | Speaker grille slot.043",
+          "decodedColor": [
+            0.31591397523880005,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 16
+        },
+        {
+          "name": "ET | Speaker grille slot.044",
+          "decodedColor": [
+            0.3732258081436157,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 16
+        },
+        {
+          "name": "ET | Speaker grille slot.045",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.47771501541137695
+          ],
+          "expectedTriangles": 16
+        },
+        {
+          "name": "ET | Speaker grille slot.046",
+          "decodedColor": [
+            0.29249998927116394,
+            0.5818548202514648,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 16
+        },
+        {
+          "name": "ET | Speaker grille slot.047",
+          "decodedColor": [
+            0.6499999761581421,
+            0.6136559247970581,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 16
+        },
+        {
+          "name": "ET | Speaker grille slot.048",
+          "decodedColor": [
+            0.5095161199569702,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 16
+        },
+        {
+          "name": "ET | Speaker grille slot.049",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.4050268530845642
+          ],
+          "expectedTriangles": 16
+        },
+        {
+          "name": "ET | Speaker grille slot.050",
+          "decodedColor": [
+            0.6499999761581421,
+            0.3008870780467987,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 16
+        },
+        {
+          "name": "ET | Speaker grille slot.051",
+          "decodedColor": [
+            0.29249998927116394,
+            0.3886021375656128,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 16
+        },
+        {
+          "name": "ET | Speaker grille slot.052",
+          "decodedColor": [
+            0.4927419126033783,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 16
+        },
+        {
+          "name": "ET | Speaker grille slot.053",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.5972311496734619
+          ],
+          "expectedTriangles": 16
+        },
+        {
+          "name": "ET | Speaker grille slot.054",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.5986289978027344
+          ],
+          "expectedTriangles": 16
+        },
+        {
+          "name": "ET | Speaker grille slot.055",
+          "decodedColor": [
+            0.6499999761581421,
+            0.49413976073265076,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 16
+        },
+        {
+          "name": "ET | Speaker grille slot.056",
+          "decodedColor": [
+            0.38999998569488525,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 16
+        },
+        {
+          "name": "ET | Speaker grille slot.057",
+          "decodedColor": [
+            0.29948922991752625,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 16
+        },
+        {
+          "name": "ET | Speaker grille slot.058",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.40362900495529175
+          ],
+          "expectedTriangles": 16
+        },
+        {
+          "name": "ET | Speaker grille slot.059",
+          "decodedColor": [
+            0.29249998927116394,
+            0.5081182718276978,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 16
+        },
+        {
+          "name": "ET | Speaker grille slot.070",
+          "decodedColor": [
+            0.612607479095459,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 16
+        },
+        {
+          "name": "ET | Speaker grille slot.071",
+          "decodedColor": [
+            0.5832526683807373,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 16
+        },
+        {
+          "name": "ET | Speaker grille slot.072",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6499999761581421,
+            0.4787634015083313
+          ],
+          "expectedTriangles": 16
+        },
+        {
+          "name": "ET | Speaker grille slot.073",
+          "decodedColor": [
+            0.6499999761581421,
+            0.3746236562728882,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 16
+        },
+        {
+          "name": "ET | Speaker grille slot.074",
+          "decodedColor": [
+            0.29249998927116394,
+            0.3148655891418457,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 16
+        },
+        {
+          "name": "ET | Speaker grille slot.075",
+          "decodedColor": [
+            0.4190053641796112,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 16
+        },
+        {
+          "name": "ET | Speaker grille slot.076",
+          "decodedColor": [
+            0.6499999761581421,
+            0.29249998927116394,
+            0.5234946012496948
+          ],
+          "expectedTriangles": 16
+        },
+        {
+          "name": "ET | Speaker grille slot.077",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6276344060897827,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 16
+        },
+        {
+          "name": "ET | Speaker grille slot.078",
+          "decodedColor": [
+            0.6499999761581421,
+            0.5678763389587402,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 16
+        },
+        {
+          "name": "ET | Speaker grille slot.079",
+          "decodedColor": [
+            0.46373653411865234,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 16
+        }
+      ],
+      "triangles": 1608,
+      "atlas": [
+        1024,
+        1024
+      ],
+      "bytes": {
+        "uv": 8756,
+        "texture": 452179
+      }
+    },
+    {
+      "item": "corridor-pathway-lights",
+      "active": true,
+      "source": "corridor",
+      "uv": "/textures/corridor/pathway-lights/corridor-pathway-lights-uv.bin",
+      "texture": "/textures/corridor/pathway-lights/corridor-pathway-lights.ktx2",
+      "ids": [
+        {
+          "name": "Pathway L 01 • slot assembly • amber diffuser",
+          "node": "Pathway L 01 • slot assembly • amber diffuser.001",
+          "material": "ID | Pathway L 01 • slot assembly • amber diffuser",
+          "expectedTriangles": 464
+        },
+        {
+          "name": "Pathway L 01 • slot assembly • bronze face",
+          "node": "Pathway L 01 • slot assembly • bronze face.001",
+          "material": "ID | Pathway L 01 • slot assembly • bronze face",
+          "expectedTriangles": 400
+        },
+        {
+          "name": "Pathway L 01 • slot assembly • dark slot interior",
+          "node": "Pathway L 01 • slot assembly • dark slot interior.001",
+          "material": "ID | Pathway L 01 • slot assembly • dark slot interior",
+          "expectedTriangles": 2
+        },
+        {
+          "name": "Pathway L 03 • slot assembly • amber diffuser",
+          "node": "Pathway L 03 • slot assembly • amber diffuser.001",
+          "material": "ID | Pathway L 03 • slot assembly • amber diffuser",
+          "expectedTriangles": 464
+        },
+        {
+          "name": "Pathway L 03 • slot assembly • bronze face",
+          "node": "Pathway L 03 • slot assembly • bronze face.001",
+          "material": "ID | Pathway L 03 • slot assembly • bronze face",
+          "expectedTriangles": 400
+        },
+        {
+          "name": "Pathway L 03 • slot assembly • dark slot interior",
+          "node": "Pathway L 03 • slot assembly • dark slot interior.001",
+          "material": "ID | Pathway L 03 • slot assembly • dark slot interior",
+          "expectedTriangles": 2
+        },
+        {
+          "name": "Pathway L 05 • slot assembly • amber diffuser",
+          "node": "Pathway L 05 • slot assembly • amber diffuser.001",
+          "material": "ID | Pathway L 05 • slot assembly • amber diffuser",
+          "expectedTriangles": 464
+        },
+        {
+          "name": "Pathway L 05 • slot assembly • bronze face",
+          "node": "Pathway L 05 • slot assembly • bronze face.001",
+          "material": "ID | Pathway L 05 • slot assembly • bronze face",
+          "expectedTriangles": 400
+        },
+        {
+          "name": "Pathway L 05 • slot assembly • dark slot interior",
+          "node": "Pathway L 05 • slot assembly • dark slot interior.001",
+          "material": "ID | Pathway L 05 • slot assembly • dark slot interior",
+          "expectedTriangles": 2
+        },
+        {
+          "name": "Pathway L 07 • slot assembly • amber diffuser",
+          "node": "Pathway L 07 • slot assembly • amber diffuser.001",
+          "material": "ID | Pathway L 07 • slot assembly • amber diffuser",
+          "expectedTriangles": 464
+        },
+        {
+          "name": "Pathway L 07 • slot assembly • bronze face",
+          "node": "Pathway L 07 • slot assembly • bronze face.001",
+          "material": "ID | Pathway L 07 • slot assembly • bronze face",
+          "expectedTriangles": 400
+        },
+        {
+          "name": "Pathway L 07 • slot assembly • dark slot interior",
+          "node": "Pathway L 07 • slot assembly • dark slot interior.001",
+          "material": "ID | Pathway L 07 • slot assembly • dark slot interior",
+          "expectedTriangles": 2
+        },
+        {
+          "name": "Pathway L 10 • slot assembly • amber diffuser",
+          "node": "Pathway L 10 • slot assembly • amber diffuser.001",
+          "material": "ID | Pathway L 10 • slot assembly • amber diffuser",
+          "expectedTriangles": 464
+        },
+        {
+          "name": "Pathway L 10 • slot assembly • bronze face",
+          "node": "Pathway L 10 • slot assembly • bronze face.001",
+          "material": "ID | Pathway L 10 • slot assembly • bronze face",
+          "expectedTriangles": 400
+        },
+        {
+          "name": "Pathway L 10 • slot assembly • dark slot interior",
+          "node": "Pathway L 10 • slot assembly • dark slot interior.001",
+          "material": "ID | Pathway L 10 • slot assembly • dark slot interior",
+          "expectedTriangles": 2
+        },
+        {
+          "name": "Pathway R 01 • slot assembly • amber diffuser",
+          "node": "Pathway R 01 • slot assembly • amber diffuser.001",
+          "material": "ID | Pathway R 01 • slot assembly • amber diffuser",
+          "expectedTriangles": 464
+        },
+        {
+          "name": "Pathway R 01 • slot assembly • bronze face",
+          "node": "Pathway R 01 • slot assembly • bronze face.001",
+          "material": "ID | Pathway R 01 • slot assembly • bronze face",
+          "expectedTriangles": 400
+        },
+        {
+          "name": "Pathway R 01 • slot assembly • dark slot interior",
+          "node": "Pathway R 01 • slot assembly • dark slot interior.001",
+          "material": "ID | Pathway R 01 • slot assembly • dark slot interior",
+          "expectedTriangles": 2
+        },
+        {
+          "name": "Pathway R 03 • slot assembly • amber diffuser",
+          "node": "Pathway R 03 • slot assembly • amber diffuser.001",
+          "material": "ID | Pathway R 03 • slot assembly • amber diffuser",
+          "expectedTriangles": 464
+        },
+        {
+          "name": "Pathway R 03 • slot assembly • bronze face",
+          "node": "Pathway R 03 • slot assembly • bronze face.001",
+          "material": "ID | Pathway R 03 • slot assembly • bronze face",
+          "expectedTriangles": 400
+        },
+        {
+          "name": "Pathway R 03 • slot assembly • dark slot interior",
+          "node": "Pathway R 03 • slot assembly • dark slot interior.001",
+          "material": "ID | Pathway R 03 • slot assembly • dark slot interior",
+          "expectedTriangles": 2
+        },
+        {
+          "name": "Pathway R 05 • slot assembly • amber diffuser",
+          "node": "Pathway R 05 • slot assembly • amber diffuser.001",
+          "material": "ID | Pathway R 05 • slot assembly • amber diffuser",
+          "expectedTriangles": 464
+        },
+        {
+          "name": "Pathway R 05 • slot assembly • bronze face",
+          "node": "Pathway R 05 • slot assembly • bronze face.001",
+          "material": "ID | Pathway R 05 • slot assembly • bronze face",
+          "expectedTriangles": 400
+        },
+        {
+          "name": "Pathway R 05 • slot assembly • dark slot interior",
+          "node": "Pathway R 05 • slot assembly • dark slot interior.001",
+          "material": "ID | Pathway R 05 • slot assembly • dark slot interior",
+          "expectedTriangles": 2
+        },
+        {
+          "name": "Pathway R 07 • slot assembly • amber diffuser",
+          "node": "Pathway R 07 • slot assembly • amber diffuser.001",
+          "material": "ID | Pathway R 07 • slot assembly • amber diffuser",
+          "expectedTriangles": 464
+        },
+        {
+          "name": "Pathway R 07 • slot assembly • bronze face",
+          "node": "Pathway R 07 • slot assembly • bronze face.001",
+          "material": "ID | Pathway R 07 • slot assembly • bronze face",
+          "expectedTriangles": 400
+        },
+        {
+          "name": "Pathway R 07 • slot assembly • dark slot interior",
+          "node": "Pathway R 07 • slot assembly • dark slot interior.001",
+          "material": "ID | Pathway R 07 • slot assembly • dark slot interior",
+          "expectedTriangles": 2
+        },
+        {
+          "name": "Pathway R 10 • slot assembly • amber diffuser",
+          "node": "Pathway R 10 • slot assembly • amber diffuser.001",
+          "material": "ID | Pathway R 10 • slot assembly • amber diffuser",
+          "expectedTriangles": 464
+        },
+        {
+          "name": "Pathway R 10 • slot assembly • bronze face",
+          "node": "Pathway R 10 • slot assembly • bronze face.001",
+          "material": "ID | Pathway R 10 • slot assembly • bronze face",
+          "expectedTriangles": 400
+        },
+        {
+          "name": "Pathway R 10 • slot assembly • dark slot interior",
+          "node": "Pathway R 10 • slot assembly • dark slot interior.001",
+          "material": "ID | Pathway R 10 • slot assembly • dark slot interior",
+          "expectedTriangles": 2
+        }
+      ],
+      "triangles": 8660,
+      "atlas": [
+        2048,
+        2048
+      ],
+      "bytes": {
+        "uv": 28300,
+        "texture": 1011614
+      }
+    },
+    {
+      "item": "corridor-floor-joints",
+      "active": true,
+      "source": "corridor",
+      "uv": "/textures/corridor/floor-joints/corridor-floor-joints-uv.bin",
+      "texture": "/textures/corridor/floor-joints/corridor-floor-joints.ktx2",
+      "ids": [
+        {
+          "name": "Floor • fine slab joint 015",
+          "node": "Floor • fine slab joint 015.001",
+          "material": "ID | Floor • fine slab joint 015",
+          "expectedTriangles": 8
+        },
+        {
+          "name": "Floor • fine slab joint 033",
+          "node": "Floor • fine slab joint 033.001",
+          "material": "ID | Floor • fine slab joint 033",
+          "expectedTriangles": 8
+        },
+        {
+          "name": "Floor • fine slab joint 051",
+          "node": "Floor • fine slab joint 051.001",
+          "material": "ID | Floor • fine slab joint 051",
+          "expectedTriangles": 8
+        },
+        {
+          "name": "Floor • fine slab joint 069",
+          "node": "Floor • fine slab joint 069.001",
+          "material": "ID | Floor • fine slab joint 069",
+          "expectedTriangles": 8
+        },
+        {
+          "name": "Floor • fine slab joint 087",
+          "node": "Floor • fine slab joint 087.001",
+          "material": "ID | Floor • fine slab joint 087",
+          "expectedTriangles": 8
+        },
+        {
+          "name": "Floor • fine slab joint 105",
+          "node": "Floor • fine slab joint 105.001",
+          "material": "ID | Floor • fine slab joint 105",
+          "expectedTriangles": 8
+        },
+        {
+          "name": "Floor • fine slab joint 123",
+          "node": "Floor • fine slab joint 123.001",
+          "material": "ID | Floor • fine slab joint 123",
+          "expectedTriangles": 8
+        },
+        {
+          "name": "Floor • fine slab joint 141",
+          "node": "Floor • fine slab joint 141.001",
+          "material": "ID | Floor • fine slab joint 141",
+          "expectedTriangles": 8
+        },
+        {
+          "name": "Floor • fine slab joint 159",
+          "node": "Floor • fine slab joint 159.001",
+          "material": "ID | Floor • fine slab joint 159",
+          "expectedTriangles": 8
+        },
+        {
+          "name": "Floor • fine slab joint 177",
+          "node": "Floor • fine slab joint 177.001",
+          "material": "ID | Floor • fine slab joint 177",
+          "expectedTriangles": 8
+        },
+        {
+          "name": "Floor • fine slab joint 195",
+          "node": "Floor • fine slab joint 195.001",
+          "material": "ID | Floor • fine slab joint 195",
+          "expectedTriangles": 8
+        },
+        {
+          "name": "Floor • fine slab joint 213",
+          "node": "Floor • fine slab joint 213.001",
+          "material": "ID | Floor • fine slab joint 213",
+          "expectedTriangles": 8
+        }
+      ],
+      "triangles": 96,
+      "atlas": [
+        1024,
+        2048
+      ],
+      "bytes": {
+        "uv": 692,
+        "texture": 248596
+      }
+    },
+    {
+      "item": "corridor-wall-red",
+      "active": true,
+      "source": "corridor",
+      "uv": "/textures/corridor/wall-red/corridor-wall-red-uv.bin",
+      "texture": "/textures/corridor/wall-red/corridor-left-clean-2k-v2.ktx2",
+      "ids": [
+        {
+          "name": "Red corridor wall • separate from logo",
+          "node": "Red corridor wall • separate from logo.001",
+          "material": "ID | Red corridor wall • separate from logo",
+          "expectedTriangles": 580
+        }
+      ],
+      "triangles": 580,
+      "atlas": [
+        1024,
+        2048
+      ],
+      "bytes": {
+        "uv": 1220,
+        "texture": 656032
+      },
+      "imageSize": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "item": "corridor-wall-connecting",
+      "active": true,
+      "source": "corridor",
+      "uv": "/textures/corridor/wall-connecting/corridor-wall-connecting-uv.bin",
+      "texture": "/textures/corridor/wall-connecting/corridor-wall-connecting-light-2k.ktx2",
+      "ids": [
+        {
+          "name": "Connecting plane • joins yellow tip",
+          "node": "Connecting plane • joins yellow tip.001",
+          "material": "ID | Connecting plane • joins yellow tip",
+          "expectedTriangles": 580
+        }
+      ],
+      "triangles": 580,
+      "atlas": [
+        1024,
+        2048
+      ],
+      "bytes": {
+        "uv": 1220,
+        "texture": 872645
+      },
+      "imageSize": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "item": "corridor-roof-datums",
+      "active": true,
+      "source": "corridor",
+      "uv": "/textures/corridor/roof-datums/corridor-roof-datums-uv.bin",
+      "texture": "/textures/corridor/roof-datums/corridor-roof-datums.ktx2",
+      "ids": [
+        {
+          "name": "Red corridor wall • separate from logo • restrained roof datum",
+          "node": "Red corridor wall • separate from logo • restrained roof datum.001",
+          "material": "ID | Red corridor wall • separate from logo • restrained roof datum",
+          "expectedTriangles": 1056
+        },
+        {
+          "name": "Connecting plane • joins yellow tip • restrained roof datum",
+          "node": "Connecting plane • joins yellow tip • restrained roof datum.001",
+          "material": "ID | Connecting plane • joins yellow tip • restrained roof datum",
+          "expectedTriangles": 920
+        }
+      ],
+      "triangles": 1976,
+      "atlas": [
+        512,
+        1024
+      ],
+      "bytes": {
+        "uv": 7012,
+        "texture": 76174
+      }
+    },
+    {
+      "item": "corridor-wall-caps",
+      "active": true,
+      "source": "corridor",
+      "uv": "/textures/corridor/wall-caps/corridor-wall-caps-uv.bin",
+      "texture": "/textures/corridor/wall-caps/corridor-wall-caps.ktx2",
+      "ids": [
+        {
+          "name": "FIX | Capped Red corridor wall • separate from logo",
+          "node": "FIX | Capped Red corridor wall • separate from logo.001",
+          "material": "ID | FIX | Capped Red corridor wall • separate from logo",
+          "expectedTriangles": 580
+        },
+        {
+          "name": "FIX | Capped Connecting plane • joins yellow tip",
+          "node": "FIX | Capped Connecting plane • joins yellow tip.001",
+          "material": "ID | FIX | Capped Connecting plane • joins yellow tip",
+          "expectedTriangles": 580
+        }
+      ],
+      "triangles": 1160,
+      "atlas": [
+        512,
+        1024
+      ],
+      "bytes": {
+        "uv": 5540,
+        "texture": 161313
+      }
+    },
+    {
+      "item": "corridor-floor",
+      "active": true,
+      "source": "corridor",
+      "uv": "/textures/corridor/floor/corridor-floor-uv.bin",
+      "texture": "/textures/corridor/floor/corridor-floor-light-2k.ktx2",
+      "ids": [
+        {
+          "name": "Plain floor • red to connecting plane",
+          "node": "Plain floor • red to connecting plane.001",
+          "material": "ID | Plain floor • red to connecting plane",
+          "expectedTriangles": 1148
+        }
+      ],
+      "triangles": 1148,
+      "atlas": [
+        2048,
+        4096
+      ],
+      "bytes": {
+        "uv": 2416,
+        "texture": 708554
+      },
+      "imageSize": [
+        2048,
+        2048
+      ]
+    },
+    {
+      "item": "projector-floor",
+      "active": true,
+      "source": "projector-floor",
+      "uv": "/textures/projector-floor/projector-floor-uv.bin",
+      "texture": "/textures/projector-floor/projector-floor.ktx2",
+      "ids": [
+        {
+          "name": "Second_floor",
+          "node": "projector-floor",
+          "material": "projector-floor | Vertex colours",
+          "expectedTriangles": 12
+        }
+      ],
+      "triangles": 12,
+      "atlas": [
+        2048,
+        2048
+      ],
+      "bytes": {
+        "uv": 164,
+        "texture": 1302292
+      }
+    },
+    {
+      "item": "terraces",
+      "active": true,
+      "source": "theatre",
+      "uv": "/textures/theatre/terraces/terraces-uv.bin",
+      "texture": "/textures/theatre/terraces/terraces-light-2k.ktx2",
+      "ids": [
+        {
+          "name": "ET | Aisle -7.4 row 2 tread 1",
+          "decodedColor": [
+            0.4581451416015625,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 3996
+        }
+      ],
+      "triangles": 3996,
+      "atlas": [
+        2048,
+        4096
+      ],
+      "bytes": {
+        "uv": 12452,
+        "texture": 281130
+      },
+      "imageSize": [
+        1024,
+        2048
+      ]
+    },
+    {
+      "item": "moon-steel-border",
+      "active": true,
+      "source": "theatre",
+      "uv": "/textures/theatre/moon-steel-border/moon-steel-border-uv.bin",
+      "texture": "/textures/theatre/moon-steel-border/moon-steel-border-light-2k.ktx2",
+      "ids": [
+        {
+          "name": "Cylinder.018",
+          "decodedColor": [
+            0.5748655796051025,
+            0.29249998927116394,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 212
+        },
+        {
+          "name": "Cylinder.020",
+          "decodedColor": [
+            0.6499999761581421,
+            0.36623653769493103,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 212
+        },
+        {
+          "name": "Cylinder.024",
+          "decodedColor": [
+            0.42739245295524597,
+            0.6499999761581421,
+            0.29249998927116394
+          ],
+          "expectedTriangles": 212
+        },
+        {
+          "name": "Cylinder.026",
+          "decodedColor": [
+            0.29249998927116394,
+            0.6360214948654175,
+            0.6499999761581421
+          ],
+          "expectedTriangles": 212
+        }
+      ],
+      "triangles": 848,
+      "atlas": [
+        6144,
+        6144
+      ],
+      "bytes": {
+        "uv": 3956,
+        "texture": 1249187
+      },
+      "imageSize": [
+        2048,
+        2048
+      ]
+    }
+  ]
+}

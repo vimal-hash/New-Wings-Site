@@ -1,0 +1,40 @@
+{
+  "images": [
+    {
+      "name": "pass-two-backup/ceiling-floor-disabled-final.png",
+      "regions": {
+        "plaster": {
+          "localResidualRms": 0.6049133317169402,
+          "bluePixels": 0
+        },
+        "inset": {
+          "localResidualRms": 0.1877128421582048,
+          "bluePixels": 0
+        },
+        "frontTrim": {
+          "localResidualRms": 11.958251098937424,
+          "bluePixels": 0
+        }
+      }
+    },
+    {
+      "name": "ceiling-third-final.png",
+      "regions": {
+        "plaster": {
+          "localResidualRms": 0.5484511018414596,
+          "bluePixels": 0
+        },
+        "inset": {
+          "localResidualRms": 0.1817609337482536,
+          "bluePixels": 0
+        },
+        "frontTrim": {
+          "localResidualRms": 11.295194932865416,
+          "bluePixels": 0
+        }
+      }
+    }
+  ],
+  "nonCeilingChangedChannels": 0,
+  "limit": "Selected patches at one matching desktop view; edge-containing residuals are not a pure noise measure. No guarantee for every device."
+}

@@ -1,0 +1,172 @@
+{
+  "Brushed black metal brass": {
+    "nodes": [
+      {
+        "name": "Image Texture",
+        "type": "TEX_IMAGE",
+        "image": "brushed02_height.tif",
+        "extension": "REPEAT"
+      },
+      {
+        "name": "Image Texture.001",
+        "type": "TEX_IMAGE",
+        "image": "brushed05_diffuse.jpg",
+        "extension": "REPEAT"
+      },
+      {
+        "name": "Image Texture.002",
+        "type": "TEX_IMAGE",
+        "image": "brushed02_metallic.jpg",
+        "extension": "REPEAT"
+      },
+      {
+        "name": "Image Texture.003",
+        "type": "TEX_IMAGE",
+        "image": "brushed02_specular.jpg",
+        "extension": "REPEAT"
+      },
+      {
+        "name": "Image Texture.004",
+        "type": "TEX_IMAGE",
+        "image": "brushed02_glossiness.jpg",
+        "extension": "REPEAT"
+      },
+      {
+        "name": "Image Texture.005",
+        "type": "TEX_IMAGE",
+        "image": "brushed02_normal_opengl.jpg",
+        "extension": "REPEAT"
+      },
+      {
+        "name": "Mapping",
+        "type": "MAPPING",
+        "inputs": {
+          "Vector": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "Location": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "Rotation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "Scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      },
+      {
+        "name": "Texture Coordinate",
+        "type": "TEX_COORD"
+      }
+    ],
+    "links": [
+      "Principled BSDF.BSDF -> Material Output.Surface",
+      "Image Texture.Color -> Displacement.Height",
+      "Displacement.Displacement -> Material Output.Displacement",
+      "Image Texture.001.Color -> Principled BSDF.Base Color",
+      "Image Texture.002.Color -> Principled BSDF.Metallic",
+      "Image Texture.003.Color -> Principled BSDF.Specular IOR Level",
+      "Image Texture.004.Color -> Invert Color.Color",
+      "Invert Color.Color -> Principled BSDF.Roughness",
+      "Image Texture.005.Color -> Normal Map.Color",
+      "Normal Map.Normal -> Principled BSDF.Normal",
+      "Reroute.Output -> Image Texture.001.Vector",
+      "Reroute.Output -> Image Texture.002.Vector",
+      "Reroute.Output -> Image Texture.003.Vector",
+      "Reroute.Output -> Image Texture.004.Vector",
+      "Reroute.Output -> Image Texture.Vector",
+      "Reroute.Output -> Image Texture.005.Vector",
+      "Mapping.Vector -> Reroute.Input",
+      "Texture Coordinate.UV -> Mapping.Vector"
+    ],
+    "objects": []
+  },
+  "INT | Black connector": {
+    "nodes": [
+      {
+        "name": "UV Map",
+        "type": "UVMAP",
+        "uv_map": "SurfaceUV"
+      },
+      {
+        "name": "Image Texture",
+        "type": "TEX_IMAGE",
+        "image": "INT | Black connector roughness",
+        "extension": "REPEAT"
+      },
+      {
+        "name": "Image Texture.001",
+        "type": "TEX_IMAGE",
+        "image": "Internal microfinish normal",
+        "extension": "REPEAT"
+      }
+    ],
+    "links": [
+      "Principled BSDF.BSDF -> Material Output.Surface",
+      "UV Map.UV -> Image Texture.Vector",
+      "Image Texture.Color -> Principled BSDF.Roughness",
+      "UV Map.UV -> Image Texture.001.Vector",
+      "Image Texture.001.Color -> Normal Map.Color",
+      "Normal Map.Normal -> Principled BSDF.Normal"
+    ],
+    "objects": [
+      {
+        "name": "COOL_Cooler_left_fan_1",
+        "uvActive": "UV_Texture",
+        "uvLayers": [
+          "UV_Texture",
+          "UV_Lightmap",
+          "UV_Atlas",
+          "SurfaceUV"
+        ]
+      },
+      {
+        "name": "COOL_Cooler_left_fan_2",
+        "uvActive": "UV_Texture",
+        "uvLayers": [
+          "UV_Texture",
+          "UV_Lightmap",
+          "UV_Atlas",
+          "SurfaceUV"
+        ]
+      },
+      {
+        "name": "COOL_Cooler_right_fan_1",
+        "uvActive": "UV_Texture",
+        "uvLayers": [
+          "UV_Texture",
+          "UV_Lightmap",
+          "UV_Atlas",
+          "SurfaceUV"
+        ]
+      },
+      {
+        "name": "COOL_Cooler_right_fan_2",
+        "uvActive": "UV_Texture",
+        "uvLayers": [
+          "UV_Texture",
+          "UV_Lightmap",
+          "UV_Atlas",
+          "SurfaceUV"
+        ]
+      }
+    ]
+  },
+  "PH_glass": {
+    "nodes": [],
+    "links": [
+      "Principled BSDF.BSDF -> FX Materialize.Surface",
+      "FX Materialize.Shader -> Material Output.Surface"
+    ],
+    "objects": []
+  }
+}

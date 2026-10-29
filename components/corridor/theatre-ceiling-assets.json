@@ -1,0 +1,16 @@
+{
+ "model": "/models/theatre/ceiling-uv-fixed.glb",
+ "texture": "/textures/theatre/ceiling/ceiling-light-2k.ktx2",
+ "geometryBytes": 55860,
+ "textures": {
+  "ceiling-light-2k.ktx2": 723939
+ },
+ "bytes": 779799,
+ "triangles": 4992,
+ "objects": 10,
+ "method": "2048px runtime copy of the approved direct Blender surface bake; original UVs, fixed appearance and colour handling preserved.",
+ "imageSize": [
+  2048,
+  2048
+ ]
+}

@@ -1,0 +1,171 @@
+{
+  "source": "D:/CodexOutputs/SofaReplacement_20261015/sofa-v2-source.glb",
+  "placementSource": "D:/CodexOutputs/Theatre_Optimization_20261017/Theatre_Moon_Projector_optimized.blend",
+  "model": "/models/theatre/sofa/sofa-baked-draco.glb",
+  "bytes": 39484,
+  "sourceTriangles": 1479,
+  "instances": [
+    {
+      "name": "ET | Sofa 05 | Row B - 1 | TWO SEATS",
+      "minimum": [
+        -6.419005305175781,
+        0.6100000333786011,
+        9.833602905273438
+      ],
+      "maximum": [
+        -3.6590053147125245,
+        2.2115717124938965,
+        11.953398704528809
+      ]
+    },
+    {
+      "name": "ET | Sofa 06 | Row B - 2 | TWO SEATS",
+      "minimum": [
+        -3.4690047806549074,
+        0.6100000333786011,
+        9.833602905273438
+      ],
+      "maximum": [
+        -0.7090048497962952,
+        2.2115717124938965,
+        11.953398704528809
+      ]
+    },
+    {
+      "name": "ET | Sofa 07 | Row B - 3 | TWO SEATS",
+      "minimum": [
+        0.7309948497962951,
+        0.6100000333786011,
+        9.833602905273438
+      ],
+      "maximum": [
+        3.490994780654907,
+        2.2115717124938965,
+        11.953398704528809
+      ]
+    },
+    {
+      "name": "ET | Sofa 08 | Row B - 4 | TWO SEATS",
+      "minimum": [
+        3.6809953147125243,
+        0.6100000333786011,
+        9.833602905273438
+      ],
+      "maximum": [
+        6.440995305175782,
+        2.2115717124938965,
+        11.953398704528809
+      ]
+    },
+    {
+      "name": "ET | Sofa 09 | Row C - 1 | TWO SEATS",
+      "minimum": [
+        -6.419005305175781,
+        0.9699999284744263,
+        7.183603286743164
+      ],
+      "maximum": [
+        -3.6590053147125245,
+        2.571571846008301,
+        9.303398132324219
+      ]
+    },
+    {
+      "name": "ET | Sofa 10 | Row C - 2 | TWO SEATS",
+      "minimum": [
+        -3.4690047806549074,
+        0.9699999284744263,
+        7.183603286743164
+      ],
+      "maximum": [
+        -0.7090048497962952,
+        2.571571846008301,
+        9.303398132324219
+      ]
+    },
+    {
+      "name": "ET | Sofa 11 | Row C - 3 | TWO SEATS",
+      "minimum": [
+        0.7309948497962951,
+        0.9699999284744263,
+        7.183603286743164
+      ],
+      "maximum": [
+        3.490994780654907,
+        2.571571846008301,
+        9.303398132324219
+      ]
+    },
+    {
+      "name": "ET | Sofa 12 | Row C - 4 | TWO SEATS",
+      "minimum": [
+        3.6809953147125243,
+        0.9699999284744263,
+        7.183603286743164
+      ],
+      "maximum": [
+        6.440995305175782,
+        2.571571846008301,
+        9.303398132324219
+      ]
+    },
+    {
+      "name": "ET | Sofa 13 | Row D - 1 | TWO SEATS",
+      "minimum": [
+        -6.419005305175781,
+        1.329999942779541,
+        4.533603668212891
+      ],
+      "maximum": [
+        -3.6590053147125245,
+        2.931571741104126,
+        6.653398513793945
+      ]
+    },
+    {
+      "name": "ET | Sofa 14 | Row D - 2 | TWO SEATS",
+      "minimum": [
+        -3.4690047806549074,
+        1.329999942779541,
+        4.533603668212891
+      ],
+      "maximum": [
+        -0.7090048497962952,
+        2.931571741104126,
+        6.653398513793945
+      ]
+    },
+    {
+      "name": "ET | Sofa 15 | Row D - 3 | TWO SEATS",
+      "minimum": [
+        0.7309948497962951,
+        1.329999942779541,
+        4.533603668212891
+      ],
+      "maximum": [
+        3.490994780654907,
+        2.931571741104126,
+        6.653398513793945
+      ]
+    },
+    {
+      "name": "ET | Sofa 16 | Row D - 4 | TWO SEATS",
+      "minimum": [
+        3.6809953147125243,
+        1.329999942779541,
+        4.533603668212891
+      ],
+      "maximum": [
+        6.440995305175782,
+        2.931571741104126,
+        6.653398513793945
+      ]
+    }
+  ],
+  "count": 12,
+  "note": "Rows B/C/D only. Original compressed low-poly geometry, verified source UVs, shared 1K charcoal upholstery and packed AO/roughness/metalness. Coarse quilt radiance maps retired.",
+  "textures": [
+    "/textures/theatre/sofa/upholstery-base-1k.ktx2",
+    "/textures/theatre/sofa/upholstery-metal-rough-1k.ktx2"
+  ]
+}

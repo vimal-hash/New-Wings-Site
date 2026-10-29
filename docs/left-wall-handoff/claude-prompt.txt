@@ -1,0 +1,56 @@
+Work on the theatre LEFT WALL SURFACE ONLY in my existing Blender-to-R3F project.
+
+I attached two ORIGINAL BLENDER renders: the opening view and a closer view aimed at the left wall. They are visual references, not textures to project onto the wall. Match the wall visible on the LEFT of the opening screenshot. Do not assume Blender world-left equals screen-left; identify it using the camera and scene geometry.
+
+SCOPE — strict
+Restore only the continuous wall background surface behind the decorative moon feature. Do NOT change the moon design or its materials, circular surround, fixtures/sconces, speakers, lower slats, trim belonging to other objects, ceiling, floor, seating, screen, corridor, projector, logos, camera journey, orbit controls or UI. Keep all original source Blender files unchanged. Do not restore the whole room. If a shared mesh/material includes excluded parts, isolate the target safely without altering those parts.
+
+ACTIVE PROJECT AND REFERENCES
+- Actual website: D:/New folio/new site code/new_site_three
+- Older checkout new_si_two is NOT the active project; do not edit it.
+- Original scene: D:/CodexOutputs/CollectionTransfer_20261016/Theatre_Moon_Projector_restored_one.blend
+- Source used for these renders: D:/CodexOutputs/Theatre_Optimization_20261017/Theatre_Moon_Projector_optimized.blend
+- Read project AGENTS.md and relevant node_modules/next/dist/docs/ before editing application code.
+- Read docs/material-matching-workflow.md and docs/theatre-ceiling-audit/README.md. Current sections supersede historical experiments.
+- References: docs/left-wall-handoff/blender-opening.png, blender-left-wall.png, camera-reference.json.
+- If available, read C:/Users/Admin/.codex/skills/blender-r3f-material-match/SKILL.md and references/production-lessons.md.
+
+WHAT THE USER WANTS
+Match Blender's wall colour, contrast, material character, subtle surface detail, light falloff and shadows. Avoid mottling, grainy baking noise, blur, block artifacts, stretched textures, seams and missing black patches. The accepted ceiling must remain exactly as it is. We want ONE consistent wall appearance during the camera journey and orbit, without switching materials or fading into a different look.
+
+FIRST INSPECT, THEN IMPLEMENT
+Before baking, identify the exact target object(s), original material graph, texture coordinate inputs, evaluated geometry, modifiers, face orientation, render visibility, UVs and light-link receiver collections. Give a short inspection summary and implementation approach. Proceed only within the wall scope above; ask about genuinely ambiguous object boundaries, rather than guessing.
+
+WORKING APPROACH FROM THE CEILING
+The accepted ceiling uses one 4096px direct Blender COMBINED surface bake, compressed as KTX2, attached to proper UVs on the actual mesh. Source lighting/reflection direction is captured once; the appearance stays attached to the surface. Its MeshBasicMaterial uses sRGB, toneMapped=false, correct UV channel and anisotropic filtering. It is a fixed-lighting representation, not physically changing reflections or a promise of exact Cycles equivalence at every angle.
+
+Use this as the starting method for this wall if the inspected material supports it. Preserve actual source material detail; do not flatten procedural material channels into arbitrary constants. Preserve original coordinate semantics when introducing bake UVs: changing the active UV layer must not accidentally change the source material's texture mapping. Keep source light linking and all room shadow casters present in the background bake scene. Do not render the wall alone with a different lighting setup.
+
+Prepare and measure clean UVs before baking: no collapsed faces, overlaps, mirrored mistakes or visible stretching; sufficient texel density and island padding. Inspect thin/one-sided faces from the room. A double-sided web material does not fix baking the wrong side: the ceiling previously had a black strip because one closure faced outward. Only correct a disposable bake copy if needed; preserve original and runtime geometry. Use enough samples for a clean result, then inspect the exported texture.
+
+Preserve scene-linear authoring output and apply the ORIGINAL Blender display transform exactly once before encoding a display-colour atlas. Avoid double tone mapping or double lighting in R3F. Use per-island cleanup and safe gutters only where needed, never broad smoothing that erases wall texture. If smooth UV joins show discontinuities, match the actual geometric edges and repair locally. Do not blur across unrelated islands or erase intended source shadows.
+
+KTX2: use the existing basisu tool at D:/New folio/new site code/_tools/basisu/bin/basisu.exe. The ceiling's LDR settings were UASTC level3, sRGB, mipmaps, box mip filter, zstd19. Set texture colour space, UV channel and orientation correctly in the actual loaded GLB. Verify compression visually, not only by bytes.
+
+FAILED APPROACHES — DO NOT REPEAT
+- Cropping a camera render and projecting/reprojecting it onto the wall. This produced boundaries, stretched pixels and inadequate grazing-angle detail.
+- Multiple view captures or angle-dependent appearance blending.
+- Switching from the approved look to another PBR appearance when orbiting.
+- Many large uncompressed texture maps or embedded multi-angle GLBs. Earlier floor experiments reached about143MB and were rejected/deleted.
+- Repeatedly shrinking files while the visual issue remains.
+- Applying ceiling-specific smoothing or material values blindly to the wall.
+- Hiding defects by restricting the camera or disabling orbit.
+
+OUTPUT ORGANISATION AND PROTECTION
+Create a dedicated left-wall authoring folder outside public. Keep runtime geometry and textures separate, e.g. public/models/theatre-left-wall/ and public/textures/theatre/left-wall/. Add a left-wall-specific asset manifest with exact file sizes. Start with one compact geometry asset and one texture atlas; justify any extra runtime map before adding it. Do not put wall assets inside the ceiling directories. Review old cleanup/verifier scripts before running them: some assume the ceiling is the only asset in their target directories.
+
+Current accepted ceiling: components/corridor/theatre-ceiling.tsx, theatre-ceiling-assets.json, public/models/theatre/ceiling-uv-fixed.glb, public/textures/theatre/ceiling/ceiling-surface-edges.ktx2. Total3,416,116 bytes. Preserve these files and appearance. Record baseline hashes for protected files before implementation. Do not replace/export all existing scene GLBs, discard user changes, run a broad cleanup, or overwrite .blend masters.
+
+VALIDATION — REQUIRED BEFORE SAYING DONE
+1. Compare Blender and R3F from the SAME camera pose, vertical FOV, aspect and resolution. The camera-reference.json records the supplied captures. Opening Blender camera: position(0,22.2,3.22), target(0,0.802,3.22), verticalFOV40deg; supplied opening resolution1600x788. Background render overrides must never be saved to the source .blend.
+2. Inspect the left wall in the actual browser at desktop/laptop and mobile viewport sizes. Test opening, scroll travel, return and orbit angles exposing the whole wall and its joins. Check the compressed runtime asset, not merely an authoring PNG. Desktop emulation is not evidence of physical-phone FPS.
+3. Verify geometry, excluded parts, accepted ceiling, camera behaviour and protected original files remain unchanged apart from the narrowly necessary target-wall integration. Inspect UVs and texture seams from the reported angles.
+4. Run a production build and relevant scoped lint/checks; check browser console errors. Measure bytes and actual performance separately. Aim for a few MB rather than a large map bundle; report any tradeoff honestly. Do not promise65FPS on all devices or100% Cycles parity.
+5. Deliver a screenshot of the actual R3F result, matching Blender reference, laptop preview link, number of runtime files, total wall bytes and a short factual report. Remove only your rejected wall experiments once a verified replacement is active; preserve accepted assets and authoring sources.
+
+Plan one solid implementation and no more than two evidence-driven local refinement passes as a target. If a comparison fails, diagnose the cause before changing another setting. Smaller files alone are not an improvement. Work carefully on the LEFT WALL SURFACE ONLY.

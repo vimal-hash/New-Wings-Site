@@ -1,0 +1,28 @@
+{
+  "meshes": 1,
+  "drawCalls": 1,
+  "particleDrawCalls": 2,
+  "particleCountMobile": 32768,
+  "particleCountDesktop": 65536,
+  "triangles": 430417,
+  "assemblySeconds": 2,
+  "maximumPartIndexError": 0.061553955078125,
+  "assembledBoundsErrorMetres": 5.706253762838287e-7,
+  "originalPosesUnchanged": true,
+  "motionCompressedBytes": 50286,
+  "motionDecodedBytes": 1603680,
+  "actualBounds": [
+    [
+      -0.6305058193517059,
+      0.6524958012522905
+    ],
+    [
+      2.999000132083893,
+      3.5460000336170197
+    ],
+    [
+      -8.20674953302772,
+      -7.482749427944104
+    ]
+  ]
+}

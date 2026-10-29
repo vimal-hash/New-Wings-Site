@@ -1,0 +1,23 @@
+{
+  "method": "direct Blender COMBINED surface bake; no camera-image reprojection",
+  "resolution": 4096,
+  "samples": 256,
+  "uvIslands": 26,
+  "ceilingBytes": 3365060,
+  "runtimeFiles": 2,
+  "desktopViewport": [
+    1920,
+    945
+  ],
+  "upwardOrbitDragPixels": 15,
+  "mobileViewport": [
+    390,
+    844
+  ],
+  "physicalPhonePerformanceMeasured": false,
+  "build": "pass",
+  "scopedLint": "pass",
+  "protectedOriginalModelFilesUnchanged": 20,
+  "browserConsoleErrors": 0,
+  "limitations": "Fixed baked illumination and glossy view; not exact Cycles equivalence at all angles. Desktop orbit pose must be reset when switching to portrait to avoid unrelated camera clipping."
+}

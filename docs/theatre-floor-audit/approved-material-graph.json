@@ -1,0 +1,2325 @@
+{
+  "materials": [
+    {
+      "object": "ET | Aisle -7.4 row 2 tread 1",
+      "material": "Wood Floor Walnut",
+      "active_uv": "automap",
+      "render_uv": [
+        "automap"
+      ],
+      "nodes": [
+        {
+          "name": "Material Output",
+          "type": "OUTPUT_MATERIAL",
+          "uv_map": null,
+          "image": null,
+          "inputs": {
+            "Displacement": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "Thickness": 0.0
+          }
+        },
+        {
+          "name": "Principled BSDF",
+          "type": "BSDF_PRINCIPLED",
+          "uv_map": null,
+          "image": null,
+          "inputs": {
+            "Base Color": "FLOOR2 | Contrast:Color",
+            "Metallic": 0.0,
+            "Roughness": "FLOOR2 | Seam roughness:Result",
+            "IOR": 1.5,
+            "Alpha": 1.0,
+            "Thin Wall": false,
+            "Normal": "FLOOR2 | Seam bump:Normal",
+            "Weight": 0.0,
+            "Diffuse Roughness": 0.0,
+            "Subsurface Weight": 0.0,
+            "Subsurface Radius": [
+              1.0,
+              0.20000000298023224,
+              0.10000000149011612
+            ],
+            "Subsurface Scale": 0.05000000074505806,
+            "Subsurface IOR": 1.399999976158142,
+            "Subsurface Anisotropy": 0.0,
+            "Specular IOR Level": 0.5,
+            "Specular Tint": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "Anisotropic": 0.0,
+            "Anisotropic Rotation": 0.0,
+            "Tangent": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "Transmission Weight": 0.0,
+            "Coat Weight": 0.2800000011920929,
+            "Coat Roughness": 0.20000000298023224,
+            "Coat IOR": 1.5,
+            "Coat Tint": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "Coat Normal": "FLOOR2 | Seam bump:Normal",
+            "Sheen Weight": 0.0,
+            "Sheen Roughness": 0.5,
+            "Sheen Tint": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "Emission Color": [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ],
+            "Emission Strength": 0.0,
+            "Thin Film Thickness": 0.0,
+            "Thin Film IOR": 1.3300000429153442
+          }
+        },
+        {
+          "name": "Image Texture.004",
+          "type": "TEX_IMAGE",
+          "uv_map": null,
+          "image": "wood-smooth-10x.jpg",
+          "inputs": {
+            "Vector": "Mapping.007:Vector"
+          }
+        },
+        {
+          "name": "Image Texture.005",
+          "type": "TEX_IMAGE",
+          "uv_map": null,
+          "image": "wood-smooth-3.jpg",
+          "inputs": {
+            "Vector": "Mapping.007:Vector"
+          }
+        },
+        {
+          "name": "Mix",
+          "type": "MIX",
+          "uv_map": null,
+          "image": null,
+          "inputs": {
+            "Factor": [
+              0.5,
+              0.5,
+              0.5
+            ],
+            "A": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "B": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        },
+        {
+          "name": "Noise Texture",
+          "type": "TEX_NOISE",
+          "uv_map": null,
+          "image": null,
+          "inputs": {
+            "Vector": "Mapping.006:Vector",
+            "W": 0.0,
+            "Scale": 3.0,
+            "Detail": 6.999999523162842,
+            "Roughness": 0.5,
+            "Lacunarity": 2.0,
+            "Offset": 0.0,
+            "Gain": 1.0,
+            "Distortion": 0.19999998807907104
+          }
+        },
+        {
+          "name": "Color Ramp",
+          "type": "VALTORGB",
+          "uv_map": null,
+          "image": null,
+          "inputs": {
+            "Factor": "FLOOR2 | Plank random RGB:Blue"
+          }
+        },
+        {
+          "name": "Image Texture.007",
+          "type": "TEX_IMAGE",
+          "uv_map": null,
+          "image": "floorboards_normal.jpg",
+          "inputs": {
+            "Vector": "Mapping.004:Vector"
+          }
+        },
+        {
+          "name": "Normal Map.001",
+          "type": "NORMAL_MAP",
+          "uv_map": "FloorUV_planks",
+          "image": null,
+          "inputs": {
+            "Strength": 1.0,
+            "Color": "Image Texture.007:Color"
+          }
+        },
+        {
+          "name": "Texture Coordinate.001",
+          "type": "TEX_COORD",
+          "uv_map": null,
+          "image": null,
+          "inputs": {}
+        },
+        {
+          "name": "Bump.001",
+          "type": "BUMP",
+          "uv_map": null,
+          "image": null,
+          "inputs": {
+            "Strength": 0.800000011920929,
+            "Distance": 0.0008999999845400453,
+            "Filter Width": 1.0,
+            "Height": "FLOOR2 | Grain height:Val",
+            "Normal": "Normal Map.001:Normal"
+          }
+        },
+        {
+          "name": "Image Texture.006",
+          "type": "TEX_IMAGE",
+          "uv_map": null,
+          "image": "bump_wood_05k.jpg",
+          "inputs": {
+            "Vector": "Mapping.003:Vector"
+          }
+        },
+        {
+          "name": "Mapping.003",
+          "type": "MAPPING",
+          "uv_map": null,
+          "image": null,
+          "inputs": {
+            "Vector": "FLOOR2 | Plank Randomizer:Wood Vector",
+            "Location": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "Rotation": [
+              0.0,
+              0.0,
+              1.5707963705062866
+            ],
+            "Scale": [
+              8.0,
+              8.0,
+              8.0
+            ]
+          }
+        },
+        {
+          "name": "Image Texture.012",
+          "type": "TEX_IMAGE",
+          "uv_map": null,
+          "image": "wood-smooth-3_spec.jpg",
+          "inputs": {
+            "Vector": "Mapping.007:Vector"
+          }
+        },
+        {
+          "name": "Mapping.004",
+          "type": "MAPPING",
+          "uv_map": null,
+          "image": null,
+          "inputs": {
+            "Vector": "Reroute:Output",
+            "Location": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "Rotation": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "Scale": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          }
+        },
+        {
+          "name": "Reroute",
+          "type": "REROUTE",
+          "uv_map": null,
+          "image": null,
+          "inputs": {
+            "Input": "Mapping.005:Vector"
+          }
+        },
+        {
+          "name": "Mapping.005",
+          "type": "MAPPING",
+          "uv_map": null,
+          "image": null,
+          "inputs": {
+            "Vector": "FLOOR2 | Plank Randomizer:Board Vector",
+            "Location": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "Rotation": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "Scale": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          }
+        },
+        {
+          "name": "Color Ramp.001",
+          "type": "VALTORGB",
+          "uv_map": null,
+          "image": null,
+          "inputs": {
+            "Factor": "Mix.003:Result"
+          }
+        },
+        {
+          "name": "Mix.002",
+          "type": "MIX",
+          "uv_map": null,
+          "image": null,
+          "inputs": {
+            "Factor": [
+              0.5,
+              0.5,
+              0.5
+            ],
+            "A": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "B": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        },
+        {
+          "name": "Color Ramp.002",
+          "type": "VALTORGB",
+          "uv_map": null,
+          "image": null,
+          "inputs": {
+            "Factor": "Ambient Occlusion:Color"
+          }
+        },
+        {
+          "name": "Ambient Occlusion",
+          "type": "AMBIENT_OCCLUSION",
+          "uv_map": null,
+          "image": null,
+          "inputs": {
+            "Color": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "Distance": 0.5,
+            "Normal": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        },
+        {
+          "name": "Image Texture.008",
+          "type": "TEX_IMAGE",
+          "uv_map": null,
+          "image": "wood-83_diffuse.jpg.001",
+          "inputs": {
+            "Vector": "Mapping.004:Vector"
+          }
+        },
+        {
+          "name": "Mix.003",
+          "type": "MIX",
+          "uv_map": null,
+          "image": null,
+          "inputs": {
+            "Factor": [
+              0.5,
+              0.5,
+              0.5
+            ],
+            "A": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "B": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        },
+        {
+          "name": "Image Texture.013",
+          "type": "TEX_IMAGE",
+          "uv_map": null,
+          "image": "wood-smooth-10_spec.jpg",
+          "inputs": {
+            "Vector": "Mapping.007:Vector"
+          }
+        },
+        {
+          "name": "Mapping.006",
+          "type": "MAPPING",
+          "uv_map": null,
+          "image": null,
+          "inputs": {
+            "Vector": "Reroute:Output",
+            "Location": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "Rotation": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "Scale": [
+              1.0,
+              8.0,
+              1.0
+            ]
+          }
+        },
+        {
+          "name": "Image Texture.009",
+          "type": "TEX_IMAGE",
+          "uv_map": null,
+          "image": "floorboards_displacement.jpg",
+          "inputs": {
+            "Vector": "Mapping.004:Vector"
+          }
+        },
+        {
+          "name": "Displacement",
+          "type": "DISPLACEMENT",
+          "uv_map": null,
+          "image": null,
+          "inputs": {
+            "Height": "Image Texture.009:Color",
+            "Midlevel": 0.5,
+            "Scale": 0.0024999999441206455,
+            "Normal": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        },
+        {
+          "name": "Mapping.007",
+          "type": "MAPPING",
+          "uv_map": null,
+          "image": null,
+          "inputs": {
+            "Vector": "FLOOR2 | Plank Randomizer:Wood Vector",
+            "Location": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "Rotation": [
+              0.0,
+              0.0,
+              1.5707963705062866
+            ],
+            "Scale": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          }
+        },
+        {
+          "name": "Mix.001",
+          "type": "MIX",
+          "uv_map": null,
+          "image": null,
+          "inputs": {
+            "Factor": [
+              0.5,
+              0.5,
+              0.5
+            ],
+            "A": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "B": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        },
+        {
+          "name": "FLOOR2 | UV metric",
+          "type": "UVMAP",
+          "uv_map": "FloorUV_planks",
+          "image": null,
+          "inputs": {}
+        },
+        {
+          "name": "FLOOR2 | Plank Randomizer",
+          "type": "GROUP",
+          "uv_map": null,
+          "image": null,
+          "inputs": {
+            "UV": "FLOOR2 | UV metric:UV",
+            "Tile Size": 1.5,
+            "Rows": 8.0,
+            "Grain Offset": 13.0
+          }
+        },
+        {
+          "name": "FLOOR2 | Plank random RGB",
+          "type": "SEPARATE_COLOR",
+          "uv_map": null,
+          "image": null,
+          "inputs": {
+            "Color": "FLOOR2 | Plank Randomizer:Plank Random"
+          }
+        },
+        {
+          "name": "FLOOR2 | Hue var",
+          "type": "MATH",
+          "uv_map": null,
+          "image": null,
+          "inputs": {
+            "Value": 0.49399998784065247
+          }
+        },
+        {
+          "name": "FLOOR2 | Value var",
+          "type": "MATH",
+          "uv_map": null,
+          "image": null,
+          "inputs": {
+            "Value": 0.8799999952316284
+          }
+        },
+        {
+          "name": "FLOOR2 | Tone",
+          "type": "HUE_SAT",
+          "uv_map": null,
+          "image": null,
+          "inputs": {
+            "Hue": "FLOOR2 | Hue var:Value",
+            "Saturation": 1.0199999809265137,
+            "Value": "FLOOR2 | Value var:Value",
+            "Factor": 1.0,
+            "Color": "Mix.001:Result"
+          }
+        },
+        {
+          "name": "FLOOR2 | Contrast",
+          "type": "GAMMA",
+          "uv_map": null,
+          "image": null,
+          "inputs": {
+            "Color": "FLOOR2 | Tone:Color",
+            "Gamma": 1.059999942779541
+          }
+        },
+        {
+          "name": "FLOOR2 | Spec to roughness",
+          "type": "MAP_RANGE",
+          "uv_map": null,
+          "image": null,
+          "inputs": {
+            "Value": "Mix.003:Result",
+            "From Min": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "From Max": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "To Min": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "To Max": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "Steps": [
+              4.0,
+              4.0,
+              4.0
+            ],
+            "Vector": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        },
+        {
+          "name": "FLOOR2 | Rough var",
+          "type": "MATH",
+          "uv_map": null,
+          "image": null,
+          "inputs": {
+            "Value": -0.03999999910593033
+          }
+        },
+        {
+          "name": "FLOOR2 | Rough + var",
+          "type": "MATH",
+          "uv_map": null,
+          "image": null,
+          "inputs": {
+            "Value": 0.5
+          }
+        },
+        {
+          "name": "FLOOR2 | Seam mask",
+          "type": "MAP_RANGE",
+          "uv_map": null,
+          "image": null,
+          "inputs": {
+            "Value": "Image Texture.009:Color",
+            "From Min": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "From Max": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "To Min": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "To Max": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "Steps": [
+              4.0,
+              4.0,
+              4.0
+            ],
+            "Vector": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        },
+        {
+          "name": "FLOOR2 | Seam roughness",
+          "type": "MIX",
+          "uv_map": null,
+          "image": null,
+          "inputs": {
+            "Factor": [
+              0.5,
+              0.5,
+              0.5
+            ],
+            "A": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "B": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        },
+        {
+          "name": "FLOOR2 | Grain height",
+          "type": "RGBTOBW",
+          "uv_map": null,
+          "image": null,
+          "inputs": {
+            "Color": "Mix:Result"
+          }
+        },
+        {
+          "name": "FLOOR2 | Seam bump",
+          "type": "BUMP",
+          "uv_map": null,
+          "image": null,
+          "inputs": {
+            "Strength": 1.0,
+            "Distance": 0.0007999999797903001,
+            "Filter Width": 0.10000000149011612,
+            "Height": "Image Texture.009:Color",
+            "Normal": "Bump.001:Normal"
+          }
+        }
+      ],
+      "links": [
+        [
+          "Image Texture.005",
+          "Color",
+          "Mix",
+          "A"
+        ],
+        [
+          "Color Ramp",
+          "Color",
+          "Mix",
+          "Factor"
+        ],
+        [
+          "Image Texture.004",
+          "Color",
+          "Mix",
+          "B"
+        ],
+        [
+          "Normal Map.001",
+          "Normal",
+          "Bump.001",
+          "Normal"
+        ],
+        [
+          "Mapping.003",
+          "Vector",
+          "Image Texture.006",
+          "Vector"
+        ],
+        [
+          "Reroute",
+          "Output",
+          "Mapping.004",
+          "Vector"
+        ],
+        [
+          "Mapping.005",
+          "Vector",
+          "Reroute",
+          "Input"
+        ],
+        [
+          "Mix.003",
+          "Result",
+          "Color Ramp.001",
+          "Factor"
+        ],
+        [
+          "Color Ramp.002",
+          "Color",
+          "Mix.002",
+          "Factor"
+        ],
+        [
+          "Ambient Occlusion",
+          "Color",
+          "Color Ramp.002",
+          "Factor"
+        ],
+        [
+          "Mix",
+          "Result",
+          "Mix.002",
+          "B"
+        ],
+        [
+          "Image Texture.008",
+          "Color",
+          "Mix.002",
+          "A"
+        ],
+        [
+          "Image Texture.007",
+          "Color",
+          "Normal Map.001",
+          "Color"
+        ],
+        [
+          "Image Texture.012",
+          "Color",
+          "Mix.003",
+          "B"
+        ],
+        [
+          "Image Texture.013",
+          "Color",
+          "Mix.003",
+          "A"
+        ],
+        [
+          "Color Ramp",
+          "Color",
+          "Mix.003",
+          "Factor"
+        ],
+        [
+          "Mapping.004",
+          "Vector",
+          "Image Texture.008",
+          "Vector"
+        ],
+        [
+          "Reroute",
+          "Output",
+          "Mapping.006",
+          "Vector"
+        ],
+        [
+          "Mapping.006",
+          "Vector",
+          "Noise Texture",
+          "Vector"
+        ],
+        [
+          "Image Texture.009",
+          "Color",
+          "Displacement",
+          "Height"
+        ],
+        [
+          "Mapping.004",
+          "Vector",
+          "Image Texture.007",
+          "Vector"
+        ],
+        [
+          "Mapping.004",
+          "Vector",
+          "Image Texture.009",
+          "Vector"
+        ],
+        [
+          "Mapping.007",
+          "Vector",
+          "Image Texture.012",
+          "Vector"
+        ],
+        [
+          "Mapping.007",
+          "Vector",
+          "Image Texture.013",
+          "Vector"
+        ],
+        [
+          "Mapping.007",
+          "Vector",
+          "Image Texture.005",
+          "Vector"
+        ],
+        [
+          "Mapping.007",
+          "Vector",
+          "Image Texture.004",
+          "Vector"
+        ],
+        [
+          "Image Texture.009",
+          "Color",
+          "Mix.001",
+          "Factor"
+        ],
+        [
+          "Mix.002",
+          "Result",
+          "Mix.001",
+          "B"
+        ],
+        [
+          "Principled BSDF",
+          "BSDF",
+          "Material Output",
+          "Surface"
+        ],
+        [
+          "FLOOR2 | UV metric",
+          "UV",
+          "FLOOR2 | Plank Randomizer",
+          "UV"
+        ],
+        [
+          "FLOOR2 | Plank Randomizer",
+          "Board Vector",
+          "Mapping.005",
+          "Vector"
+        ],
+        [
+          "FLOOR2 | Plank Randomizer",
+          "Wood Vector",
+          "Mapping.007",
+          "Vector"
+        ],
+        [
+          "FLOOR2 | Plank Randomizer",
+          "Wood Vector",
+          "Mapping.003",
+          "Vector"
+        ],
+        [
+          "FLOOR2 | Plank Randomizer",
+          "Plank Random",
+          "FLOOR2 | Plank random RGB",
+          "Color"
+        ],
+        [
+          "FLOOR2 | Plank random RGB",
+          "Blue",
+          "Color Ramp",
+          "Factor"
+        ],
+        [
+          "FLOOR2 | Plank random RGB",
+          "Green",
+          "FLOOR2 | Hue var",
+          "Value"
+        ],
+        [
+          "FLOOR2 | Plank random RGB",
+          "Red",
+          "FLOOR2 | Value var",
+          "Value"
+        ],
+        [
+          "FLOOR2 | Hue var",
+          "Value",
+          "FLOOR2 | Tone",
+          "Hue"
+        ],
+        [
+          "FLOOR2 | Value var",
+          "Value",
+          "FLOOR2 | Tone",
+          "Value"
+        ],
+        [
+          "Mix.001",
+          "Result",
+          "FLOOR2 | Tone",
+          "Color"
+        ],
+        [
+          "FLOOR2 | Tone",
+          "Color",
+          "FLOOR2 | Contrast",
+          "Color"
+        ],
+        [
+          "FLOOR2 | Contrast",
+          "Color",
+          "Principled BSDF",
+          "Base Color"
+        ],
+        [
+          "Mix.003",
+          "Result",
+          "FLOOR2 | Spec to roughness",
+          "Value"
+        ],
+        [
+          "FLOOR2 | Plank random RGB",
+          "Red",
+          "FLOOR2 | Rough var",
+          "Value"
+        ],
+        [
+          "FLOOR2 | Spec to roughness",
+          "Result",
+          "FLOOR2 | Rough + var",
+          "Value"
+        ],
+        [
+          "FLOOR2 | Rough var",
+          "Value",
+          "FLOOR2 | Rough + var",
+          "Value"
+        ],
+        [
+          "Image Texture.009",
+          "Color",
+          "FLOOR2 | Seam mask",
+          "Value"
+        ],
+        [
+          "FLOOR2 | Seam mask",
+          "Result",
+          "FLOOR2 | Seam roughness",
+          "Factor"
+        ],
+        [
+          "FLOOR2 | Rough + var",
+          "Value",
+          "FLOOR2 | Seam roughness",
+          "A"
+        ],
+        [
+          "FLOOR2 | Seam roughness",
+          "Result",
+          "Principled BSDF",
+          "Roughness"
+        ],
+        [
+          "Mix",
+          "Result",
+          "FLOOR2 | Grain height",
+          "Color"
+        ],
+        [
+          "FLOOR2 | Grain height",
+          "Val",
+          "Bump.001",
+          "Height"
+        ],
+        [
+          "Image Texture.009",
+          "Color",
+          "FLOOR2 | Seam bump",
+          "Height"
+        ],
+        [
+          "Bump.001",
+          "Normal",
+          "FLOOR2 | Seam bump",
+          "Normal"
+        ],
+        [
+          "FLOOR2 | Seam bump",
+          "Normal",
+          "Principled BSDF",
+          "Normal"
+        ],
+        [
+          "FLOOR2 | Seam bump",
+          "Normal",
+          "Principled BSDF",
+          "Coat Normal"
+        ]
+      ]
+    },
+    {
+      "object": "ET | Foundation slab",
+      "material": "ET PBR | NOIR / Honed black basalt",
+      "active_uv": "PaintUV",
+      "render_uv": [
+        "PBR_Metric"
+      ],
+      "nodes": [
+        {
+          "name": "Principled BSDF",
+          "type": "BSDF_PRINCIPLED",
+          "uv_map": null,
+          "image": null,
+          "inputs": {
+            "Base Color": "Mix (Legacy):Color",
+            "Metallic": 0.0,
+            "Roughness": "Math:Value",
+            "IOR": 1.5,
+            "Alpha": 1.0,
+            "Thin Wall": false,
+            "Normal": "Bump.001:Normal",
+            "Weight": 0.0,
+            "Diffuse Roughness": 0.0,
+            "Subsurface Weight": 0.0,
+            "Subsurface Radius": [
+              1.0,
+              0.20000000298023224,
+              0.10000000149011612
+            ],
+            "Subsurface Scale": 0.004999999888241291,
+            "Subsurface IOR": 1.399999976158142,
+            "Subsurface Anisotropy": 0.0,
+            "Specular IOR Level": 0.5,
+            "Specular Tint": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "Anisotropic": 0.0,
+            "Anisotropic Rotation": 0.0,
+            "Tangent": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "Transmission Weight": 0.0,
+            "Coat Weight": 0.0,
+            "Coat Roughness": 0.029999999329447746,
+            "Coat IOR": 1.5,
+            "Coat Tint": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "Coat Normal": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "Sheen Weight": 0.0,
+            "Sheen Roughness": 0.5,
+            "Sheen Tint": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "Emission Color": [
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "Emission Strength": 0.0,
+            "Thin Film Thickness": 0.0,
+            "Thin Film IOR": 1.3300000429153442
+          }
+        },
+        {
+          "name": "Material Output",
+          "type": "OUTPUT_MATERIAL",
+          "uv_map": null,
+          "image": null,
+          "inputs": {
+            "Displacement": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "Thickness": 0.0
+          }
+        },
+        {
+          "name": "Texture Coordinate",
+          "type": "TEX_COORD",
+          "uv_map": null,
+          "image": null,
+          "inputs": {}
+        },
+        {
+          "name": "Noise Texture",
+          "type": "TEX_NOISE",
+          "uv_map": null,
+          "image": null,
+          "inputs": {
+            "Vector": "Texture Coordinate:Object",
+            "W": 0.0,
+            "Scale": 7.0,
+            "Detail": 4.0,
+            "Roughness": 0.6499999761581421,
+            "Lacunarity": 2.0,
+            "Offset": 0.0,
+            "Gain": 1.0,
+            "Distortion": 0.0
+          }
+        },
+        {
+          "name": "Color Ramp",
+          "type": "VALTORGB",
+          "uv_map": null,
+          "image": null,
+          "inputs": {
+            "Factor": "Noise Texture:Factor"
+          }
+        },
+        {
+          "name": "Noise Texture.001",
+          "type": "TEX_NOISE",
+          "uv_map": null,
+          "image": null,
+          "inputs": {
+            "Vector": "Texture Coordinate:Object",
+            "W": 0.0,
+            "Scale": 310.0,
+            "Detail": 2.0,
+            "Roughness": 0.6499999761581421,
+            "Lacunarity": 2.0,
+            "Offset": 0.0,
+            "Gain": 1.0,
+            "Distortion": 0.0
+          }
+        },
+        {
+          "name": "Bump",
+          "type": "BUMP",
+          "uv_map": null,
+          "image": null,
+          "inputs": {
+            "Strength": 0.1599999964237213,
+            "Distance": 0.00015999999595806003,
+            "Filter Width": 0.10000000149011612,
+            "Height": "Noise Texture.001:Factor",
+            "Normal": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        },
+        {
+          "name": "Color Ramp.001",
+          "type": "VALTORGB",
+          "uv_map": null,
+          "image": null,
+          "inputs": {
+            "Factor": "Noise Texture:Factor"
+          }
+        },
+        {
+          "name": "UV Map",
+          "type": "UVMAP",
+          "uv_map": "PBR_Metric",
+          "image": null,
+          "inputs": {}
+        },
+        {
+          "name": "Mapping",
+          "type": "MAPPING",
+          "uv_map": null,
+          "image": null,
+          "inputs": {
+            "Vector": "UV Map:UV",
+            "Location": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "Rotation": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "Scale": [
+              1.2000000476837158,
+              1.2000000476837158,
+              1.2000000476837158
+            ]
+          }
+        },
+        {
+          "name": "Texture Coordinate.001",
+          "type": "TEX_COORD",
+          "uv_map": null,
+          "image": null,
+          "inputs": {}
+        },
+        {
+          "name": "Image Texture",
+          "type": "TEX_IMAGE",
+          "uv_map": null,
+          "image": "grey_plaster_Diffuse.png",
+          "inputs": {
+            "Vector": "Mapping:Vector"
+          }
+        },
+        {
+          "name": "Image Texture.001",
+          "type": "TEX_IMAGE",
+          "uv_map": null,
+          "image": "grey_plaster_rough.png",
+          "inputs": {
+            "Vector": "Mapping:Vector"
+          }
+        },
+        {
+          "name": "Image Texture.002",
+          "type": "TEX_IMAGE",
+          "uv_map": null,
+          "image": "grey_plaster_nor_gl.png",
+          "inputs": {
+            "Vector": "Mapping:Vector"
+          }
+        },
+        {
+          "name": "Image Texture.003",
+          "type": "TEX_IMAGE",
+          "uv_map": null,
+          "image": "grey_plaster_Displacement.png",
+          "inputs": {
+            "Vector": "Mapping:Vector"
+          }
+        },
+        {
+          "name": "RGB to BW",
+          "type": "RGBTOBW",
+          "uv_map": null,
+          "image": null,
+          "inputs": {
+            "Color": "Image Texture:Color"
+          }
+        },
+        {
+          "name": "Map Range",
+          "type": "MAP_RANGE",
+          "uv_map": null,
+          "image": null,
+          "inputs": {
+            "Value": "RGB to BW:Val",
+            "From Min": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "From Max": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "To Min": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "To Max": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "Steps": [
+              4.0,
+              4.0,
+              4.0
+            ],
+            "Vector": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        },
+        {
+          "name": "Mix (Legacy)",
+          "type": "MIX_RGB",
+          "uv_map": null,
+          "image": null,
+          "inputs": {
+            "Factor": 1.0,
+            "Color1": "Color Ramp:Color",
+            "Color2": "Map Range:Result"
+          }
+        },
+        {
+          "name": "Map Range.001",
+          "type": "MAP_RANGE",
+          "uv_map": null,
+          "image": null,
+          "inputs": {
+            "Value": "Image Texture.001:Color",
+            "From Min": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "From Max": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "To Min": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "To Max": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "Steps": [
+              4.0,
+              4.0,
+              4.0
+            ],
+            "Vector": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        },
+        {
+          "name": "Normal Map",
+          "type": "NORMAL_MAP",
+          "uv_map": "PBR_Metric",
+          "image": null,
+          "inputs": {
+            "Strength": 0.11999999731779099,
+            "Color": "Image Texture.002:Color"
+          }
+        },
+        {
+          "name": "Bump.001",
+          "type": "BUMP",
+          "uv_map": null,
+          "image": null,
+          "inputs": {
+            "Strength": 0.20000000298023224,
+            "Distance": 0.000699999975040555,
+            "Filter Width": 0.10000000149011612,
+            "Height": "Image Texture.003:Color",
+            "Normal": "Normal Map:Normal"
+          }
+        },
+        {
+          "name": "UV Map.001",
+          "type": "UVMAP",
+          "uv_map": "PBR_Metric",
+          "image": null,
+          "inputs": {}
+        },
+        {
+          "name": "Image Texture.004",
+          "type": "TEX_IMAGE",
+          "uv_map": null,
+          "image": "PAINT | Honed black basalt",
+          "inputs": {
+            "Vector": "Mapping.001:Vector"
+          }
+        },
+        {
+          "name": "Map Range.002",
+          "type": "MAP_RANGE",
+          "uv_map": null,
+          "image": null,
+          "inputs": {
+            "Value": "Image Texture.004:Color",
+            "From Min": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "From Max": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "To Min": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "To Max": [
+              1.0,
+              1.0,
+              1.0
+            ],
+            "Steps": [
+              4.0,
+              4.0,
+              4.0
+            ],
+            "Vector": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        },
+        {
+          "name": "Math",
+          "type": "MATH",
+          "uv_map": null,
+          "image": null,
+          "inputs": {
+            "Value": 0.5
+          }
+        },
+        {
+          "name": "Mapping.001",
+          "type": "MAPPING",
+          "uv_map": null,
+          "image": null,
+          "inputs": {
+            "Vector": "UV Map.001:UV",
+            "Location": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "Rotation": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "Scale": [
+              0.25,
+              0.25,
+              0.25
+            ]
+          }
+        }
+      ],
+      "links": [
+        [
+          "Principled BSDF",
+          "BSDF",
+          "Material Output",
+          "Surface"
+        ],
+        [
+          "Texture Coordinate",
+          "Object",
+          "Noise Texture",
+          "Vector"
+        ],
+        [
+          "Noise Texture",
+          "Factor",
+          "Color Ramp",
+          "Factor"
+        ],
+        [
+          "Texture Coordinate",
+          "Object",
+          "Noise Texture.001",
+          "Vector"
+        ],
+        [
+          "Noise Texture.001",
+          "Factor",
+          "Bump",
+          "Height"
+        ],
+        [
+          "Noise Texture",
+          "Factor",
+          "Color Ramp.001",
+          "Factor"
+        ],
+        [
+          "UV Map",
+          "UV",
+          "Mapping",
+          "Vector"
+        ],
+        [
+          "Mapping",
+          "Vector",
+          "Image Texture",
+          "Vector"
+        ],
+        [
+          "Mapping",
+          "Vector",
+          "Image Texture.001",
+          "Vector"
+        ],
+        [
+          "Mapping",
+          "Vector",
+          "Image Texture.002",
+          "Vector"
+        ],
+        [
+          "Mapping",
+          "Vector",
+          "Image Texture.003",
+          "Vector"
+        ],
+        [
+          "Image Texture",
+          "Color",
+          "RGB to BW",
+          "Color"
+        ],
+        [
+          "RGB to BW",
+          "Val",
+          "Map Range",
+          "Value"
+        ],
+        [
+          "Color Ramp",
+          "Color",
+          "Mix (Legacy)",
+          "Color1"
+        ],
+        [
+          "Map Range",
+          "Result",
+          "Mix (Legacy)",
+          "Color2"
+        ],
+        [
+          "Mix (Legacy)",
+          "Color",
+          "Principled BSDF",
+          "Base Color"
+        ],
+        [
+          "Image Texture.001",
+          "Color",
+          "Map Range.001",
+          "Value"
+        ],
+        [
+          "Image Texture.002",
+          "Color",
+          "Normal Map",
+          "Color"
+        ],
+        [
+          "Image Texture.003",
+          "Color",
+          "Bump.001",
+          "Height"
+        ],
+        [
+          "Normal Map",
+          "Normal",
+          "Bump.001",
+          "Normal"
+        ],
+        [
+          "Bump.001",
+          "Normal",
+          "Principled BSDF",
+          "Normal"
+        ],
+        [
+          "Image Texture.004",
+          "Color",
+          "Map Range.002",
+          "Value"
+        ],
+        [
+          "Map Range.001",
+          "Result",
+          "Math",
+          "Value"
+        ],
+        [
+          "Map Range.002",
+          "Result",
+          "Math",
+          "Value"
+        ],
+        [
+          "Math",
+          "Value",
+          "Principled BSDF",
+          "Roughness"
+        ],
+        [
+          "UV Map.001",
+          "UV",
+          "Mapping.001",
+          "Vector"
+        ],
+        [
+          "Mapping.001",
+          "Vector",
+          "Image Texture.004",
+          "Vector"
+        ]
+      ]
+    }
+  ],
+  "devices": [
+    [
+      "NVIDIA GeForce RTX 4070",
+      "CUDA"
+    ],
+    [
+      "AMD Ryzen 5 7600X 6-Core Processor",
+      "CPU"
+    ],
+    [
+      "NVIDIA GeForce RTX 4070",
+      "OPTIX"
+    ],
+    [
+      "AMD Radeon(TM) Graphics",
+      "HIP"
+    ]
+  ],
+  "scene": "Scene",
+  "frame": 1,
+  "camera": "HALO | Interior architecture review",
+  "view_transform": "AgX",
+  "look": "AgX - Medium High Contrast",
+  "exposure": 0.44999998807907104,
+  "gamma": 1.0,
+  "lights": [
+    [
+      "ET | NOIR large soft key",
+      122.74752044677734
+    ],
+    [
+      "ET | NOIR soft rear fill",
+      62.678279876708984
+    ],
+    [
+      "ET | NOIR screen bounce",
+      231.8604736328125
+    ],
+    [
+      "ET | NOIR wall graze",
+      0.0
+    ],
+    [
+      "ET | NOIR wall graze.001",
+      0.0
+    ],
+    [
+      "ET | NOIR wall graze.002",
+      0.0
+    ],
+    [
+      "ET | NOIR wall graze.003",
+      0.0
+    ],
+    [
+      "ET | NOIR wall graze.004",
+      0.0
+    ],
+    [
+      "ET | NOIR wall graze.005",
+      0.0
+    ],
+    [
+      "ET | 919 warm sconce pool",
+      4.2694091796875
+    ],
+    [
+      "ET | 919 warm sconce pool.003",
+      4.2694091796875
+    ],
+    [
+      "ET | 919 warm sconce pool.004",
+      4.2694091796875
+    ],
+    [
+      "ET | 919 warm sconce pool.007",
+      4.2694091796875
+    ],
+    [
+      "ET | 919 downlight",
+      0.0
+    ],
+    [
+      "ET | 919 downlight.001",
+      0.0
+    ],
+    [
+      "ET | 919 downlight.002",
+      0.0
+    ],
+    [
+      "ET | 919 downlight.003",
+      0.0
+    ],
+    [
+      "ET | 919 downlight.004",
+      0.0
+    ],
+    [
+      "ET | 919 downlight.005",
+      0.0
+    ],
+    [
+      "CINE | Projector throw",
+      7490.31396484375
+    ],
+    [
+      "CINE | Entry floor warm glow",
+      85.06742858886719
+    ],
+    [
+      "CINE | Sofa rim from screen side",
+      126.26616668701172
+    ],
+    [
+      "CINE | Projector hero key",
+      0.0
+    ],
+    [
+      "CINE | PRJ key softbox",
+      0.0
+    ],
+    [
+      "CINE | PRJ top gradient strip",
+      0.0
+    ],
+    [
+      "CINE | PRJ kicker left",
+      0.0
+    ],
+    [
+      "CINE | PRJ kicker right",
+      0.0
+    ],
+    [
+      "CINE | PRJ front gradient",
+      0.0
+    ],
+    [
+      "CINE | PRJ lens glint",
+      0.0
+    ],
+    [
+      "CINE | PRJ top edge line",
+      0.0
+    ],
+    [
+      "KEEP | ET | NOIR large soft key",
+      680.0
+    ],
+    [
+      "KEEP | ET | NOIR soft rear fill",
+      109.99999237060547
+    ],
+    [
+      "KEEP | ET | NOIR screen bounce",
+      130.0
+    ],
+    [
+      "KEEP | ET | 919 warm sconce pool",
+      15.999999046325684
+    ],
+    [
+      "KEEP | ET | 919 warm sconce pool.003",
+      15.999999046325684
+    ],
+    [
+      "KEEP | ET | 919 warm sconce pool.004",
+      15.999999046325684
+    ],
+    [
+      "KEEP | ET | 919 warm sconce pool.007",
+      15.999999046325684
+    ],
+    [
+      "KEEP | ET | 919 downlight",
+      75.0
+    ],
+    [
+      "KEEP | ET | 919 downlight.001",
+      75.0
+    ],
+    [
+      "KEEP | ET | 919 downlight.002",
+      75.0
+    ],
+    [
+      "KEEP | ET | 919 downlight.003",
+      75.0
+    ],
+    [
+      "KEEP | ET | 919 downlight.004",
+      75.0
+    ],
+    [
+      "KEEP | ET | 919 downlight.005",
+      75.0
+    ],
+    [
+      "KEEP | ET | NOIR wall graze",
+      113.46431732177734
+    ],
+    [
+      "KEEP | ET | NOIR wall graze.001",
+      113.46431732177734
+    ],
+    [
+      "KEEP | ET | NOIR wall graze.002",
+      113.46431732177734
+    ],
+    [
+      "KEEP | ET | NOIR wall graze.003",
+      113.46431732177734
+    ],
+    [
+      "KEEP | ET | NOIR wall graze.004",
+      113.46431732177734
+    ],
+    [
+      "KEEP | ET | NOIR wall graze.005",
+      113.46431732177734
+    ],
+    [
+      "KEEP | Sun",
+      4990.86474609375
+    ],
+    [
+      "HALO | Concealed side uplight",
+      0.0
+    ],
+    [
+      "HALO | Soft upper wall wash",
+      0.0
+    ],
+    [
+      "HALO | Concealed side uplight.001",
+      0.0
+    ],
+    [
+      "HALO | Soft upper wall wash.001",
+      0.0
+    ],
+    [
+      "HALO | Concealed side uplight.002",
+      0.0
+    ],
+    [
+      "HALO | Soft upper wall wash.002",
+      0.0
+    ],
+    [
+      "HALO | Concealed side uplight.003",
+      0.0
+    ],
+    [
+      "HALO | Soft upper wall wash.003",
+      0.0
+    ],
+    [
+      "HALO | Concealed side uplight.004",
+      0.0
+    ],
+    [
+      "HALO | Soft upper wall wash.004",
+      0.0
+    ],
+    [
+      "HALO | Inner recess bounce",
+      0.0
+    ],
+    [
+      "HALO | Inner recess bounce.001",
+      0.0
+    ],
+    [
+      "HALO | Inner recess bounce.002",
+      0.0
+    ],
+    [
+      "HALO | Concealed side uplight.005",
+      0.0
+    ],
+    [
+      "HALO | Soft upper wall wash.005",
+      0.0
+    ],
+    [
+      "HALO | Concealed side uplight.006",
+      0.0
+    ],
+    [
+      "HALO | Soft upper wall wash.006",
+      0.0
+    ],
+    [
+      "HALO | Concealed side uplight.007",
+      0.0
+    ],
+    [
+      "HALO | Soft upper wall wash.007",
+      0.0
+    ],
+    [
+      "HALO | Concealed side uplight.008",
+      0.0
+    ],
+    [
+      "HALO | Soft upper wall wash.008",
+      0.0
+    ],
+    [
+      "HALO | Concealed side uplight.009",
+      0.0
+    ],
+    [
+      "HALO | Soft upper wall wash.009",
+      0.0
+    ],
+    [
+      "HALO | Inner recess bounce.003",
+      0.0
+    ],
+    [
+      "HALO | Inner recess bounce.004",
+      0.0
+    ],
+    [
+      "HALO | Inner recess bounce.005",
+      0.0
+    ],
+    [
+      "HALO | End cove bounce",
+      0.0
+    ],
+    [
+      "HALO | End cove bounce.001",
+      0.0
+    ],
+    [
+      "HALO | Warm architectural bounce",
+      0.0
+    ],
+    [
+      "HALO | Aisle step spill",
+      1.5
+    ],
+    [
+      "HALO | Aisle step spill.001",
+      1.5
+    ],
+    [
+      "HALO | Aisle step spill.002",
+      1.5
+    ],
+    [
+      "HALO | Aisle step spill.003",
+      1.5
+    ],
+    [
+      "HALO | Aisle step spill.004",
+      1.5
+    ],
+    [
+      "HALO | Aisle step spill.005",
+      1.5
+    ],
+    [
+      "HALO | Aisle step spill.006",
+      1.5
+    ],
+    [
+      "HALO | Aisle step spill.007",
+      1.5
+    ],
+    [
+      "HALO | Aisle step spill.008",
+      1.5
+    ],
+    [
+      "HALO | Aisle step spill.009",
+      1.5
+    ],
+    [
+      "HALO | Aisle step spill.010",
+      1.5
+    ],
+    [
+      "HALO | Aisle step spill.011",
+      1.5
+    ],
+    [
+      "HALO | Aisle step spill.012",
+      1.5
+    ],
+    [
+      "HALO | Aisle step spill.013",
+      1.5
+    ],
+    [
+      "HALO | Aisle step spill.014",
+      1.5
+    ],
+    [
+      "HALO | Aisle step spill.015",
+      1.5
+    ],
+    [
+      "HALO | Aisle step spill.016",
+      1.5
+    ],
+    [
+      "HALO | Aisle step spill.017",
+      1.5
+    ],
+    [
+      "HALO | Aisle step spill.018",
+      1.5
+    ],
+    [
+      "HALO | Aisle step spill.019",
+      1.5
+    ],
+    [
+      "HALO | Aisle step spill.020",
+      1.5
+    ],
+    [
+      "HALO | Aisle step spill.021",
+      1.5
+    ],
+    [
+      "HALO | Aisle step spill.022",
+      1.5
+    ],
+    [
+      "HALO | Aisle step spill.023",
+      1.5
+    ],
+    [
+      "HALO | Aisle step spill.024",
+      1.5
+    ],
+    [
+      "HALO | Aisle step spill.025",
+      1.5
+    ],
+    [
+      "HALO | Aisle step spill.026",
+      1.5
+    ],
+    [
+      "HALO | Continuous inner cove",
+      0.0
+    ],
+    [
+      "HALO | Continuous inner cove.001",
+      0.0
+    ],
+    [
+      "HALO II | Continuous inner indirect",
+      110.69999694824219
+    ],
+    [
+      "HALO II | Outer indirect ceiling",
+      0.0
+    ],
+    [
+      "HALO II | Restrained broad wall wash",
+      7.5
+    ],
+    [
+      "HALO II | Outer indirect ceiling.001",
+      0.0
+    ],
+    [
+      "HALO II | Restrained broad wall wash.001",
+      7.5
+    ],
+    [
+      "HALO II | Outer indirect ceiling.002",
+      0.0
+    ],
+    [
+      "HALO II | Restrained broad wall wash.002",
+      7.5
+    ],
+    [
+      "HALO II | Outer indirect ceiling.003",
+      0.0
+    ],
+    [
+      "HALO II | Restrained broad wall wash.003",
+      7.5
+    ],
+    [
+      "HALO II | Outer indirect ceiling.004",
+      0.0
+    ],
+    [
+      "HALO II | Restrained broad wall wash.004",
+      7.5
+    ],
+    [
+      "HALO II | Continuous inner indirect.001",
+      110.69999694824219
+    ],
+    [
+      "HALO II | Outer indirect ceiling.005",
+      0.0
+    ],
+    [
+      "HALO II | Restrained broad wall wash.005",
+      7.5
+    ],
+    [
+      "HALO II | Outer indirect ceiling.006",
+      0.0
+    ],
+    [
+      "HALO II | Restrained broad wall wash.006",
+      7.5
+    ],
+    [
+      "HALO II | Outer indirect ceiling.007",
+      0.0
+    ],
+    [
+      "HALO II | Restrained broad wall wash.007",
+      7.5
+    ],
+    [
+      "HALO II | Outer indirect ceiling.008",
+      0.0
+    ],
+    [
+      "HALO II | Restrained broad wall wash.008",
+      7.5
+    ],
+    [
+      "HALO II | Outer indirect ceiling.009",
+      0.0
+    ],
+    [
+      "HALO II | Restrained broad wall wash.009",
+      7.5
+    ],
+    [
+      "HALO II | Soft reflected room light",
+      280.44000244140625
+    ],
+    [
+      "HALO II | Recess end bounce",
+      44.279998779296875
+    ],
+    [
+      "HALO II | Recess end bounce.001",
+      44.279998779296875
+    ],
+    [
+      "HALO II | Aisle floor wash",
+      3.6449999809265137
+    ],
+    [
+      "HALO II | Aisle floor wash.001",
+      2.0969998836517334
+    ],
+    [
+      "HALO II | Aisle floor wash.002",
+      2.0969998836517334
+    ],
+    [
+      "HALO II | Aisle floor wash.003",
+      2.0969998836517334
+    ],
+    [
+      "HALO II | Aisle floor wash.004",
+      2.0969998836517334
+    ],
+    [
+      "HALO II | Aisle floor wash.005",
+      4.590000152587891
+    ],
+    [
+      "HALO II | Aisle floor wash.006",
+      3.6449999809265137
+    ],
+    [
+      "HALO II | Aisle floor wash.007",
+      2.0969998836517334
+    ],
+    [
+      "HALO II | Aisle floor wash.008",
+      2.0969998836517334
+    ],
+    [
+      "HALO II | Aisle floor wash.009",
+      2.0969998836517334
+    ],
+    [
+      "HALO II | Aisle floor wash.010",
+      2.0969998836517334
+    ],
+    [
+      "HALO II | Aisle floor wash.011",
+      4.590000152587891
+    ],
+    [
+      "HALO FINAL | Continuous perimeter bounce",
+      135.0
+    ],
+    [
+      "HALO FINAL | Continuous perimeter bounce.001",
+      135.0
+    ],
+    [
+      "REFINED | Soft ceiling return",
+      65.0
+    ],
+    [
+      "DETAIL V2 | Fixture reflected fill",
+      7.0
+    ],
+    [
+      "DETAIL V2 | Fixture reflected fill.001",
+      7.0
+    ],
+    [
+      "Sun",
+      0.699999988079071
+    ],
+    [
+      "FX_Glow_Red",
+      0.0
+    ],
+    [
+      "FX_Glow_Green",
+      0.0
+    ],
+    [
+      "FX_Glow_Blue",
+      0.0
+    ],
+    [
+      "FX_Glow_Core",
+      0.0
+    ],
+    [
+      "FX_Key_Soft",
+      0.0
+    ],
+    [
+      "INT | Key",
+      110.0
+    ],
+    [
+      "INT | Rim",
+      85.0
+    ]
+  ]
+}

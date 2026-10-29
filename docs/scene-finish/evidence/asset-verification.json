@@ -1,0 +1,39 @@
+{
+  "protectedFilesUnchanged": 99,
+  "changed": [],
+  "desktopOnly6K": [
+    {
+      "url": "/textures/theatre/ceiling/ceiling-compressed-6k.ktx2",
+      "bytes": 4138235,
+      "width": 6144,
+      "height": 6144,
+      "layers": 0,
+      "mipLevels": 10
+    },
+    {
+      "url": "/textures/theatre/floor/floor-slab-compressed-6k.ktx2",
+      "bytes": 5591046,
+      "width": 6144,
+      "height": 6144,
+      "layers": 0,
+      "mipLevels": 10
+    },
+    {
+      "url": "/textures/corridor/wall-red/corridor-wall-red-compressed-6k.ktx2",
+      "bytes": 7384866,
+      "width": 6144,
+      "height": 6144,
+      "layers": 0,
+      "mipLevels": 10
+    },
+    {
+      "url": "/textures/corridor/floor/corridor-floor-compressed-6k.ktx2",
+      "bytes": 5964611,
+      "width": 6144,
+      "height": 6144,
+      "layers": 0,
+      "mipLevels": 10
+    }
+  ],
+  "consoleErrors": []
+}

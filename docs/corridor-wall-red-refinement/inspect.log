@@ -1,0 +1,23 @@
+00:01.328  blend            | Read blend: "D:\CodexOutputs\Restoration_20261024\corridor\Corridor_prepared_work_copy.blend"
+WALL_BOUNDS [[-162.16741943359375, 8.521987915039062], [-15.00051212310791, 130.46385192871094], [-0.0005083084106445312, 28.902286529541016]]
+Principled BSDF BSDF_PRINCIPLED {'IOR': 1.5, 'Alpha': 1.0, 'Thin Wall': False, 'Weight': 0.0, 'Diffuse Roughness': 0.0, 'Subsurface Weight': 0.0, 'Subsurface Radius': [1.0, 0.20000000298023224, 0.10000000149011612], 'Subsurface Scale': 0.004999999888241291, 'Subsurface IOR': 1.399999976158142, 'Subsurface Anisotropy': 0.0, 'Specular IOR Level': 0.5, 'Specular Tint': [1.0, 1.0, 1.0, 1.0], 'Anisotropic': 0.2800000011920929, 'Anisotropic Rotation': 0.0, 'Transmission Weight': 0.0, 'Coat Weight': 0.0, 'Coat Roughness': 0.029999999329447746, 'Coat IOR': 1.5, 'Coat Tint': [1.0, 1.0, 1.0, 1.0], 'Coat Normal': [0.0, 0.0, 0.0], 'Sheen Weight': 0.0, 'Sheen Roughness': 0.5, 'Sheen Tint': [1.0, 1.0, 1.0, 1.0], 'Emission Color': [1.0, 1.0, 1.0, 1.0], 'Emission Strength': 0.0, 'Thin Film Thickness': 0.0, 'Thin Film IOR': 1.3300000429153442}
+Map Range MAP_RANGE {'From Min': [0.0, 0.0, 0.0], 'From Max': [1.0, 1.0, 1.0], 'To Min': [0.0, 0.0, 0.0], 'To Max': [1.0, 1.0, 1.0], 'Steps': [4.0, 4.0, 4.0], 'Vector': [0.0, 0.0, 0.0]}
+Math MATH {'Value': -0.02250000089406967}
+Math.001 MATH {'Value': 0.5}
+Wall fill • original local height TEX_COORD {}
+Wall fill • dark bottom fade MAP_RANGE {'From Min': [0.0, 0.0, 0.0], 'From Max': [1.0, 1.0, 1.0], 'To Min': [0.0, 0.0, 0.0], 'To Max': [1.0, 1.0, 1.0], 'Steps': [4.0, 4.0, 4.0], 'Vector': [0.0, 0.0, 0.0]}
+Math.002 MATH {'Value': 0.5}
+Wall fill • restrained neutral brightness EMISSION {'Weight': 0.0}
+Wall fill • gentle corridor balance MAP_RANGE {'From Min': [0.0, 0.0, 0.0], 'From Max': [1.0, 1.0, 1.0], 'To Min': [0.0, 0.0, 0.0], 'To Max': [1.0, 1.0, 1.0], 'Steps': [4.0, 4.0, 4.0], 'Vector': [0.0, 0.0, 0.0]}
+Math.003 MATH {'Value': 0.5}
+Wall glow • soft spectral spread MAP_RANGE {'From Min': [0.0, 0.0, 0.0], 'From Max': [1.0, 1.0, 1.0], 'To Min': [0.0, 0.0, 0.0], 'To Max': [1.0, 1.0, 1.0], 'Steps': [4.0, 4.0, 4.0], 'Vector': [0.0, 0.0, 0.0]}
+Wall glow • preserve dark bottom MATH {'Value': 0.5}
+Wall glow • gentle blue surface EMISSION {'Color': [0.11999999731779099, 0.2800000011920929, 0.6000000238418579, 1.0], 'Weight': 0.0}
+Marked blue • far end fade MAP_RANGE {'From Min': [0.0, 0.0, 0.0], 'From Max': [1.0, 1.0, 1.0], 'To Min': [0.0, 0.0, 0.0], 'To Max': [1.0, 1.0, 1.0], 'Steps': [4.0, 4.0, 4.0], 'Vector': [0.0, 0.0, 0.0]}
+Marked blue • upper wall only MAP_RANGE {'From Min': [0.0, 0.0, 0.0], 'From Max': [1.0, 1.0, 1.0], 'To Min': [0.0, 0.0, 0.0], 'To Max': [1.0, 1.0, 1.0], 'Steps': [4.0, 4.0, 4.0], 'Vector': [0.0, 0.0, 0.0]}
+Marked blue • localized upper corner MATH {'Value': 0.5}
+Marked blue • camera surface only MATH {'Value': 0.5}
+Marked blue • light spectral tint EMISSION {'Color': [0.001500000013038516, 0.00800000037997961, 0.02500000037252903, 1.0], 'Weight': 0.0}
+Blender 5.2.0 LTS (hash fbe6228777e7 built 2026-07-14 01:35:40)
+
+Blender quit

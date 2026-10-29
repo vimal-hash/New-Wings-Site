@@ -1,0 +1,24 @@
+{
+  "frontTrim": {
+    "rect": [
+      750,
+      270,
+      420,
+      30
+    ],
+    "beforeRms": 4.454992443535418,
+    "afterRms": 6.867477606607005
+  },
+  "plaster": {
+    "rect": [
+      1430,
+      100,
+      200,
+      60
+    ],
+    "beforeRms": 2.54289860854367,
+    "afterRms": 2.963579854762742
+  },
+  "nonCeilingChangedChannels": 0,
+  "testTextureBytes": 2039099
+}

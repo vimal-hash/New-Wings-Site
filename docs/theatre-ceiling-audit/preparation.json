@@ -1,0 +1,94 @@
+{
+  "source": "D:/CodexOutputs/Theatre_Optimization_20261017/Theatre_Moon_Projector_optimized.blend",
+  "ceilingObjects": [
+    {
+      "source": "HALO II | Slim floating soffit",
+      "sha256": "51d5275b2a661bcefa08618b45755d4f0b30c38f23e7e1d57aa19b7167181767",
+      "triangles": 384,
+      "uvMin": 0.43884748220443726,
+      "uvMax": 0.8521929383277893,
+      "uvFaces": 2
+    },
+    {
+      "source": "HALO II | 90mm perimeter fascia",
+      "sha256": "7ff07f3f758f65585dcce0920aaa72e54bc9d290e2a6e1dad1de6b9b0d815c2b",
+      "triangles": 384,
+      "uvMin": 0.035622384399175644,
+      "uvMax": 0.5110601782798767,
+      "uvFaces": 192
+    },
+    {
+      "source": "HALO II | Continuous rolled plaster cove",
+      "sha256": "1a5b70f79706015185675219c4f10a85ec81334691a2e588e5586f73de29667b",
+      "triangles": 2688,
+      "uvMin": 0.020865358412265778,
+      "uvMax": 0.6848206520080566,
+      "uvFaces": 1146
+    },
+    {
+      "source": "HALO II | Floating acoustic inset",
+      "sha256": "174bdc14a08e3ab8d73292c848a3c180d3a2d26a5efcd56096ea70d00b3a7fb6",
+      "triangles": 190,
+      "uvMin": 0.46076682209968567,
+      "uvMax": 0.9914568066596985,
+      "uvFaces": 1
+    },
+    {
+      "source": "HALO II | Backing above ceiling",
+      "sha256": "f51197963835467f263cb7dcf986ea7378c2a0252c619c0678781dd920245bc5",
+      "triangles": 190,
+      "uvMin": 0.006002743262797594,
+      "uvMax": 0.45931538939476013,
+      "uvFaces": 1
+    },
+    {
+      "source": "HALO II | Hidden inner LED shelf",
+      "sha256": "435a03da93ce299400bc999e93b14c66a35b0f4d23ca5f5dafb35b2bbd4a3c3a",
+      "triangles": 384,
+      "uvMin": 0.0063750059343874454,
+      "uvMax": 0.8764682412147522,
+      "uvFaces": 2
+    },
+    {
+      "source": "HALO II | Outer concealed LED shelf",
+      "sha256": "02e635af6263db999e019ac546273e47bda0d8c7471560521c7b0eac08334aa5",
+      "triangles": 384,
+      "uvMin": 0.006627451628446579,
+      "uvMax": 0.8355834484100342,
+      "uvFaces": 2
+    },
+    {
+      "source": "HALO II | Perimeter cove upper receiver",
+      "sha256": "9586f581aa186412b8e0ea4c5f8fb39639fa8d3d5a3cde1e714eea42152f53b1",
+      "triangles": 384,
+      "uvMin": 0.006205353885889053,
+      "uvMax": 0.7154843211174011,
+      "uvFaces": 2
+    },
+    {
+      "source": "HALO II | Wall crown closure",
+      "sha256": "7ff24cc1ab4de11f0c6517b26406ae6fe34c4f910ca5b62b4bca5bb7ad136a1d",
+      "triangles": 2,
+      "uvMin": 0.006205266807228327,
+      "uvMax": 0.509782612323761,
+      "uvFaces": 1
+    },
+    {
+      "source": "HALO II | Wall crown closure.001",
+      "sha256": "8d5b59c41d90b8e55da99f76a3cebe372df0459a548fe52e7ac34d20bb7f839f",
+      "triangles": 2,
+      "uvMin": 0.006205265875905752,
+      "uvMax": 0.48550722002983093,
+      "uvFaces": 1
+    }
+  ],
+  "triangles": 4992,
+  "unchangedNonCeilingObjects": 1506,
+  "view": {
+    "transform": "AgX",
+    "look": "AgX - Medium High Contrast",
+    "exposure": 0.44999998807907104
+  },
+  "atlas": 2048,
+  "gutterPixels": 12
+}

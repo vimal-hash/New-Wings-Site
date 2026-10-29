@@ -1,0 +1,33 @@
+{
+  "viewport": [
+    390,
+    844
+  ],
+  "errors": [],
+  "pauses": [
+    {
+      "at": 593,
+      "duration": 53.3,
+      "phase": "intro"
+    },
+    {
+      "at": 779.9,
+      "duration": 80,
+      "phase": "intro"
+    },
+    {
+      "at": 5861.8,
+      "duration": 93.4,
+      "phase": "idle"
+    }
+  ],
+  "particleRequests": [],
+  "sixKRequests": [],
+  "profile": [
+    "Projector profile: mobile (reveal only)"
+  ],
+  "decoderRequests": [
+    "/draco/draco_wasm_wrapper.js",
+    "/draco/draco_decoder.wasm"
+  ]
+}

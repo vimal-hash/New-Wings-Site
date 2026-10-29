@@ -1,0 +1,24 @@
+{
+  "mobile": {
+    "source_samples": 32768,
+    "unique_ids": 32768,
+    "maximum_errors": {
+      "position": 0.0,
+      "fx_n": 0.0,
+      "fx_g": 0.0,
+      "fx_part": 0.0,
+      "id": 0.0
+    }
+  },
+  "desktop": {
+    "source_samples": 65536,
+    "unique_ids": 65536,
+    "maximum_errors": {
+      "position": 0.0,
+      "fx_n": 0.0,
+      "fx_g": 0.0,
+      "fx_part": 0.0,
+      "id": 0.0
+    }
+  }
+}

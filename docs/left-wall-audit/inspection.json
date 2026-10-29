@@ -1,0 +1,858 @@
+{
+ "render": {
+  "engine": "CYCLES",
+  "view": "AgX",
+  "look": "AgX - Medium High Contrast",
+  "exposure": 0.44999998807907104,
+  "gamma": 1.0,
+  "display": "sRGB",
+  "curve": false,
+  "samples": 128,
+  "res": [
+   1920,
+   1080,
+   100
+  ],
+  "camera": "HALO | Interior architecture review",
+  "world": "ET | Charcoal studio environment - open roof and back",
+  "film_transparent": false,
+  "light_tree": true,
+  "max_bounces": 12,
+  "clamp_ind": 10.0
+ },
+ "candidates": [
+  {
+   "name": "ET | Side structural wall 1",
+   "min": [
+    8.2,
+    0.0,
+    0.0
+   ],
+   "max": [
+    8.5,
+    20.8,
+    6.4
+   ],
+   "data": "ET | Side structural wall 1.001",
+   "users": 1,
+   "collections": [
+    "ET 01 | Room shell and screen",
+    "LL | HALO theater only"
+   ],
+   "mats": [
+    "DETAIL V2 | Wine velvet"
+   ],
+   "mods": [
+    [
+     "BEVEL",
+     "Soft modeled edge",
+     true
+    ],
+    [
+     "WEIGHTED_NORMAL",
+     "Weighted corner normals",
+     true
+    ]
+   ],
+   "uv": [
+    [
+     "PBR_Metric",
+     false
+    ],
+    [
+     "PaintUV",
+     false
+    ],
+    [
+     "automap",
+     true
+    ],
+    [
+     "VelvetPileUV",
+     false
+    ]
+   ],
+   "polys": 6,
+   "hide_render": false,
+   "visible_camera": true,
+   "is_shadow_catcher": false,
+   "light_linking": {
+    "rx": null,
+    "bx": null
+   }
+  },
+  {
+   "name": "ET | Side wall top graphite cap 1",
+   "min": [
+    7.99,
+    0.0,
+    6.395
+   ],
+   "max": [
+    8.41,
+    20.8,
+    6.465
+   ],
+   "data": "ET | Side wall top bronze cap 1.001",
+   "users": 1,
+   "collections": [
+    "ET 04 | Sculpted acoustic walls",
+    "LL | HALO theater only"
+   ],
+   "mats": [
+    "DETAIL V2 | NOIR / Satin graphite titanium"
+   ],
+   "mods": [
+    [
+     "BEVEL",
+     "Soft modeled edge",
+     true
+    ],
+    [
+     "WEIGHTED_NORMAL",
+     "Weighted corner normals",
+     true
+    ]
+   ],
+   "uv": [
+    [
+     "PBR_Metric",
+     true
+    ],
+    [
+     "PaintUV",
+     false
+    ]
+   ],
+   "polys": 6,
+   "hide_render": false,
+   "visible_camera": true,
+   "is_shadow_catcher": false,
+   "light_linking": {
+    "rx": null,
+    "bx": null
+   }
+  },
+  {
+   "name": "HALO II | Wall crown closure.001",
+   "min": [
+    8.22,
+    -0.03,
+    6.4
+   ],
+   "max": [
+    8.22,
+    21.48,
+    6.98
+   ],
+   "data": "HALO II | Wall crown closure.001",
+   "users": 1,
+   "collections": [
+    "ET 12 | HALO refined ceiling and aisles",
+    "LL | HALO II ceiling only",
+    "LL | HALO theater only"
+   ],
+   "mats": [
+    "REFINED | Warm greige acoustic inset"
+   ],
+   "mods": [],
+   "uv": [
+    [
+     "UV_Atlas",
+     true
+    ]
+   ],
+   "polys": 1,
+   "hide_render": false,
+   "visible_camera": true,
+   "is_shadow_catcher": false,
+   "light_linking": {
+    "rx": null,
+    "bx": null
+   }
+  },
+  {
+   "name": "HALO II | Recessed aisle light ribbon.019",
+   "min": [
+    7.91,
+    21.6866,
+    1.675
+   ],
+   "max": [
+    7.91,
+    26.7866,
+    1.691
+   ],
+   "data": "HALO II | Recessed aisle light ribbon.019",
+   "users": 1,
+   "collections": [
+    "ET 12 | HALO refined ceiling and aisles",
+    "LL | HALO theater only"
+   ],
+   "mats": [
+    "HALO II | Soft aisle guide"
+   ],
+   "mods": [],
+   "uv": [
+    [
+     "UV_Atlas",
+     true
+    ]
+   ],
+   "polys": 1,
+   "hide_render": false,
+   "visible_camera": true,
+   "is_shadow_catcher": false,
+   "light_linking": {
+    "rx": null,
+    "bx": null
+   }
+  },
+  {
+   "name": "HALO II | Aisle channel hood.019",
+   "min": [
+    7.875,
+    21.6866,
+    1.71
+   ],
+   "max": [
+    7.94,
+    26.7866,
+    1.71
+   ],
+   "data": "HALO II | Aisle channel hood.019",
+   "users": 1,
+   "collections": [
+    "ET 12 | HALO refined ceiling and aisles",
+    "LL | HALO theater only"
+   ],
+   "mats": [
+    "REFINED | Brushed champagne reveal"
+   ],
+   "mods": [],
+   "uv": [
+    [
+     "UV_Atlas",
+     true
+    ]
+   ],
+   "polys": 1,
+   "hide_render": false,
+   "visible_camera": true,
+   "is_shadow_catcher": false,
+   "light_linking": {
+    "rx": null,
+    "bx": null
+   }
+  }
+ ],
+ "materials": {
+  "DETAIL V2 | Wine velvet": [
+   {
+    "n": "RGB Curves",
+    "t": "ShaderNodeRGBCurve",
+    "in": {
+     "Color": "<-RGB.Color"
+    }
+   },
+   {
+    "n": "RGB",
+    "t": "ShaderNodeRGB",
+    "in": {}
+   },
+   {
+    "n": "Mix",
+    "t": "ShaderNodeMix",
+    "in": {}
+   },
+   {
+    "n": "Mapping",
+    "t": "ShaderNodeMapping",
+    "in": {
+     "Vector": "<-Texture Coordinate.UV",
+     "Scale": [
+      1.0,
+      1.0,
+      1.0
+     ]
+    }
+   },
+   {
+    "n": "Principled BSDF",
+    "t": "ShaderNodeBsdfPrincipled",
+    "in": {
+     "Base Color": "<-PALETTE | Texture-preserving color adjustment.Color",
+     "Metallic": 0.0,
+     "Roughness": "<-VELVET | Subtle pile roughness.Color",
+     "Normal": "<-VELVET | Fine fibre relief.Normal",
+     "Specular IOR Level": 0.28,
+     "Tangent": "<-VELVET | Vertical pile tangent.Tangent",
+     "Coat Weight": 0.0,
+     "Sheen Weight": 0.32
+    }
+   },
+   {
+    "n": "Image Texture.001",
+    "t": "ShaderNodeTexImage",
+    "img": [
+     "Velvet Mix.jpg",
+     "//..\\..\\T-B\\New website\\Blender_Logo\\assets\\materials\\velvet_be4db903-8a3f-4f0a-9989-3630494dc1e4\\textures_2k\\Velvet Mix.jpg",
+     [
+      2048,
+      2048
+     ],
+     "Non-Color"
+    ],
+    "in": {
+     "Vector": "<-Mapping.Vector"
+    }
+   },
+   {
+    "n": "Velvet BSDF",
+    "t": "ShaderNodeBsdfSheen",
+    "in": {
+     "Color": "<-Mix.Result",
+     "Roughness": 0.62,
+     "Normal": "<-VELVET | Fine fibre relief.Normal"
+    }
+   },
+   {
+    "n": "Material Output",
+    "t": "ShaderNodeOutputMaterial",
+    "in": {
+     "Surface": "<-Mix Shader.Shader"
+    }
+   },
+   {
+    "n": "Mix Shader",
+    "t": "ShaderNodeMixShader",
+    "in": {
+     "Shader": "<-Principled BSDF.BSDF"
+    }
+   },
+   {
+    "n": "Texture Coordinate",
+    "t": "ShaderNodeTexCoord",
+    "in": {}
+   },
+   {
+    "n": "PALETTE | Texture-preserving color adjustment",
+    "t": "ShaderNodeHueSaturation",
+    "in": {
+     "Color": "<-Mix.Result"
+    }
+   },
+   {
+    "n": "Geometry",
+    "t": "ShaderNodeNewGeometry",
+    "in": {}
+   },
+   {
+    "n": "REFINED | Velvet pile microstructure",
+    "t": "ShaderNodeTexNoise",
+    "in": {
+     "Vector": "<-Geometry.Position",
+     "Scale": 620.0,
+     "Detail": 2.0,
+     "Roughness": 0.65
+    }
+   },
+   {
+    "n": "REFINED | Microscopic surface relief",
+    "t": "ShaderNodeBump",
+    "in": {
+     "Strength": 0.16,
+     "Distance": 0.0002,
+     "Height": "<-REFINED | Velvet pile microstructure.Factor"
+    }
+   },
+   {
+    "n": "REFINED | Controlled surface roughness",
+    "t": "ShaderNodeMapRange",
+    "in": {
+     "Value": "<-REFINED | Velvet pile microstructure.Factor"
+    }
+   },
+   {
+    "n": "Map Range",
+    "t": "ShaderNodeMapRange",
+    "in": {
+     "Value": "<-Image Texture.001.Color"
+    }
+   },
+   {
+    "n": "VELVET | Physical 160 mm pile mapping",
+    "t": "ShaderNodeUVMap",
+    "uv_map": "VelvetPileUV",
+    "in": {}
+   },
+   {
+    "n": "VELVET | Dense directional cut pile normal",
+    "t": "ShaderNodeTexImage",
+    "img": [
+     "Velvet | 160mm fine pile normal",
+     "",
+     [
+      2048,
+      2048
+     ],
+     "Non-Color"
+    ],
+    "in": {
+     "Vector": "<-VELVET | Physical 160 mm pile mapping.UV"
+    }
+   },
+   {
+    "n": "VELVET | Subtle pile roughness",
+    "t": "ShaderNodeTexImage",
+    "img": [
+     "Velvet | 160mm pile roughness",
+     "",
+     [
+      2048,
+      2048
+     ],
+     "Non-Color"
+    ],
+    "in": {
+     "Vector": "<-VELVET | Physical 160 mm pile mapping.UV"
+    }
+   },
+   {
+    "n": "VELVET | Fine fibre relief",
+    "t": "ShaderNodeNormalMap",
+    "uv_map": "VelvetPileUV",
+    "in": {
+     "Strength": 0.65,
+     "Color": "<-VELVET | Dense directional cut pile normal.Color"
+    }
+   },
+   {
+    "n": "VELVET | Vertical pile tangent",
+    "t": "ShaderNodeTangent",
+    "uv_map": "VelvetPileUV",
+    "in": {}
+   }
+  ],
+  "DETAIL V2 | NOIR / Satin graphite titanium": [
+   {
+    "n": "Principled BSDF",
+    "t": "ShaderNodeBsdfPrincipled",
+    "in": {
+     "Base Color": [
+      0.025,
+      0.029,
+      0.034,
+      1.0
+     ],
+     "Metallic": 0.6,
+     "Roughness": 0.43,
+     "Normal": "<-Bump.002.Normal",
+     "Specular IOR Level": 0.35,
+     "Coat Weight": 0.0,
+     "Sheen Weight": 0.0
+    }
+   },
+   {
+    "n": "Material Output",
+    "t": "ShaderNodeOutputMaterial",
+    "in": {
+     "Surface": "<-Principled BSDF.BSDF"
+    }
+   },
+   {
+    "n": "Texture Coordinate",
+    "t": "ShaderNodeTexCoord",
+    "in": {}
+   },
+   {
+    "n": "Vector Math",
+    "t": "ShaderNodeVectorMath",
+    "in": {
+     "Scale": 1.0
+    }
+   },
+   {
+    "n": "Noise Texture",
+    "t": "ShaderNodeTexNoise",
+    "in": {
+     "Vector": "<-Vector Math.Vector",
+     "Scale": 15.0,
+     "Detail": 2.0,
+     "Roughness": 0.65
+    }
+   },
+   {
+    "n": "Color Ramp",
+    "t": "ShaderNodeValToRGB",
+    "in": {
+     "Factor": "<-Noise Texture.Factor"
+    }
+   },
+   {
+    "n": "Bump",
+    "t": "ShaderNodeBump",
+    "in": {
+     "Strength": 0.1,
+     "Distance": 0.0,
+     "Height": "<-Noise Texture.Factor"
+    }
+   },
+   {
+    "n": "UV Map",
+    "t": "ShaderNodeUVMap",
+    "uv_map": "PBR_Metric",
+    "in": {}
+   },
+   {
+    "n": "Mapping",
+    "t": "ShaderNodeMapping",
+    "in": {
+     "Vector": "<-UV Map.UV",
+     "Scale": [
+      1.2,
+      1.2,
+      1.2
+     ]
+    }
+   },
+   {
+    "n": "Texture Coordinate.001",
+    "t": "ShaderNodeTexCoord",
+    "in": {}
+   },
+   {
+    "n": "Image Texture",
+    "t": "ShaderNodeTexImage",
+    "img": [
+     "metal_plate_Diffuse.png",
+     "//..\\..\\T-B\\New website\\Blender_Logo\\Elite_Theater\\PBR_Textures\\metal_plate_Diffuse.png",
+     [
+      2048,
+      2048
+     ],
+     "sRGB"
+    ],
+    "in": {
+     "Vector": "<-Mapping.Vector"
+    }
+   },
+   {
+    "n": "Image Texture.001",
+    "t": "ShaderNodeTexImage",
+    "img": [
+     "metal_plate_rough.png",
+     "//..\\..\\T-B\\New website\\Blender_Logo\\Elite_Theater\\PBR_Textures\\metal_plate_rough.png",
+     [
+      2048,
+      2048
+     ],
+     "Non-Color"
+    ],
+    "in": {
+     "Vector": "<-Mapping.Vector"
+    }
+   },
+   {
+    "n": "Image Texture.002",
+    "t": "ShaderNodeTexImage",
+    "img": [
+     "metal_plate_nor_gl.png",
+     "//..\\..\\T-B\\New website\\Blender_Logo\\Elite_Theater\\PBR_Textures\\metal_plate_nor_gl.png",
+     [
+      2048,
+      2048
+     ],
+     "Non-Color"
+    ],
+    "in": {
+     "Vector": "<-Mapping.Vector"
+    }
+   },
+   {
+    "n": "Image Texture.003",
+    "t": "ShaderNodeTexImage",
+    "img": [
+     "metal_plate_Displacement.png",
+     "//..\\..\\T-B\\New website\\Blender_Logo\\Elite_Theater\\PBR_Textures\\metal_plate_Displacement.png",
+     [
+      2048,
+      2048
+     ],
+     "Non-Color"
+    ],
+    "in": {
+     "Vector": "<-Mapping.Vector"
+    }
+   },
+   {
+    "n": "RGB to BW",
+    "t": "ShaderNodeRGBToBW",
+    "in": {
+     "Color": "<-Image Texture.Color"
+    }
+   },
+   {
+    "n": "Map Range",
+    "t": "ShaderNodeMapRange",
+    "in": {
+     "Value": "<-RGB to BW.Val"
+    }
+   },
+   {
+    "n": "Mix (Legacy)",
+    "t": "ShaderNodeMixRGB",
+    "in": {
+     "Color2": "<-Map Range.Result"
+    }
+   },
+   {
+    "n": "Map Range.001",
+    "t": "ShaderNodeMapRange",
+    "in": {
+     "Value": "<-Image Texture.001.Color"
+    }
+   },
+   {
+    "n": "Normal Map",
+    "t": "ShaderNodeNormalMap",
+    "uv_map": "PBR_Metric",
+    "in": {
+     "Strength": 0.12,
+     "Color": "<-Image Texture.002.Color"
+    }
+   },
+   {
+    "n": "Bump.001",
+    "t": "ShaderNodeBump",
+    "in": {
+     "Strength": 0.2,
+     "Distance": 0.0007,
+     "Height": "<-Image Texture.003.Color",
+     "Normal": "<-Normal Map.Normal"
+    }
+   },
+   {
+    "n": "UV Map.001",
+    "t": "ShaderNodeUVMap",
+    "uv_map": "PBR_Metric",
+    "in": {}
+   },
+   {
+    "n": "Image Texture.004",
+    "t": "ShaderNodeTexImage",
+    "img": [
+     "PAINT | Satin graphite titanium",
+     "//..\\..\\T-B\\New website\\Blender_Logo\\Elite_Theater\\PBR_Textures\\Paint_12.png",
+     [
+      512,
+      512
+     ],
+     "Non-Color"
+    ],
+    "in": {
+     "Vector": "<-Mapping.001.Vector"
+    }
+   },
+   {
+    "n": "Map Range.002",
+    "t": "ShaderNodeMapRange",
+    "in": {
+     "Value": "<-Image Texture.004.Color"
+    }
+   },
+   {
+    "n": "Math",
+    "t": "ShaderNodeMath",
+    "in": {}
+   },
+   {
+    "n": "Mapping.001",
+    "t": "ShaderNodeMapping",
+    "in": {
+     "Vector": "<-UV Map.001.UV",
+     "Scale": [
+      0.25,
+      0.25,
+      0.25
+     ]
+    }
+   },
+   {
+    "n": "REFINED | Controlled surface roughness",
+    "t": "ShaderNodeMapRange",
+    "in": {
+     "Value": "<-Math.Value"
+    }
+   },
+   {
+    "n": "Geometry",
+    "t": "ShaderNodeNewGeometry",
+    "in": {}
+   },
+   {
+    "n": "Noise Texture.001",
+    "t": "ShaderNodeTexNoise",
+    "in": {
+     "Vector": "<-Geometry.Position",
+     "Scale": 600.0,
+     "Detail": 2.0,
+     "Roughness": 0.5
+    }
+   },
+   {
+    "n": "Bump.002",
+    "t": "ShaderNodeBump",
+    "in": {
+     "Strength": 0.1,
+     "Distance": 0.0001,
+     "Height": "<-Noise Texture.001.Factor",
+     "Normal": "<-Bump.001.Normal"
+    }
+   }
+  ],
+  "REFINED | Warm greige acoustic inset": [
+   {
+    "n": "Principled BSDF",
+    "t": "ShaderNodeBsdfPrincipled",
+    "in": {
+     "Base Color": [
+      0.18,
+      0.168,
+      0.145,
+      1.0
+     ],
+     "Metallic": 0.0,
+     "Roughness": "<-REFINED | Controlled surface roughness.Result",
+     "Normal": "<-Bump.Normal",
+     "Specular IOR Level": 0.12,
+     "Coat Weight": 0.0,
+     "Sheen Weight": 0.0
+    }
+   },
+   {
+    "n": "Material Output",
+    "t": "ShaderNodeOutputMaterial",
+    "in": {
+     "Surface": "<-Principled BSDF.BSDF"
+    }
+   },
+   {
+    "n": "Noise Texture",
+    "t": "ShaderNodeTexNoise",
+    "in": {
+     "Scale": 160.0,
+     "Detail": 2.0,
+     "Roughness": 0.5
+    }
+   },
+   {
+    "n": "Bump",
+    "t": "ShaderNodeBump",
+    "in": {
+     "Strength": 0.14,
+     "Distance": 0.0002,
+     "Height": "<-REFINED | Fine mineral plaster.Factor"
+    }
+   },
+   {
+    "n": "Geometry",
+    "t": "ShaderNodeNewGeometry",
+    "in": {}
+   },
+   {
+    "n": "REFINED | Fine mineral plaster",
+    "t": "ShaderNodeTexNoise",
+    "in": {
+     "Vector": "<-Geometry.Position",
+     "Scale": 145.0,
+     "Detail": 2.0,
+     "Roughness": 0.65
+    }
+   },
+   {
+    "n": "REFINED | Controlled surface roughness",
+    "t": "ShaderNodeMapRange",
+    "in": {
+     "Value": "<-REFINED | Fine mineral plaster.Factor"
+    }
+   }
+  ],
+  "HALO II | Soft aisle guide": [
+   {
+    "n": "Principled BSDF",
+    "t": "ShaderNodeBsdfPrincipled",
+    "in": {
+     "Base Color": [
+      1.0,
+      0.63,
+      0.28,
+      1.0
+     ],
+     "Metallic": 0.0,
+     "Roughness": 0.65,
+     "Specular IOR Level": 0.5,
+     "Coat Weight": 0.0,
+     "Sheen Weight": 0.0
+    }
+   },
+   {
+    "n": "Material Output",
+    "t": "ShaderNodeOutputMaterial",
+    "in": {
+     "Surface": "<-Principled BSDF.BSDF"
+    }
+   }
+  ],
+  "REFINED | Brushed champagne reveal": [
+   {
+    "n": "Principled BSDF",
+    "t": "ShaderNodeBsdfPrincipled",
+    "in": {
+     "Base Color": [
+      0.29,
+      0.2,
+      0.105,
+      1.0
+     ],
+     "Metallic": 0.8,
+     "Roughness": "<-REFINED | Controlled surface roughness.Result",
+     "Normal": "<-Bump.Normal",
+     "Specular IOR Level": 0.5,
+     "Coat Weight": 0.0,
+     "Sheen Weight": 0.0
+    }
+   },
+   {
+    "n": "Material Output",
+    "t": "ShaderNodeOutputMaterial",
+    "in": {
+     "Surface": "<-Principled BSDF.BSDF"
+    }
+   },
+   {
+    "n": "Noise Texture",
+    "t": "ShaderNodeTexNoise",
+    "in": {
+     "Scale": 160.0,
+     "Detail": 2.0,
+     "Roughness": 0.5
+    }
+   },
+   {
+    "n": "Bump",
+    "t": "ShaderNodeBump",
+    "in": {
+     "Strength": 0.15,
+     "Distance": 0.0003,
+     "Height": "<-Noise Texture.Factor"
+    }
+   },
+   {
+    "n": "REFINED | Controlled surface roughness",
+    "t": "ShaderNodeMapRange",
+    "in": {}
+   }
+  ]
+ }
+}

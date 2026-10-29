@@ -1,0 +1,980 @@
+[
+  {
+    "name": "INT | PBT connector",
+    "links": [
+      "Principled BSDF.BSDF -> Material Output.Surface",
+      "UV Map.UV -> Image Texture.Vector",
+      "Image Texture.Color -> Principled BSDF.Roughness",
+      "UV Map.UV -> Image Texture.001.Vector",
+      "Image Texture.001.Color -> Normal Map.Color",
+      "Normal Map.Normal -> Principled BSDF.Normal"
+    ],
+    "principled": [
+      {
+        "name": "Principled BSDF",
+        "transmission": 0.0,
+        "ior": 1.5,
+        "specular": 0.5
+      }
+    ]
+  },
+  {
+    "name": "PH_housing_satin",
+    "links": [
+      "Principled BSDF.BSDF -> FX Materialize.Surface",
+      "FX Materialize.Shader -> Material Output.Surface"
+    ],
+    "principled": [
+      {
+        "name": "Principled BSDF",
+        "transmission": 0.0,
+        "ior": 1.5,
+        "specular": 0.5
+      }
+    ]
+  },
+  {
+    "name": "INT | Machined aluminum",
+    "links": [
+      "Principled BSDF.BSDF -> Material Output.Surface",
+      "UV Map.UV -> Image Texture.Vector",
+      "Image Texture.Color -> Principled BSDF.Roughness",
+      "UV Map.UV -> Image Texture.001.Vector",
+      "Image Texture.001.Color -> Normal Map.Color",
+      "Normal Map.Normal -> Principled BSDF.Normal"
+    ],
+    "principled": [
+      {
+        "name": "Principled BSDF",
+        "transmission": 0.0,
+        "ior": 1.5,
+        "specular": 0.5
+      }
+    ]
+  },
+  {
+    "name": "PRJ REAL | CMP pin",
+    "links": [
+      "Principled BSDF.BSDF -> Material Output.Surface",
+      "Texture Coordinate.Object -> Noise Texture.Vector",
+      "Noise Texture.Factor -> Map Range.Value",
+      "Map Range.Result -> Principled BSDF.Roughness",
+      "Noise Texture.Factor -> Bump.Height",
+      "Bump.Normal -> Principled BSDF.Normal"
+    ],
+    "principled": [
+      {
+        "name": "Principled BSDF",
+        "transmission": 0.0,
+        "ior": 1.5,
+        "specular": 0.5
+      }
+    ]
+  },
+  {
+    "name": "PH_coolant_vessel",
+    "links": [
+      "Principled BSDF.BSDF -> FX Materialize.Surface",
+      "FX Materialize.Shader -> Material Output.Surface"
+    ],
+    "principled": [
+      {
+        "name": "Principled BSDF",
+        "transmission": 0.0,
+        "ior": 1.5,
+        "specular": 0.5
+      }
+    ]
+  },
+  {
+    "name": "PH_pcb",
+    "links": [
+      "Principled BSDF.BSDF -> FX Materialize.Surface",
+      "FX Materialize.Shader -> Material Output.Surface"
+    ],
+    "principled": [
+      {
+        "name": "Principled BSDF",
+        "transmission": 0.0,
+        "ior": 1.5,
+        "specular": 0.5
+      }
+    ]
+  },
+  {
+    "name": "PH_cable",
+    "links": [
+      "Principled BSDF.BSDF -> FX Materialize.Surface",
+      "FX Materialize.Shader -> Material Output.Surface"
+    ],
+    "principled": [
+      {
+        "name": "Principled BSDF",
+        "transmission": 0.0,
+        "ior": 1.5,
+        "specular": 0.5
+      }
+    ]
+  },
+  {
+    "name": "PH_brass",
+    "links": [
+      "Principled BSDF.BSDF -> FX Materialize.Surface",
+      "FX Materialize.Shader -> Material Output.Surface"
+    ],
+    "principled": [
+      {
+        "name": "Principled BSDF",
+        "transmission": 0.0,
+        "ior": 1.5,
+        "specular": 0.5
+      }
+    ]
+  },
+  {
+    "name": "INT | Copper winding enamel",
+    "links": [
+      "Principled BSDF.BSDF -> Material Output.Surface",
+      "UV Map.UV -> Image Texture.Vector",
+      "Image Texture.Color -> Principled BSDF.Roughness",
+      "UV Map.UV -> Image Texture.001.Vector",
+      "Image Texture.001.Color -> Normal Map.Color",
+      "Normal Map.Normal -> Principled BSDF.Normal"
+    ],
+    "principled": [
+      {
+        "name": "Principled BSDF",
+        "transmission": 0.0,
+        "ior": 1.5,
+        "specular": 0.5
+      }
+    ]
+  },
+  {
+    "name": "PH_laser_g",
+    "links": [
+      "Principled BSDF.BSDF -> Material Output.Surface"
+    ],
+    "principled": [
+      {
+        "name": "Principled BSDF",
+        "transmission": 0.0,
+        "ior": 1.5,
+        "specular": 0.5
+      }
+    ]
+  },
+  {
+    "name": "PH_mirror",
+    "links": [
+      "Principled BSDF.BSDF -> Material Output.Surface",
+      "Texture Coordinate.Object -> Noise Texture.Vector",
+      "Noise Texture.Factor -> Bump.Height",
+      "Bump.Normal -> Principled BSDF.Normal"
+    ],
+    "principled": [
+      {
+        "name": "Principled BSDF",
+        "transmission": 0.0,
+        "ior": 1.5,
+        "specular": 0.5
+      }
+    ]
+  },
+  {
+    "name": "PH_black_anod",
+    "links": [
+      "Principled BSDF.BSDF -> FX Materialize.Surface",
+      "FX Materialize.Shader -> Material Output.Surface"
+    ],
+    "principled": [
+      {
+        "name": "Principled BSDF",
+        "transmission": 0.0,
+        "ior": 1.5,
+        "specular": 0.5
+      }
+    ]
+  },
+  {
+    "name": "INT | Nickel aluminum",
+    "links": [
+      "Principled BSDF.BSDF -> Material Output.Surface",
+      "UV Map.UV -> Image Texture.Vector",
+      "Image Texture.Color -> Principled BSDF.Roughness",
+      "UV Map.UV -> Image Texture.001.Vector",
+      "Image Texture.001.Color -> Normal Map.Color",
+      "Normal Map.Normal -> Principled BSDF.Normal"
+    ],
+    "principled": [
+      {
+        "name": "Principled BSDF",
+        "transmission": 0.0,
+        "ior": 1.5,
+        "specular": 0.5
+      }
+    ]
+  },
+  {
+    "name": "PRJ REAL | CMP tant",
+    "links": [
+      "Principled BSDF.BSDF -> Material Output.Surface",
+      "Texture Coordinate.Object -> Noise Texture.Vector",
+      "Noise Texture.Factor -> Map Range.Value",
+      "Map Range.Result -> Principled BSDF.Roughness",
+      "Noise Texture.Factor -> Bump.Height",
+      "Bump.Normal -> Principled BSDF.Normal"
+    ],
+    "principled": [
+      {
+        "name": "Principled BSDF",
+        "transmission": 0.0,
+        "ior": 1.5,
+        "specular": 0.5
+      }
+    ]
+  },
+  {
+    "name": "PH_hose",
+    "links": [
+      "Principled BSDF.BSDF -> FX Materialize.Surface",
+      "FX Materialize.Shader -> Material Output.Surface"
+    ],
+    "principled": [
+      {
+        "name": "Principled BSDF",
+        "transmission": 0.0,
+        "ior": 1.5,
+        "specular": 0.5
+      }
+    ]
+  },
+  {
+    "name": "INT | Silkscreen warm white",
+    "links": [
+      "Principled BSDF.BSDF -> Material Output.Surface"
+    ],
+    "principled": [
+      {
+        "name": "Principled BSDF",
+        "transmission": 0.0,
+        "ior": 1.5,
+        "specular": 0.5
+      }
+    ]
+  },
+  {
+    "name": "INT | Lead free solder",
+    "links": [
+      "Principled BSDF.BSDF -> Material Output.Surface",
+      "UV Map.UV -> Image Texture.Vector",
+      "Image Texture.Color -> Principled BSDF.Roughness",
+      "UV Map.UV -> Image Texture.001.Vector",
+      "Image Texture.001.Color -> Normal Map.Color",
+      "Normal Map.Normal -> Principled BSDF.Normal"
+    ],
+    "principled": [
+      {
+        "name": "Principled BSDF",
+        "transmission": 0.0,
+        "ior": 1.5,
+        "specular": 0.5
+      }
+    ]
+  },
+  {
+    "name": "PH_alu_dark",
+    "links": [
+      "Principled BSDF.BSDF -> FX Materialize.Surface",
+      "FX Materialize.Shader -> Material Output.Surface"
+    ],
+    "principled": [
+      {
+        "name": "Principled BSDF",
+        "transmission": 0.0,
+        "ior": 1.5,
+        "specular": 0.5
+      }
+    ]
+  },
+  {
+    "name": "PH_steel",
+    "links": [
+      "Principled BSDF.BSDF -> FX Materialize.Surface",
+      "FX Materialize.Shader -> Material Output.Surface"
+    ],
+    "principled": [
+      {
+        "name": "Principled BSDF",
+        "transmission": 0.0,
+        "ior": 1.5,
+        "specular": 0.5
+      }
+    ]
+  },
+  {
+    "name": "PH_rubber",
+    "links": [
+      "Principled BSDF.BSDF -> FX Materialize.Surface",
+      "FX Materialize.Shader -> Material Output.Surface"
+    ],
+    "principled": [
+      {
+        "name": "Principled BSDF",
+        "transmission": 0.0,
+        "ior": 1.5,
+        "specular": 0.5
+      }
+    ]
+  },
+  {
+    "name": "INT | Black anodized aluminum",
+    "links": [
+      "Principled BSDF.BSDF -> Material Output.Surface",
+      "UV Map.UV -> Image Texture.Vector",
+      "Image Texture.Color -> Principled BSDF.Roughness",
+      "UV Map.UV -> Image Texture.001.Vector",
+      "Image Texture.001.Color -> Normal Map.Color",
+      "Normal Map.Normal -> Principled BSDF.Normal"
+    ],
+    "principled": [
+      {
+        "name": "Principled BSDF",
+        "transmission": 0.0,
+        "ior": 1.5,
+        "specular": 0.5
+      }
+    ]
+  },
+  {
+    "name": "PH_ssd",
+    "links": [
+      "Principled BSDF.BSDF -> FX Materialize.Surface",
+      "FX Materialize.Shader -> Material Output.Surface"
+    ],
+    "principled": [
+      {
+        "name": "Principled BSDF",
+        "transmission": 0.0,
+        "ior": 1.5,
+        "specular": 0.5
+      }
+    ]
+  },
+  {
+    "name": "PH_fin",
+    "links": [
+      "Principled BSDF.BSDF -> FX Materialize.Surface",
+      "FX Materialize.Shader -> Material Output.Surface"
+    ],
+    "principled": [
+      {
+        "name": "Principled BSDF",
+        "transmission": 0.0,
+        "ior": 1.5,
+        "specular": 0.5
+      }
+    ]
+  },
+  {
+    "name": "PH_fan",
+    "links": [
+      "Principled BSDF.BSDF -> FX Materialize.Surface",
+      "FX Materialize.Shader -> Material Output.Surface"
+    ],
+    "principled": [
+      {
+        "name": "Principled BSDF",
+        "transmission": 0.0,
+        "ior": 1.5,
+        "specular": 0.5
+      }
+    ]
+  },
+  {
+    "name": "PRJ REAL | CMP nylon",
+    "links": [
+      "Principled BSDF.BSDF -> Material Output.Surface",
+      "Texture Coordinate.Object -> Noise Texture.Vector",
+      "Noise Texture.Factor -> Map Range.Value",
+      "Map Range.Result -> Principled BSDF.Roughness",
+      "Noise Texture.Factor -> Bump.Height",
+      "Bump.Normal -> Principled BSDF.Normal"
+    ],
+    "principled": [
+      {
+        "name": "Principled BSDF",
+        "transmission": 0.0,
+        "ior": 1.5,
+        "specular": 0.5
+      }
+    ]
+  },
+  {
+    "name": "PH_laser_r",
+    "links": [
+      "Principled BSDF.BSDF -> Material Output.Surface"
+    ],
+    "principled": [
+      {
+        "name": "Principled BSDF",
+        "transmission": 0.0,
+        "ior": 1.5,
+        "specular": 0.5
+      }
+    ]
+  },
+  {
+    "name": "INT | Capacitor sleeve",
+    "links": [
+      "Principled BSDF.BSDF -> Material Output.Surface",
+      "UV Map.UV -> Image Texture.Vector",
+      "Image Texture.Color -> Principled BSDF.Roughness",
+      "UV Map.UV -> Image Texture.001.Vector",
+      "Image Texture.001.Color -> Normal Map.Color",
+      "Normal Map.Normal -> Principled BSDF.Normal"
+    ],
+    "principled": [
+      {
+        "name": "Principled BSDF",
+        "transmission": 0.0,
+        "ior": 1.5,
+        "specular": 0.5
+      }
+    ]
+  },
+  {
+    "name": "PH_dmd",
+    "links": [
+      "Principled BSDF.BSDF -> Material Output.Surface",
+      "Texture Coordinate.Object -> Mapping.Vector",
+      "Mapping.Vector -> Checker Texture.Vector",
+      "Checker Texture.Color -> Bump.Height",
+      "Bump.Normal -> Principled BSDF.Normal",
+      "Layer Weight.Facing -> Color Ramp.Factor",
+      "Color Ramp.Color -> Principled BSDF.Specular Tint"
+    ],
+    "principled": [
+      {
+        "name": "Principled BSDF",
+        "transmission": 0.0,
+        "ior": 1.5,
+        "specular": 0.5
+      }
+    ]
+  },
+  {
+    "name": "PH_glass",
+    "links": [
+      "Principled BSDF.BSDF -> FX Materialize.Surface",
+      "FX Materialize.Shader -> Material Output.Surface"
+    ],
+    "principled": [
+      {
+        "name": "Principled BSDF",
+        "transmission": 0.0,
+        "ior": 1.5199999809265137,
+        "specular": 0.800000011920929
+      }
+    ]
+  },
+  {
+    "name": "PH_ceramic",
+    "links": [
+      "Principled BSDF.BSDF -> FX Materialize.Surface",
+      "FX Materialize.Shader -> Material Output.Surface"
+    ],
+    "principled": [
+      {
+        "name": "Principled BSDF",
+        "transmission": 0.0,
+        "ior": 1.5,
+        "specular": 0.5
+      }
+    ]
+  },
+  {
+    "name": "INT | Transformer tape",
+    "links": [
+      "Principled BSDF.BSDF -> Material Output.Surface"
+    ],
+    "principled": [
+      {
+        "name": "Principled BSDF",
+        "transmission": 0.0,
+        "ior": 1.5,
+        "specular": 0.5
+      }
+    ]
+  },
+  {
+    "name": "Brushed black metal brass",
+    "links": [
+      "Principled BSDF.BSDF -> Material Output.Surface",
+      "Image Texture.Color -> Displacement.Height",
+      "Displacement.Displacement -> Material Output.Displacement",
+      "Image Texture.001.Color -> Principled BSDF.Base Color",
+      "Image Texture.002.Color -> Principled BSDF.Metallic",
+      "Image Texture.003.Color -> Principled BSDF.Specular IOR Level",
+      "Image Texture.004.Color -> Invert Color.Color",
+      "Invert Color.Color -> Principled BSDF.Roughness",
+      "Image Texture.005.Color -> Normal Map.Color",
+      "Normal Map.Normal -> Principled BSDF.Normal",
+      "Reroute.Output -> Image Texture.001.Vector",
+      "Reroute.Output -> Image Texture.002.Vector",
+      "Reroute.Output -> Image Texture.003.Vector",
+      "Reroute.Output -> Image Texture.004.Vector",
+      "Reroute.Output -> Image Texture.Vector",
+      "Reroute.Output -> Image Texture.005.Vector",
+      "Mapping.Vector -> Reroute.Input",
+      "Texture Coordinate.UV -> Mapping.Vector"
+    ],
+    "principled": [
+      {
+        "name": "Principled BSDF",
+        "transmission": 0.0,
+        "ior": 1.5,
+        "specular": 0.5
+      }
+    ]
+  },
+  {
+    "name": "PH_zinc",
+    "links": [
+      "Principled BSDF.BSDF -> FX Materialize.Surface",
+      "FX Materialize.Shader -> Material Output.Surface"
+    ],
+    "principled": [
+      {
+        "name": "Principled BSDF",
+        "transmission": 0.0,
+        "ior": 1.5,
+        "specular": 0.5
+      }
+    ]
+  },
+  {
+    "name": "PH_alu",
+    "links": [
+      "Principled BSDF.BSDF -> FX Materialize.Surface",
+      "FX Materialize.Shader -> Material Output.Surface"
+    ],
+    "principled": [
+      {
+        "name": "Principled BSDF",
+        "transmission": 0.0,
+        "ior": 1.5,
+        "specular": 0.5
+      }
+    ]
+  },
+  {
+    "name": "PH_copper",
+    "links": [
+      "Principled BSDF.BSDF -> FX Materialize.Surface",
+      "FX Materialize.Shader -> Material Output.Surface"
+    ],
+    "principled": [
+      {
+        "name": "Principled BSDF",
+        "transmission": 0.0,
+        "ior": 1.5,
+        "specular": 0.5
+      }
+    ]
+  },
+  {
+    "name": "INT | Solder mask - deep green",
+    "links": [
+      "Principled BSDF.BSDF -> Material Output.Surface",
+      "UV Map.UV -> Image Texture.Vector",
+      "Image Texture.Color -> Principled BSDF.Roughness",
+      "UV Map.UV -> Image Texture.001.Vector",
+      "Image Texture.001.Color -> Normal Map.Color",
+      "Normal Map.Normal -> Principled BSDF.Normal"
+    ],
+    "principled": [
+      {
+        "name": "Principled BSDF",
+        "transmission": 0.0,
+        "ior": 1.5,
+        "specular": 0.5
+      }
+    ]
+  },
+  {
+    "name": "PH_filter",
+    "links": [
+      "Principled BSDF.BSDF -> FX Materialize.Surface",
+      "FX Materialize.Shader -> Material Output.Surface"
+    ],
+    "principled": [
+      {
+        "name": "Principled BSDF",
+        "transmission": 0.0,
+        "ior": 1.5,
+        "specular": 0.5
+      }
+    ]
+  },
+  {
+    "name": "PH_laser_b",
+    "links": [
+      "Principled BSDF.BSDF -> Material Output.Surface"
+    ],
+    "principled": [
+      {
+        "name": "Principled BSDF",
+        "transmission": 0.0,
+        "ior": 1.5,
+        "specular": 0.5
+      }
+    ]
+  },
+  {
+    "name": "INT | Black connector",
+    "links": [
+      "Principled BSDF.BSDF -> Material Output.Surface",
+      "UV Map.UV -> Image Texture.Vector",
+      "Image Texture.Color -> Principled BSDF.Roughness",
+      "UV Map.UV -> Image Texture.001.Vector",
+      "Image Texture.001.Color -> Normal Map.Color",
+      "Normal Map.Normal -> Principled BSDF.Normal"
+    ],
+    "principled": [
+      {
+        "name": "Principled BSDF",
+        "transmission": 0.0,
+        "ior": 1.5,
+        "specular": 0.5
+      }
+    ]
+  },
+  {
+    "name": "PH_gold",
+    "links": [
+      "Principled BSDF.BSDF -> FX Materialize.Surface",
+      "FX Materialize.Shader -> Material Output.Surface"
+    ],
+    "principled": [
+      {
+        "name": "Principled BSDF",
+        "transmission": 0.0,
+        "ior": 1.5,
+        "specular": 0.5
+      }
+    ]
+  },
+  {
+    "name": "PH_chip",
+    "links": [
+      "Principled BSDF.BSDF -> FX Materialize.Surface",
+      "FX Materialize.Shader -> Material Output.Surface"
+    ],
+    "principled": [
+      {
+        "name": "Principled BSDF",
+        "transmission": 0.0,
+        "ior": 1.5,
+        "specular": 0.5
+      }
+    ]
+  },
+  {
+    "name": "INT | ENIG contact",
+    "links": [
+      "Principled BSDF.BSDF -> Material Output.Surface"
+    ],
+    "principled": [
+      {
+        "name": "Principled BSDF",
+        "transmission": 0.0,
+        "ior": 1.5,
+        "specular": 0.5
+      }
+    ]
+  },
+  {
+    "name": "INT | Laser etched marking",
+    "links": [
+      "Principled BSDF.BSDF -> Material Output.Surface"
+    ],
+    "principled": [
+      {
+        "name": "Principled BSDF",
+        "transmission": 0.0,
+        "ior": 1.5,
+        "specular": 0.5
+      }
+    ]
+  },
+  {
+    "name": "INT | MLCC ceramic",
+    "links": [
+      "Principled BSDF.BSDF -> Material Output.Surface"
+    ],
+    "principled": [
+      {
+        "name": "Principled BSDF",
+        "transmission": 0.0,
+        "ior": 1.5,
+        "specular": 0.5
+      }
+    ]
+  },
+  {
+    "name": "PRJ REAL | CMP can",
+    "links": [
+      "Principled BSDF.BSDF -> Material Output.Surface",
+      "Texture Coordinate.Object -> Noise Texture.Vector",
+      "Noise Texture.Factor -> Map Range.Value",
+      "Map Range.Result -> Principled BSDF.Roughness",
+      "Noise Texture.Factor -> Bump.Height",
+      "Bump.Normal -> Principled BSDF.Normal"
+    ],
+    "principled": [
+      {
+        "name": "Principled BSDF",
+        "transmission": 0.0,
+        "ior": 1.5,
+        "specular": 0.5
+      }
+    ]
+  },
+  {
+    "name": "PRJ REAL | CMP epoxy",
+    "links": [
+      "Principled BSDF.BSDF -> Material Output.Surface",
+      "Texture Coordinate.Object -> Noise Texture.Vector",
+      "Noise Texture.Factor -> Map Range.Value",
+      "Map Range.Result -> Principled BSDF.Roughness",
+      "Noise Texture.Factor -> Bump.Height",
+      "Bump.Normal -> Principled BSDF.Normal"
+    ],
+    "principled": [
+      {
+        "name": "Principled BSDF",
+        "transmission": 0.0,
+        "ior": 1.5,
+        "specular": 0.5
+      }
+    ]
+  },
+  {
+    "name": "INT | Buried copper under mask",
+    "links": [
+      "Principled BSDF.BSDF -> Material Output.Surface"
+    ],
+    "principled": [
+      {
+        "name": "Principled BSDF",
+        "transmission": 0.0,
+        "ior": 1.5,
+        "specular": 0.5
+      }
+    ]
+  },
+  {
+    "name": "PH_display",
+    "links": [
+      "Principled BSDF.BSDF -> FX Materialize.Surface",
+      "FX Materialize.Shader -> Material Output.Surface"
+    ],
+    "principled": [
+      {
+        "name": "Principled BSDF",
+        "transmission": 0.0,
+        "ior": 1.5,
+        "specular": 0.5
+      }
+    ]
+  },
+  {
+    "name": "PRJ REAL | CMP sleeve",
+    "links": [
+      "Principled BSDF.BSDF -> Material Output.Surface",
+      "Texture Coordinate.Object -> Noise Texture.Vector",
+      "Noise Texture.Factor -> Map Range.Value",
+      "Map Range.Result -> Principled BSDF.Roughness",
+      "Noise Texture.Factor -> Bump.Height",
+      "Bump.Normal -> Principled BSDF.Normal"
+    ],
+    "principled": [
+      {
+        "name": "Principled BSDF",
+        "transmission": 0.0,
+        "ior": 1.5,
+        "specular": 0.5
+      }
+    ]
+  },
+  {
+    "name": "INT | Ferrite",
+    "links": [
+      "Principled BSDF.BSDF -> Material Output.Surface",
+      "UV Map.UV -> Image Texture.Vector",
+      "Image Texture.Color -> Principled BSDF.Roughness",
+      "UV Map.UV -> Image Texture.001.Vector",
+      "Image Texture.001.Color -> Normal Map.Color",
+      "Normal Map.Normal -> Principled BSDF.Normal"
+    ],
+    "principled": [
+      {
+        "name": "Principled BSDF",
+        "transmission": 0.0,
+        "ior": 1.5,
+        "specular": 0.5
+      }
+    ]
+  },
+  {
+    "name": "PH_accent",
+    "links": [
+      "Principled BSDF.BSDF -> FX Materialize.Surface",
+      "FX Materialize.Shader -> Material Output.Surface"
+    ],
+    "principled": [
+      {
+        "name": "Principled BSDF",
+        "transmission": 0.0,
+        "ior": 1.5,
+        "specular": 0.5
+      }
+    ]
+  },
+  {
+    "name": "PH_connector_w",
+    "links": [
+      "Principled BSDF.BSDF -> FX Materialize.Surface",
+      "FX Materialize.Shader -> Material Output.Surface"
+    ],
+    "principled": [
+      {
+        "name": "Principled BSDF",
+        "transmission": 0.0,
+        "ior": 1.5,
+        "specular": 0.5
+      }
+    ]
+  },
+  {
+    "name": "INT | Capacitor polarity stripe",
+    "links": [
+      "Principled BSDF.BSDF -> Material Output.Surface"
+    ],
+    "principled": [
+      {
+        "name": "Principled BSDF",
+        "transmission": 0.0,
+        "ior": 1.5,
+        "specular": 0.5
+      }
+    ]
+  },
+  {
+    "name": "PRJ REAL | CMP mlcc",
+    "links": [
+      "Principled BSDF.BSDF -> Material Output.Surface",
+      "Texture Coordinate.Object -> Noise Texture.Vector",
+      "Noise Texture.Factor -> Map Range.Value",
+      "Map Range.Result -> Principled BSDF.Roughness",
+      "Noise Texture.Factor -> Bump.Height",
+      "Bump.Normal -> Principled BSDF.Normal"
+    ],
+    "principled": [
+      {
+        "name": "Principled BSDF",
+        "transmission": 0.0,
+        "ior": 1.5,
+        "specular": 0.5
+      }
+    ]
+  },
+  {
+    "name": "PH_epp",
+    "links": [
+      "Principled BSDF.BSDF -> FX Materialize.Surface",
+      "FX Materialize.Shader -> Material Output.Surface"
+    ],
+    "principled": [
+      {
+        "name": "Principled BSDF",
+        "transmission": 0.0,
+        "ior": 1.5,
+        "specular": 0.5
+      }
+    ]
+  },
+  {
+    "name": "INT | Tinned steel",
+    "links": [
+      "Principled BSDF.BSDF -> Material Output.Surface",
+      "UV Map.UV -> Image Texture.Vector",
+      "Image Texture.Color -> Principled BSDF.Roughness",
+      "UV Map.UV -> Image Texture.001.Vector",
+      "Image Texture.001.Color -> Normal Map.Color",
+      "Normal Map.Normal -> Principled BSDF.Normal"
+    ],
+    "principled": [
+      {
+        "name": "Principled BSDF",
+        "transmission": 0.0,
+        "ior": 1.5,
+        "specular": 0.5
+      }
+    ]
+  },
+  {
+    "name": "PH_housing",
+    "links": [
+      "Principled BSDF.BSDF -> FX Materialize.Surface",
+      "FX Materialize.Shader -> Material Output.Surface"
+    ],
+    "principled": [
+      {
+        "name": "Principled BSDF",
+        "transmission": 0.0,
+        "ior": 1.5,
+        "specular": 0.5
+      }
+    ]
+  },
+  {
+    "name": "INT | Epoxy IC mold",
+    "links": [
+      "Principled BSDF.BSDF -> Material Output.Surface",
+      "UV Map.UV -> Image Texture.Vector",
+      "Image Texture.Color -> Principled BSDF.Roughness",
+      "UV Map.UV -> Image Texture.001.Vector",
+      "Image Texture.001.Color -> Normal Map.Color",
+      "Normal Map.Normal -> Principled BSDF.Normal"
+    ],
+    "principled": [
+      {
+        "name": "Principled BSDF",
+        "transmission": 0.0,
+        "ior": 1.5,
+        "specular": 0.5
+      }
+    ]
+  },
+  {
+    "name": "INT | FR4 laminated edge",
+    "links": [
+      "Principled BSDF.BSDF -> Material Output.Surface",
+      "UV Map.UV -> Image Texture.Vector",
+      "Image Texture.Color -> Principled BSDF.Roughness",
+      "UV Map.UV -> Image Texture.001.Vector",
+      "Image Texture.001.Color -> Normal Map.Color",
+      "Normal Map.Normal -> Principled BSDF.Normal"
+    ],
+    "principled": [
+      {
+        "name": "Principled BSDF",
+        "transmission": 0.0,
+        "ior": 1.5,
+        "specular": 0.5
+      }
+    ]
+  }
+]

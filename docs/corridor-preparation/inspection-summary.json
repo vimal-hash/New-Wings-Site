@@ -1,0 +1,227 @@
+{
+  "matchingObjects": 58,
+  "mismatches": [
+    {
+      "name": "Swoosh \u2022 Blue.001",
+      "missing": true
+    },
+    {
+      "name": "Swoosh \u2022 Orange.001",
+      "missing": true
+    },
+    {
+      "name": "Swoosh \u2022 Red.001",
+      "missing": true
+    }
+  ],
+  "maximumError": 3.8934205804253e-05,
+  "sourceLights": [
+    {
+      "name": "Corridor \u2022 Soft overhead material fill",
+      "type": "AREA",
+      "energy": 1.100000023841858,
+      "size": 0.41999998688697815,
+      "location": [
+        -1.073715329170227,
+        19.839754104614258,
+        4.192749977111816
+      ],
+      "receivers": [
+        "Plain floor \u2022 red to connecting plane",
+        "Swoosh \u2022 Red",
+        "Swoosh \u2022 Blue",
+        "Swoosh \u2022 Orange",
+        "Emblem \u2022 Eagle and Globe \u2022 Sculpted Bronze"
+      ]
+    },
+    {
+      "name": "Corridor | Soft stone wash A",
+      "type": "AREA",
+      "energy": 1.0499999523162842,
+      "size": 0.550000011920929,
+      "location": [
+        0.11804628372192383,
+        19.755788803100586,
+        5.4474778175354
+      ],
+      "receivers": [
+        "Plain floor \u2022 red to connecting plane"
+      ]
+    },
+    {
+      "name": "Corridor | Soft stone wash B",
+      "type": "AREA",
+      "energy": 0.8500000238418579,
+      "size": 0.550000011920929,
+      "location": [
+        -0.921682596206665,
+        19.74700355529785,
+        4.802661895751953
+      ],
+      "receivers": [
+        "Plain floor \u2022 red to connecting plane"
+      ]
+    },
+    {
+      "name": "Exit | Soft curve highlight",
+      "type": "AREA",
+      "energy": 1.2999999523162842,
+      "size": 0.5199999809265137,
+      "location": [
+        -1.1210753917694092,
+        19.914445877075195,
+        4.3089470863342285
+      ],
+      "receivers": [
+        "Exit | Smooth stone to blue transition",
+        "Exit | Left continuous side",
+        "Exit | Right continuous side"
+      ]
+    },
+    {
+      "name": "Full logo \u2022 Key",
+      "type": "AREA",
+      "energy": 42.0,
+      "size": 4.0,
+      "location": [
+        3.79512882232666,
+        24.8319091796875,
+        7.532608985900879
+      ],
+      "receivers": [
+        "Red corridor wall \u2022 separate from logo",
+        "Connecting plane \u2022 joins yellow tip",
+        "Plain floor \u2022 red to connecting plane",
+        "Swoosh \u2022 Red",
+        "Swoosh \u2022 Blue",
+        "Swoosh \u2022 Orange",
+        "Emblem \u2022 Eagle and Globe \u2022 Sculpted Bronze"
+      ]
+    },
+    {
+      "name": "Full logo \u2022 Fill",
+      "type": "AREA",
+      "energy": 13.0,
+      "size": 4.0,
+      "location": [
+        -3.7224440574645996,
+        24.782808303833008,
+        2.5593101978302
+      ],
+      "receivers": [
+        "Red corridor wall \u2022 separate from logo",
+        "Connecting plane \u2022 joins yellow tip",
+        "Plain floor \u2022 red to connecting plane",
+        "Swoosh \u2022 Red",
+        "Swoosh \u2022 Blue",
+        "Swoosh \u2022 Orange",
+        "Emblem \u2022 Eagle and Globe \u2022 Sculpted Bronze"
+      ]
+    },
+    {
+      "name": "Full logo \u2022 Edge",
+      "type": "AREA",
+      "energy": 20.0,
+      "size": 2.0,
+      "location": [
+        -2.553431987762451,
+        20.489059448242188,
+        5.358798980712891
+      ],
+      "receivers": [
+        "Red corridor wall \u2022 separate from logo",
+        "Connecting plane \u2022 joins yellow tip",
+        "Plain floor \u2022 red to connecting plane",
+        "Swoosh \u2022 Red",
+        "Swoosh \u2022 Blue",
+        "Swoosh \u2022 Orange",
+        "Emblem \u2022 Eagle and Globe \u2022 Sculpted Bronze"
+      ]
+    },
+    {
+      "name": "Spectral curtain \u2022 relief grazing softbox",
+      "type": "AREA",
+      "energy": 0.1599999964237213,
+      "size": 0.30000001192092896,
+      "location": [
+        0.21236178278923035,
+        20.070520401000977,
+        4.1846923828125
+      ],
+      "receivers": [
+        "Background \u2022 luminous spectral streaks"
+      ]
+    },
+    {
+      "name": "Spectral glass \u2022 narrow highlight",
+      "type": "AREA",
+      "energy": 0.3499999940395355,
+      "size": 0.02500000037252903,
+      "location": [
+        0.09511512517929077,
+        20.051959991455078,
+        4.4908061027526855
+      ],
+      "receivers": [
+        "Background \u2022 luminous spectral streaks"
+      ]
+    },
+    {
+      "name": "Exterior \u2022 left satin grazing ribbon",
+      "type": "AREA",
+      "energy": 0.4167614281177521,
+      "size": 0.050958260893821716,
+      "location": [
+        -1.1399511098861694,
+        19.68181037902832,
+        4.308927536010742
+      ],
+      "receivers": [
+        "Red corridor wall \u2022 separate from logo",
+        "Connecting plane \u2022 joins yellow tip",
+        "Red corridor wall \u2022 separate from logo \u2022 restrained roof datum",
+        "Connecting plane \u2022 joins yellow tip \u2022 restrained roof datum"
+      ]
+    },
+    {
+      "name": "Exterior \u2022 right satin grazing ribbon",
+      "type": "AREA",
+      "energy": 0.4969078600406647,
+      "size": 0.06369782984256744,
+      "location": [
+        -0.9718339443206787,
+        19.702653884887695,
+        4.300161361694336
+      ],
+      "receivers": [
+        "Red corridor wall \u2022 separate from logo",
+        "Connecting plane \u2022 joins yellow tip",
+        "Red corridor wall \u2022 separate from logo \u2022 restrained roof datum",
+        "Connecting plane \u2022 joins yellow tip \u2022 restrained roof datum"
+      ]
+    },
+    {
+      "name": "Corridor \u2022 wall fill without reflected softbox",
+      "type": "AREA",
+      "energy": 1.100000023841858,
+      "size": 0.41999998688697815,
+      "location": [
+        -1.073715329170227,
+        19.839754104614258,
+        4.192749977111816
+      ],
+      "receivers": [
+        "Red corridor wall \u2022 separate from logo",
+        "Connecting plane \u2022 joins yellow tip",
+        "Red corridor wall \u2022 separate from logo \u2022 restrained roof datum",
+        "Connecting plane \u2022 joins yellow tip \u2022 restrained roof datum"
+      ]
+    }
+  ],
+  "layoutWorld": "Layout review world",
+  "sourceView": [
+    "AgX",
+    "AgX - Medium High Contrast",
+    -0.6499999761581421
+  ]
+}

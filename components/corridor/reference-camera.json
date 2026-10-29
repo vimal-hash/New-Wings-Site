@@ -1,0 +1,23 @@
+{
+  "source": "D:\\CodexOutputs\\Approved_Theatre_Corridor_20261020\\Theatre_Corridor_Logo_marked_layout.blend; original camera framing translated with the theatre",
+  "screenCentre": [
+    0.010995,
+    3.24,
+    25.198
+  ],
+  "start": [
+    0.010995,
+    3.24,
+    15.598
+  ],
+  "stop": [
+    0.010995,
+    3.24,
+    3.8000000000000007
+  ],
+  "fov": 40,
+  "near": 0.05,
+  "far": 1200,
+  "holdSeconds": 2,
+  "pullbackSeconds": 2.5
+}

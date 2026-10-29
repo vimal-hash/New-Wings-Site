@@ -1,0 +1,75 @@
+{
+  "revision": 16,
+  "authoringCount": 238353,
+  "sourceLogoDiameter": 3.5,
+  "bounds": {
+    "min": [
+      -10.964795112609863,
+      -7.222548484802246,
+      -1.4139504432678223
+    ],
+    "max": [
+      10.99783706665039,
+      7.305018901824951,
+      1.5683135986328125
+    ]
+  },
+  "positionMaxError": 0.00020239494390428088,
+  "radiusMax": 0.061,
+  "tiers": {
+    "mobile": {
+      "url": "/models/logo-eye/eye-r16-mobile.bin.gz",
+      "count": 49152,
+      "bytes": 352638,
+      "decodedBytes": 442416,
+      "gpuAttributeBytes": 442368,
+      "sha256": "3f4c5999fef94125d168a613139048dbcbf8656fc5231ba623dbdd4d9597b423",
+      "regions": {
+        "0": 42550,
+        "1": 4464,
+        "2": 911,
+        "3": 1227
+      }
+    },
+    "laptop": {
+      "url": "/models/logo-eye/eye-r16-laptop.bin.gz",
+      "count": 98304,
+      "bytes": 687535,
+      "decodedBytes": 884784,
+      "gpuAttributeBytes": 884736,
+      "sha256": "44e1f5b44df4601336a26286534a97487a4493e158d183a34bcdcc9a3ef6ff90",
+      "regions": {
+        "0": 85109,
+        "1": 8923,
+        "2": 1805,
+        "3": 2467
+      }
+    },
+    "desktop": {
+      "url": "/models/logo-eye/eye-r16-desktop.bin.gz",
+      "count": 238353,
+      "bytes": 1625055,
+      "decodedBytes": 2145225,
+      "gpuAttributeBytes": 2145177,
+      "sha256": "364dc10846477a9448412ad24ab114efb17cd50f47c08ae07c2e72d4e67beeb4",
+      "regions": {
+        "0": 206285,
+        "1": 21648,
+        "2": 4402,
+        "3": 6018
+      }
+    }
+  },
+  "atlas": {
+    "url": "/textures/logo-eye/steel-grains-db96b1dca62f.ktx2?v=db96b1dca62f",
+    "bytes": 155101,
+    "width": 512,
+    "height": 512,
+    "columns": 8,
+    "rows": 8,
+    "quadPadding": 1.4666666666666668,
+    "description": "Original Blender worn-steel grains under the approved study lighting"
+  },
+  "worker": "/models/logo-eye/decode-worker.js",
+  "source": "Approved original Blender revision 16; no third-party artwork"
+}

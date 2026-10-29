@@ -1,0 +1,4 @@
+import bpy, os
+print(bpy.app.binary_path, bpy.app.version_string, repr(bpy.data.filepath))
+src=r"D:\CodexOutputs\Theatre_Optimization_20261017\Theatre_Moon_Projector_optimized.blend"
+print(os.path.getsize(src))

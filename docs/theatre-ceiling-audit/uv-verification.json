@@ -1,0 +1,9 @@
+{
+  "resolution": 2048,
+  "triangles": 4992,
+  "uvZeroAreaTriangles": 0,
+  "coveredPixelCentres": 1376489,
+  "overlappingPixelCentres": 0,
+  "occupancy": 0.32818055152893066,
+  "limit": "Pixel-centre raster audit at the actual 2K bake size; not an analytic subpixel overlap proof."
+}

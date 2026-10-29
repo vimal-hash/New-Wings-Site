@@ -1,0 +1,38 @@
+{
+  "comparison": "4K diffuse/2K normal/1K roughness vs 2K diffuse/1K normal/512 roughness. Same camera and reflection settings. Not a Cycles equivalence claim.",
+  "results": [
+    {
+      "region": "ceilingUnchanged",
+      "rectangle": {
+        "left": 80,
+        "top": 100,
+        "width": 900,
+        "height": 70
+      },
+      "rootMeanSquareDifference8bit": 0,
+      "maximumChannelDifference8bit": 0
+    },
+    {
+      "region": "woodDetail",
+      "rectangle": {
+        "left": 610,
+        "top": 638,
+        "width": 70,
+        "height": 75
+      },
+      "rootMeanSquareDifference8bit": 2.3833682981118223,
+      "maximumChannelDifference8bit": 10
+    },
+    {
+      "region": "frontFloor",
+      "rectangle": {
+        "left": 580,
+        "top": 535,
+        "width": 130,
+        "height": 40
+      },
+      "rootMeanSquareDifference8bit": 0.6525590650150631,
+      "maximumChannelDifference8bit": 2
+    }
+  ]
+}

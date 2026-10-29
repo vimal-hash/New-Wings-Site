@@ -1,0 +1,21 @@
+{
+  "Build": "pass",
+  "TypeScript": "pass",
+  "TargetedLint": "pass",
+  "Tests": 46,
+  "ProtectedAssetsChecked": 127,
+  "ProtectedAssetsChanged": 0,
+  "Laptop": {
+    "PageReturnDelayMs": 26.1,
+    "MovingPausesOver50Ms": 0,
+    "Errors": 0,
+    "SphereArrivalMs": 1306.9
+  },
+  "PhysicalDevicesMeasured": false,
+  "PortraitMobileProfile": {
+    "Errors": 0,
+    "MovingPausesOver50Ms": 0,
+    "SphereArrivalMs": 1307.0,
+    "PageReturnDelayMs": 26.0
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "build": "pass",
+  "targetedLint": "pass",
+  "regressionTests": 41,
+  "publicAssetsChecked": 127,
+  "publicAssetsChanged": 0,
+  "openingGPUPreparedMs": 1242.8,
+  "openingMovementStartMs": 3102.6,
+  "openingMovementSettledMs": 5610.2,
+  "projectorLoadStartMs": 5623.3,
+  "corridorLoadStartMs": 5623.6,
+  "movingPausesOver50ms": [],
+  "errors": [],
+  "lighting": {
+    "roomLinearMultiplier": 0.1,
+    "floorLinearMultiplier": 0.25
+  },
+  "scope": "Local workstation browser; physical-device verification pending"
+}

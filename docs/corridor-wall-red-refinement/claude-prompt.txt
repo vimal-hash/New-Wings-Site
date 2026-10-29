@@ -1,0 +1,23 @@
+Rebake ONLY the LEFT CORRIDOR WALL using the Blender lighting adjustment prepared by ChatGPT.
+
+Project: D:/New folio/new site code/new_site_three
+Prepared Blender copy: D:/CodexOutputs/Corridor_Left_Wall_Lighting_20261024/Left_Wall_Lighting_Prepared.blend
+Read docs/corridor-wall-red-refinement/preparation.json and inspect blender-before.png / blender-after.png in that folder.
+
+Target runtime item: corridor-wall-red. This is the wall on the LEFT at the page-panel camera, confirmed by ray intersections against the actual runtime triangles. Use its exact existing object name from scripts/surface-bake/items.json (the working copy contains the existing encoded name).
+
+The source and old bake are both too dark. This is an intentional wall-only lighting improvement, not an attempt to reproduce the old near-black reference. The prepared material is LEFT WALL | Soft readable charcoal fill. It preserves the source steel graph and adds restrained camera-visible ambient fill using the existing textured albedo. Height fade uses wall-relative Generated.Z, smootherstep0.008–0.26; peak ambient strength0.18. The floor junction stays dark. Global exposure, other objects, physical lighting rig and original source files are unchanged. No bake or website change has been made by ChatGPT.
+
+IMPORTANT: The target uses an OBJECT-linked material slot. Use ob.material_slots[0].material, not merely ob.data.materials[0]. The prepared active slot is the intended modified material. Preserve that override when evaluating/triangulating the mesh for baking.
+
+Use an item-specific offline source override for this bake. Do NOT redirect the global corridor source or rebake other items. Keep the runtime item's source group as corridor, and retain its existing UV sidecar, topology and triangle mapping. The new Generated coordinate is intentional; do not replace it with the old local Object-height coordinate, and do not join this receiver with unrelated geometry.
+
+Keep one active direct surface bake using the existing bend camera. Validate that the Is Camera Ray branches, including the new fill, are captured correctly. Compare at the page-panel pose in page-pose.json and the entry/bend/exit journey views. These are verification views, not multiple runtime bakes. If single-view glossy response still loses wall visibility at the page pose, diagnose it instead of blindly increasing exposure.
+
+Preserve EVERY GLB byte-for-byte, geometry, normals, transforms, cameras, animation, UI, all completed surfaces, right corridor wall, floor, lights, caps, roof datums, Slide A/B, logos, projector, sofas and moon designs. No extra runtime lights, multi-view textures, camera projection, material switching or global exposure changes.
+
+Use only the existing wall-red runtime folder and its own authoring/audit folder. Keep the current atlas resolution unless evidence justifies otherwise. Encode one KTX2 texture with correct sRGB, mips, padding and anisotropy. Use a fresh texture URL/version to avoid stale browser caches, and remove the rejected old wall texture only after verification. Do not remove the accepted UV sidecar.
+
+Check matched-camera Blender/R3F appearance with the actual compressed texture. Verify all changed screen pixels belong to the wall, check the real page-panel view with its white panel, scroll journey and orbit, run production build/relevant checks and confirm protected hashes. Leave the preview running.
+
+Deliver the actual R3F screenshot showing the brighter left wall at the page-panel view, Blender comparison, preview link, final wall bytes, checks and limitations. Do not change or start another item. No commit/deployment.

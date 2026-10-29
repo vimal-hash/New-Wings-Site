@@ -1,0 +1,14 @@
+{
+  "sourceTriangles": 63788,
+  "retainedDiagnosticTriangles": 59684,
+  "replacementTriangles": 4104,
+  "combinedTriangles": 63788,
+  "unchangedNonFloorAttributes": true,
+  "originalGlbUnchanged": true,
+  "unchangedModelFiles": 20,
+  "vertexChecks": 8208,
+  "maximumPositionErrorMetres": 0.0000060351773123906975,
+  "texturesOnReplacementGeometry": 0,
+  "compressedFloorBytes": 143366691,
+  "note": "No triangle reduction or new floor geometry. Position error is export quantization. Visual reflection fidelity and device FPS are separate checks."
+}

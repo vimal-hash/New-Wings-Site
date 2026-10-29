@@ -1,0 +1,38 @@
+[
+  {
+    "file": "blender-opening.png",
+    "position": [
+      0.0,
+      22.200000762939453,
+      3.2200000286102295
+    ],
+    "target": [
+      0,
+      0.802,
+      3.22
+    ],
+    "verticalFov": 40,
+    "resolution": [
+      1600,
+      788
+    ]
+  },
+  {
+    "file": "blender-left-wall.png",
+    "position": [
+      0.0,
+      22.200000762939453,
+      3.2200000286102295
+    ],
+    "target": [
+      6,
+      10,
+      3.45
+    ],
+    "verticalFov": 48,
+    "resolution": [
+      1600,
+      900
+    ]
+  }
+]

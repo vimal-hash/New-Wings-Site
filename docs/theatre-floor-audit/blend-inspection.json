@@ -1,0 +1,472 @@
+[
+  {
+    "source": "D:\\CodexOutputs\\Theatre_Optimization_20261017\\Theatre_Moon_Projector_optimized.blend",
+    "objects": [
+      {
+        "name": "ET | Aisle -7.4 row 2 tread 1",
+        "vertices": 296,
+        "triangles": 444,
+        "evaluated_triangles": 3996,
+        "uv_layers": [
+          "PBR_Metric",
+          "PaintUV",
+          "automap",
+          "FloorUV_planks"
+        ],
+        "materials": [
+          "Wood Floor Walnut"
+        ],
+        "material_face_counts": {
+          "0": 222
+        },
+        "world_matrix": [
+          [
+            1.0,
+            0.0,
+            0.0,
+            -7.400000095367432
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            20.126602172851562
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            0.18000000715255737
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      {
+        "name": "ET | Foundation slab",
+        "vertices": 8,
+        "triangles": 12,
+        "evaluated_triangles": 108,
+        "uv_layers": [
+          "PBR_Metric",
+          "PaintUV"
+        ],
+        "materials": [
+          "ET PBR | NOIR / Honed black basalt"
+        ],
+        "material_face_counts": {
+          "0": 6
+        },
+        "world_matrix": [
+          [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            10.399999618530273
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            -0.20000000298023224
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      }
+    ],
+    "materials": [
+      {
+        "name": "ET PBR | NOIR / Honed black basalt",
+        "node_count": 26,
+        "images": [
+          {
+            "name": "grey_plaster_Diffuse.png",
+            "size": [
+              2048,
+              2048
+            ],
+            "packed": true,
+            "external_exists": true,
+            "colour_space": "sRGB"
+          },
+          {
+            "name": "grey_plaster_rough.png",
+            "size": [
+              2048,
+              2048
+            ],
+            "packed": true,
+            "external_exists": true,
+            "colour_space": "Non-Color"
+          },
+          {
+            "name": "grey_plaster_nor_gl.png",
+            "size": [
+              2048,
+              2048
+            ],
+            "packed": true,
+            "external_exists": true,
+            "colour_space": "Non-Color"
+          },
+          {
+            "name": "grey_plaster_Displacement.png",
+            "size": [
+              2048,
+              2048
+            ],
+            "packed": true,
+            "external_exists": true,
+            "colour_space": "Non-Color"
+          },
+          {
+            "name": "PAINT | Honed black basalt",
+            "size": [
+              512,
+              512
+            ],
+            "packed": true,
+            "external_exists": true,
+            "colour_space": "Non-Color"
+          }
+        ]
+      },
+      {
+        "name": "Wood Floor Walnut",
+        "node_count": 43,
+        "images": [
+          {
+            "name": "wood-smooth-10x.jpg",
+            "size": [
+              1024,
+              1024
+            ],
+            "packed": true,
+            "external_exists": false,
+            "colour_space": "sRGB"
+          },
+          {
+            "name": "wood-smooth-3.jpg",
+            "size": [
+              1024,
+              1024
+            ],
+            "packed": true,
+            "external_exists": false,
+            "colour_space": "sRGB"
+          },
+          {
+            "name": "floorboards_normal.jpg",
+            "size": [
+              2048,
+              2048
+            ],
+            "packed": true,
+            "external_exists": false,
+            "colour_space": "Non-Color"
+          },
+          {
+            "name": "bump_wood_05k.jpg",
+            "size": [
+              256,
+              256
+            ],
+            "packed": true,
+            "external_exists": false,
+            "colour_space": "Non-Color"
+          },
+          {
+            "name": "wood-smooth-3_spec.jpg",
+            "size": [
+              1024,
+              1024
+            ],
+            "packed": true,
+            "external_exists": false,
+            "colour_space": "Non-Color"
+          },
+          {
+            "name": "wood-83_diffuse.jpg.001",
+            "size": [
+              1024,
+              1024
+            ],
+            "packed": true,
+            "external_exists": false,
+            "colour_space": "sRGB"
+          },
+          {
+            "name": "wood-smooth-10_spec.jpg",
+            "size": [
+              1024,
+              1024
+            ],
+            "packed": true,
+            "external_exists": false,
+            "colour_space": "Non-Color"
+          },
+          {
+            "name": "floorboards_displacement.jpg",
+            "size": [
+              2048,
+              2048
+            ],
+            "packed": true,
+            "external_exists": false,
+            "colour_space": "Non-Color"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "source": "D:\\CodexOutputs\\Approved_Theatre_Corridor_20261020\\Theatre_Corridor_Logo_marked_layout.blend",
+    "objects": [
+      {
+        "name": "THEATRE | ET | Aisle -7.4 row 2 tread 1",
+        "vertices": 2072,
+        "triangles": 3996,
+        "evaluated_triangles": 3996,
+        "uv_layers": [
+          "PBR_Metric",
+          "PaintUV",
+          "automap",
+          "FloorUV_planks"
+        ],
+        "materials": [
+          "Wood Floor Walnut.002"
+        ],
+        "material_face_counts": {
+          "0": 1998
+        },
+        "world_matrix": [
+          [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      },
+      {
+        "name": "THEATRE | ET | Foundation slab",
+        "vertices": 56,
+        "triangles": 108,
+        "evaluated_triangles": 108,
+        "uv_layers": [
+          "PBR_Metric",
+          "PaintUV"
+        ],
+        "materials": [
+          "ET PBR | NOIR / Honed black basalt"
+        ],
+        "material_face_counts": {
+          "0": 54
+        },
+        "world_matrix": [
+          [
+            1.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0,
+            0.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            0.0,
+            0.0,
+            1.0
+          ]
+        ]
+      }
+    ],
+    "materials": [
+      {
+        "name": "ET PBR | NOIR / Honed black basalt",
+        "node_count": 26,
+        "images": [
+          {
+            "name": "grey_plaster_Diffuse.png",
+            "size": [
+              2048,
+              2048
+            ],
+            "packed": true,
+            "external_exists": true,
+            "colour_space": "sRGB"
+          },
+          {
+            "name": "grey_plaster_rough.png",
+            "size": [
+              2048,
+              2048
+            ],
+            "packed": true,
+            "external_exists": true,
+            "colour_space": "Non-Color"
+          },
+          {
+            "name": "grey_plaster_nor_gl.png",
+            "size": [
+              2048,
+              2048
+            ],
+            "packed": true,
+            "external_exists": true,
+            "colour_space": "Non-Color"
+          },
+          {
+            "name": "grey_plaster_Displacement.png",
+            "size": [
+              2048,
+              2048
+            ],
+            "packed": true,
+            "external_exists": true,
+            "colour_space": "Non-Color"
+          },
+          {
+            "name": "PAINT | Honed black basalt",
+            "size": [
+              512,
+              512
+            ],
+            "packed": true,
+            "external_exists": true,
+            "colour_space": "Non-Color"
+          }
+        ]
+      },
+      {
+        "name": "Wood Floor Walnut.002",
+        "node_count": 43,
+        "images": [
+          {
+            "name": "wood-smooth-10x.jpg.002",
+            "size": [
+              1024,
+              1024
+            ],
+            "packed": true,
+            "external_exists": false,
+            "colour_space": "sRGB"
+          },
+          {
+            "name": "wood-smooth-3.jpg.002",
+            "size": [
+              1024,
+              1024
+            ],
+            "packed": true,
+            "external_exists": false,
+            "colour_space": "sRGB"
+          },
+          {
+            "name": "floorboards_normal.jpg.002",
+            "size": [
+              2048,
+              2048
+            ],
+            "packed": true,
+            "external_exists": false,
+            "colour_space": "Non-Color"
+          },
+          {
+            "name": "bump_wood_05k.jpg.002",
+            "size": [
+              256,
+              256
+            ],
+            "packed": true,
+            "external_exists": false,
+            "colour_space": "Non-Color"
+          },
+          {
+            "name": "wood-smooth-3_spec.jpg.002",
+            "size": [
+              1024,
+              1024
+            ],
+            "packed": true,
+            "external_exists": false,
+            "colour_space": "Non-Color"
+          },
+          {
+            "name": "wood-83_diffuse.jpg.003",
+            "size": [
+              1024,
+              1024
+            ],
+            "packed": true,
+            "external_exists": false,
+            "colour_space": "sRGB"
+          },
+          {
+            "name": "wood-smooth-10_spec.jpg.002",
+            "size": [
+              1024,
+              1024
+            ],
+            "packed": true,
+            "external_exists": false,
+            "colour_space": "Non-Color"
+          },
+          {
+            "name": "floorboards_displacement.jpg.002",
+            "size": [
+              2048,
+              2048
+            ],
+            "packed": true,
+            "external_exists": false,
+            "colour_space": "Non-Color"
+          }
+        ]
+      }
+    ]
+  }
+]

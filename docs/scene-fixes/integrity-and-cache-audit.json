@@ -1,0 +1,20 @@
+{
+  "preExistingAssetsUnchanged": 118,
+  "changed": [],
+  "profiles": {
+    "laptop": {
+      "instances": 6656,
+      "peakVisible": 4190,
+      "bytes": 2952233,
+      "decodedBytes": 15495168,
+      "finite": true
+    },
+    "mobile": {
+      "instances": 2176,
+      "peakVisible": 1366,
+      "bytes": 929438,
+      "decodedBytes": 5363712,
+      "finite": true
+    }
+  }
+}

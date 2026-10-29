@@ -1,0 +1,30 @@
+{
+  "tag": "final",
+  "size": [
+    4096,
+    2048
+  ],
+  "samples": 1024,
+  "seconds": 236.9,
+  "triangles": 108,
+  "trianglesPerRegion": {
+    "-X": 18,
+    "-Z": 18,
+    "-Y": 18,
+    "+X": 18,
+    "+Y": 18,
+    "+Z": 18
+  },
+  "renderUV": "automap",
+  "view": [
+    "AgX",
+    "AgX - Medium High Contrast",
+    0.44999998807907104
+  ],
+  "roomFaceNormal": [
+    -1.0,
+    0.0,
+    0.0
+  ],
+  "sourceSha256": "7a17cf8949d10872531e64f54ff4c36a9dc307c69afc28a7fe31e9c1a0933b92"
+}

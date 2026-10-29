@@ -1,0 +1,95 @@
+{
+  "sourceModel": "/models/theatre-marked.glb",
+  "ids": [
+    {
+      "name": "THEATRE | HALO II | 90mm perimeter fascia",
+      "decodedColor": [
+        0.2984408438205719,
+        0.29249998927116394,
+        0.6499999761581421
+      ],
+      "expectedTriangles": 384
+    },
+    {
+      "name": "THEATRE | HALO II | Backing above ceiling",
+      "decodedColor": [
+        0.29249998927116394,
+        0.33198922872543335,
+        0.6499999761581421
+      ],
+      "expectedTriangles": 190
+    },
+    {
+      "name": "THEATRE | HALO II | Continuous rolled plaster cove",
+      "decodedColor": [
+        0.43647849559783936,
+        0.6499999761581421,
+        0.29249998927116394
+      ],
+      "expectedTriangles": 2688
+    },
+    {
+      "name": "THEATRE | HALO II | Floating acoustic inset",
+      "decodedColor": [
+        0.6499999761581421,
+        0.29249998927116394,
+        0.5406182408332825
+      ],
+      "expectedTriangles": 190
+    },
+    {
+      "name": "THEATRE | HALO II | Hidden inner LED shelf",
+      "decodedColor": [
+        0.29249998927116394,
+        0.6451075077056885,
+        0.6499999761581421
+      ],
+      "expectedTriangles": 384
+    },
+    {
+      "name": "THEATRE | HALO II | Outer concealed LED shelf",
+      "decodedColor": [
+        0.6499999761581421,
+        0.5507526397705078,
+        0.29249998927116394
+      ],
+      "expectedTriangles": 384
+    },
+    {
+      "name": "THEATRE | HALO II | Perimeter cove upper receiver",
+      "decodedColor": [
+        0.4462634325027466,
+        0.29249998927116394,
+        0.6499999761581421
+      ],
+      "expectedTriangles": 384
+    },
+    {
+      "name": "THEATRE | HALO II | Slim floating soffit",
+      "decodedColor": [
+        0.4004838466644287,
+        0.29249998927116394,
+        0.6499999761581421
+      ],
+      "expectedTriangles": 384
+    },
+    {
+      "name": "THEATRE | HALO II | Wall crown closure",
+      "decodedColor": [
+        0.29249998927116394,
+        0.6499999761581421,
+        0.2963440716266632
+      ],
+      "expectedTriangles": 2
+    },
+    {
+      "name": "THEATRE | HALO II | Wall crown closure.001",
+      "decodedColor": [
+        0.6499999761581421,
+        0.29249998927116394,
+        0.3931451439857483
+      ],
+      "expectedTriangles": 2
+    }
+  ]
+}

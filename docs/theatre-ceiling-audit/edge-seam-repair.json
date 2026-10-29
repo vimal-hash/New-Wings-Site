@@ -1,0 +1,5 @@
+{
+  "smoothUvCutsStitched": 233,
+  "maximumLinearRadianceAdjustment": 0.06088420748710632,
+  "method": "paired geometric edges with matching corner normals; four texel seam correction only"
+}

@@ -1,0 +1,35 @@
+{
+  "objects": [
+    {
+      "object": "THEATRE | Ceiling PBR",
+      "triangles": 4992,
+      "invalidUVValues": 0,
+      "degenerateUVTriangles": 0,
+      "uvRange": [
+        0.006205265875905752,
+        0.9939972758293152
+      ],
+      "maxChannelDifference": 0,
+      "areaWeightedStretchMedian": 1.0000022431703897,
+      "areaWeightedStretchP95": 1.0006787712388687,
+      "maximumStretch": 1.4155197282351337,
+      "worstTriangleCentroid": [
+        6.869607378107806,
+        6.3699999041855335,
+        24.545222600301106
+      ],
+      "surfacePercentOver5PercentStretch": 0.0834596627590839,
+      "medianTexelsPerMetre": 43.08048024031361,
+      "cove": {
+        "triangles": 2688,
+        "maximumStretch": 1.0471209899209513,
+        "trianglesOver5PercentStretch": 0
+      }
+    }
+  ],
+  "notes": [
+    "Stretch is the ratio of the UV Jacobian singular values: 1 is locally isotropic.",
+    "Lighting atlases may have nonuniform texel density between objects; this is separate from image stretching.",
+    "This checks the actual exported model. It does not prove that every baked lighting pixel matches Cycles."
+  ]
+}

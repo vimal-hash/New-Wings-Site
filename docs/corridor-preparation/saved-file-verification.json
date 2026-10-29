@@ -1,0 +1,358 @@
+{
+  "objects": 58,
+  "triangles": 25410,
+  "maximumPositionErrorMetres": 7.03395420630866e-05,
+  "maximumNormalErrorDegrees": 0.055952909680744456,
+  "details": [
+    {
+      "name": "Connecting plane \u2022 joins yellow tip \u2022 restrained roof datum",
+      "triangles": 920,
+      "maxCornerPositionErrorMetres": 1.7591349359223095e-05,
+      "maxNormalErrorDegrees": 0.048456643664523236
+    },
+    {
+      "name": "Connecting plane \u2022 joins yellow tip",
+      "triangles": 580,
+      "maxCornerPositionErrorMetres": 3.893420520002384e-05,
+      "maxNormalErrorDegrees": 0.027976454840372228
+    },
+    {
+      "name": "FIX | Capped Connecting plane \u2022 joins yellow tip",
+      "triangles": 580,
+      "maxCornerPositionErrorMetres": 3.8902431591741825e-05,
+      "maxNormalErrorDegrees": 0.05233915597547922
+    },
+    {
+      "name": "FIX | Capped Red corridor wall \u2022 separate from logo",
+      "triangles": 580,
+      "maxCornerPositionErrorMetres": 2.47955322265625e-05,
+      "maxNormalErrorDegrees": 0.05233915597547922
+    },
+    {
+      "name": "Floor \u2022 fine slab joint 015",
+      "triangles": 8,
+      "maxCornerPositionErrorMetres": 3.0640512704849243e-07,
+      "maxNormalErrorDegrees": 0
+    },
+    {
+      "name": "Floor \u2022 fine slab joint 033",
+      "triangles": 8,
+      "maxCornerPositionErrorMetres": 4.898756742477417e-07,
+      "maxNormalErrorDegrees": 0
+    },
+    {
+      "name": "Floor \u2022 fine slab joint 051",
+      "triangles": 8,
+      "maxCornerPositionErrorMetres": 1.9837170839309692e-07,
+      "maxNormalErrorDegrees": 0
+    },
+    {
+      "name": "Floor \u2022 fine slab joint 069",
+      "triangles": 8,
+      "maxCornerPositionErrorMetres": 4.0046870708465576e-07,
+      "maxNormalErrorDegrees": 0
+    },
+    {
+      "name": "Floor \u2022 fine slab joint 087",
+      "triangles": 8,
+      "maxCornerPositionErrorMetres": 4.4563785195350647e-07,
+      "maxNormalErrorDegrees": 0.01978234059262607
+    },
+    {
+      "name": "Floor \u2022 fine slab joint 105",
+      "triangles": 8,
+      "maxCornerPositionErrorMetres": 3.1478703022003174e-07,
+      "maxNormalErrorDegrees": 0.027976454840372228
+    },
+    {
+      "name": "Floor \u2022 fine slab joint 123",
+      "triangles": 8,
+      "maxCornerPositionErrorMetres": 4.5634806156158447e-07,
+      "maxNormalErrorDegrees": 0
+    },
+    {
+      "name": "Floor \u2022 fine slab joint 141",
+      "triangles": 8,
+      "maxCornerPositionErrorMetres": 4.153698682785034e-07,
+      "maxNormalErrorDegrees": 0
+    },
+    {
+      "name": "Floor \u2022 fine slab joint 159",
+      "triangles": 8,
+      "maxCornerPositionErrorMetres": 1.9143788037605413e-06,
+      "maxNormalErrorDegrees": 0.01978234059262607
+    },
+    {
+      "name": "Floor \u2022 fine slab joint 177",
+      "triangles": 8,
+      "maxCornerPositionErrorMetres": 1.4808028936386108e-07,
+      "maxNormalErrorDegrees": 0.01978234059262607
+    },
+    {
+      "name": "Floor \u2022 fine slab joint 195",
+      "triangles": 8,
+      "maxCornerPositionErrorMetres": 1.0096636365634976e-06,
+      "maxNormalErrorDegrees": 0.027976454840372228
+    },
+    {
+      "name": "Floor \u2022 fine slab joint 213",
+      "triangles": 8,
+      "maxCornerPositionErrorMetres": 1.0413240108213813e-06,
+      "maxNormalErrorDegrees": 0.01978234059262607
+    },
+    {
+      "name": "Pathway L 01 \u2022 slot assembly \u2022 amber diffuser",
+      "triangles": 464,
+      "maxCornerPositionErrorMetres": 9.5367431640625e-07,
+      "maxNormalErrorDegrees": 0.048456643664523236
+    },
+    {
+      "name": "Pathway L 01 \u2022 slot assembly \u2022 bronze face",
+      "triangles": 400,
+      "maxCornerPositionErrorMetres": 9.5367431640625e-07,
+      "maxNormalErrorDegrees": 0.048456643664523236
+    },
+    {
+      "name": "Pathway L 01 \u2022 slot assembly \u2022 dark slot interior",
+      "triangles": 2,
+      "maxCornerPositionErrorMetres": 0,
+      "maxNormalErrorDegrees": 0
+    },
+    {
+      "name": "Pathway L 03 \u2022 slot assembly \u2022 amber diffuser",
+      "triangles": 464,
+      "maxCornerPositionErrorMetres": 9.5367431640625e-07,
+      "maxNormalErrorDegrees": 0.04423465961263638
+    },
+    {
+      "name": "Pathway L 03 \u2022 slot assembly \u2022 bronze face",
+      "triangles": 400,
+      "maxCornerPositionErrorMetres": 9.5367431640625e-07,
+      "maxNormalErrorDegrees": 0.048456643664523236
+    },
+    {
+      "name": "Pathway L 03 \u2022 slot assembly \u2022 dark slot interior",
+      "triangles": 2,
+      "maxCornerPositionErrorMetres": 9.5367431640625e-07,
+      "maxNormalErrorDegrees": 0
+    },
+    {
+      "name": "Pathway L 05 \u2022 slot assembly \u2022 amber diffuser",
+      "triangles": 464,
+      "maxCornerPositionErrorMetres": 9.5367431640625e-07,
+      "maxNormalErrorDegrees": 0.05233915597547922
+    },
+    {
+      "name": "Pathway L 05 \u2022 slot assembly \u2022 bronze face",
+      "triangles": 400,
+      "maxCornerPositionErrorMetres": 9.5367431640625e-07,
+      "maxNormalErrorDegrees": 0.04423465961263638
+    },
+    {
+      "name": "Pathway L 05 \u2022 slot assembly \u2022 dark slot interior",
+      "triangles": 2,
+      "maxCornerPositionErrorMetres": 0,
+      "maxNormalErrorDegrees": 0
+    },
+    {
+      "name": "Pathway L 07 \u2022 slot assembly \u2022 amber diffuser",
+      "triangles": 464,
+      "maxCornerPositionErrorMetres": 9.5367431640625e-07,
+      "maxNormalErrorDegrees": 0.05233915597547922
+    },
+    {
+      "name": "Pathway L 07 \u2022 slot assembly \u2022 bronze face",
+      "triangles": 400,
+      "maxCornerPositionErrorMetres": 9.5367431640625e-07,
+      "maxNormalErrorDegrees": 0.055952909680744456
+    },
+    {
+      "name": "Pathway L 07 \u2022 slot assembly \u2022 dark slot interior",
+      "triangles": 2,
+      "maxCornerPositionErrorMetres": 0,
+      "maxNormalErrorDegrees": 0.01978234059262607
+    },
+    {
+      "name": "Pathway L 10 \u2022 slot assembly \u2022 amber diffuser",
+      "triangles": 464,
+      "maxCornerPositionErrorMetres": 9.830249847454215e-07,
+      "maxNormalErrorDegrees": 0.04423465961263638
+    },
+    {
+      "name": "Pathway L 10 \u2022 slot assembly \u2022 bronze face",
+      "triangles": 400,
+      "maxCornerPositionErrorMetres": 9.5367431640625e-07,
+      "maxNormalErrorDegrees": 0.048456643664523236
+    },
+    {
+      "name": "Pathway L 10 \u2022 slot assembly \u2022 dark slot interior",
+      "triangles": 2,
+      "maxCornerPositionErrorMetres": 9.5367431640625e-07,
+      "maxNormalErrorDegrees": 0.01978234059262607
+    },
+    {
+      "name": "Pathway R 01 \u2022 slot assembly \u2022 amber diffuser",
+      "triangles": 464,
+      "maxCornerPositionErrorMetres": 9.5367431640625e-07,
+      "maxNormalErrorDegrees": 0.05233915597547922
+    },
+    {
+      "name": "Pathway R 01 \u2022 slot assembly \u2022 bronze face",
+      "triangles": 400,
+      "maxCornerPositionErrorMetres": 9.5367431640625e-07,
+      "maxNormalErrorDegrees": 0.048456643664523236
+    },
+    {
+      "name": "Pathway R 01 \u2022 slot assembly \u2022 dark slot interior",
+      "triangles": 2,
+      "maxCornerPositionErrorMetres": 9.5367431640625e-07,
+      "maxNormalErrorDegrees": 0
+    },
+    {
+      "name": "Pathway R 03 \u2022 slot assembly \u2022 amber diffuser",
+      "triangles": 464,
+      "maxCornerPositionErrorMetres": 9.5367431640625e-07,
+      "maxNormalErrorDegrees": 0.05233915597547922
+    },
+    {
+      "name": "Pathway R 03 \u2022 slot assembly \u2022 bronze face",
+      "triangles": 400,
+      "maxCornerPositionErrorMetres": 9.5367431640625e-07,
+      "maxNormalErrorDegrees": 0.048456643664523236
+    },
+    {
+      "name": "Pathway R 03 \u2022 slot assembly \u2022 dark slot interior",
+      "triangles": 2,
+      "maxCornerPositionErrorMetres": 0,
+      "maxNormalErrorDegrees": 0
+    },
+    {
+      "name": "Pathway R 05 \u2022 slot assembly \u2022 amber diffuser",
+      "triangles": 464,
+      "maxCornerPositionErrorMetres": 9.5367431640625e-07,
+      "maxNormalErrorDegrees": 0.048456643664523236
+    },
+    {
+      "name": "Pathway R 05 \u2022 slot assembly \u2022 bronze face",
+      "triangles": 400,
+      "maxCornerPositionErrorMetres": 9.5367431640625e-07,
+      "maxNormalErrorDegrees": 0.048456643664523236
+    },
+    {
+      "name": "Pathway R 05 \u2022 slot assembly \u2022 dark slot interior",
+      "triangles": 2,
+      "maxCornerPositionErrorMetres": 9.5367431640625e-07,
+      "maxNormalErrorDegrees": 0
+    },
+    {
+      "name": "Pathway R 07 \u2022 slot assembly \u2022 amber diffuser",
+      "triangles": 464,
+      "maxCornerPositionErrorMetres": 9.5367431640625e-07,
+      "maxNormalErrorDegrees": 0.05233915597547922
+    },
+    {
+      "name": "Pathway R 07 \u2022 slot assembly \u2022 bronze face",
+      "triangles": 400,
+      "maxCornerPositionErrorMetres": 9.5367431640625e-07,
+      "maxNormalErrorDegrees": 0.055952909680744456
+    },
+    {
+      "name": "Pathway R 07 \u2022 slot assembly \u2022 dark slot interior",
+      "triangles": 2,
+      "maxCornerPositionErrorMetres": 9.5367431640625e-07,
+      "maxNormalErrorDegrees": 0.01978234059262607
+    },
+    {
+      "name": "Pathway R 10 \u2022 slot assembly \u2022 amber diffuser",
+      "triangles": 464,
+      "maxCornerPositionErrorMetres": 9.5367431640625e-07,
+      "maxNormalErrorDegrees": 0.048456643664523236
+    },
+    {
+      "name": "Pathway R 10 \u2022 slot assembly \u2022 bronze face",
+      "triangles": 400,
+      "maxCornerPositionErrorMetres": 9.5367431640625e-07,
+      "maxNormalErrorDegrees": 0.048456643664523236
+    },
+    {
+      "name": "Pathway R 10 \u2022 slot assembly \u2022 dark slot interior",
+      "triangles": 2,
+      "maxCornerPositionErrorMetres": 9.5367431640625e-07,
+      "maxNormalErrorDegrees": 0.01978234059262607
+    },
+    {
+      "name": "Plain floor \u2022 red to connecting plane",
+      "triangles": 1148,
+      "maxCornerPositionErrorMetres": 3.1220212360334235e-05,
+      "maxNormalErrorDegrees": 0
+    },
+    {
+      "name": "Red corridor wall \u2022 separate from logo \u2022 restrained roof datum",
+      "triangles": 1056,
+      "maxCornerPositionErrorMetres": 2.2001785268896727e-05,
+      "maxNormalErrorDegrees": 0.048456643664523236
+    },
+    {
+      "name": "Red corridor wall \u2022 separate from logo",
+      "triangles": 580,
+      "maxCornerPositionErrorMetres": 2.750817318316642e-05,
+      "maxNormalErrorDegrees": 0.027976454840372228
+    },
+    {
+      "name": "Slide A | Behind theatre marked end | Side 1",
+      "triangles": 98,
+      "maxCornerPositionErrorMetres": 5.3947966093944364e-06,
+      "maxNormalErrorDegrees": 0
+    },
+    {
+      "name": "Slide A | Behind theatre marked end | Side -1",
+      "triangles": 98,
+      "maxCornerPositionErrorMetres": 5.3947966093944364e-06,
+      "maxNormalErrorDegrees": 0
+    },
+    {
+      "name": "Slide A | Behind theatre marked end",
+      "triangles": 98,
+      "maxCornerPositionErrorMetres": 5.3947966093944364e-06,
+      "maxNormalErrorDegrees": 0.027976454840372228
+    },
+    {
+      "name": "Slide B | Opposite corridor end | Side 1",
+      "triangles": 96,
+      "maxCornerPositionErrorMetres": 3.814697265625e-06,
+      "maxNormalErrorDegrees": 0.01978234059262607
+    },
+    {
+      "name": "Slide B | Opposite corridor end | Side -1",
+      "triangles": 96,
+      "maxCornerPositionErrorMetres": 3.814697265625e-06,
+      "maxNormalErrorDegrees": 0.01978234059262607
+    },
+    {
+      "name": "Slide B | Opposite corridor end",
+      "triangles": 96,
+      "maxCornerPositionErrorMetres": 1.9073486328125e-06,
+      "maxNormalErrorDegrees": 0.03956468118525214
+    },
+    {
+      "name": "Swoosh \u2022 Blue",
+      "triangles": 5644,
+      "maxCornerPositionErrorMetres": 6.007391261300515e-05,
+      "maxNormalErrorDegrees": 0.03426402083239251
+    },
+    {
+      "name": "Swoosh \u2022 Orange",
+      "triangles": 2108,
+      "maxCornerPositionErrorMetres": 7.03395420630866e-05,
+      "maxNormalErrorDegrees": 0.027976454840372228
+    },
+    {
+      "name": "Swoosh \u2022 Red",
+      "triangles": 2876,
+      "maxCornerPositionErrorMetres": 5.53131103515625e-05,
+      "maxNormalErrorDegrees": 0.027976454840372228
+    }
+  ],
+  "noGLBExport": true,
+  "noBakeStarted": true
+}

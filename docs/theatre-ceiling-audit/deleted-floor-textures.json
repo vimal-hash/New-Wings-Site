@@ -1,0 +1,74 @@
+[
+  {
+    "FullName": "D:\\New folio\\new site code\\new_site_three\\public\\textures\\theatre-floor\\basalt-diffuse.ktx2",
+    "Length": 63506
+  },
+  {
+    "FullName": "D:\\New folio\\new site code\\new_site_three\\public\\textures\\theatre-floor\\basalt-normal.ktx2",
+    "Length": 4961
+  },
+  {
+    "FullName": "D:\\New folio\\new site code\\new_site_three\\public\\textures\\theatre-floor\\basalt-roughness.ktx2",
+    "Length": 39042
+  },
+  {
+    "FullName": "D:\\New folio\\new site code\\new_site_three\\public\\textures\\theatre-floor\\floor-display-lut.png",
+    "Length": 22577
+  },
+  {
+    "FullName": "D:\\New folio\\new site code\\new_site_three\\public\\textures\\theatre-floor\\room-reflections.ktx2",
+    "Length": 591110
+  },
+  {
+    "FullName": "D:\\New folio\\new site code\\new_site_three\\public\\textures\\theatre-floor\\walnut-diffuse.ktx2",
+    "Length": 1209259
+  },
+  {
+    "FullName": "D:\\New folio\\new site code\\new_site_three\\public\\textures\\theatre-floor\\walnut-normal.ktx2",
+    "Length": 748998
+  },
+  {
+    "FullName": "D:\\New folio\\new site code\\new_site_three\\public\\textures\\theatre-floor\\walnut-roughness.ktx2",
+    "Length": 263749
+  },
+  {
+    "FullName": "D:\\New folio\\new site code\\new_site_three\\public\\textures\\theatre-floor-quality\\basalt-diffuse.exr",
+    "Length": 5529961
+  },
+  {
+    "FullName": "D:\\New folio\\new site code\\new_site_three\\public\\textures\\theatre-floor-quality\\basalt-opening-mask.png",
+    "Length": 5496
+  },
+  {
+    "FullName": "D:\\New folio\\new site code\\new_site_three\\public\\textures\\theatre-floor-quality\\basalt-radiance.bin.gz",
+    "Length": 77520995
+  },
+  {
+    "FullName": "D:\\New folio\\new site code\\new_site_three\\public\\textures\\theatre-floor-quality\\floor-display-lut.png",
+    "Length": 22577
+  },
+  {
+    "FullName": "D:\\New folio\\new site code\\new_site_three\\public\\textures\\theatre-floor-quality\\floor-opening-detail.exr",
+    "Length": 6541331
+  },
+  {
+    "FullName": "D:\\New folio\\new site code\\new_site_three\\public\\textures\\theatre-floor-quality\\walnut-diffuse.exr",
+    "Length": 13824005
+  },
+  {
+    "FullName": "D:\\New folio\\new site code\\new_site_three\\public\\textures\\theatre-floor-quality\\walnut-native-detail.png",
+    "Length": 213061
+  },
+  {
+    "FullName": "D:\\New folio\\new site code\\new_site_three\\public\\textures\\theatre-floor-quality\\walnut-opening-mask.png",
+    "Length": 3508
+  },
+  {
+    "FullName": "D:\\New folio\\new site code\\new_site_three\\public\\textures\\theatre-floor-quality\\walnut-radiance.bin.gz",
+    "Length": 39572745
+  },
+  {
+    "FullName": "D:\\New folio\\new site code\\new_site_three\\public\\textures\\theatre-floor-quality\\walnut-radiance.ktx2",
+    "Length": 2073603
+  }
+]

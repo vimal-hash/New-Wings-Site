@@ -1,0 +1,74 @@
+{
+  "matchedSurfaces": 13,
+  "positionsAndNormals": "byte-equivalent float values",
+  "retainedIndices": "identical",
+  "oldMs": 6349.6338000000005,
+  "newMs": 141.55580000000106,
+  "times": [
+    {
+      "item": "right-wall",
+      "oldMs": 14.155300000000011,
+      "newMs": 50.63869999999997
+    },
+    {
+      "item": "front-wall",
+      "oldMs": 13.078599999999994,
+      "newMs": 0.34159999999997126
+    },
+    {
+      "item": "screen",
+      "oldMs": 11.867700000000013,
+      "newMs": 1.2606000000000108
+    },
+    {
+      "item": "stage",
+      "oldMs": 12.365399999999966,
+      "newMs": 1.711400000000026
+    },
+    {
+      "item": "floor-slab",
+      "oldMs": 8.89160000000004,
+      "newMs": 0.32200000000000273
+    },
+    {
+      "item": "light-fixtures",
+      "oldMs": 110.2706,
+      "newMs": 2.4910999999999603
+    },
+    {
+      "item": "wall-trim",
+      "oldMs": 56.33440000000007,
+      "newMs": 1.5274999999999181
+    },
+    {
+      "item": "step-nosings",
+      "oldMs": 304.11569999999995,
+      "newMs": 6.27940000000001
+    },
+    {
+      "item": "aisle-lights",
+      "oldMs": 985.2811000000002,
+      "newMs": 15.678899999999885
+    },
+    {
+      "item": "acoustic-slats",
+      "oldMs": 4194.4244,
+      "newMs": 50.607600000000275
+    },
+    {
+      "item": "speakers",
+      "oldMs": 585.4809999999998,
+      "newMs": 6.607200000000375
+    },
+    {
+      "item": "terraces",
+      "oldMs": 17.17330000000038,
+      "newMs": 3.0626000000002023
+    },
+    {
+      "item": "moon-steel-border",
+      "oldMs": 36.19470000000001,
+      "newMs": 1.0272000000004482
+    }
+  ]
+}

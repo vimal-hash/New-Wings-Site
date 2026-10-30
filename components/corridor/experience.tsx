@@ -17,6 +17,7 @@ import LoadingDiagnostics from "./loading-diagnostics";
 import { traceMark } from "./loading-trace";
 import { assetURL } from "./asset-url";
 import CinemaPanel from './cinema-panel';
+import DiagonalSection from './diagonal-section';
 
 const Scene = dynamic(() => {
   traceMark("Scene import requested");
@@ -81,7 +82,7 @@ export default function CorridorExperience({ view = "corridor" }: { view?: Study
   const restart = () => window.location.reload();
 
   return (
-    <main className="corridor-study" data-page={fullPage} data-journey-phase={journey.phase} data-panel-stage={journey.panelStage} data-reveal-stage={journey.revealStage}>
+    <main className="corridor-study" data-page={fullPage} data-journey-phase={journey.phase} data-cinema-stage={journey.cinemaStage} data-opening-stage={journey.openingStage} data-panel-stage={journey.panelStage} data-reveal-stage={journey.revealStage} data-finale-covered={journey.finalCovered}>
       {fullPage && <NormalPage />}
       <div id="corridor-viewport" className="scene-fixed" style={{ pointerEvents: orbitActive ? "auto" : "none" }}><SceneBoundary><Scene metrics={metrics} view={view} orbit={orbitActive} /></SceneBoundary></div>
       <header className="study-header">
@@ -98,6 +99,10 @@ export default function CorridorExperience({ view = "corridor" }: { view?: Study
           style={{padding:"8px 14px",border:"1px solid #4d5963",borderRadius:6,background:"#111820",color:"#fff",fontSize:12,cursor:"pointer"}}>View {index+1}</button>)}
         {journey.phase==="logoDone"&&<button type="button" onClick={()=>window.dispatchEvent(new Event('eye-pupil-replay'))}
           style={{padding:"8px 14px",border:"1px solid #4d5963",borderRadius:6,background:"#111820",color:"#fff",fontSize:12,cursor:"pointer"}}>Replay light</button>}
+      </nav>}
+      {isCorridor&&!['panel','page','pageReturnLoading','pageReturning','logoReveal','logoDone'].includes(journey.phase)&&<nav aria-label="Temporary glasses controls" data-cinema-controls style={{position:'fixed',bottom:96,left:'50%',transform:'translateX(-50%)',display:'flex',gap:8,zIndex:5}}>
+        {(['remove','wear'] as const).map(action=><button key={action} type="button" onClick={()=>window.dispatchEvent(new CustomEvent('cinema-glasses-action',{detail:action}))}
+          style={{padding:'8px 14px',border:'1px solid #4d5963',borderRadius:6,background:'#111820',color:'#fff',fontSize:12,cursor:'pointer'}}>{action==='remove'?'Remove glasses':'Wear 3D glasses'}</button>)}
       </nav>}
       <ProjectorButtons />
       {isCorridor&&<CinemaPanel/>}
@@ -131,11 +136,11 @@ export default function CorridorExperience({ view = "corridor" }: { view?: Study
         </>}
       </aside>
       <footer className="study-footer">
-        <span>{isCorridor ? journey.phase === "logoDone" ? "FULL LOGO" : journey.phase === "logoReveal" ? ({slide:"SCROLL UP THE SLIDE",top:"SCROLL TO TURN",turn:"TURNING TOWARD LOGO",turned:"SCROLL TO REVEAL THE LOGO",pullback:"REVEALING LOGO",done:"FULL LOGO"}[journey.revealStage]) : journey.phase === "awaitAssembly" ? "PARTS READY · SCROLL TO ASSEMBLE" : journey.phase === "panel" ? journey.pageAtEnd ? "SCROLL TO REVEAL THE LOGO" : "SCROLL TO EXPAND THE PAGE" : ["idle","done","screensDone"].includes(journey.phase) ? "SCROLL TO CONTINUE" : "CAMERA JOURNEY" : "GEOMETRY REVIEW"}</span>
+        <span>{isCorridor ? journey.phase === "logoDone" ? "FULL LOGO" : journey.phase === "logoReveal" ? ({slide:"SCROLL UP THE SLIDE",top:"SCROLL TO TURN",turn:"TURNING TOWARD LOGO",turned:"SCROLL TO REVEAL THE LOGO",pullback:"REVEALING LOGO",done:"FULL LOGO"}[journey.revealStage]) : journey.phase === "glassesExit" ? "REMOVING GLASSES · LIGHTS RISING" : journey.phase === "idle" && journey.cinemaStage === "wearing" ? "SCROLL TO CONTINUE" : journey.phase === "awaitAssembly" ? "PARTS READY · SCROLL TO ASSEMBLE" : journey.phase === "panel" ? journey.pageAtEnd ? "SCROLL TO REVEAL THE LOGO" : "SCROLL TO EXPAND THE PAGE" : ["idle","done","screensDone"].includes(journey.phase) ? "SCROLL TO CONTINUE" : "CAMERA JOURNEY" : "GEOMETRY REVIEW"}</span>
         <span className="asset-caption">{(corridorAssets.triangles + theatreAssets.triangles + sofaTriangles).toLocaleString("en-US")} triangles · geometry study</span>
         <div className="journey-track" aria-hidden="true"><div ref={progressElement} /></div>
       </footer>
-      
+      {isCorridor&&<DiagonalSection/>}
     </main>
   );
 }

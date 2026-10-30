@@ -13,7 +13,7 @@ import { loadProjector } from "./projector-loader";
 import { projectorControls } from "./projector-controls";
 import FullJourney from "./full-journey";
 import CorridorPage from "./corridor-page";
-import CorridorScreens from "./corridor-screens";
+
 import { journeyControls } from "./journey-controls";
 import Sofas from "./sofas";
 import { SOFAS_ENABLED,LOGO_PARTICLE_EYE_ENABLED } from "./scene-features";
@@ -43,13 +43,17 @@ import { localEnvironment } from "./local-environment";
 import { applyLogoMaterial } from "./logo-material";
 import StarBloom from "./star-bloom";
 import {createPupilFrontFill,pupilFillState} from "./pupil-fill";
+import {TheatreBlueprint,TheatreOpeningOwner,TheatreOpeningScreen} from './theatre-opening';
+import {OPENING_CAMERA_START} from './theatre-opening-state';
+import {applyTheatreOpeningMaterial} from './theatre-opening-material';
+import CinemaGlasses from './cinema-glasses';
 
 traceMark("Scene module evaluated");
 
 const MODEL = "/models/corridor-ribbons-balanced.glb";
 const UP = new Vector3(0, 1, 0);
 
-const INITIAL_POSITION = referenceCamera.start as [number, number, number];
+const INITIAL_POSITION = OPENING_CAMERA_START;
 const INITIAL_ROTATION = new Quaternion().setFromRotationMatrix(new Matrix4().lookAt(new Vector3(...INITIAL_POSITION), new Vector3(...referenceCamera.screenCentre), UP));
 const INITIAL_EULER=new Euler().setFromQuaternion(INITIAL_ROTATION);
 const AnimatedProjector=lazy(loadProjector);
@@ -91,6 +95,14 @@ function Theatre({ metrics, connected = false }: { metrics: MetricsStore; connec
     const platform = extractNodeSurfaces(scenes[1], "projector-floor");
     return { scenes, leftWall, surfaces, side, platform,moons };
   }))), [sourceTheatre, sourcePlatform]);
+  const roomSurfaces=useMemo(()=>connected?surfaces.filter(surface=>surface.item!=="screen"):surfaces,[surfaces,connected]);
+  const diagnosticMaterials=useMemo(()=>{
+    const owned:Material[]=[];
+    scenes[0].traverse(object=>{if(!(object instanceof Mesh))return;
+      const clone=(source:Material)=>{const material=source.clone();applyTheatreOpeningMaterial(material);owned.push(material);return material;};
+      object.material=Array.isArray(object.material)?object.material.map(clone):clone(object.material);
+    });return owned;
+  },[scenes]);
   useEffect(() => () => {
     scenes[0].traverse(object => {
       if (object instanceof Mesh) object.geometry.dispose();
@@ -99,14 +111,15 @@ function Theatre({ metrics, connected = false }: { metrics: MetricsStore; connec
     surfaces.forEach(surface => surface.geometry.dispose());
     platform.surfaces.forEach(surface => surface.geometry.dispose());
     moons?.forEach(surface=>surface.geometry.dispose());
-  }, [scenes, leftWall, surfaces, platform,moons]);
+    diagnosticMaterials.forEach(material=>material.dispose());
+  }, [scenes, leftWall, surfaces, platform,moons,diagnosticMaterials]);
   const invalidate = useThree((state) => state.invalidate);
   useEffect(() => {
     traceMark("Theatre committed");
     metrics.update({ loaded: true, modelReady: metrics.read().modelReady || performance.now() });
     invalidate();
   }, [metrics, invalidate]);
-  return <group matrixAutoUpdate={!connected} matrix={connected ? THEATRE_PLACEMENT : undefined}>{scenes.map((scene, i) => <primitive key={THEATRE_MODELS[i]} object={scene} dispose={null} />)}<TheatreCeiling /><TheatreLeftWall geometry={leftWall} />{moons&&<DesignMoons surfaces={moons}/>} {surfaces.length > 0 && <BakedSurfaces source="theatre" surfaces={surfaces} side={side} />}{platform.surfaces.length > 0 && <DeferredPlatform metrics={metrics} surfaces={platform.surfaces} side={platform.side ?? FrontSide}/>}</group>;
+  return <group matrixAutoUpdate={!connected} matrix={connected ? THEATRE_PLACEMENT : undefined}>{scenes.map((scene, i) => <primitive key={THEATRE_MODELS[i]} object={scene} dispose={null} />)}<TheatreCeiling /><TheatreLeftWall geometry={leftWall} />{moons&&<DesignMoons surfaces={moons}/>} {roomSurfaces.length > 0 && <BakedSurfaces source="theatre" surfaces={roomSurfaces} side={side} />}{platform.surfaces.length > 0 && <DeferredPlatform metrics={metrics} surfaces={platform.surfaces} side={platform.side ?? FrontSide}/>}</group>;
 }
 
 /** The platform is behind the opening camera; it must not delay the first theatre frame. */
@@ -127,7 +140,11 @@ function Corridor({ metrics }: { metrics: MetricsStore }) {
     const slideMaterials:Material[]=[];
     connected.traverse(object=>{if(object instanceof Mesh&&!Array.isArray(object.material)&&object.material.name.startsWith("ID | Slide ")){const material=slideMaterial(gl,object.material.name.includes("Side"));object.material=material;slideMaterials.push(material);}});
     const { surfaces, side } = extractNodeSurfaces(connected, "corridor");
-    return { connected, surfaces, side: side ?? FrontSide,slideMaterials,logoMaterial,pupilFill };
+    // Hide every part of the pathway fixtures in this mount-owned clone.
+    connected.traverse(object=>{if(object instanceof Mesh){const materials=Array.isArray(object.material)?object.material:[object.material];if(materials.some(material=>material.name.startsWith('ID | Pathway ')))object.visible=false;}});
+    const visibleSurfaces=surfaces.filter(surface=>surface.item!=='corridor-pathway-lights');
+    surfaces.filter(surface=>surface.item==='corridor-pathway-lights').forEach(surface=>surface.geometry.dispose());
+    return { connected, surfaces:visibleSurfaces, side: side ?? FrontSide,slideMaterials,logoMaterial,pupilFill };
   }), [scene,gl]);
   useEffect(() => () => {pupilFill?.dispose();surfaces.forEach(surface => surface.geometry.dispose());slideMaterials.forEach(material=>material.dispose());logoMaterial?.dispose();}, [surfaces,slideMaterials,logoMaterial,pupilFill]);
   const invalidate = useThree((state) => state.invalidate);
@@ -258,12 +275,14 @@ function CorridorScene({ metrics, view = "corridor", orbit = false }: { metrics:
     >
       <color attach="background" args={["#11151a"]} />
       {view==="corridor"&&<StarBloom/>}
+      {view==="corridor"&&<TheatreOpeningOwner/>}
       <ProjectorStage/>
       <CameraJourney metrics={metrics} view={view} orbit={orbit} />
       {view === "corridor" && <FullJourney metrics={metrics} orbit={orbit} />}
       {orbit && <InspectionControls />}
-      {view === "corridor" && <CorridorScreens />}
+
       {view === "corridor" && <CorridorPage stage={journey.panelStage} phase={journey.phase} />}
+      {view==="corridor"&&<><Suspense fallback={null}><TheatreOpeningScreen metrics={metrics}/><CinemaGlasses/></Suspense><Suspense fallback={null}><TheatreBlueprint/></Suspense></>}
       <Suspense fallback={null}>{view === "corridor" ? <Theatre metrics={metrics} connected /> : <Theatre metrics={metrics} />}{SOFAS_ENABLED && view !== "floor" && <Sofas />}<OpeningReady /></Suspense>
       <DeferredProjector metrics={metrics}/>
       {view === "corridor" && <DeferredCorridor metrics={metrics} />}

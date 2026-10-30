@@ -6,6 +6,8 @@ import { PlanarMirror,viewFrustum } from "./planar-mirror";
 import { isMobileDevice } from "./texture-quality";
 import pieces from "./moon-surfaces.json";
 import { stageBakedMaterial,stageLighting } from "./stage-lighting";
+import {applyTheatreOpeningMaterial} from './theatre-opening-material';
+import {theatreOpening} from './theatre-opening-state';
 
 export default function DesignMoons({surfaces}:{surfaces:{item:string;geometry:BufferGeometry}[]}) {
   const root=useRef<Group>(null);
@@ -27,12 +29,14 @@ export default function DesignMoons({surfaces}:{surfaces:{item:string;geometry:B
         fragmentShader:`uniform sampler2D reflection;varying vec4 vReflection;varying vec3 vGlassPosition,vGlassNormal;void main(){float facing=abs(dot(normalize(cameraPosition-vGlassPosition),normalize(vGlassNormal)));float edge=pow(1.-facing,5.);vec3 reflected=texture2DProj(reflection,vReflection).rgb;vec3 coating=mix(vec3(.985,.995,1.),vec3(.94,.975,1.),edge);vec3 result=reflected*coating*(.90+.10*edge)+vec3(.006,.008,.012)*edge;gl_FragColor=vec4(result,1.0);#include <colorspace_fragment>}`.replace(";#include",";\n#include"),
       }):new MeshBasicMaterial({color:spec.role==="light"?"#ffdda8":spec.role==="crescent"?"#fff8e6":"#26201b",side:DoubleSide,toneMapped:false});
       if(spec.role!=="mirror")stageBakedMaterial(material,false,spec.role==="light"||spec.role==="crescent");
+      applyTheatreOpeningMaterial(material,false,spec.role==='light'||spec.role==='crescent');
       const mesh=new Mesh(surface.geometry,material);mesh.name=`Moon ${spec.role} | ${spec.name}`;return {mesh,material,spec};
     });
     return {mirrors,meshes,frustum:new Frustum(),matrix:new Matrix4(),previousCamera:new Matrix4()};
   },[surfaces]);
   useEffect(()=>{invalidate();return()=>{rig.mirrors.forEach(m=>m.mirror.dispose());rig.meshes.forEach(m=>m.material.dispose());};},[rig,invalidate]);
   useFrame(({gl,scene,camera,clock})=>{
+    if(theatreOpening.active.value>.5&&theatreOpening.room.value===0)return;
     if(!root.current)return;root.current.updateWorldMatrix(true,true);camera.updateMatrixWorld();
     const moved=!rig.previousCamera.equals(camera.matrixWorld),elapsed=clock.elapsedTime;
     if(!moved&&stageLighting.active&&elapsed-lastCapture.current<1/15)return;

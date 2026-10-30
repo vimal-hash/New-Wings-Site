@@ -1,0 +1,125 @@
+{
+  "text-new-wings.webp": [
+    {
+      "letter": "N",
+      "x": 0,
+      "width": 97,
+      "inkLeft": 22,
+      "inkRight": 90
+    },
+    {
+      "letter": "e",
+      "x": 97,
+      "width": 72,
+      "inkLeft": 104,
+      "inkRight": 163
+    },
+    {
+      "letter": "w",
+      "x": 169,
+      "width": 111,
+      "inkLeft": 175,
+      "inkRight": 256
+    },
+    {
+      "letter": "W",
+      "x": 280,
+      "width": 118,
+      "inkLeft": 304,
+      "inkRight": 390
+    },
+    {
+      "letter": "i",
+      "x": 398,
+      "width": 35,
+      "inkLeft": 405,
+      "inkRight": 426
+    },
+    {
+      "letter": "n",
+      "x": 433,
+      "width": 70,
+      "inkLeft": 440,
+      "inkRight": 497
+    },
+    {
+      "letter": "g",
+      "x": 503,
+      "width": 79,
+      "inkLeft": 509,
+      "inkRight": 574
+    },
+    {
+      "letter": "s",
+      "x": 582,
+      "width": 72,
+      "inkLeft": 589,
+      "inkRight": 629
+    }
+  ],
+  "text-solutions.webp": [
+    {
+      "letter": "S",
+      "x": 0,
+      "width": 79,
+      "inkLeft": 22,
+      "inkRight": 73
+    },
+    {
+      "letter": "o",
+      "x": 79,
+      "width": 77,
+      "inkLeft": 84,
+      "inkRight": 149
+    },
+    {
+      "letter": "l",
+      "x": 156,
+      "width": 29,
+      "inkLeft": 162,
+      "inkRight": 177
+    },
+    {
+      "letter": "u",
+      "x": 185,
+      "width": 71,
+      "inkLeft": 193,
+      "inkRight": 250
+    },
+    {
+      "letter": "t",
+      "x": 256,
+      "width": 60,
+      "inkLeft": 262,
+      "inkRight": 311
+    },
+    {
+      "letter": "i",
+      "x": 316,
+      "width": 32,
+      "inkLeft": 321,
+      "inkRight": 342
+    },
+    {
+      "letter": "o",
+      "x": 348,
+      "width": 77,
+      "inkLeft": 353,
+      "inkRight": 418
+    },
+    {
+      "letter": "n",
+      "x": 425,
+      "width": 70,
+      "inkLeft": 431,
+      "inkRight": 488
+    },
+    {
+      "letter": "s",
+      "x": 495,
+      "width": 84,
+      "inkLeft": 502,
+      "inkRight": 559
+    }
+  ]
+}

@@ -246,7 +246,7 @@ export function AuthoredEyeField({active,review=false,qualityOverride,moving=tru
   /* eslint-disable react-hooks/immutability -- imperative updates to owned Three.js objects. */
   useFrame((_,delta)=>{
     const motion=state.current;resources.root.visible=active&&motion.ready;resources.group.visible=active&&motion.ready;
-    if(!active||!motion.ready||document.hidden)return;
+    if(!active||!motion.ready||document.hidden||journeyControls.read().finalCovered)return;
     const step=Math.min(delta,.05),animate=moving&&!motion.reduce;
     if(animate)motion.time+=step;
     motion.opacity=review||motion.reduce?1:Math.min(1,motion.opacity+step*2.5);

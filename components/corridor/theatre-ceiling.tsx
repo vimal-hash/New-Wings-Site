@@ -10,6 +10,7 @@ import TextureRefinement from "./texture-refinement";
 import { KTX2Loader } from "three/examples/jsm/loaders/KTX2Loader.js";
 import assets from "./theatre-ceiling-assets.json";
 import { stageBakedMaterial } from "./stage-lighting";
+import {applyTheatreOpeningMaterial} from './theatre-opening-material';
 
 /** One surface-bound appearance. No camera projection, lighting switch or blend. */
 export default function TheatreCeiling() {
@@ -29,6 +30,7 @@ export default function TheatreCeiling() {
         const material=new MeshBasicMaterial({map,side:original.side,toneMapped:false});
         material.name="Ceiling | Approved baked appearance";material.dithering=true;
         stageBakedMaterial(material,false,true);
+        applyTheatreOpeningMaterial(material);
         materials.push(material);return material;
       });
       object.material=Array.isArray(object.material)?restored:restored[0];

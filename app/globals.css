@@ -58,6 +58,9 @@ dt { color: #8996a7; } dd { margin: 0; text-align: right; font-variant-numeric: 
 /* The blank page takes over only after the depth-tested surface covers the view. */
 .normal-page { position:fixed;inset:0;z-index:10;overflow-y:auto;overscroll-behavior:contain;outline:none;background:#fff;color:#171717;touch-action:pan-y pinch-zoom; }
 .normal-page section { height:100vh;height:100dvh; }
+.diagonal-next-section { position:fixed;inset:0;width:100%;height:100vh;height:100dvh;z-index:30;background:#fff;visibility:hidden;pointer-events:none;clip-path:polygon(0 124%,100% 100%,100% 100%,0 100%);touch-action:none;overscroll-behavior:none; }
+.corridor-study[data-finale-covered="true"] > :not(.diagonal-next-section):not(.scene-fixed):not(.cinema-panel[data-open="true"]) { visibility:hidden;pointer-events:none; }
+.cinema-panel[data-open="true"] { z-index:41; }
 .corridor-study[data-page="true"] > :not(.normal-page):not(.scene-fixed) { display:none; }
 .corridor-study[data-journey-phase="pageReturnLoading"] .normal-page { overflow:hidden; }
 .corridor-study[data-journey-phase="logoReveal"] .projector-buttons, .corridor-study[data-journey-phase="logoDone"] .projector-buttons { display:none; }

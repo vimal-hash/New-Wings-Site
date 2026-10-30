@@ -11,6 +11,8 @@ import { traceGLTF, traceSync } from "./loading-trace";
 import assets from "./sofa-assets.json";
 import { localEnvironment } from "./local-environment";
 import { stageLighting } from "./stage-lighting";
+import {theatreOpening} from './theatre-opening-state';
+import {applyTheatreOpeningMaterial} from './theatre-opening-material';
 
 const leatherNoise=`varying vec3 vLeatherPosition;
 float leatherHash(vec3 p){return fract(sin(dot(p,vec3(127.1,311.7,74.7)))*43758.5453);}
@@ -41,6 +43,7 @@ export default function Sofas() {
         .replace("#include <roughnessmap_fragment>","#include <roughnessmap_fragment>\nfloat leatherMask=1.-texture2D(metalnessMap,vMetalnessMapUv).b;roughnessFactor=mix(roughnessFactor,.61+.045*leatherNoise(vLeatherPosition*55.)+.015*leatherNoise(vLeatherPosition*280.),leatherMask);")
         .replace("#include <tonemapping_fragment>","gl_FragColor.rgb=blenderDisplayLinear(gl_FragColor.rgb);");};
     material.customProgramCacheKey=()=>"sofa-charcoal-leather-grain-v3";
+    applyTheatreOpeningMaterial(material,false,false,true);
     const rows=[new InstancedMesh(geometry,material,assets.instances.length)];
     const scale = new Vector3(), position = new Vector3(), matrix = new Matrix4();
     assets.instances.forEach((copy,i) => {
@@ -53,7 +56,7 @@ export default function Sofas() {
     return { rows, geometry, maps,material };
   }), [scene,bakes,display,gl]);
   /* eslint-disable react-hooks/immutability -- owned Three.js material */
-  useFrame(()=>{seating.material.envMapIntensity=.16*stageLighting.room.value;});
+  useFrame(()=>{seating.material.envMapIntensity=.16*stageLighting.room.value*theatreOpening.house.value;});
   /* eslint-enable react-hooks/immutability */
   useEffect(() => {
     invalidate();

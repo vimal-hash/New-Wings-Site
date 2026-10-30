@@ -219,6 +219,10 @@ export default function StarBloom(){
   const pulse=useRef<ReturnType<typeof createPupilPulse>|null>(null),reduce=useRef(false);
   const tuning=useRef<CinemaValues>({...CINEMA_DEFAULTS}),focus=useRef<ReturnType<typeof createCinemaFocus>|null>(null);
   useEffect(()=>cinemaControls.subscribe(invalidate),[invalidate]);
+  useEffect(()=>{
+    let covered=journeyControls.read().finalCovered;
+    return journeyControls.subscribe(()=>{const next=journeyControls.read().finalCovered;if(next!==covered){covered=next;pulse.current?.pause();invalidate();}});
+  },[invalidate]);
   useEffect(()=>()=>{focus.current?.dispose();focus.current=null;},[gl,scene]);
   useEffect(()=>{
     let cancel=()=>{},cancelPulse=()=>{},active=true;
@@ -254,6 +258,7 @@ export default function StarBloom(){
     return()=>{active=false;clearInterval(timer);cancel();cancelPulse();preference.removeEventListener('change',update);window.removeEventListener('eye-pupil-replay',replay);document.removeEventListener('visibilitychange',visibility);pulse.current?.dispose();pulse.current=null;tones.current?.dispose();tones.current=null;pipeline.current?.dispose();pipeline.current=null;grade.current?.dispose();grade.current=null;responses.forEach(({compile,key},material)=>{material.onBeforeCompile=compile;material.customProgramCacheKey=key;material.needsUpdate=true;});responses.clear();};
   },[gl,scene,camera,invalidate]);
   useFrame(()=>{
+    if(journeyControls.read().finalCovered)return;
     const phase=journeyControls.read().phase;
     const values=resolveCinemaValues(cinemaControls.read(),cinemaShot.stage,cinemaShot.progress,tuning.current);
     const eye=scene.getObjectByName(EYE_NAME) as Mesh|undefined;

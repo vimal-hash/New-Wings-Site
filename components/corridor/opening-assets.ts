@@ -1,6 +1,6 @@
 import { useLoader } from "@react-three/fiber";
 import { useGLTF } from "@react-three/drei";
-import type { WebGLRenderer } from "three";
+import {TextureLoader,type WebGLRenderer} from "three";
 import { KTX2Loader } from "three/examples/jsm/loaders/KTX2Loader.js";
 import { loadCompressedBuffer } from "./compressed-buffer";
 import { preloadBakedSurfaces } from "./baked-surfaces";
@@ -9,6 +9,7 @@ import { traceGLTF, traceMark } from "./loading-trace";
 import ceiling from "./theatre-ceiling-assets.json";
 import leftWall from "./theatre-left-wall-assets.json";
 import sofas from "./sofa-assets.json";
+import {THEATRE_SCREEN_ARTWORK} from './theatre-screen-artwork';
 
 export const THEATRE_MODELS = ["/models/theatre-marked.glb", "/models/projector-floor-marked.glb"];
 const started = new WeakMap<WebGLRenderer, { sofas: boolean }>();
@@ -21,6 +22,9 @@ export function preloadOpeningAssets(gl: WebGLRenderer, includeSofas: boolean) {
     state = { sofas: false };
     started.set(gl, state);
     traceMark("Opening asset preloads started");
+    // The independent screen paints first; don't put its image behind room atlases.
+    useLoader.preload(TextureLoader,[THEATRE_SCREEN_ARTWORK]);
+    useGLTF.preload('/models/cinema-glasses-front.glb','/draco/',false,traceGLTF);
     // Queue critical models and motion before the much larger atlas batch.
     useGLTF.preload(THEATRE_MODELS, "/draco/", false, traceGLTF);
     useGLTF.preload(ceiling.model, "/draco/", false, traceGLTF);

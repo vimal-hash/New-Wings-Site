@@ -4,6 +4,7 @@ import { useFrame } from "@react-three/fiber";
 import { AmbientLight,DirectionalLight,Object3D,SpotLight } from "three";
 import { stageLighting } from "./stage-lighting";
 import { isMobileDevice } from "./texture-quality";
+import {theatreOpening} from './theatre-opening-state';
 
 /** The local key persists across formation and assembly; only it owns a small shadow map. */
 export default function ProjectorStage(){
@@ -12,8 +13,9 @@ export default function ProjectorStage(){
   const target=useMemo(()=>{const o=new Object3D();o.position.set(.010995,2.65,-7.84475);return o;},[]);
   const last=useRef(""),lastShadow=useRef(-1),mobile=isMobileDevice();
   useFrame(({clock})=>{
-    if(ambient.current)ambient.current.intensity=.55*Math.max(.18,stageLighting.room.value);
-    if(fill.current)fill.current.intensity=1.15*Math.max(.06,stageLighting.room.value);
+    const house=theatreOpening.house.value;
+    if(ambient.current)ambient.current.intensity=.55*Math.max(.18,stageLighting.room.value)*(.007+.993*house);
+    if(fill.current)fill.current.intensity=1.15*Math.max(.06,stageLighting.room.value)*house;
     if(key.current){key.current.intensity=40+740*stageLighting.key.value;key.current.shadow.autoUpdate=false;
       const pose=stageLighting.frame+":"+stageLighting.geometryVersion;
       if(last.current!==pose&&(clock.elapsedTime-lastShadow.current>(mobile?.1:.066)||stageLighting.frame===576)){key.current.shadow.needsUpdate=true;last.current=pose;lastShadow.current=clock.elapsedTime;}}

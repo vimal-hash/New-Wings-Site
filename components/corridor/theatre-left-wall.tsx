@@ -8,6 +8,7 @@ import { configureBakedTextureLoader } from "./baked-texture-loader";
 import { KTX2Loader } from "three/examples/jsm/loaders/KTX2Loader.js";
 import assets from "./theatre-left-wall-assets.json";
 import { stageBakedMaterial } from "./stage-lighting";
+import {applyTheatreOpeningMaterial} from './theatre-opening-material';
 import TextureRefinement from "./texture-refinement";
 
 /** Left wall only: one fixed Blender surface bake. No camera projection, lighting switch or blend. */
@@ -20,6 +21,7 @@ export default function TheatreLeftWall({ geometry }: { geometry: BufferGeometry
     const material=new MeshBasicMaterial({map,toneMapped:false});
     material.name="Left wall | Baked Blender appearance";material.dithering=true;
     stageBakedMaterial(material);
+    applyTheatreOpeningMaterial(material);
     return {mesh:new Mesh(geometry,material),map,material};
   }),[atlas,geometry,gl]);
   useEffect(()=>()=>{instance.material.dispose();instance.map.dispose();},[instance]);

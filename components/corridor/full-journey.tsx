@@ -16,10 +16,15 @@ import { createExitStages } from "./exit-stages";
 import logoBounds from "./logo-reveal.json";
 import layout from "./blender-layout.json";
 import { traceMark } from "./loading-trace";
-import { openingElapsed,openingMotion } from "./opening-motion";
+import {createTheatreOpeningClock,OPENING_CAMERA_START,OPENING_CAMERA_END,theatreOpening,theatreOpeningShot,openingReviewTime} from './theatre-opening-state';
 import { updateStageLighting } from "./stage-lighting";
 import {pupilFillProgress,pupilFillState} from "./pupil-fill";
 import {cinemaShot} from './cinema-controls';
+import {diagonalTransition,diagonalEyeZoom} from './diagonal-transition';
+import {lensControls} from './lens-controls';
+import {createViewOneLens} from './view-one-lens';
+import {viewOneLensWeight} from './lens-motion';
+
 
 const smooth = (t: number) => t*t*t*(t*(t*6-15)+10);
 const screensIndex = route.samples.findIndex(sample => sample.position[2] <= -55 + reference.stop[2] + 14.2);
@@ -34,12 +39,27 @@ export const PAGE_POSE = (() => {
 /** Original deliberate-shot timings; the curved leg uses the audited Blender centreline. */
 export default function FullJourney({ metrics, orbit }: { metrics: MetricsStore; orbit: boolean }) {
   const { camera, invalidate, size,scene } = useThree();
+  const livingLens=useMemo(()=>createViewOneLens(),[]),lensTouch=useRef(false);
+  useEffect(()=>{
+    const touch=matchMedia('(hover: none)');
+    const changed=()=>{lensTouch.current=touch.matches;livingLens.reset();invalidate();};changed();
+    const pointer=(event:PointerEvent)=>{if(event.pointerType!=='mouse'){lensTouch.current=true;livingLens.pointer(0,0);return;}if(journeyControls.read().phase!=='logoReveal'||viewOneLensWeight(cinemaShot.stage,cinemaShot.progress)===0)return;lensTouch.current=false;const ui=event.target instanceof Element&&event.target.closest('[data-cinema-controls]');livingLens.pointer(ui?0:event.clientX/innerWidth*2-1,ui?0:event.clientY/innerHeight*2-1);invalidate();};
+    const leave=()=>{livingLens.pointer(0,0);invalidate();};
+    const unsubscribe=lensControls.subscribe(invalidate);
+    window.addEventListener('pointermove',pointer,{passive:true});window.addEventListener('blur',leave);document.documentElement.addEventListener('pointerleave',leave);touch.addEventListener('change',changed);
+    return()=>{unsubscribe();window.removeEventListener('pointermove',pointer);window.removeEventListener('blur',leave);document.documentElement.removeEventListener('pointerleave',leave);touch.removeEventListener('change',changed);};
+  },[invalidate,livingLens]);
+  useEffect(()=>diagonalTransition.subscribe(invalidate),[invalidate]);
   const corridorBackground=useMemo(()=>new Color("#11151a"),[]);
   const reveal = useMemo(()=>{
     const initialRotation=new Quaternion().setFromRotationMatrix(new Matrix4().lookAt(new Vector3(...PAGE_POSE.position),new Vector3(...PAGE_POSE.target),new Vector3(0,1,0)));
     return createLogoReveal(logoBounds.blenderBounds,layout.slides[1],PAGE_POSE.position[1],size.width/Math.max(1,size.height),new Vector3(...PAGE_POSE.position),initialRotation);
   },[size.width,size.height]);
   const exitStages=useRef(createExitStages());
+  const openingClock=useRef(createTheatreOpeningClock());
+
+  const openingReview=useMemo(()=>typeof window==='undefined'?undefined:openingReviewTime(location.search,location.hostname),[]);
+  const openingEnd=useMemo(()=>new Vector3(...OPENING_CAMERA_END),[]);
   const state = useRef({ phase: (journeyControls.read().pageAtEnd ? "panel" : "intro") as JourneyPhase, pendingReveal:0,revealFov:40, resumeCamera: journeyControls.read().pageAtEnd, pendingScreens:false, elapsed: 0, last: 0, leg: 0, queuedLeg: false, amount: 0, lastInput: 0, lockedUntil: 0, touchY: 0, reduce: false, panelStage: 0,
     pendingProjector:false,introQueued:false,openingPreparedSeen:false,from: new Vector3(), fromFocus: new Vector3(...reference.screenCentre), focus: new Vector3(...reference.screenCentre), to: new Vector3(), q: new Quaternion() });
   const points = useMemo(() => {
@@ -68,11 +88,12 @@ export default function FullJourney({ metrics, orbit }: { metrics: MetricsStore;
     // Temporary buttons reuse the authored samplers and end-of-journey lighting.
     const preview=(event:Event)=>{
       const view=(event as CustomEvent).detail;if(view!=="slide"&&view!=="turned"&&view!=="final")return;
+      theatreOpening.house.value=1;
       s.phase=view==='final'?'logoDone':"logoReveal";s.resumeCamera=false;s.pendingProjector=false;s.pendingScreens=false;s.pendingReveal=0;
       s.amount=0;s.elapsed=0;s.last=performance.now();s.lockedUntil=0;s.revealFov=LOGO_FOV;
       exitStages.current.preview(view==='final'?'done':view);updateStageLighting(576,true);
       metrics.update({progress:1,waitingForProjector:false,waitingForCorridor:false});
-      journeyControls.update({phase:s.phase,revealStage:view==='final'?'done':view,reviewCamera:true,openingMoving:false});invalidate();
+      journeyControls.update({phase:s.phase,revealStage:view==='final'?'done':view,reviewCamera:true,openingMoving:false,cinemaStage:'clear'});invalidate();
     };
     window.addEventListener("eye-camera-view",preview);
     const unsubscribe = projectorControls.subscribe(() => {
@@ -94,7 +115,6 @@ export default function FullJourney({ metrics, orbit }: { metrics: MetricsStore;
       }
       if(orbit || distance<=0 || now<s.lockedUntil || (previous<s.lockedUntil && now-previous<180)) return;
       if(s.phase==="intro"){
-        if(openingMotion(s.elapsed,reference.holdSeconds,reference.pullbackSeconds,s.reduce).progress>=.85){s.amount+=Math.min(distance,100);if(s.amount>=100){s.introQueued=true;s.amount=0;}}
         return;
       }
       const canQueue=s.phase==="pullback" && s.leg===1 && !s.queuedLeg;
@@ -135,9 +155,14 @@ export default function FullJourney({ metrics, orbit }: { metrics: MetricsStore;
   /* eslint-disable react-hooks/immutability -- Camera projection/clipping are imperative Three.js state. */
   useFrame(()=>{
     const s=state.current, now=performance.now();
+    theatreOpening.active.value=s.phase==='intro'?1:0;
+    if(s.phase!=='intro')theatreOpening.room.value=1;
     if(s.phase!=="logoReveal"&&s.phase!=="logoDone")pupilFillState.value=0;
     const dt=s.last?Math.max(0,(now-s.last)/1000):0;s.last=now;
     if(s.resumeCamera){camera.position.fromArray(PAGE_POSE.position);camera.lookAt(...PAGE_POSE.target);metrics.update({progress:1});s.resumeCamera=false;}
+    const houseTarget=s.phase==='intro'||s.phase==='idle'?0:1;
+    theatreOpening.house.value+=(houseTarget-theatreOpening.house.value)*(1-Math.exp(-Math.min(.05,dt)*3));
+    if(Math.abs(houseTarget-theatreOpening.house.value)>.001)invalidate();
     if(orbit || document.hidden)return;
     const change=(phase:JourneyPhase)=>{s.phase=phase;s.elapsed=0;queueMicrotask(()=>journeyControls.update({phase}));};
     if(s.pendingProjector&&s.phase==="idle"&&projectorControls.read().ready){
@@ -159,6 +184,16 @@ export default function FullJourney({ metrics, orbit }: { metrics: MetricsStore;
       if(scene.background instanceof Color)scene.background.copy(corridorBackground).multiplyScalar(1-smooth(Math.min(1,t/.25)));
       camera.position.copy(points.position);camera.quaternion.copy(points.rotation);camera.up.set(0,1,0).applyQuaternion(points.rotation);
       if(camera instanceof PerspectiveCamera){camera.setFocalLength(camera.getFilmHeight()/(2*Math.tan((s.revealFov+(LOGO_FOV-s.revealFov)*smooth(t))*Math.PI/360)));camera.far=reveal.far;camera.updateProjectionMatrix();}
+      if(shot.stage==='done'&&camera instanceof PerspectiveCamera){
+        // The existing final shot stays centred. Change only its magnification
+        // during the following section, rendering native-resolution grains.
+        const tangent=Math.tan(camera.fov*Math.PI/360);
+        const diameter=(logoBounds.blenderBounds[0][1]-logoBounds.blenderBounds[0][0])*size.height/(2*tangent*(reveal.finalPosition.y-logoBounds.blenderBounds[2][1]));
+        diagonalTransition.setPupilDiameter(diameter);
+        camera.fov=2*Math.atan(tangent/diagonalEyeZoom(diagonalTransition.progress))*180/Math.PI;
+        camera.updateProjectionMatrix();
+      }
+      if(camera instanceof PerspectiveCamera&&livingLens.apply(camera,shot.stage,shot.progress,Math.min(.05,dt),s.reduce||lensTouch.current,camera.position.distanceTo(reveal.centre)))invalidate();
       if(shot.moving)invalidate();
       if(shot.stage!==journeyControls.read().revealStage)queueMicrotask(()=>journeyControls.update({revealStage:shot.stage}));
       if(shot.stage==="done" && s.phase!=="logoDone")change("logoDone");
@@ -166,16 +201,20 @@ export default function FullJourney({ metrics, orbit }: { metrics: MetricsStore;
     }
     if(s.phase==="intro") {
       // Enforce the screen-facing pose even before assets/FX are ready.
-      if(!metrics.read().firstFrame){camera.position.fromArray(reference.start);camera.lookAt(...reference.screenCentre as [number,number,number]);invalidate();return;}
+      if(!metrics.read().firstFrame){theatreOpening.room.value=0;camera.position.fromArray(OPENING_CAMERA_START);camera.lookAt(...reference.screenCentre as [number,number,number]);invalidate();return;}
       const prepared=journeyControls.read().openingPrepared;
-      s.elapsed=openingElapsed(s.elapsed,dt,reference.holdSeconds,prepared,s.openingPreparedSeen);s.openingPreparedSeen=prepared;
-      const shot=openingMotion(s.elapsed,reference.holdSeconds,reference.pullbackSeconds,s.reduce,prepared);
+      const shot=openingReview===undefined?openingClock.current.tick(dt,theatreOpening.geometryReady,prepared,s.reduce):{...theatreOpeningShot(prepared&&theatreOpening.geometryReady?openingReview:0),elapsed:prepared&&theatreOpening.geometryReady?openingReview:0};
+      theatreOpening.room.value=shot.room;theatreOpening.trace.value=shot.trace;theatreOpening.white.value=shot.white;theatreOpening.lineOpacity.value=shot.lineOpacity;
+      theatreOpening.stage=shot.stage;theatreOpening.elapsed=shot.elapsed;
+      if(journeyControls.read().openingStage!==shot.stage)queueMicrotask(()=>journeyControls.update({openingStage:shot.stage}));
       if(shot.progress>0&&!journeyControls.read().openingMoving){traceMark("Opening motion started");queueMicrotask(()=>journeyControls.update({openingMoving:true}));}
-      camera.position.fromArray(reference.start).lerp(points.stop,shot.position);camera.lookAt(...reference.screenCentre as [number,number,number]);
+      camera.position.fromArray(OPENING_CAMERA_START).lerp(openingEnd,shot.position);
+      s.focus.set(reference.screenCentre[0],OPENING_CAMERA_START[1]+(OPENING_CAMERA_END[1]-OPENING_CAMERA_START[1])*shot.position,reference.screenCentre[2]);
+      camera.lookAt(s.focus);
+      if(openingReview!==undefined&&prepared&&theatreOpening.geometryReady)return;
       if(shot.done){
         traceMark("Opening camera settled");
-        if(s.introQueued){s.introQueued=false;s.leg=1;s.from.copy(camera.position);s.fromFocus.copy(s.focus);s.to.copy(points.stop).lerp(points.wide,.72);change("pullback");invalidate();}
-        else change("idle");
+        s.amount=0;s.lockedUntil=now+240;change("idle");
       }else invalidate();return;
     }
     if(["idle","reveal","awaitAssembly","done","screensDone","panel","page"].includes(s.phase))return;

@@ -13,6 +13,7 @@ import { localEnvironment } from "./local-environment";
 import { stageLighting } from "./stage-lighting";
 import {theatreOpening} from './theatre-opening-state';
 import {applyTheatreOpeningMaterial} from './theatre-opening-material';
+import {effectQuality} from './effect-quality';
 
 const leatherNoise=`varying vec3 vLeatherPosition;
 float leatherHash(vec3 p){return fract(sin(dot(p,vec3(127.1,311.7,74.7)))*43758.5453);}
@@ -22,6 +23,7 @@ float leatherNoise(vec3 p){vec3 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);return mix
 export default function Sofas() {
   const { scene } = useGLTF(assets.model, "/draco/", false, traceGLTF);
   const gl=useThree(state=>state.gl);
+  const mobile=effectQuality(gl)==="mobile";
   const bakes=useLoader(KTX2Loader,assets.textures,loader=>configureBakedTextureLoader(loader,gl));
   const display=useBlenderViewLUT();
   const invalidate = useThree(state => state.invalidate);
@@ -39,10 +41,10 @@ export default function Sofas() {
     const material=new MeshStandardMaterial({name:"Sofa | Charcoal leather with physical grain",map:maps[0],aoMap:maps[1],roughnessMap:maps[1],metalnessMap:maps[1],roughness:.95,metalness:1,color:"#80878c",envMap:localEnvironment(gl),envMapIntensity:.16,toneMapped:false});
     material.onBeforeCompile=shader=>{shader.uniforms.blenderView={value:display};
       shader.vertexShader=shader.vertexShader.replace("#include <common>","#include <common>\nvarying vec3 vLeatherPosition;").replace("#include <begin_vertex>","#include <begin_vertex>\nvLeatherPosition=position;");
-      shader.fragmentShader=shader.fragmentShader.replace("#include <common>","#include <common>\n"+blenderDisplayGLSL+leatherNoise)
-        .replace("#include <roughnessmap_fragment>","#include <roughnessmap_fragment>\nfloat leatherMask=1.-texture2D(metalnessMap,vMetalnessMapUv).b;roughnessFactor=mix(roughnessFactor,.61+.045*leatherNoise(vLeatherPosition*55.)+.015*leatherNoise(vLeatherPosition*280.),leatherMask);")
+      shader.fragmentShader=shader.fragmentShader.replace("#include <common>","#include <common>\n"+blenderDisplayGLSL+(mobile?"":leatherNoise))
+        .replace("#include <roughnessmap_fragment>",`#include <roughnessmap_fragment>\nfloat leatherMask=1.-texture2D(metalnessMap,vMetalnessMapUv).b;roughnessFactor=mix(roughnessFactor,${mobile?".64":".61+.045*leatherNoise(vLeatherPosition*55.)+.015*leatherNoise(vLeatherPosition*280.)"},leatherMask);`)
         .replace("#include <tonemapping_fragment>","gl_FragColor.rgb=blenderDisplayLinear(gl_FragColor.rgb);");};
-    material.customProgramCacheKey=()=>"sofa-charcoal-leather-grain-v3";
+    material.customProgramCacheKey=()=>"sofa-charcoal-leather-grain-v3-"+mobile;
     applyTheatreOpeningMaterial(material,false,false,true);
     const rows=[new InstancedMesh(geometry,material,assets.instances.length)];
     const scale = new Vector3(), position = new Vector3(), matrix = new Matrix4();
@@ -52,9 +54,9 @@ export default function Sofas() {
       matrix.makeScale(scale.x, scale.y, scale.z).setPosition(position);
       rows[0].setMatrixAt(i, matrix);
     });
-    rows.forEach(instances=>{instances.name="Clean source upholstery | 12 sofas";instances.receiveShadow=true;instances.instanceMatrix.needsUpdate=true;instances.computeBoundingBox();instances.computeBoundingSphere();instances.matrixAutoUpdate=false;});
+    rows.forEach(instances=>{instances.name="Clean source upholstery | 12 sofas";instances.receiveShadow=!mobile;instances.instanceMatrix.needsUpdate=true;instances.computeBoundingBox();instances.computeBoundingSphere();instances.matrixAutoUpdate=false;});
     return { rows, geometry, maps,material };
-  }), [scene,bakes,display,gl]);
+  }), [scene,bakes,display,gl,mobile]);
   /* eslint-disable react-hooks/immutability -- owned Three.js material */
   useFrame(()=>{seating.material.envMapIntensity=.16*stageLighting.room.value*theatreOpening.house.value;});
   /* eslint-enable react-hooks/immutability */

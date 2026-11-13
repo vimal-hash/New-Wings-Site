@@ -1,4 +1,6 @@
 /** Opt-in, local-only startup diagnostics. No fetch interception or extra GPU work. */
+import { journeyControls, type JourneyPhase } from "./journey-controls";
+
 type Detail = Record<string, string | number | boolean | null>;
 type Span = { id: number; name: string; kind: string; start: number; end?: number; detail: Detail };
 type Trace = {
@@ -6,6 +8,7 @@ type Trace = {
   longTasks: { start: number; duration: number }[]; visibility: { at: number; state: string }[];
   supported: string[];
   framePauses:{at:number;duration:number;phase:string}[];
+  cadence:Map<string,{gaps:Uint32Array;count:number;total:number;worst:number}>;
 };
 let trace: Trace | undefined;
 const enabled = typeof window !== "undefined" && new URLSearchParams(window.location.search).get("diagnostics") === "1";
@@ -13,11 +16,74 @@ const now = () => performance.now();
 const round = (n: number) => Math.round(n * 10) / 10;
 export const diagnosticsEnabled = () => enabled;
 
+const frameColumns = ["atMs", "intervalMs", "phase", "stage", "cameraMoving", "pageScrollPx", "canvasWidth", "canvasHeight", "mainSubmissions", "offscreenSubmissions", "submissionMs", "section"] as const;
+type RecordedFrame = [number, number | null, string, string | number | null, boolean, number | null, number | null, number | null, number, number, number, string];
+const sectionNames:Record<JourneyPhase,string>={intro:"Theatre opening",idle:"Theatre seat",glassesExit:"Theatre to projector",pullback:"Theatre to projector",hold:"Theatre to projector",approach:"Projector",reveal:"Projector",awaitAssembly:"Projector",returnHold:"Projector",return:"Projector",done:"Projector",screens:"Corridor",screensDone:"Corridor",corridor:"Corridor",panel:"Liquid sphere",page:"Sections",pageReturnLoading:"Return to eye",logoReveal:"Eye approach",logoDone:"Full eye"};
+const pageSections=["Products","About Us","Team","Testimonials"];
+type JourneyRecording = {
+  startedAtMs: number; frames: RecordedFrame[];
+  mainSubmissions: number; offscreenSubmissions: number; submissionMs: number;
+};
+let activeRecording: JourneyRecording | undefined;
+
+export function startJourneyRecording() {
+  const recording: JourneyRecording = { startedAtMs: round(now()), frames: [], mainSubmissions: 0, offscreenSubmissions: 0, submissionMs: 0 };
+  activeRecording = recording;
+  let previous: number | undefined;
+  let canvas: HTMLCanvasElement | null = null;
+  let page: HTMLElement | null = null;
+  const resetInterval = () => { previous = undefined; };
+  const sample = (at: number) => {
+    if (!document.hidden) {
+      const shot = journeyControls.read();
+      const stage = shot.phase === "intro" ? shot.openingStage : shot.phase === "logoReveal" ? shot.revealStage :
+        shot.phase === "panel" ? shot.panelStage : shot.phase === "logoDone" ? (shot.finalCovered ? "covered" : "eye") : null;
+      if (!canvas?.isConnected) canvas = document.querySelector("#corridor-viewport canvas");
+      if (shot.phase === "page" && !page?.isConnected) page = document.querySelector(".normal-page");
+      const pageScroll=shot.phase==="page"&&page?round(page.scrollTop):null;
+      const section=pageScroll!==null&&page?pageSections[Math.round(pageScroll/Math.max(1,page.clientHeight))]??sectionNames.page:
+        shot.phase==="logoReveal"?(shot.revealStage==="slide"||shot.revealStage==="top"?"View 1":shot.revealStage==="turn"||shot.revealStage==="turned"?"View 2":"Full eye pullback"):
+        shot.phase==="logoDone"&&shot.finalCovered?"Final brand section":sectionNames[shot.phase];
+      const cameraMoving=shot.phase==="intro"?shot.openingStage==="pullback":shot.phase==="logoReveal"||shot.phase==="logoDone"?shot.cameraMoving:
+        shot.phase==="pullback"||shot.phase==="approach"||shot.phase==="return"||shot.phase==="screens"||shot.phase==="corridor";
+      recording.frames.push([round(at), previous === undefined ? null : round(at - previous), shot.phase, stage,
+        cameraMoving, pageScroll, canvas?.width ?? null, canvas?.height ?? null, recording.mainSubmissions, recording.offscreenSubmissions, round(recording.submissionMs),section]);
+      previous = at;
+    }
+    recording.mainSubmissions = recording.offscreenSubmissions = recording.submissionMs = 0;
+    request = requestAnimationFrame(sample);
+  };
+  let request = requestAnimationFrame(sample);
+  document.addEventListener("visibilitychange", resetInterval);
+  return () => {
+    cancelAnimationFrame(request);
+    document.removeEventListener("visibilitychange", resetInterval);
+    if (activeRecording === recording) activeRecording = undefined;
+    const byStage=new Map<string,{section:string;phase:string;stage:string|number|null;intervals:number[];total:number}>();
+    for(const [,interval,phase,stage,,,,,,,,section] of recording.frames){
+      if(interval===null||interval<=0)continue;
+      const key=JSON.stringify([section,phase,stage]);
+      const summary=byStage.get(key)??{section,phase,stage,intervals:[],total:0};
+      summary.intervals.push(interval);summary.total+=interval;byStage.set(key,summary);
+    }
+    const sectionFps=[...byStage.values()].map(({section,phase,stage,intervals,total})=>{
+      intervals.sort((a,b)=>a-b);
+      return {section,phase,stage,frames:intervals.length,meanFps:round(1000*intervals.length/total),p95Ms:intervals[Math.ceil(intervals.length*.95)-1],worstMs:intervals.at(-1),pausesOver50Ms:intervals.filter(gap=>gap>50).length};
+    });
+    return {
+      startedAtMs: recording.startedAtMs, stoppedAtMs: round(now()),
+      columns: frameColumns, frames: recording.frames,sectionFps,
+      notes: "One row per foreground browser animation callback. Null intervals mark the start or a visibility reset. Submission time measures renderer CPU/driver calls between callbacks, including offscreen work. It does not measure GPU completion or physical display refreshes."
+    };
+  };
+}
+
 function getTrace() {
   if (!enabled) return;
   if (trace) return trace;
-  trace = { marks: {}, spans: [], errors: [], longTasks: [], visibility: [], supported: [],framePauses:[] };
+  trace = { marks: {}, spans: [], errors: [], longTasks: [], visibility: [], supported: [],framePauses:[],cadence:new Map() };
   trace.marks["Diagnostics module evaluated"] = now();
+  (window as unknown as {__loadingTrace?:unknown}).__loadingTrace = trace; // diagnostics only: lets test scripts read spans
   performance.setResourceTimingBufferSize(2000);
   if (typeof PerformanceObserver !== "undefined") {
     trace.supported = [...(PerformanceObserver.supportedEntryTypes ?? [])];
@@ -42,8 +108,14 @@ export function traceMark(name: string) {
   if (value && value.marks[name] === undefined) value.marks[name] = now();
 }
 export function traceHasMark(name: string) { return trace?.marks[name] !== undefined; }
-export function traceFramePause(at:number,duration:number,phase:string){
-  const value=getTrace();if(value&&duration>50&&value.framePauses.length<1000)value.framePauses.push({at:round(at),duration:round(duration),phase});
+export function traceFramePause(at:number,duration:number,phase:string,stage?:string){
+  const value=getTrace();if(!value)return;
+  if(duration>50&&value.framePauses.length<1000)value.framePauses.push({at:round(at),duration:round(duration),phase});
+  const label=stage?phase+":"+stage:phase;
+  let cadence=value.cadence.get(label);
+  if(!cadence){cadence={gaps:new Uint32Array(251),count:0,total:0,worst:0};value.cadence.set(label,cadence);}
+  cadence.gaps[Math.min(250,Math.round(duration))]++;
+  cadence.count++;cadence.total+=duration;cadence.worst=Math.max(cadence.worst,duration);
 }
 export function traceSpan(name: string, kind = "cpu", detail: Detail = {}): (extra?: Detail) => void {
   const value = getTrace();
@@ -109,23 +181,28 @@ export function traceRenderer(renderer: object) {
   let earlyFrames = 0, openingFrames = 0;
   gl.render = function (...args) {
     const ready = traceHasMark("Opening scene committed");
-    if (ready ? openingFrames++ >= 3 : earlyFrames++ >= 3) {
+    const detailed = ready ? openingFrames++ >= 3 : earlyFrames++ >= 3;
+    const finishEarly = detailed ? null : traceSpan(ready ? "Opening render submission" : "Render before opening committed", "render submission");
+    if (detailed || activeRecording) {
       const start=now(),programs=gl.info?.programs?.length??0,target=!!gl.getRenderTarget?.();
       try{return Reflect.apply(render,this,args);}finally{
         const end=now(),value=getTrace();
-        if(end-start>25&&value&&value.spans.length<2000){
+        if (activeRecording) {
+          if (target) activeRecording.offscreenSubmissions++;
+          else activeRecording.mainSubmissions++;
+          activeRecording.submissionMs += end - start;
+        }
+        if(detailed&&end-start>25&&value&&value.spans.length<2000){
           const camera=args[1] as {position?:{x:number;y:number;z:number}};
           value.spans.push({id:value.spans.length,name:"Slow render submission",kind:"render submission",start,end,detail:{offscreen:target,programsBefore:programs,programsAfter:gl.info?.programs?.length??0,x:camera.position?.x??0,y:camera.position?.y??0,z:camera.position?.z??0}});
         }
+        finishEarly?.();
+        if (!detailed && ready && openingFrames === 1) markOpeningRender();
       }
     }
-    const end = traceSpan(ready ? "Opening render submission" : "Render before opening committed", "render submission");
     try { return Reflect.apply(render, this, args); } finally {
-      end();
-      if (ready && openingFrames === 1) {
-        traceMark("Opening render submitted");
-        requestAnimationFrame(() => traceMark("Opening paint opportunity"));
-      }
+      finishEarly?.();
+      if (ready && openingFrames === 1) markOpeningRender();
     }
   };
   gl.compileAsync = function (...args) {
@@ -136,6 +213,11 @@ export function traceRenderer(renderer: object) {
       return promise;
     } catch (e) { end({ error: String(e) }); throw e; }
   };
+}
+
+function markOpeningRender() {
+  traceMark("Opening render submitted");
+  requestAnimationFrame(() => traceMark("Opening paint opportunity"));
 }
 
 function resourceCategory(path: string) {
@@ -159,6 +241,12 @@ export function loadingReport() {
   const navigatorInfo = navigator as Navigator & { deviceMemory?: number; connection?: { effectiveType?: string; downlink?: number; rtt?: number; saveData?: boolean } };
   const openingEnd = value.marks["Opening paint opportunity"];
   const openingResources = resources.filter(e => e.category !== "other" && (openingEnd === undefined || e.end <= openingEnd));
+  const frameCadence=Object.fromEntries(Array.from(value.cadence,([stage,entry])=>{
+    let count=0,p95=0;
+    for(;p95<250;p95++){count+=entry.gaps[p95];if(count>=entry.count*.95)break;}
+    return [stage,{frames:entry.count,meanFps:round(entry.count*1000/entry.total),p95Ms:p95,worstMs:round(entry.worst)}];
+  }));
+  const canvas=document.querySelector<HTMLCanvasElement>("#corridor-viewport canvas");
   return {
     version: 2, capturedAt: new Date().toISOString(), elapsed: round(now()), route: location.pathname,
     environment: { userAgent: navigator.userAgent, hardwareConcurrency: navigator.hardwareConcurrency, deviceMemoryGB: navigatorInfo.deviceMemory ?? null, viewport: [innerWidth, innerHeight], devicePixelRatio, connection: navigatorInfo.connection ? { effectiveType: navigatorInfo.connection.effectiveType, downlinkMbpsEstimate: navigatorInfo.connection.downlink, rttMsEstimate: navigatorInfo.connection.rtt, saveData: navigatorInfo.connection.saveData } : null },
@@ -166,7 +254,9 @@ export function loadingReport() {
     marks: Object.fromEntries(Object.entries(value.marks).map(([k, v]) => [k, round(v)])),
     summary: { latestOpeningResourceEnd: openingResources.length ? Math.max(...openingResources.map(e => e.end)) : null, openingObservedTransferBytes: openingResources.reduce((sum, e) => sum + e.transferBytes, 0), openingObservedBodyBytes: openingResources.reduce((sum, e) => sum + e.encodedBytes, 0), resourcesObserved: resources.length },
     spans: value.spans.map(s => ({ ...s, start: round(s.start), end: s.end === undefined ? null : round(s.end), duration: s.end === undefined ? null : round(s.end - s.start) })),
-    resources, longTasks: value.longTasks, framePauses:value.framePauses,visibility: value.visibility, errors: value.errors, supportedEntryTypes: value.supported,
+    resources, longTasks: value.longTasks, framePauses:value.framePauses,frameCadence,
+    drawingBuffer:canvas?[canvas.width,canvas.height]:null,
+    visibility: value.visibility, errors: value.errors, supportedEntryTypes: value.supported,
     notes: ["Milliseconds from navigation; parallel spans overlap and must not be added together.", "Resource durations include queue/connection/server/transfer. Zero transfer bytes may mean cache or unavailable timing, not zero asset size.", "GLB parse/decode includes internal dependencies; KTX processing includes worker queue/init. These are not pure decoder CPU measurements.", "Render spans measure CPU/driver submission, not isolated GPU execution. Next animation frame is a paint opportunity, not proof of screen presentation.", "Long-task support varies. Hidden/background time is recorded. Diagnostics do not clear caches, change quality or add waits. Normal application shader/GPU preparation is recorded in spans."]
   };
 }

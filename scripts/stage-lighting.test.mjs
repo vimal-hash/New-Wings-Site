@@ -1,6 +1,14 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { lightingAt, stageLighting, updateStageLighting,ROOM_DARK_LEVEL } from '../components/corridor/stage-lighting.ts';
+import { lightingAt, stageLighting, theatrePullbackDim, updateStageLighting,ROOM_DARK_LEVEL } from '../components/corridor/stage-lighting.ts';
+
+test('the theatre starts dimming early and reaches its dark level at the end of the pullback',()=>{
+  assert.equal(theatrePullbackDim(0),0);
+  assert.ok(theatrePullbackDim(.25)>.09);
+  assert.ok(theatrePullbackDim(.5)>.4);
+  assert.equal(theatrePullbackDim(1),1);
+  for(let i=1;i<=100;i++)assert.ok(theatrePullbackDim(i/100)>=theatrePullbackDim((i-1)/100));
+});
 
 test('formation dims the room without a room-wide flash and holds projector light',()=>{
   assert.equal(lightingAt(1,true).room,1);

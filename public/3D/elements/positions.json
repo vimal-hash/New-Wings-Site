@@ -1,0 +1,225 @@
+{
+ "canvas": [
+  4096,
+  1504
+ ],
+ "background": "#FFFFFF",
+ "elements": [
+  {
+   "file": "bg-curtain-valance.webp",
+   "x": 0,
+   "y": 0,
+   "width": 4096,
+   "height": 56,
+   "z": 0
+  },
+  {
+   "file": "bg-sound-rings.webp",
+   "x": 0,
+   "y": 888,
+   "width": 708,
+   "height": 616,
+   "z": 1
+  },
+  {
+   "file": "bg-lens-aperture-large.webp",
+   "x": 3671,
+   "y": 0,
+   "width": 425,
+   "height": 342,
+   "z": 2
+  },
+  {
+   "file": "bg-film-reel-large.webp",
+   "x": 3624,
+   "y": 1145,
+   "width": 472,
+   "height": 359,
+   "z": 3
+  },
+  {
+   "file": "projector-vintage.webp",
+   "x": 381,
+   "y": 179,
+   "width": 140,
+   "height": 180,
+   "z": 4
+  },
+  {
+   "file": "film-reel-top.webp",
+   "x": 975,
+   "y": 113,
+   "width": 82,
+   "height": 82,
+   "z": 5
+  },
+  {
+   "file": "projector-4k.webp",
+   "x": 1530,
+   "y": 155,
+   "width": 236,
+   "height": 89,
+   "z": 6
+  },
+  {
+   "file": "lens-aperture.webp",
+   "x": 2079,
+   "y": 103,
+   "width": 86,
+   "height": 86,
+   "z": 7
+  },
+  {
+   "file": "soundbar.webp",
+   "x": 2508,
+   "y": 150,
+   "width": 293,
+   "height": 88,
+   "z": 8
+  },
+  {
+   "file": "cinema-ticket.webp",
+   "x": 3094,
+   "y": 89,
+   "width": 146,
+   "height": 94,
+   "z": 9
+  },
+  {
+   "file": "sound-waveform.webp",
+   "x": 3092,
+   "y": 315,
+   "width": 139,
+   "height": 70,
+   "z": 10
+  },
+  {
+   "file": "3d-glasses.webp",
+   "x": 3504,
+   "y": 205,
+   "width": 262,
+   "height": 103,
+   "z": 11
+  },
+  {
+   "file": "music-note-left.webp",
+   "x": 215,
+   "y": 607,
+   "width": 49,
+   "height": 64,
+   "z": 12
+  },
+  {
+   "file": "music-note-right.webp",
+   "x": 3845,
+   "y": 807,
+   "width": 56,
+   "height": 50,
+   "z": 13
+  },
+  {
+   "file": "speaker-tower.webp",
+   "x": 319,
+   "y": 1165,
+   "width": 143,
+   "height": 164,
+   "z": 14
+  },
+  {
+   "file": "subwoofer.webp",
+   "x": 597,
+   "y": 1299,
+   "width": 98,
+   "height": 97,
+   "z": 15
+  },
+  {
+   "file": "theatre-seats.webp",
+   "x": 1024,
+   "y": 1273,
+   "width": 258,
+   "height": 91,
+   "z": 16
+  },
+  {
+   "file": "clapperboard.webp",
+   "x": 1560,
+   "y": 1215,
+   "width": 109,
+   "height": 125,
+   "z": 17
+  },
+  {
+   "file": "silver-screen.webp",
+   "x": 1906,
+   "y": 1211,
+   "width": 284,
+   "height": 149,
+   "z": 18
+  },
+  {
+   "file": "av-receiver.webp",
+   "x": 2445,
+   "y": 1326,
+   "width": 184,
+   "height": 70,
+   "z": 19
+  },
+  {
+   "file": "stage-spotlight.webp",
+   "x": 2884,
+   "y": 1135,
+   "width": 140,
+   "height": 224,
+   "z": 20
+  },
+  {
+   "file": "film-strip.webp",
+   "x": 3341,
+   "y": 1184,
+   "width": 326,
+   "height": 295,
+   "z": 21
+  },
+  {
+   "file": "film-reel-bottom.webp",
+   "x": 3783,
+   "y": 1095,
+   "width": 86,
+   "height": 86,
+   "z": 22
+  },
+  {
+   "file": "sparkles-and-dots.webp",
+   "x": 127,
+   "y": 63,
+   "width": 3875,
+   "height": 1418,
+   "z": 23
+  },
+  {
+   "file": "text-new-wings.webp",
+   "x": 990,
+   "y": 672,
+   "width": 852,
+   "height": 202,
+   "z": 24
+  },
+  {
+   "file": "text-solutions.webp",
+   "x": 2347,
+   "y": 672,
+   "width": 757,
+   "height": 172,
+   "z": 25
+  },
+  {
+   "file": "logo.webp",
+   "x": 1838,
+   "y": 518,
+   "width": 516,
+   "height": 467,
+   "z": 26
+  }
+ ]
+}

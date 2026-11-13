@@ -10,13 +10,15 @@ import ceiling from "./theatre-ceiling-assets.json";
 import leftWall from "./theatre-left-wall-assets.json";
 import sofas from "./sofa-assets.json";
 import {THEATRE_SCREEN_ARTWORK} from './theatre-screen-artwork';
+import {CINEMA_GLASSES} from './cinema-glasses-state';
+import {isMobileDevice} from './texture-quality';
 
 export const THEATRE_MODELS = ["/models/theatre-marked.glb", "/models/projector-floor-marked.glb"];
 const started = new WeakMap<WebGLRenderer, { sofas: boolean }>();
 
 /** Match each consumer's exact loader/URL batch so Suspense reuses the work.
  * Only opening assets belong here; the corridor still starts after first frame. */
-export function preloadOpeningAssets(gl: WebGLRenderer, includeSofas: boolean) {
+export function preloadOpeningAssets(gl: WebGLRenderer, includeSofas: boolean, connectedTheatre: boolean) {
   let state = started.get(gl);
   if (!state) {
     state = { sofas: false };
@@ -24,7 +26,8 @@ export function preloadOpeningAssets(gl: WebGLRenderer, includeSofas: boolean) {
     traceMark("Opening asset preloads started");
     // The independent screen paints first; don't put its image behind room atlases.
     useLoader.preload(TextureLoader,[THEATRE_SCREEN_ARTWORK]);
-    useGLTF.preload('/models/cinema-glasses-front.glb','/draco/',false,traceGLTF);
+    // The mounted glasses (the older front-only file was still preloaded here: 260 KB nobody used).
+    useGLTF.preload(CINEMA_GLASSES,'/draco/',false,traceGLTF);
     // Queue critical models and motion before the much larger atlas batch.
     useGLTF.preload(THEATRE_MODELS, "/draco/", false, traceGLTF);
     useGLTF.preload(ceiling.model, "/draco/", false, traceGLTF);
@@ -34,7 +37,8 @@ export function preloadOpeningAssets(gl: WebGLRenderer, includeSofas: boolean) {
     }
     useLoader.preload(KTX2Loader, ceiling.texture, loader => configureBakedTextureLoader(loader, gl));
     useLoader.preload(KTX2Loader, leftWall.texture, loader => configureBakedTextureLoader(loader, gl));
-    preloadBakedSurfaces("theatre", gl);
+    preloadBakedSurfaces("theatre", gl, connectedTheatre);
+    if(isMobileDevice())preloadBakedSurfaces("projector-floor",gl);
     void loadCompressedBuffer("/textures/shared/blender-view.bin.gz").catch(()=>{});
     if(includeSofas)useLoader.preload(KTX2Loader,sofas.textures,loader=>configureBakedTextureLoader(loader,gl));
   }

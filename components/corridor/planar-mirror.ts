@@ -60,8 +60,10 @@ export class PlanarMirror {
     readonly clipBias = 0.003,
     readonly clipOffset = 0.005, // metres toward the viewer: faces on the mirror plane stay out
     readonly extraLayers: number[] = [], // layers only reflections see (besides the camera's)
+    readonly fixedColourTarget = false,
   ) {
-    this.target = new WebGLRenderTarget(1, 1, { type: HalfFloatType, samples: 0, depthTexture: new DepthTexture(1, 1) });
+    const size=fixedColourTarget?512:1;
+    this.target = new WebGLRenderTarget(size, size, { type: HalfFloatType, samples: 0, depthTexture: fixedColourTarget?null:new DepthTexture(1, 1) });
     this.target.texture.generateMipmaps = false;
     this.target.texture.minFilter = LinearFilter;
     this.target.texture.magFilter = LinearFilter;
@@ -69,7 +71,7 @@ export class PlanarMirror {
 
   /** Renders `scene` as seen in the mirror from `camera`, with `hidden` objects left out.
    *  Returns false (and leaves the last image) when the camera is behind the mirror. */
-  render(renderer: WebGLRenderer, scene: Scene, camera: Camera, hidden: Object3D[],bounds?:Box3) {
+  render(renderer: WebGLRenderer, scene: Scene, camera: Camera, hidden: Object3D[],bounds?:Box3,reuseShadows=false) {
     const { normal, point, camera: mirrored } = this;
     const eye = new Vector3().setFromMatrixPosition(camera.matrixWorld);
     const view = new Vector3().subVectors(point, eye);
@@ -132,13 +134,17 @@ export class PlanarMirror {
     hidden.forEach((object) => (object.visible = false));
     const previous = renderer.getRenderTarget();
     const clearAlpha = renderer.getClearAlpha();
+    const shadowMap=reuseShadows?renderer.shadowMap:null;
+    const auto=shadowMap?.autoUpdate??false,needs=shadowMap?.needsUpdate??false;
     try {
+      if(shadowMap){shadowMap.autoUpdate=false;shadowMap.needsUpdate=false;}
       renderer.setClearAlpha(1);
       renderer.setRenderTarget(this.target);
       renderer.state.buffers.depth.setMask(true);
       if (renderer.autoClear === false) renderer.clear();
       renderer.render(scene, mirrored);
     } finally {
+      if(shadowMap){shadowMap.autoUpdate=auto;shadowMap.needsUpdate=needs;}
       renderer.setRenderTarget(previous);
       renderer.setClearAlpha(clearAlpha);
       hidden.forEach((object, i) => (object.visible = visibility[i]));

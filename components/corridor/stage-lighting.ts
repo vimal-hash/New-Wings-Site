@@ -1,4 +1,7 @@
-import type { Material } from "three";
+import type { LightShadow,Material } from "three";
+
+/** The assembled phone projector never changes pose, so the spot can reuse its map. */
+export const preparedPhoneProjectorShadows=new WeakSet<LightShadow>();
 
 /** One animation clock drives the room, local illumination and optical highlights. */
 export const stageLighting = {
@@ -19,6 +22,26 @@ export function updateStageLighting(frame:number,active:boolean) {
   stageLighting.indirect.value=Math.min(stageLighting.indirect.value,target.indirect);
   stageLighting.key.value=Math.max(stageLighting.key.value,target.key);
   stageLighting.flash.value=0;
+}
+
+/** Spread the theatre fade across the camera move, with soft ends at both stops. */
+export const theatrePullbackDim=(progress:number)=>smooth(.06,1,progress);
+
+/** Forward: the room dims during the pullback (`dim` 0..1), then the
+ *  projector key comes up as the camera turns toward it (`key` 0..1). One-way, like the build. */
+export function leadStageLighting(dim:number,key:number) {
+  if(dim>0)stageLighting.darkened=true;
+  stageLighting.room.value=Math.min(stageLighting.room.value,1-(1-ROOM_DARK_LEVEL)*dim);
+  stageLighting.indirect.value=Math.min(stageLighting.indirect.value,1-.7*dim);
+  stageLighting.key.value=Math.max(stageLighting.key.value,key);
+}
+/** Scrolling back into the theatre: the room light returns (`amount` 0 dark .. 1 fully lit). */
+export function restoreStageLighting(amount:number) {
+  const a=Math.max(0,Math.min(1,amount));
+  stageLighting.darkened=false;
+  stageLighting.room.value=Math.max(stageLighting.room.value,ROOM_DARK_LEVEL+(1-ROOM_DARK_LEVEL)*a);
+  stageLighting.indirect.value=Math.max(stageLighting.indirect.value,.3+.7*a);
+  stageLighting.key.value=Math.min(stageLighting.key.value,1-a);
 }
 
 /** Attenuate baked illumination, never transparency. Bright sources extinguish
@@ -43,7 +66,7 @@ outgoingLight*=roomFill;\n#include <opaque_fragment>`);
 
 /** Retain the approved walnut bake as the base, with live spotlight/shadows
  * added only after formation begins. No extra floor geometry or texture. */
-export function stageProjectorFloor(material:Material) {
+export function stageProjectorFloor(material:Material,mobile=false) {
   material.onBeforeCompile=shader=>{
     Object.assign(shader.uniforms,{stageRoom:stageLighting.room,stageKey:stageLighting.key});
     shader.fragmentShader="uniform float stageRoom;uniform float stageKey;\n"+shader.fragmentShader;
@@ -52,7 +75,17 @@ export function stageProjectorFloor(material:Material) {
       // the grain into a tan pool under the key. Keep the original colour ratios.
       .replace("#include <color_fragment>","#include <color_fragment>\ndiffuseColor.rgb=min(diffuseColor.rgb*2.4,vec3(.32))*stageKey;")
       .replace("#include <emissivemap_fragment>",`#include <emissivemap_fragment>
-totalEmissiveRadiance*=mix(.18,1.,clamp((stageRoom-${ROOM_DARK_LEVEL})/${1-ROOM_DARK_LEVEL},0.,1.));`);
+totalEmissiveRadiance*=mix(.18,1.,clamp((stageRoom-${ROOM_DARK_LEVEL})/${1-ROOM_DARK_LEVEL},0.,1.));`)
+      // Before the key, show the bake alone, as in Blender: the scene's lights must not lay a grey sheen over it.
+      .replace("#include <opaque_fragment>","outgoingLight-=totalSpecular*(1.-stageKey);\n#include <opaque_fragment>");
+    if(mobile)shader.fragmentShader=shader.fragmentShader.replace("#include <map_fragment>",`#include <map_fragment>
+      // With the projector key off, only the existing floor bake contributes.
+      if(stageKey<=0.){
+        gl_FragColor=vec4(diffuseColor.rgb*mix(.18,1.,clamp((stageRoom-${ROOM_DARK_LEVEL})/${1-ROOM_DARK_LEVEL},0.,1.)),1.);
+        #include <colorspace_fragment>
+        #include <dithering_fragment>
+        return;
+      }`);
   };
-  material.customProgramCacheKey=()=>"projector-floor-live-key-v2";
+  material.customProgramCacheKey=()=>"projector-floor-live-key-v3-"+mobile;
 }

@@ -1,6 +1,6 @@
-export type JourneyPhase = "intro" | "glassesExit" | "idle" | "pullback" | "hold" | "approach" | "reveal" | "awaitAssembly" | "returnHold" | "return" | "done" | "screens" | "screensDone" | "corridor" | "panel" | "page" | "pageReturnLoading" | "pageReturning" | "logoReveal" | "logoDone";
-type Snapshot = { phase: JourneyPhase; cinemaStage:'wearing'|'removing'|'clear';openingStage:string;openingMoving:boolean;openingPrepared:boolean;panelStage: number; panelReady: boolean; pageAtEnd: boolean; revealStage: import("./exit-stages").ExitStage; reviewCamera:boolean;finalCovered:boolean };
-let snapshot: Snapshot = { phase: "intro", cinemaStage:'wearing',openingStage:'screen',openingMoving:false,openingPrepared:false,panelStage: 0, panelReady: false, pageAtEnd: false, revealStage:"slide",reviewCamera:false,finalCovered:false };
+export type JourneyPhase = "intro" | "glassesExit" | "idle" | "pullback" | "hold" | "approach" | "reveal" | "awaitAssembly" | "returnHold" | "return" | "done" | "screens" | "screensDone" | "corridor" | "panel" | "page" | "pageReturnLoading" | "logoReveal" | "logoDone";
+type Snapshot = { phase: JourneyPhase; cinemaStage:'wearing'|'removing'|'clear';openingStage:string;openingMoving:boolean;openingPrepared:boolean;loaderDone:boolean;pageSection:number|null;pageJump:number;cameraMoving:boolean;panelStage: number; pageAtEnd: boolean; pageReturning:boolean; revealStage: import("./exit-stages").ExitStage; reviewCamera:boolean;finalCovered:boolean };
+let snapshot: Snapshot = { phase: "intro", cinemaStage:'wearing',openingStage:'screen',openingMoving:false,openingPrepared:false,loaderDone:false,pageSection:null,pageJump:0,cameraMoving:false,panelStage: 0, pageAtEnd: false,pageReturning:false,revealStage:"slide",reviewCamera:false,finalCovered:false };
 const listeners = new Set<() => void>();
 export const journeyControls = {
   read: () => snapshot,

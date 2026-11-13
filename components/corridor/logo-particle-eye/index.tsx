@@ -9,11 +9,13 @@ import {createLogoReveal,LOGO_FOV} from "../logo-reveal";
 import {PAGE_POSE} from "../full-journey";
 import bounds from "../logo-reveal.json";
 import layout from "../blender-layout.json";
-import {scheduleSceneIdle} from "../scene-idle";
-import {compileHiddenGPU,prepareHiddenGPU} from "../hidden-gpu-preparation";
+import {phoneEyePreparationWindow,scheduleSceneIdle,waitForSceneIdle} from "../scene-idle";
+import {compileHiddenGPU,compileHiddenGPUGradually,prepareHiddenGPU,prepareMobileMeshes} from "../hidden-gpu-preparation";
 import {traceMark,traceSpan} from "../loading-trace";
 import {assetURL} from "../asset-url";
 import {configureBakedTextureLoader} from "../baked-texture-loader";
+import {isMobileDevice} from "../texture-quality";
+import {pageReturn} from "../page-exit";
 import {eyeDimensions,loadEyePoints} from "./field";
 import assets from "./assets.json";
 import lighting from "./lighting.json";
@@ -21,7 +23,9 @@ import {createDepthField,createDepthLayout,depthLayerVisibility} from "./depth-f
 import {HERO_WAVE_GLSL,pupilPulseUniforms} from "../pupil-pulse-state";
 import {GRAIN_REACTION,GRAIN_REACTION_GLSL,GRAIN_OPTICS_GLSL} from "../pupil-grain-reaction";
 
-const preparationPhases=new Set<JourneyPhase>(["screensDone","corridor","panel","page","pageReturnLoading","pageReturning","logoReveal","logoDone"]);
+const preparationPhases=new Set<JourneyPhase>(["screensDone","corridor","panel","page","pageReturnLoading","logoReveal","logoDone"]);
+// Phones walk the corridor without a stop: the eye mounts only once the HTML page covers the scene.
+const phonePreparationPhases=new Set<JourneyPhase>(["done","screens","corridor","panel","page","pageReturnLoading","logoReveal","logoDone"]);
 const visiblePhases=new Set<JourneyPhase>(["logoReveal","logoDone"]);
 const vertexShader=/* glsl */`
 precision highp float;
@@ -165,7 +169,11 @@ export function AuthoredEyeField({active,review=false,qualityOverride,moving=tru
     const reveal=createLogoReveal(bounds.blenderBounds,layout.slides[1],PAGE_POSE.position[1],size.width/Math.max(1,size.height),start,rotation);
     const diameter=Math.max(bounds.blenderBounds[0][1]-bounds.blenderBounds[0][0],bounds.blenderBounds[1][1]-bounds.blenderBounds[1][0]);
     const dimensions=eyeDimensions(diameter,reveal.finalPosition.distanceTo(reveal.centre),size.width/Math.max(1,size.height),LOGO_FOV);
-    return {centre:reveal.centre,rotation:reveal.finalRotation,scale:dimensions.scale,scaleX:dimensions.scaleX,front:dimensions.front};
+    // Narrow and portrait screens keep the approved 16:9 almond: the eye is never squeezed to the screen width;
+    // its tips run past the edges instead (a closer crop of the same eye), and the lids and pupil stay unchanged.
+    const wide=createLogoReveal(bounds.blenderBounds,layout.slides[1],PAGE_POSE.position[1],16/9,start,rotation);
+    const wideFit=eyeDimensions(diameter,wide.finalPosition.distanceTo(wide.centre),16/9,LOGO_FOV).fit;
+    return {centre:reveal.centre,rotation:reveal.finalRotation,scale:dimensions.scale,scaleX:dimensions.scale*Math.max(dimensions.fit,wideFit),front:dimensions.front};
   },[review,size.width,size.height]);
   const resources=useMemo(()=>{
     const geometry=new InstancedBufferGeometry();
@@ -186,7 +194,7 @@ export function AuthoredEyeField({active,review=false,qualityOverride,moving=tru
     // Local diagnostic comparison; normal/LAN viewers always receive the layer.
     const params=typeof location==='undefined'?null:new URLSearchParams(location.search);
     const disabled=typeof location!=='undefined'&&/^(localhost|127\.)/.test(location.hostname)&&params?.has('diagnostics')&&params.get('eye-depth')==='off';
-    const depth=review||disabled?null:createDepthField(createDepthLayout(quality,stop,Math.atan2(forward.x,forward.z),unit),unit,assets.atlas.quadPadding,fragmentShader);
+    const depth=review||disabled?null:createDepthField(createDepthLayout(quality,stop,Math.atan2(forward.x,forward.z),unit),unit,assets.atlas.quadPadding,fragmentShader,quality==="mobile");
     if(depth)root.add(depth.root);
     return {geometry,material,mesh,group,root,depth,stop,travelDistance:reveal.finalPosition.distanceTo(stop)};
   },[tier.count,quality,review]);
@@ -199,15 +207,20 @@ export function AuthoredEyeField({active,review=false,qualityOverride,moving=tru
       resources.material.uniforms.uLighting.value.forEach((value:Vector3)=>value.setScalar(1));invalidate();
     }
   },[review,resources,invalidate]);
+  /* eslint-disable react-hooks/immutability -- The loader fills the mount-owned mesh, attributes and uniforms. */
   useEffect(()=>{
     const motion=state.current,query=matchMedia("(prefers-reduced-motion: reduce)");
     motion.ready=false;motion.opacity=0;motion.time=0;
+    resources.mesh.userData.eyePrepared=false;
     const update=()=>{motion.reduce=query.matches;invalidate();};update();
     const visibility=()=>{if(!document.hidden)invalidate();};
     query.addEventListener("change",update);document.addEventListener("visibilitychange",visibility);
     let alive=true,cancelCompile=()=>{},cancelDraw=()=>{};let texture:Texture|undefined;
     const controller=new AbortController(),loader=new KTX2Loader();
-    const schedule=(job:()=>void)=>review?(job(),()=>{}):scheduleSceneIdle(job,15);
+    const mobile=quality==="mobile"&&!review;
+    const schedule=(job:()=>void,gpu=false)=>review?(job(),()=>{}):scheduleSceneIdle(job,mobile?20:15,gpu&&mobile?phoneEyePreparationWindow:undefined);
+    const waitForQuiet=()=>waitForSceneIdle(controller.signal,20,phoneEyePreparationWindow);
+    const failed=(error:unknown)=>{if(!alive||controller.signal.aborted)return;resources.mesh.userData.eyePrepared=true;console.error("Authored eye preparation failed",error);invalidate();};
     const cancelLoad=schedule(()=>{
       const end=traceSpan("Authored logo eye load","worker decode and grain atlas",{quality,count:tier.count});
       configureBakedTextureLoader(loader,gl);
@@ -221,49 +234,64 @@ export function AuthoredEyeField({active,review=false,qualityOverride,moving=tru
           if(!alive)return;
           atlas.colorSpace=SRGBColorSpace;atlas.anisotropy=Math.min(4,gl.capabilities.getMaxAnisotropy());
           resources.geometry.setAttribute("authoredPosition",new InstancedBufferAttribute(data.positions,3,true));
-          resources.geometry.setAttribute("grain",new InstancedBufferAttribute(data.grains,3));resources.geometry.instanceCount=data.count;
+          // Same 0-255 values as floats: byte data on a float attribute makes Windows
+          // (ANGLE/D3D11) recompile this shader on the GPU thread at its first draw.
+          resources.geometry.setAttribute("grain",new InstancedBufferAttribute(Float32Array.from(data.grains),3));resources.geometry.instanceCount=data.count;
           resources.material.uniforms.uMin.value.fromArray(data.min);resources.material.uniforms.uExtent.value.fromArray(data.extent);
           resources.material.uniforms.uAtlas.value=atlas;
           const probe=new Mesh(resources.geometry,resources.material),privateScene=new Scene();privateScene.add(probe);
           if(resources.depth){resources.depth.material.uniforms.uAtlas.value=atlas;privateScene.add(new Mesh(resources.depth.geometry,resources.depth.material),resources.depth.haze.mesh.clone());}
-          void compileHiddenGPU(gl,privateScene,camera).then(()=>{
+          const compilation=mobile?compileHiddenGPUGradually(gl,privateScene,camera,()=>alive,privateScene,false,waitForQuiet):compileHiddenGPU(gl,privateScene,camera);
+          void compilation.then(()=>{
             if(!alive)return;
             cancelDraw=schedule(()=>{
               if(!alive)return;
-              try{
-                prepareHiddenGPU(gl,privateScene,camera,privateScene.children);motion.ready=true;traceMark("Authored logo eye ready");
+              const prepared=()=>{
+                if(!alive)return;
+                motion.ready=true;resources.mesh.userData.eyePrepared=true;traceMark("Authored logo eye ready");
                 callback.current?.({quality,count:data.count,downloadBytes:tier.bytes+assets.atlas.bytes,attributeBytes:data.positions.byteLength+data.grains.byteLength,loadDecodeMs:data.loadDecodeMs});invalidate();
-              }catch(error){console.error("Authored eye preparation failed",error);}
-            });
-          }).catch(error=>{if(alive)console.error("Authored eye compile failed",error);});
-        });
-      }).catch(error=>{end({error:String(error)});if(alive&&!controller.signal.aborted)console.error("Authored eye load failed",error);});
+              };
+              if(mobile)void prepareMobileMeshes(gl,privateScene,camera,privateScene.children,()=>alive,waitForQuiet).then(prepared,failed);
+              else try{prepareHiddenGPU(gl,privateScene,camera,privateScene.children);prepared();}catch(error){failed(error);}
+            },true);
+          }).catch(failed);
+        },true);
+      }).catch(error=>{end({error:String(error)});failed(error);});
     });
     return()=>{alive=false;motion.ready=false;cancelLoad();cancelCompile();cancelDraw();controller.abort();loader.dispose();texture?.dispose();
       query.removeEventListener("change",update);document.removeEventListener("visibilitychange",visibility);resources.geometry.dispose();resources.material.dispose();resources.depth?.geometry.dispose();resources.depth?.material.dispose();resources.depth?.haze.geometry.dispose();resources.depth?.haze.material.dispose();};
   },[gl,camera,resources,quality,tier,review,invalidate]);
+  /* eslint-enable react-hooks/immutability */
   useEffect(()=>{invalidate();},[active,moving,invalidate]);
   /* eslint-disable react-hooks/immutability -- imperative updates to owned Three.js objects. */
   useFrame((_,delta)=>{
-    const motion=state.current;resources.root.visible=active&&motion.ready;resources.group.visible=active&&motion.ready;
-    if(!active||!motion.ready||document.hidden||journeyControls.read().finalCovered)return;
+    const journey=journeyControls.read(),coveredReturn=journey.phase==='pageReturnLoading';
+    const warming=journey.phase==='page'&&pageReturn.warming;
+    const motion=state.current,visible=(active||coveredReturn||warming)&&motion.ready;
+    resources.root.visible=resources.group.visible=visible;
+    if(!visible||document.hidden||journey.finalCovered)return;
     const step=Math.min(delta,.05),animate=moving&&!motion.reduce;
-    if(animate)motion.time+=step;
-    motion.opacity=review||motion.reduce?1:Math.min(1,motion.opacity+step*2.5);
-    resources.material.uniforms.uTime.value=motion.time;resources.material.uniforms.uOpacity.value=motion.opacity;resources.material.uniforms.uMotion.value=animate?1:0;
+    // Keep the same grain positions when the phone camera settles. A resting
+    // view no longer runs the scene solely for the tiny grain drift.
+    const ticking=animate&&(quality!=="mobile"||journey.cameraMoving||journey.phase==="logoDone");
+    if(ticking)motion.time+=step;
+    if(!warming)motion.opacity=review||motion.reduce?1:Math.min(1,motion.opacity+step*2.5);
+    const alpha=warming?1:motion.opacity;
+    resources.material.uniforms.uTime.value=motion.time;resources.material.uniforms.uOpacity.value=alpha;resources.material.uniforms.uMotion.value=animate?1:0;
     if(resources.depth){
-      const journey=journeyControls.read(),travel=camera.position.distanceTo(resources.stop)/resources.travelDistance;
-      const opacity=motion.opacity*depthLayerVisibility(journey.phase,journey.revealStage,travel);
+      const travel=camera.position.distanceTo(resources.stop)/resources.travelDistance;
+      const opacity=alpha*depthLayerVisibility(coveredReturn||warming?'logoReveal':journey.phase,journey.revealStage,travel);
       resources.depth.mesh.visible=opacity>.0001;
       resources.depth.haze.mesh.visible=opacity>.0001;resources.depth.haze.material.uniforms.uOpacity.value=opacity;
       resources.depth.material.uniforms.uOpacity.value=opacity;resources.depth.material.uniforms.uTime.value=motion.time;resources.depth.material.uniforms.uMotion.value=animate?1:0;
     }
-    if(animate||motion.opacity<1)invalidate();
+    if(!warming&&(ticking||motion.opacity<1))invalidate();
   },-.35);
   /* eslint-enable react-hooks/immutability */
   return <primitive object={resources.root} dispose={null}/>;
 }
 export default function LogoParticleEye({enabled=true}:{enabled?:boolean}) {
   const journey=useSyncExternalStore(journeyControls.subscribe,journeyControls.read,journeyControls.read);
-  return enabled&&preparationPhases.has(journey.phase)?<AuthoredEyeField active={visiblePhases.has(journey.phase)}/>:null;
+  const phases=isMobileDevice()?phonePreparationPhases:preparationPhases;
+  return enabled&&phases.has(journey.phase)?<AuthoredEyeField active={visiblePhases.has(journey.phase)}/>:null;
 }

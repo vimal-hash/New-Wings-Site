@@ -79,7 +79,12 @@ export default function DiagonalSection(){
     function resize(){paint(motion.read().progress);}
     const unsubscribeFeather=diagonalFeatherControls.subscribe(resize);
     const unsubscribeLayout=diagonalTransition.subscribeLayout(resize);
-    const preview=(event:Event)=>{if(!active())return;const value=(event as CustomEvent).detail;if(typeof value==='number'&&Number.isFinite(value)){motion.seek(value);wake();}};
+    const preview=(event:Event)=>{
+      if(!active())return;const detail=(event as CustomEvent).detail;
+      // Menu jumps arrive as {value, instant}: land on the covered section without the sweep.
+      if(detail&&typeof detail==='object'&&Number.isFinite(detail.value)){motion.seek(detail.value);const shot=motion.tick(0,true);paint(shot.progress);publish(shot.covered);return;}
+      if(typeof detail==='number'&&Number.isFinite(detail)){motion.seek(detail);wake();}
+    };
     window.addEventListener('eye-diagonal-preview',preview);
     const unsubscribe=journeyControls.subscribe(()=>{
       if(active())return;

@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
-import { Color,Matrix4, PerspectiveCamera, Quaternion, Vector3 } from "three";
+import { Color,Matrix4, PerspectiveCamera, Quaternion, Vector2, Vector3 } from "three";
 import reference from "./reference-camera.json";
 import route from "./scene-route.json";
 import projector from "./projector-assets.json";
@@ -11,24 +11,58 @@ import { projectorControls } from "./projector-controls";
 import { journeyControls, type JourneyPhase } from "./journey-controls";
 import type { MetricsStore } from "./metrics";
 import { createLogoReveal, LOGO_FOV } from "./logo-reveal";
-import { revealScrollTarget } from "./reveal-scroll";
-import { createExitStages } from "./exit-stages";
+import { pageReturn } from "./page-exit";
+import { createExitStages, type ExitStage } from "./exit-stages";
 import logoBounds from "./logo-reveal.json";
 import layout from "./blender-layout.json";
 import { traceMark } from "./loading-trace";
-import {createTheatreOpeningClock,OPENING_CAMERA_START,OPENING_CAMERA_END,theatreOpening,theatreOpeningShot,openingReviewTime} from './theatre-opening-state';
-import { updateStageLighting } from "./stage-lighting";
+import {createTheatreOpeningClock,OPENING_CAMERA_START,OPENING_CAMERA_END,theatreOpening,theatreOpeningShot,openingReviewTime,houseLightLevel} from './theatre-opening-state';
+import { leadStageLighting,restoreStageLighting,theatrePullbackDim,updateStageLighting } from "./stage-lighting";
 import {pupilFillProgress,pupilFillState} from "./pupil-fill";
 import {cinemaShot} from './cinema-controls';
 import {diagonalTransition,diagonalEyeZoom} from './diagonal-transition';
 import {lensControls} from './lens-controls';
 import {createViewOneLens} from './view-one-lens';
 import {viewOneLensWeight} from './lens-motion';
+import {cinemaGlasses} from './cinema-glasses-state';
+import {CORRIDOR_STOP} from './corridor-screen-state';
+import {sceneIdleUrgent,sceneMotion} from './scene-idle';
+import {effectQuality} from './effect-quality';
 
+/** One fresh scroll in the lit theatre: the glasses lift, the screen powers down once
+ *  they are nearly clear, then the camera leaves for the projector. */
+const GLASSES_EXIT={liftedAt:.8,screenOff:.58,hold:.10} as const;
 
 const smooth = (t: number) => t*t*t*(t*(t*6-15)+10);
+/** Rest outside the theatre before turning to the particles (was .5 s). */
+const HOLD_SECONDS=.25;
+/** Menu destinations: 1-4 are the page sections. */
+export type JumpTarget="theatre"|"projector"|"final"|1|2|3|4;
+/** Scrolling back: each leg in reverse, eased at both ends. */
+const BACK_SECONDS={screens:2.6,return:2.1,approach:1.7,pullback:2.6} as const;
+/** Same duration, but the move gets going a little sooner and spends longer gliding into its stop. */
+const settle = (t: number) => smooth(Math.pow(t,.8));
 const screensIndex = route.samples.findIndex(sample => sample.position[2] <= -55 + reference.stop[2] + 14.2);
 const passage = createJourneySampler(route.samples.slice(screensIndex), route.up);
+// Arc length along the passage samples, so both corridor legs move at an even pace.
+const passageArcs = route.samples.slice(screensIndex).reduce<number[]>((arcs, sample, i, all) => {
+  arcs.push(i ? arcs[i-1] + Math.hypot(sample.position[0]-all[i-1].position[0], sample.position[2]-all[i-1].position[2]) : 0);
+  return arcs;
+}, []);
+const PASSAGE_LENGTH = passageArcs[passageArcs.length-1];
+const STOP_ARC = CORRIDOR_STOP.arc - route.samples.slice(0, screensIndex+1).reduce((arc, sample, i, all) => i ? arc + Math.hypot(sample.position[0]-all[i-1].position[0], sample.position[2]-all[i-1].position[2]) : 0, 0);
+/** Slow, eased corridor legs: into the stop by the displays, then on to the liquid. */
+const CORRIDOR_MOVE = { arrive: 2.6, leave: 2.4 } as const;
+const CORRIDOR_EXIT_SPEED = (PASSAGE_LENGTH-STOP_ARC)/CORRIDOR_MOVE.leave;
+const lookYaw = new Quaternion(), lookPitch = new Quaternion(), worldUp = new Vector3(0,1,0), localSide = new Vector3(1,0,0);
+/** Passage pose at an arc from its start. `look` turns toward the left-wall displays and up a little. */
+function corridorPose(arc: number, look: number, position: Vector3, rotation: Quaternion) {
+  let i = 1; while (i < passageArcs.length-1 && passageArcs[i] < arc) i++;
+  const t = Math.max(0, Math.min(1, (arc-passageArcs[i-1]) / ((passageArcs[i]-passageArcs[i-1]) || 1e-9)));
+  passage.sample((i-1+t) / (passageArcs.length-1), position, rotation);
+  lookYaw.setFromAxisAngle(worldUp, look*CORRIDOR_STOP.yaw*Math.PI/180);lookPitch.setFromAxisAngle(localSide, look*CORRIDOR_STOP.pitch*Math.PI/180);
+  rotation.premultiply(lookYaw).multiply(lookPitch);
+}
 export const PAGE_POSE = (() => {
   const position = new Vector3(), rotation = new Quaternion();
   passage.sample(1, position, rotation);
@@ -38,7 +72,10 @@ export const PAGE_POSE = (() => {
 
 /** Original deliberate-shot timings; the curved leg uses the audited Blender centreline. */
 export default function FullJourney({ metrics, orbit }: { metrics: MetricsStore; orbit: boolean }) {
-  const { camera, invalidate, size,scene } = useThree();
+  const { camera, invalidate, size,scene,gl } = useThree();
+  const projectorTravel=effectQuality(gl)==="desktop"?2.85:2;
+  /** Phones: the projector simply appears at the pulled-back stop (no fly-in, particles or assembly), and the corridor has no glasses stop. */
+  const phone=effectQuality(gl)==="mobile";
   const livingLens=useMemo(()=>createViewOneLens(),[]),lensTouch=useRef(false);
   useEffect(()=>{
     const touch=matchMedia('(hover: none)');
@@ -56,87 +93,152 @@ export default function FullJourney({ metrics, orbit }: { metrics: MetricsStore;
     return createLogoReveal(logoBounds.blenderBounds,layout.slides[1],PAGE_POSE.position[1],size.width/Math.max(1,size.height),new Vector3(...PAGE_POSE.position),initialRotation);
   },[size.width,size.height]);
   const exitStages=useRef(createExitStages());
+  const jumpProjector=useRef(()=>{});
   const openingClock=useRef(createTheatreOpeningClock());
+  /** Pace of the theatre view following the mouse (see the idle frame below). */
+  const GAZE_FOLLOW=4.2;
+  const theatreLook=useRef({target:new Vector2(),current:new Vector2(),velocity:new Vector2()});
 
   const openingReview=useMemo(()=>typeof window==='undefined'?undefined:openingReviewTime(location.search,location.hostname),[]);
   const openingEnd=useMemo(()=>new Vector3(...OPENING_CAMERA_END),[]);
-  const state = useRef({ phase: (journeyControls.read().pageAtEnd ? "panel" : "intro") as JourneyPhase, pendingReveal:0,revealFov:40, resumeCamera: journeyControls.read().pageAtEnd, pendingScreens:false, elapsed: 0, last: 0, leg: 0, queuedLeg: false, amount: 0, lastInput: 0, lockedUntil: 0, touchY: 0, reduce: false, panelStage: 0,
-    pendingProjector:false,introQueued:false,openingPreparedSeen:false,from: new Vector3(), fromFocus: new Vector3(...reference.screenCentre), focus: new Vector3(...reference.screenCentre), to: new Vector3(), q: new Quaternion() });
+  const state = useRef({ phase: (journeyControls.read().pageAtEnd ? "panel" : "intro") as JourneyPhase, revealFov:40, resumeCamera: journeyControls.read().pageAtEnd, pendingScreens:false, elapsed: 0, last: 0, amount: 0, lastInput: 0, lockedUntil: 0, touchY: 0, reduce: false,
+    houseSeconds:0,pendingProjector:false,pendingJump:null as "projector"|null,assemblySettled:false,lead:0,back:false,backAmount:0,from: new Vector3(), fromFocus: new Vector3(...reference.screenCentre), focus: new Vector3(...reference.screenCentre), to: new Vector3(), q: new Quaternion() });
   const points = useMemo(() => {
     const [x,y,z] = projector.centre_blender;
     const centre = new Vector3(x,z,-y);
-    return { centre, stop: new Vector3(...reference.stop), wide: centre.clone().add(new Vector3(0,.25,-9.5)), close: centre.clone().add(new Vector3(-2.7,1.8,-2.7)), returned: centre.clone().add(new Vector3(0,.1,-6)), screens: new Vector3().fromArray(route.samples[screensIndex].position).setY(centre.y+.1), position: new Vector3(), rotation: new Quaternion() };
+    const returned=centre.clone().add(new Vector3(0,.1,-6));
+    return { centre, wide: centre.clone().add(new Vector3(0,.25,-9.5)), close: centre.clone().add(new Vector3(-2.7,1.8,-2.7)), returned, screens: new Vector3().fromArray(route.samples[screensIndex].position).setY(centre.y+.1), position: new Vector3(), rotation: new Quaternion(),
+      // Canonical resting poses, so scrolling back (or a menu jump) never depends on how the visitor arrived.
+      seat: new Vector3(...OPENING_CAMERA_END), seatFocus: new Vector3(reference.screenCentre[0],OPENING_CAMERA_END[1],reference.screenCentre[2]),
+      doneRotation: new Quaternion().setFromRotationMatrix(new Matrix4().lookAt(returned,centre,new Vector3(0,1,0))) };
   }, []);
   useEffect(() => {
     const s = state.current;
-    let previousPhase=journeyControls.read().phase;
+    let wasReturning=journeyControls.read().pageReturning;
     const unsubscribeJourney=journeyControls.subscribe(()=>{
-      const next=journeyControls.read().phase;
-      if(previousPhase==="pageReturning" && next==="panel") {
-        s.amount=0;s.panelStage=0;s.lastInput=performance.now();s.last=s.lastInput;
-        s.revealFov=camera instanceof PerspectiveCamera?camera.fov:40;
-        exitStages.current.reset(Math.min(.3,s.pendingReveal));s.pendingReveal=0;
-        s.phase="logoReveal";invalidate();
-        // Avoid nesting store notifications while the page return is completing.
-        queueMicrotask(()=>journeyControls.update({phase:"logoReveal"}));
+      const returning=journeyControls.read().pageReturning;
+      if(returning&&!wasReturning){
+        s.phase='logoReveal';s.amount=0;s.last=performance.now();
+        s.revealFov=camera instanceof PerspectiveCamera?camera.fov:LOGO_FOV;
+        livingLens.reset();invalidate();
       }
-      previousPhase=next;
+      wasReturning=returning;
     });
 
     const phase = (next: JourneyPhase) => { s.phase=next;s.elapsed=0;s.last=performance.now();journeyControls.update({phase:next});invalidate(); };
-    const begin = (next: JourneyPhase, target: Vector3) => { s.from.copy(camera.position);s.fromFocus.copy(s.focus);s.to.copy(target);phase(next); };
     // Temporary buttons reuse the authored samplers and end-of-journey lighting.
     const preview=(event:Event)=>{
       const view=(event as CustomEvent).detail;if(view!=="slide"&&view!=="turned"&&view!=="final")return;
       theatreOpening.house.value=1;
-      s.phase=view==='final'?'logoDone':"logoReveal";s.resumeCamera=false;s.pendingProjector=false;s.pendingScreens=false;s.pendingReveal=0;
+      s.phase=view==='final'?'logoDone':"logoReveal";s.resumeCamera=false;s.pendingProjector=false;s.pendingScreens=false;
       s.amount=0;s.elapsed=0;s.last=performance.now();s.lockedUntil=0;s.revealFov=LOGO_FOV;
       exitStages.current.preview(view==='final'?'done':view);updateStageLighting(576,true);
       metrics.update({progress:1,waitingForProjector:false,waitingForCorridor:false});
-      journeyControls.update({phase:s.phase,revealStage:view==='final'?'done':view,reviewCamera:true,openingMoving:false,cinemaStage:'clear'});invalidate();
+      journeyControls.update({phase:s.phase,revealStage:view==='final'?'done':view,pageReturning:false,reviewCamera:true,openingMoving:false,cinemaStage:'clear'});invalidate();
     };
     window.addEventListener("eye-camera-view",preview);
+    // Menu: straight to a section's resting state. No camera move or build plays.
+    const restCamera=()=>{
+      camera.up.set(0,1,0); // the logo shots roll it
+      if(!(camera instanceof PerspectiveCamera))return;
+      const aspect=size.width/Math.max(1,size.height);
+      camera.fov=Math.max(40,Math.min(88,2*Math.atan(11.64*1.06/(2*9.6*aspect))*180/Math.PI));camera.far=reference.far;camera.updateProjectionMatrix();
+      if(scene.background instanceof Color)scene.background.copy(corridorBackground);
+    };
+    const jump=(event:Event)=>{
+      const target=(event as CustomEvent).detail as JumpTarget;
+      const common={pageReturning:false,reviewCamera:false,revealStage:"slide" as ExitStage,pageAtEnd:false,finalCovered:false,panelStage:0,openingMoving:false};
+      s.back=false;s.pendingScreens=false;s.amount=s.backAmount=0;s.elapsed=0;s.last=performance.now();s.lockedUntil=performance.now()+300;
+      livingLens.reset();exitStages.current.reset();theatreOpening.house.value=1;
+      metrics.update({waitingForCorridor:false});
+      if(target==="final"){
+        s.pendingJump=null;window.dispatchEvent(new CustomEvent("eye-camera-view",{detail:"final"}));
+        journeyControls.update({pageSection:null});
+        requestAnimationFrame(()=>window.dispatchEvent(new CustomEvent("eye-diagonal-preview",{detail:{value:1,instant:true}})));return;
+      }
+      restCamera();
+      if(typeof target==="number"){
+        // Page sections: the scene rests at the corridor end behind the page, as after the liquid.
+        s.pendingJump=null;s.phase="page";camera.position.fromArray(PAGE_POSE.position);camera.lookAt(...PAGE_POSE.target);
+        cinemaGlasses.toggle(1,true);theatreOpening.screenPower.value=0;
+        journeyControls.update({...common,phase:"page",pageSection:target,pageJump:journeyControls.read().pageJump+1,cinemaStage:"clear"});invalidate();return;
+      }
+      if(target==="projector"&&!projectorControls.read().ready){
+        // Not prepared yet: wait at the seat, then jump (the usual "Preparing projector" note shows).
+        s.pendingJump="projector";s.pendingProjector=true;sceneIdleUrgent.value=true;metrics.update({waitingForProjector:true});
+      }else s.pendingJump=null;
+      if(target==="theatre"||s.pendingJump){
+        if(projectorControls.read().ready)projectorControls.set("hidden");
+        restoreStageLighting(1);theatreOpening.screenPower.value=1;cinemaGlasses.toggle(0,true);
+        s.focus.copy(points.seatFocus);camera.position.copy(points.seat);camera.lookAt(s.focus);
+        theatreLook.current.target.set(0,0);theatreLook.current.current.set(0,0);
+        s.phase="idle";journeyControls.update({...common,phase:"idle",pageSection:null,cinemaStage:"wearing"});invalidate();return;
+      }
+      projectorAt();
+      journeyControls.update({...common,phase:"done",pageSection:null,cinemaStage:"clear"});
+    };
+    const projectorAt=()=>{
+      s.pendingJump=null;s.pendingProjector=false;metrics.update({waitingForProjector:false});
+      projectorControls.set("assembled");updateStageLighting(576,true);leadStageLighting(1,1);
+      cinemaGlasses.toggle(1,true);theatreOpening.screenPower.value=0;
+      s.focus.copy(points.centre);camera.position.copy(points.returned);camera.lookAt(s.focus);s.phase="done";invalidate();
+    };
+    jumpProjector.current=()=>{projectorAt();journeyControls.update({phase:"done",cinemaStage:"clear"});};
+    window.addEventListener("journey-jump",jump);
     const unsubscribe = projectorControls.subscribe(() => {
       const p = projectorControls.read();
       if(p.ready && s.pendingProjector)invalidate();
       if(s.phase==="reveal" && p.phase==="exploded") { s.amount=0;phase("awaitAssembly"); }
-      if(s.phase==="awaitAssembly" && p.phase==="assembling") phase("returnHold");
+      if(s.phase==="awaitAssembly" && p.phase==="assembling") { s.assemblySettled=false;phase("returnHold"); }
+      // The hold restarts when the last cover has settled, so the finished projector is seen before the camera leaves.
+      else if(s.phase==="returnHold" && p.phase==="assembled" && !s.assemblySettled) { s.assemblySettled=true;s.elapsed=0;invalidate(); }
     });
     const advance = (distance: number) => {
       const now=performance.now(), previous=s.lastInput;s.lastInput=now;
-      const pagePhase=journeyControls.read().phase;
-      if(pagePhase==="pageReturnLoading" || pagePhase==="pageReturning"){
-        s.pendingReveal=revealScrollTarget(s.pendingReveal,distance,innerHeight);s.amount=0;return;
-      }
+      const page=journeyControls.read();
+      if(page.phase==='pageReturnLoading'||page.pageReturning)return;
       if(!orbit && (s.phase==="logoReveal" || s.phase==="logoDone")){
-        if(journeyControls.read().reviewCamera)journeyControls.update({reviewCamera:false});
+        if(s.lockedUntil&&(now<s.lockedUntil||now-previous<220))return;
+        s.lockedUntil=0;
+        if(page.reviewCamera)journeyControls.update({reviewCamera:false});
         exitStages.current.input(distance,now,innerHeight);
         invalidate();return;
       }
-      if(orbit || distance<=0 || now<s.lockedUntil || (previous<s.lockedUntil && now-previous<180)) return;
+      if(orbit || distance===0 || now<s.lockedUntil || (previous<s.lockedUntil && now-previous<180)) return;
       if(s.phase==="intro"){
         return;
       }
-      const canQueue=s.phase==="pullback" && s.leg===1 && !s.queuedLeg;
-      if(!["idle","awaitAssembly","done","screensDone","panel"].includes(s.phase) && !canQueue) return;
-      s.amount+=Math.min(distance,100);if(s.amount<100)return;s.amount=0;
-      // The first pullback remains usable while the offscreen projector loads.
-      // Preserve the next scroll intent and start it when the effect is ready.
-      if((canQueue || (s.phase==="idle"&&s.leg===1))&&!projectorControls.read().ready){
-        s.pendingProjector=true;metrics.update({waitingForProjector:true});invalidate();return;
+      if(distance<0){
+        // Scrolling back plays each step in reverse: corridor -> projector -> parts -> theatre.
+        if(!["awaitAssembly","done","screensDone"].includes(s.phase))return;
+        s.amount=0;s.backAmount+=Math.min(-distance,100);if(s.backAmount<100)return;s.backAmount=0;
+        s.back=true;
+        if(s.phase==="screensDone"){
+          cinemaGlasses.toggle(1,s.reduce);
+          s.from.copy(points.returned);s.q.copy(points.doneRotation);s.lead=s.from.distanceTo(points.screens);phase("screens");
+        }else if(s.phase==="done"&&phone){
+          projectorControls.set("hidden");
+          s.from.copy(points.seat);s.to.copy(points.wide);s.fromFocus.copy(points.seatFocus);s.focus.copy(points.centre);phase("pullback");
+        }else if(s.phase==="done"){
+          projectorControls.play("disassembling");
+          s.from.copy(points.close);s.to.copy(points.returned);s.fromFocus.copy(points.centre);phase("return");
+        }else{
+          projectorControls.play("dissolving");
+          s.from.copy(points.wide);s.to.copy(points.close);s.fromFocus.copy(points.centre);phase("approach");
+        }
+        s.lockedUntil=Math.max(s.lockedUntil,now+220);return;
       }
-      if(canQueue) s.queuedLeg=true;
-      else if(s.phase==="idle") { s.leg++;begin("pullback",points.stop.clone().lerp(points.wide,s.leg===1?.72:1)); }
+      s.backAmount=0;
+      if(!["idle","awaitAssembly","done","screensDone"].includes(s.phase))return;
+      s.amount+=Math.min(distance,100);if(s.amount<100)return;s.amount=0;
+      if(s.phase==="idle") { traceMark("Theatre to projector gesture");cinemaGlasses.toggle(1,s.reduce);journeyControls.update({cinemaStage:'removing'});phase("glassesExit"); }
       else if(s.phase==="awaitAssembly") projectorControls.play("assembling");
       else if(s.phase==="done") {
-        if(!metrics.read().corridorReady) {s.pendingScreens=true;metrics.update({waitingForCorridor:true});invalidate();return;}
-        begin("screens",points.screens);
+        if(!metrics.read().corridorReady) {s.pendingScreens=true;sceneIdleUrgent.value=true;metrics.update({waitingForCorridor:true});invalidate();return;}
+        s.from.copy(camera.position);s.q.copy(camera.quaternion);s.lead=s.from.distanceTo(points.screens);phase("screens");
       }
-      else if(s.phase==="screensDone") { s.from.copy(camera.position);s.q.copy(camera.quaternion);phase("corridor"); }
-      else if(s.phase==="panel" && journeyControls.read().panelReady) {
-        if(journeyControls.read().pageAtEnd){s.revealFov=camera instanceof PerspectiveCamera?camera.fov:40;exitStages.current.reset();phase("logoReveal");}
-        else {s.panelStage=Math.min(2,s.panelStage+1);s.lockedUntil=now+1100;journeyControls.update({panelStage:s.panelStage,panelReady:false});}
-      }
+      // Glasses lift first; the camera leaves for the liquid once they are nearly clear.
+      else if(s.phase==="screensDone") { cinemaGlasses.toggle(1,s.reduce);phase("corridor"); }
       s.lockedUntil=Math.max(s.lockedUntil,now+220);
     };
     const tuningInput=(e:Event)=>e.target instanceof Element&&!!e.target.closest('[data-cinema-controls]');
@@ -145,36 +247,51 @@ export default function FullJourney({ metrics, orbit }: { metrics: MetricsStore;
     const touchMove=(e:TouchEvent)=>{if(tuningInput(e)||orbit||journeyControls.read().phase==="page"||e.touches.length!==1)return;e.preventDefault();const y=e.touches[0].clientY;advance(s.touchY-y);s.touchY=y;};
     const key=(e:KeyboardEvent)=>{if(tuningInput(e)||orbit||journeyControls.read().phase==="page")return;if(e.key===" "&&(e.target instanceof HTMLButtonElement||e.target instanceof HTMLAnchorElement))return;if(["ArrowDown","PageDown"," ","ArrowUp","PageUp"].includes(e.key)){e.preventDefault();advance(e.key==="ArrowUp"||e.key==="PageUp"?-180:180);}};
     const query=matchMedia("(prefers-reduced-motion: reduce)");
-    const preference=()=>{s.reduce=query.matches;};preference();
+    const gaze=theatreLook.current;
+    const clearGaze=()=>{gaze.target.set(0,0);invalidate();};
+    const gazePointer=(event:PointerEvent)=>{
+      if(s.phase!=="idle"||orbit||s.reduce)return;
+      if(event.pointerType!=="mouse"||event.target instanceof Element&&event.target.closest('button,a,input,[data-cinema-controls]')){clearGaze();return;}
+      gaze.target.set((1-event.clientX/innerWidth*2)*.065,(1-event.clientY/innerHeight*2)*.042);invalidate();
+    };
+    const preference=()=>{s.reduce=query.matches;if(s.reduce)clearGaze();};preference();
     const visibility=()=>{s.last=performance.now();if(!document.hidden)invalidate();};
     window.addEventListener("wheel",wheel,{passive:false});window.addEventListener("touchstart",touchStart,{passive:true});window.addEventListener("touchmove",touchMove,{passive:false});window.addEventListener("keydown",key);
+    window.addEventListener("pointermove",gazePointer,{passive:true});window.addEventListener("blur",clearGaze);document.documentElement.addEventListener("pointerleave",clearGaze);
     document.addEventListener("visibilitychange",visibility);query.addEventListener("change",preference);
-    return()=>{unsubscribe();unsubscribeJourney();window.removeEventListener("eye-camera-view",preview);window.removeEventListener("wheel",wheel);window.removeEventListener("touchstart",touchStart);window.removeEventListener("touchmove",touchMove);window.removeEventListener("keydown",key);document.removeEventListener("visibilitychange",visibility);query.removeEventListener("change",preference);};
-  },[camera,invalidate,orbit,points,metrics]);
+    return()=>{unsubscribe();unsubscribeJourney();window.removeEventListener("eye-camera-view",preview);window.removeEventListener("journey-jump",jump);window.removeEventListener("wheel",wheel);window.removeEventListener("touchstart",touchStart);window.removeEventListener("touchmove",touchMove);window.removeEventListener("keydown",key);window.removeEventListener("pointermove",gazePointer);window.removeEventListener("blur",clearGaze);document.documentElement.removeEventListener("pointerleave",clearGaze);document.removeEventListener("visibilitychange",visibility);query.removeEventListener("change",preference);};
+  },[camera,invalidate,orbit,points,metrics,livingLens,scene,size.width,size.height,corridorBackground,phone]);
 
   /* eslint-disable react-hooks/immutability -- Camera projection/clipping are imperative Three.js state. */
   useFrame(()=>{
     const s=state.current, now=performance.now();
+    sceneIdleUrgent.value=s.pendingProjector||s.pendingScreens;
     theatreOpening.active.value=s.phase==='intro'?1:0;
     if(s.phase!=='intro')theatreOpening.room.value=1;
     if(s.phase!=="logoReveal"&&s.phase!=="logoDone")pupilFillState.value=0;
-    const dt=s.last?Math.max(0,(now-s.last)/1000):0;s.last=now;
+    const gap=s.last?Math.max(0,(now-s.last)/1000):0;s.last=now;
+    // A missed phone frame must not teleport the camera through a shot.
+    const dt=phone?Math.min(.05,gap):gap;
+    if(document.hidden)return;
     if(s.resumeCamera){camera.position.fromArray(PAGE_POSE.position);camera.lookAt(...PAGE_POSE.target);metrics.update({progress:1});s.resumeCamera=false;}
-    const houseTarget=s.phase==='intro'||s.phase==='idle'?0:1;
-    theatreOpening.house.value+=(houseTarget-theatreOpening.house.value)*(1-Math.exp(-Math.min(.05,dt)*3));
-    if(Math.abs(houseTarget-theatreOpening.house.value)>.001)invalidate();
+    // House lights rise by themselves once the opening pullback has settled.
+    if(s.phase==='intro'){s.houseSeconds=0;theatreOpening.house.value=0;}
+    else if(theatreOpening.house.value<1){
+      s.houseSeconds+=Math.min(.05,dt);theatreOpening.house.value=houseLightLevel(s.houseSeconds,s.reduce);
+      if(theatreOpening.house.value<1)invalidate();
+    }
     if(orbit || document.hidden)return;
     const change=(phase:JourneyPhase)=>{s.phase=phase;s.elapsed=0;queueMicrotask(()=>journeyControls.update({phase}));};
-    if(s.pendingProjector&&s.phase==="idle"&&projectorControls.read().ready){
-      s.pendingProjector=false;s.leg=2;s.from.copy(camera.position);s.fromFocus.copy(s.focus);s.to.copy(points.wide);
-      metrics.update({waitingForProjector:false});change("pullback");
-    }
+    if(s.pendingJump==="projector"&&projectorControls.read().ready){jumpProjector.current();invalidate();}
     if(s.pendingScreens && metrics.read().corridorReady) {
       s.pendingScreens=false;metrics.update({waitingForCorridor:false});
-      s.from.copy(camera.position);s.fromFocus.copy(s.focus);s.to.copy(points.screens);change("screens");
+      s.from.copy(camera.position);s.q.copy(camera.quaternion);s.lead=s.from.distanceTo(points.screens);change("screens");
     }
     if(s.phase==="logoReveal" || s.phase==="logoDone") {
-      const shot=exitStages.current.tick(dt,now,s.reduce);
+      const leaving=journeyControls.read().pageReturning?pageReturn.tick(dt,reveal.viewOneDistance/CORRIDOR_EXIT_SPEED,s.reduce):null;
+      const shot=leaving
+        ? {stage:"slide" as ExitStage,progress:reveal.progressToViewOne(settle(leaving.travel)),moving:leaving.moving}
+        : exitStages.current.tick(dt,now,s.reduce);
       cinemaShot.stage=shot.stage;cinemaShot.progress=shot.progress;
       pupilFillState.value=pupilFillProgress(shot.stage,shot.progress);
       if(shot.stage==="slide"||shot.stage==="top")reveal.sampleSlide(shot.progress,points.position,points.rotation);
@@ -195,6 +312,15 @@ export default function FullJourney({ metrics, orbit }: { metrics: MetricsStore;
       }
       if(camera instanceof PerspectiveCamera&&livingLens.apply(camera,shot.stage,shot.progress,Math.min(.05,dt),s.reduce||lensTouch.current,camera.position.distanceTo(reveal.centre)))invalidate();
       if(shot.moving)invalidate();
+      // The contact bar and menu step aside while the camera travels.
+      const moving=!!shot.moving||!!leaving?.moving;
+      if(journeyControls.read().cameraMoving!==moving)queueMicrotask(()=>journeyControls.update({cameraMoving:moving}));
+      if(leaving&&!leaving.moving){
+        exitStages.current.preview("slide");
+        // Consume the gesture's momentum before allowing the next leg.
+        s.lastInput=now;s.lockedUntil=now+220;
+        queueMicrotask(()=>journeyControls.update({pageReturning:false}));
+      }
       if(shot.stage!==journeyControls.read().revealStage)queueMicrotask(()=>journeyControls.update({revealStage:shot.stage}));
       if(shot.stage==="done" && s.phase!=="logoDone")change("logoDone");
       return;
@@ -203,7 +329,7 @@ export default function FullJourney({ metrics, orbit }: { metrics: MetricsStore;
       // Enforce the screen-facing pose even before assets/FX are ready.
       if(!metrics.read().firstFrame){theatreOpening.room.value=0;camera.position.fromArray(OPENING_CAMERA_START);camera.lookAt(...reference.screenCentre as [number,number,number]);invalidate();return;}
       const prepared=journeyControls.read().openingPrepared;
-      const shot=openingReview===undefined?openingClock.current.tick(dt,theatreOpening.geometryReady,prepared,s.reduce):{...theatreOpeningShot(prepared&&theatreOpening.geometryReady?openingReview:0),elapsed:prepared&&theatreOpening.geometryReady?openingReview:0};
+      const shot=openingReview===undefined?openingClock.current.tick(dt,theatreOpening.geometryReady,prepared&&journeyControls.read().loaderDone,s.reduce):{...theatreOpeningShot(prepared&&theatreOpening.geometryReady?openingReview:0),elapsed:prepared&&theatreOpening.geometryReady?openingReview:0};
       theatreOpening.room.value=shot.room;theatreOpening.trace.value=shot.trace;theatreOpening.white.value=shot.white;theatreOpening.lineOpacity.value=shot.lineOpacity;
       theatreOpening.stage=shot.stage;theatreOpening.elapsed=shot.elapsed;
       if(journeyControls.read().openingStage!==shot.stage)queueMicrotask(()=>journeyControls.update({openingStage:shot.stage}));
@@ -217,33 +343,107 @@ export default function FullJourney({ metrics, orbit }: { metrics: MetricsStore;
         s.amount=0;s.lockedUntil=now+240;change("idle");
       }else invalidate();return;
     }
+    if(s.phase==="idle"||s.phase==="glassesExit"){
+      const gaze=theatreLook.current;
+      gaze.velocity??=new Vector2();// a hot reload can keep an older ref without it
+      if(s.phase==="glassesExit"||s.reduce)gaze.target.set(0,0);
+      // Critically damped follow: the view eases into motion and settles without any jolt.
+      // GAZE_FOLLOW sets the pace; lower is slower (most of the move takes about 1/GAZE_FOLLOW s).
+      if(s.reduce){gaze.current.copy(gaze.target);gaze.velocity.set(0,0);}
+      else{
+        const step=Math.min(dt,.05)/4;
+        for(let i=0;i<4;i++){
+          gaze.velocity.x+=(GAZE_FOLLOW*GAZE_FOLLOW*(gaze.target.x-gaze.current.x)-2*GAZE_FOLLOW*gaze.velocity.x)*step;
+          gaze.velocity.y+=(GAZE_FOLLOW*GAZE_FOLLOW*(gaze.target.y-gaze.current.y)-2*GAZE_FOLLOW*gaze.velocity.y)*step;
+          gaze.current.x+=gaze.velocity.x*step;gaze.current.y+=gaze.velocity.y*step;
+        }
+      }
+      const moving=gaze.current.distanceToSquared(gaze.target)>1.6e-7||gaze.velocity.lengthSq()>1e-8;
+      if(!moving){gaze.current.copy(gaze.target);gaze.velocity.set(0,0);}
+      camera.lookAt(s.focus);camera.rotateY(gaze.current.x);camera.rotateX(gaze.current.y);
+      // Back in the seat after scrolling back: the screen powers up again as the glasses come down.
+      if(s.phase==="idle"&&theatreOpening.screenPower.value<1){theatreOpening.screenPower.value=s.reduce?1:Math.min(1,theatreOpening.screenPower.value+Math.min(dt,.05)/1.1);invalidate();}
+      // Background GPU preparation waits until the glide has settled (scene-idle).
+      if(moving){invalidate();sceneMotion.at=performance.now();}
+    }
     if(["idle","reveal","awaitAssembly","done","screensDone","panel","page"].includes(s.phase))return;
     s.elapsed+=dt;
-    if(s.phase==="hold") {if(s.elapsed<.3){invalidate();return;}s.from.copy(camera.position);s.fromFocus.copy(s.focus);s.to.copy(points.close);change("approach");}
-    if(s.phase==="returnHold") {if(s.elapsed<1){invalidate();return;}s.from.copy(camera.position);s.fromFocus.copy(s.focus);s.to.copy(points.returned);change("return");}
-    const duration=s.phase==="approach"?1.4:s.phase==="corridor"?1.8:s.phase==="return"||s.phase==="screens"?.9:.5;
-    const t=s.reduce?1:Math.min(1,s.elapsed/duration), eased=s.phase==="corridor"?1-(1-t)**4:smooth(t);
-    if(s.phase==="corridor") {
-      passage.sample(eased,points.position,points.rotation);camera.position.copy(points.position).setY(points.returned.y);
-      // Blend only the starting pose, then use one centreline sample for position and view.
-      camera.quaternion.copy(s.q).slerp(points.rotation,smooth(Math.min(1,eased/.15)));
-      metrics.update({progress:eased});
+    if(s.phase==="glassesExit"){
+      // Follow the glasses' own motion, so a slow frame cannot cut the lift short.
+      if(cinemaGlasses.position<GLASSES_EXIT.liftedAt&&!s.reduce){s.elapsed=0;invalidate();return;}
+      theatreOpening.screenPower.value=s.reduce?0:1-smooth(Math.min(1,s.elapsed/GLASSES_EXIT.screenOff));
+      if(!s.reduce&&s.elapsed<GLASSES_EXIT.screenOff+GLASSES_EXIT.hold){invalidate();return;}
+      // Finish any cold GPU work while seated, then play the whole shot once.
+      if(!projectorControls.read().ready){
+        if(!s.pendingProjector){
+          s.pendingProjector=true;sceneIdleUrgent.value=true;metrics.update({waitingForProjector:true});
+        }
+        return;
+      }
+      if(s.pendingProjector){s.pendingProjector=false;metrics.update({waitingForProjector:false});}
+      s.from.copy(camera.position);s.fromFocus.copy(s.focus);s.to.copy(points.wide);
+      traceMark("Theatre to projector pullback started");
+      queueMicrotask(()=>journeyControls.update({cinemaStage:'clear'}));change("pullback");
+    }
+    // The pullback rests briefly in the dark before turning to the particle view.
+    if(s.phase==="hold") {leadStageLighting(1,0);if(s.elapsed<HOLD_SECONDS){invalidate();return;}
+      s.from.copy(camera.position);s.fromFocus.copy(s.focus);s.to.copy(points.close);change("approach");}
+    if(s.phase==="returnHold") {if(s.reduce?s.elapsed<1:!s.assemblySettled&&s.elapsed<6||s.assemblySettled&&s.elapsed<.45){invalidate();return;}s.from.copy(camera.position);s.fromFocus.copy(s.focus);s.to.copy(points.returned);change("return");}
+    if((s.phase==="corridor"||s.phase==="screens"&&s.back)&&cinemaGlasses.position<GLASSES_EXIT.liftedAt&&!s.reduce){s.elapsed=0;invalidate();return;}
+    const duration=s.back?BACK_SECONDS[s.phase as keyof typeof BACK_SECONDS]??1:s.phase==="approach"?1.4:s.phase==="corridor"?CORRIDOR_MOVE.leave:s.phase==="screens"?CORRIDOR_MOVE.arrive:s.phase==="return"?.9:s.phase==="pullback"?projectorTravel:.5;
+    const t=s.reduce?1:Math.min(1,s.elapsed/duration), eased=s.back?1-smooth(t):phone&&s.phase==="screens"?t*t:phone&&s.phase==="corridor"?1-(1-t)*(1-t):settle(t);// phones: one unbroken walk, speeding up then easing out
+    if(s.back&&(s.phase==="approach"||s.phase==="pullback"))restoreStageLighting(s.phase==="approach"?.35*t:.35+.65*t);
+    else if(!s.back&&s.phase==="pullback")leadStageLighting(theatrePullbackDim(t),0);
+    else if(!s.back&&s.phase==="approach")leadStageLighting(1,smooth(t));
+    if(s.phase==="screens") {
+      // One move from the projector: into the passage, along it, easing into the stop by the displays.
+      const total=s.lead+STOP_ARC,u=eased*total,look=smooth(Math.max(0,Math.min(1,(u-total+CORRIDOR_STOP.approach)/CORRIDOR_STOP.approach)));
+      corridorPose(Math.max(0,u-s.lead),phone?0:look,points.position,points.rotation);
+      if(u<s.lead)points.position.lerpVectors(s.from,points.screens,u/s.lead);
+      camera.position.copy(points.position).setY(points.returned.y);
+      camera.quaternion.copy(s.q).slerp(points.rotation,smooth(Math.min(1,u/(s.lead+12))));
+      metrics.update({progress:eased*STOP_ARC/PASSAGE_LENGTH});
+    } else if(s.phase==="corridor") {
+      // From the stop on to the liquid; the look toward the displays unwinds as the camera leaves.
+      const u=eased*(PASSAGE_LENGTH-STOP_ARC);
+      corridorPose(STOP_ARC+u,phone?0:1-smooth(Math.min(1,u/CORRIDOR_STOP.approach)),points.position,points.rotation);
+      camera.position.copy(points.position).setY(points.returned.y);camera.quaternion.copy(points.rotation);
+      metrics.update({progress:(STOP_ARC+u)/PASSAGE_LENGTH});
     } else {
       camera.position.lerpVectors(s.from,s.to,eased);
-      if(s.phase==="pullback"&&s.leg===1)camera.position.setY(camera.position.y+Math.sin(Math.PI*eased)*3.2);
-      const target=s.phase==="screens"?points.position.copy(points.screens).setZ(points.screens.z+20):points.centre;
-      s.focus.lerpVectors(s.fromFocus,target,eased);camera.lookAt(s.focus);
+      if(s.phase==="pullback"){
+        const rise=Math.sin(Math.PI*eased/(.63+.37*eased))**2;
+        camera.position.y+=rise*3.2;
+      }
+      s.focus.lerpVectors(s.fromFocus,points.centre,eased);camera.lookAt(s.focus);
     }
     invalidate();
+    if(t===1&&s.back){
+      if(s.phase==="screens"){s.focus.copy(points.centre);s.back=false;change("done");}
+      else if(s.phase==="return"){s.back=false;change("awaitAssembly");}
+      else if(s.phase==="approach"){s.from.copy(points.seat);s.to.copy(points.wide);s.fromFocus.copy(points.seatFocus);change("pullback");}
+      else if(s.phase==="pullback"){
+        s.back=false;s.focus.copy(points.seatFocus);restoreStageLighting(1);
+        cinemaGlasses.toggle(0,s.reduce);s.amount=0;s.lockedUntil=now+240;change("idle");
+        queueMicrotask(()=>journeyControls.update({cinemaStage:'wearing'}));
+      }
+      return;
+    }
     if(t===1){
-      if(s.phase==="pullback") {
-        if(s.leg===1 && s.queuedLeg){s.leg=2;s.queuedLeg=false;s.from.copy(camera.position);s.fromFocus.copy(s.focus);s.to.copy(points.wide);change("pullback");}
-        else change(s.leg===2?"hold":"idle");
+      if(s.phase==="pullback"){
+        traceMark("Theatre to projector pullback settled");
+        if(phone){projectorControls.set("assembled");updateStageLighting(576,true);leadStageLighting(1,1);change("done");}
+        else change("hold");
       }
       else if(s.phase==="approach"){change("reveal");queueMicrotask(()=>projectorControls.play("particles"));}
       else if(s.phase==="return")change("done");
-      else if(s.phase==="screens")change("screensDone");
-      else if(s.phase==="corridor")change("panel");
+      // At the stop the near display powers on and the glasses come down with it.
+      // Phones have no display stop: the walk carries straight on toward the liquid.
+      else if(s.phase==="screens"&&phone)change("corridor");
+      else if(s.phase==="screens"){cinemaGlasses.toggle(0,s.reduce);change("screensDone");}
+      else if(s.phase==='corridor'){
+        change('panel');queueMicrotask(()=>journeyControls.update({panelStage:1}));
+      }
     }
   },-1);
   /* eslint-enable react-hooks/immutability */

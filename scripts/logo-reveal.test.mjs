@@ -34,6 +34,15 @@ test('slide aim lifts above the incoming view instead of looking down at the flo
  const initial=new Vector3(0,0,-1).applyQuaternion(q),lifted=new Vector3(0,0,-1).applyQuaternion(rot);
  assert.ok(lifted.y>initial.y+.05);
 });
+test('higher View 1 joins View 2 continuously and preserves the next camera mark',()=>{
+ const path=make(2),a=new Vector3(),b=new Vector3(),qa=new Quaternion(),qb=new Quaternion();
+ path.sampleSlide(1,a,qa);path.sampleTurn(0,b,qb);
+ assert.ok(a.distanceTo(b)<1e-8);assert.ok(qa.angleTo(qb)<1e-7);
+ const forward=new Vector3(0,0,-1).applyQuaternion(qa),initial=new Vector3(0,0,-1).applyQuaternion(q);
+ assert.ok(forward.y>initial.y+.3);
+ path.sampleTurn(1,a,qa);path.sample(LOGO_SLIDE_SPLIT+(1-LOGO_SLIDE_SPLIT)*.12,b,qb);
+ assert.ok(a.distanceTo(b)<1e-8);assert.ok(qa.angleTo(qb)<1e-7);
+});
 test('dense sampling has no orientation cuts',()=>{
  const path=make(2),pos=new Vector3(),rot=new Quaternion(),previous=new Quaternion();
  path.sample(0,pos,previous);

@@ -5,9 +5,15 @@ const vertexShader = /* glsl */ `
 uniform float uMorph;
 uniform float uFlat;
 uniform float uTime;
+uniform float uWave;
+uniform float uWavePhase;
+uniform float uCurl;
 varying vec3 vNormal;
 varying vec3 vView;
 varying vec3 vWorldNormal;
+varying float vCurrent;
+varying vec3 vLocal;
+float gCurrent;
 
 vec3 surface(vec3 c) {
   vec3 n=normalize(c);
@@ -18,9 +24,10 @@ vec3 surface(vec3 c) {
   float swell=sin(n.y*3.1+n.x*1.7+uTime*.52+sin(n.z*2.-uTime*.19));
   float wake=sin(seam*13.-uTime*1.15+n.z*2.)*.0035
     +sin(n.x*5.+n.z*4.-uTime*.83)*.0015;
-  float radius=.89+.019*swell-.055*current+wake;
+  gCurrent=current;
+  float radius=.89+.010*swell-.020*current+wake*.65;
   vec3 pearl=n*radius*vec3(.985,1.025,1.);
-  float twist=.15*sin(n.y*2.6+uTime*.29);
+  float twist=.09*sin(n.y*2.6+uTime*.29);
   pearl.xz=mat2(cos(twist),-sin(twist),sin(twist),cos(twist))*pearl.xz;
   // The wave travels diagonally through the silhouette as its corners unfurl.
   float delay=.10*(n.x-n.y);
@@ -31,12 +38,17 @@ vec3 surface(vec3 c) {
   vec3 sheet=vec3(c.x,c.y/1.5,c.z*.0005);
   vec3 page=mix(rounded,sheet,uFlat);
   vec3 p=mix(pearl,page,m);
-  float ripple=sin((c.x+c.y)*7.5-uMorph*10.)*.045*sin(uMorph*3.14159265);
+  float ripple=sin((c.x+c.y)*7.5-uMorph*10.)*.018*sin(uMorph*3.14159265);
   p.z+=ripple*(1.-uFlat);
+  // A wave crossing the body as it bursts open and as the sheet sails in, and a
+  // slight sail-like cup; both are driven to zero before the sheet becomes the page.
+  p.z+=uWave*sin((c.x*1.6+c.y)*3.4-uWavePhase)*m;
+  p.z+=uCurl*(c.x*c.x+c.y*c.y*.7)*m;
   return p;
 }
 void main(){
   vec3 p=surface(position);
+  vCurrent=gCurrent*(1.-smoothstep(0.,.6,uMorph));vLocal=normalize(position);
   vec3 axis=abs(normal.y)>.9?vec3(0.,0.,1.):vec3(0.,1.,0.);
   vec3 tangent=normalize(cross(axis,normal));
   vec3 bitangent=cross(normal,tangent);
@@ -55,11 +67,20 @@ uniform float uFlat;
 uniform float uOpacity;
 uniform vec3 uPage;
 uniform vec3 uLightDirection;
+uniform float uTime;
 varying vec3 vNormal;
 varying vec3 vView;
 varying vec3 vWorldNormal;
+varying float vCurrent;
+varying vec3 vLocal;
 
 void main(){
+  // The last sheet is already the exact page colour and can skip the pearl shading.
+  if(uFlat>=.96){
+    gl_FragColor=vec4(uPage,uOpacity);
+    #include <colorspace_fragment>
+    return;
+  }
   vec3 N=normalize(vNormal),V=normalize(vView);
   vec3 W=normalize(vWorldNormal);
   float facing=max(dot(N,V),0.);
@@ -69,13 +90,24 @@ void main(){
   float light=smoothstep(-.65,.95,dot(W,normalize(uLightDirection)));
   float ceiling=smoothstep(-.2,1.,W.y);
   float floor=smoothstep(.05,.95,-W.y);
-  vec3 shadow=vec3(.065,.073,.078);
-  vec3 ivory=vec3(.53,.515,.477);
+  vec3 shadow=vec3(.035,.041,.047);
+  vec3 ivory=vec3(.36,.365,.357);
   vec3 colour=mix(shadow,ivory,light);
   colour+=vec3(.026,.032,.036)*ceiling;
   colour*=1.-floor*.18;
   // A soft grazing lift keeps the silhouette legible without a glossy rim.
   colour+=vec3(.030,.031,.030)*pow(1.-facing,2.)*(.3+.7*light);
+  // Satin pearl: one broad sheen from the corridor's warm side light (world-anchored, not a studio
+  // ribbon), the current catching that light as it flows, and a faint nacre shift at grazing angles.
+  vec3 L=normalize((viewMatrix*vec4(uLightDirection,0.)).xyz);
+  float sheen=pow(max(dot(reflect(-V,N),L),0.),14.),bloom=pow(max(dot(reflect(-V,N),L),0.),3.);
+  colour+=vec3(.27,.25,.22)*sheen+vec3(.05,.048,.045)*bloom;
+  colour+=vec3(.046,.044,.04)*vCurrent*(.35+.65*light);
+  // A grazing reflection from the corridor's edge lights.
+  float rim=pow(1.-facing,3.2);
+  colour+=vec3(.11,.118,.126)*rim*(.45+.55*smoothstep(-.3,.8,W.y));
+  float tint=.5+.5*sin(dot(vLocal,vec3(3.1,2.3,1.7))*1.6+uTime*.45);
+  colour+=mix(vec3(.032,.023,.028),vec3(.021,.033,.036),tint)*pow(1.-facing,1.8)*.65;
   // Finish as the exact HTML background, so the final handoff has no white flash.
   colour=mix(colour,uPage,smoothstep(.05,.96,uFlat));
   gl_FragColor=vec4(colour,uOpacity);
@@ -85,7 +117,7 @@ void main(){
 export function createLiquidPageMaterial(pageColour="white") {
   return new ShaderMaterial({
     name:"Liquid pearl → page",
-    uniforms:{uMorph:{value:0},uFlat:{value:0},uTime:{value:0},uOpacity:{value:0},uPage:{value:new Color(pageColour)},uLightDirection:{value:new Vector3(-.6,.8,.3).normalize()}},
+    uniforms:{uMorph:{value:0},uFlat:{value:0},uTime:{value:0},uWave:{value:0},uWavePhase:{value:0},uCurl:{value:0},uOpacity:{value:0},uPage:{value:new Color(pageColour)},uLightDirection:{value:new Vector3(-.6,.8,.3).normalize()}},
     vertexShader,fragmentShader,transparent:true,depthWrite:true,toneMapped:false,
   });
 }

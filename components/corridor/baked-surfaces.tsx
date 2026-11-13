@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useMemo } from "react";
+import { useEffect, useLayoutEffect, useMemo } from "react";
+import { compileHiddenGPU } from "./hidden-gpu-preparation";
 import { useLoader, useThree } from "@react-three/fiber";
 import { BufferGeometry, FileLoader, Material, Mesh, MeshBasicMaterial, MeshStandardMaterial, Object3D, Side, SRGBColorSpace, TextureLoader, type WebGLRenderer } from "three";
 import { traceSync } from "./loading-trace";
@@ -14,16 +15,22 @@ import {applyCorridorRim} from "./logo-material";
 import {journeyControls} from "./journey-controls";
 import {applyTheatreScreenArtwork, THEATRE_SCREEN_ARTWORK} from "./theatre-screen-artwork";
 import {applyTheatreOpeningMaterial} from './theatre-opening-material';
+import CorridorScreenRuntime,{preloadCorridorScreens} from './corridor-screen-runtime';
+import {effectQuality} from './effect-quality';
 
 type Source = keyof typeof manifest.sources;
 const active = (source: Source) => manifest.items.filter(item => item.active && item.source === source);
 
 /** Fetch each room's atlases and UV sidecars together, before its GLB resolves. */
-export function preloadBakedSurfaces(source: Source, gl: WebGLRenderer) {
-  const items = active(source);
+export function preloadBakedSurfaces(source: Source, gl: WebGLRenderer, connectedTheatre = false) {
+  const items = active(source).filter(item =>
+    item.item !== "corridor-pathway-lights" && !(connectedTheatre && item.item === "screen"),
+  );
   useLoader.preload(FileLoader, items.map(item => item.uv), loader => loader.setResponseType("arraybuffer"));
   useLoader.preload(KTX2Loader, items.map(item => item.texture), loader => configureBakedTextureLoader(loader, gl));
   if (source === "theatre") useLoader.preload(TextureLoader, [THEATRE_SCREEN_ARTWORK]);
+  // Phones keep the corridor walls as baked: no display walls, glass or 3D content to load or draw.
+  if (source === "corridor") preloadCorridorScreens();
 }
 
 /** Colour IDs of every active baked theatre item, for removal from the diagnostic mesh. */
@@ -71,7 +78,7 @@ export default function BakedSurfaces({ source, surfaces, side }: { source: Sour
       material.name = `${surface.item} | Baked Blender appearance`; material.dithering = surface.item!=="corridor-wall-red";
       const mesh = new Mesh(surface.geometry, material); mesh.name = surface.item;
       if(source==="corridor"&&["corridor-wall-red","corridor-wall-connecting","corridor-wall-caps"].includes(surface.item))applyCorridorRim(mesh,()=>journeyControls.read().phase);
-      if(liveFloor){stageProjectorFloor(material);mesh.receiveShadow=true;}
+      if(liveFloor){stageProjectorFloor(material,effectQuality(gl)==="mobile");mesh.receiveShadow=true;}
       else if(source!=="corridor")stageBakedMaterial(material,surface.item==="floor-slab",/lights|sconces/.test(surface.item));
       if(source==='theatre')applyTheatreOpeningMaterial(material,surface.item==='screen',/lights|sconces/.test(surface.item));
       const artwork = surface.item === "screen" ? artworkTextures[0].clone() : undefined;
@@ -84,6 +91,17 @@ export default function BakedSurfaces({ source, surfaces, side }: { source: Sour
     return parts;
   }), [surfaces, items, atlases, charts, artworkTextures, gl, source, side]);
   useEffect(() => () => instance.forEach(part => { part.material.dispose(); part.map.dispose(); part.artwork?.dispose(); }), [instance]);
+  // The projector floor mounts while the theatre is live (behind the camera). Show it only once its
+  // shaders are compiled off-thread; a first draw would otherwise compile them synchronously (a hitch).
+  const scene = useThree(state => state.scene), camera = useThree(state => state.camera), invalidate = useThree(state => state.invalidate);
+  useLayoutEffect(() => {
+    if (source !== "projector-floor") return;
+    let alive = true;
+    instance.forEach(part => { part.mesh.visible = false; });
+    void Promise.all(instance.map(part => compileHiddenGPU(gl, scene, camera, part.mesh))).catch(error => console.error("Projector floor compile failed", error))
+      .finally(() => { if (!alive) return; instance.forEach(part => { part.mesh.visible = true; }); invalidate(); });
+    return () => { alive = false; };
+  }, [instance, source, gl, scene, camera, invalidate]);
   const refinement=useMemo(()=>instance.map(part=>({url:part.url,base:part.map,materials:[part.material]})),[instance]);
-  return <>{instance.map(part => <primitive key={part.mesh.name} object={part.mesh} dispose={null} />)}<TextureRefinement targets={refinement}/></>;
+  return <>{instance.map(part => <primitive key={part.mesh.name} object={part.mesh} dispose={null} />)}<TextureRefinement targets={refinement}/>{source === "corridor" && <CorridorScreenRuntime parts={instance}/>}</>;
 }

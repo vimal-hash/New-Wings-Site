@@ -14,3 +14,9 @@ test('manual particle formation holds exploded until assemble, and replay reject
   controls.finish(assembly.command,'assembled');assert.equal(controls.read().phase,'particles');
   controls.ready(false);
 });
+
+test('a preparation failure cannot be overwritten by a late ready signal',()=>{
+  controls.fail();controls.ready(true);controls.set('assembled');
+  assert.equal(controls.read().failed,true);
+  assert.equal(controls.read().ready,false);
+});

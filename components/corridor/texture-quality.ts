@@ -21,6 +21,6 @@ export function isMobileDevice() {
 }
 
 /** Select before loading: phones/tablets never request the desktop 6K files. */
-export function textureForDevice(url: string, gl: WebGLRenderer) {
-  return !isMobileDevice() && gl.capabilities.maxTextureSize >= 6144 ? desktopTextures[url] ?? url : url;
+export function textureForDevice(url: string, gl: WebGLRenderer, allow6K = true) {
+  return allow6K && !isMobileDevice() && gl.capabilities.maxTextureSize >= 6144 ? desktopTextures[url] ?? url : url;
 }

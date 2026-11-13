@@ -5,6 +5,10 @@ const smooth = (t: number) => t*t*t*(t*(t*6-15)+10);
 export const LOGO_REVEAL_SECONDS = 5.8;
 export const LOGO_SLIDE_SPLIT = 7 / 15;
 export const LOGO_FOV = 40;
+/** View 1 reserves roughly four fifths of the shot for the upper field. */
+export const VIEW_ONE_PITCH=.36;
+export const VIEW_ONE_PROGRESS=.985;
+const slideAngle=(u:number)=>(6*u**3-8*u**4+3*u**5)*Math.PI/2;
 
 /** Authored slide followed by a C2-continuous pullback; no camera cut at the lip. */
 export function createLogoReveal(bounds: number[][], slide: Slide, eyeHeight: number, aspect: number, start: Vector3, initialRotation: Quaternion) {
@@ -18,6 +22,7 @@ export function createLogoReveal(bounds: number[][], slide: Slide, eyeHeight: nu
   const base=new Vector3(slide.base[0],0,-slide.base[1]);
   const forward=new Vector3(slide.end[0]-slide.base[0],0,-slide.end[1]+slide.base[1]).normalize();
   const radius=slide.height-eyeHeight, split=LOGO_SLIDE_SPLIT;
+  const viewOneAngle=slideAngle(VIEW_ONE_PROGRESS);
   const exit=base.clone().addScaledVector(forward,radius).addScaledVector(up,slide.height);
   const matrix=new Matrix4();
   const finalRotation=new Quaternion().setFromRotationMatrix(matrix.lookAt(finalPosition,centre,finalUp));
@@ -41,10 +46,23 @@ export function createLogoReveal(bounds: number[][], slide: Slide, eyeHeight: nu
   const trackingRotation=new Quaternion(),turnRotation=new Quaternion();
   return {
     centre, finalPosition, finalRotation, far:Math.max(1200,distance+depth+200),
+    viewOneDistance:radius*viewOneAngle,
+    /** Convert arc-length pacing back to the authored slide/lens progress. */
+    progressToViewOne(share:number){
+      if(share<=0)return 0;
+      if(share>=1)return VIEW_ONE_PROGRESS;
+      let low=0,high=VIEW_ONE_PROGRESS;
+      const target=share*viewOneAngle;
+      for(let i=0;i<20;i++){
+        const middle=(low+high)/2;
+        if(slideAngle(middle)<target)low=middle;else high=middle;
+      }
+      return (low+high)/2;
+    },
     sample(progress:number,position:Vector3,rotation:Quaternion) {
       const t=Math.max(0,Math.min(1,progress));
       if(t<=split) {
-        const u=t/split,theta=(6*u**3-8*u**4+3*u**5)*Math.PI/2;
+        const u=t/split,theta=slideAngle(u);
         position.copy(base).addScaledVector(forward,radius*Math.sin(theta)).addScaledVector(up,slide.height-radius*Math.cos(theta));
         rotation.slerpQuaternions(initialRotation,endRotation,smooth(u));
         // A small mid-ramp lift, with zero angular velocity at both joins.
@@ -64,12 +82,12 @@ export function createLogoReveal(bounds: number[][], slide: Slide, eyeHeight: nu
     sampleSlide(progress:number,position:Vector3,rotation:Quaternion){
       this.sample(progress*split,position,rotation);
       // Hold the corridor heading until the camera reaches the actual slide lip.
-      pitch.setFromAxisAngle(right,.04*smooth(progress));rotation.copy(pitch).multiply(initialRotation);
+      pitch.setFromAxisAngle(right,VIEW_ONE_PITCH*smooth(progress));rotation.copy(pitch).multiply(initialRotation);
     },
     sampleTurn(progress:number,position:Vector3,rotation:Quaternion){
       // Begin moving along the audited exterior path while turning, rather than pivoting in place.
       this.sample(split+(1-split)*.12*smooth(progress),position,turnRotation);
-      pitch.setFromAxisAngle(right,.04).multiply(initialRotation);
+      pitch.setFromAxisAngle(right,VIEW_ONE_PITCH).multiply(initialRotation);
       rotation.slerpQuaternions(pitch,turnRotation,smooth(progress));
     },
     samplePullback(progress:number,position:Vector3,rotation:Quaternion){

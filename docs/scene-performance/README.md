@@ -63,3 +63,16 @@ Screenshots are actual 1280×720 browser captures. Before frames are the previou
 - [Machine-readable verification](verification-summary.json)
 
 Reports, UV audit, integrity result and asset inventory are alongside this file. Full source inputs, encoding logs, reproducible wall cleanup and component backups are in `D:/CodexOutputs/Scene_Performance_20261025/`. Re-run `npm run build`, `node --test scripts/*.test.mjs` and `node scripts/audit-active-textures.mjs` from the active project. Leave the LAN server on port 3000 for physical-device review.
+
+## Windows/ANGLE first-use stalls (2026-11-10)
+
+Measured on Windows Chrome (ANGLE/D3D11) with GPU timer queries and Chrome GPU traces; fixes keep every look unchanged.
+
+- Particle cache: one MRT pass forced a synchronous D3D pixel-shader compile (~3.4 s cold on laptop). It is now three single-output passes of one program (`projector-fx/particle-cache.ts`).
+- Integer vertex attributes fed to float inputs (projector `aPart`/`aSurface`, eye `grain`) forced a synchronous conversion variant. They are uploaded as Float32.
+- `compileHiddenGPU` now binds the canvas explicitly for its screen pass. A leftover offscreen target made it compile only linear variants, so the real sRGB screen variant linked on first draw.
+- Projector floor, hover outline, star bloom, pupil and grade chains compile ahead of time (`compileByDryRun` turns a draw function into off-thread compiles).
+- Desktop corridor (`scene.tsx`): it stays hidden until it has (1) its retained-ACES material patch applied (`prepareLegacyResponse`), (2) compiled off-thread, (3) uploaded its textures one per frame, and (4) finished each program's final link one per frame. Worst glasses-removal frame went from ~1044 ms to ~49 ms. The corridor appears up to ~1 s later than before, without the freeze.
+- `scene-idle` also waits 250 ms after theatre gaze motion before starting background work.
+- Remaining by design: private warm-ups at stationary stops (screensDone, panel), the projector preparation where the journey already waits, and the approved rope section's own shader warm-up (untouched).
+- Backups: `D:/CodexOutputs/Theatre_Projector_Eight_20261110/`.

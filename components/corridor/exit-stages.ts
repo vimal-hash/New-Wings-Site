@@ -4,7 +4,7 @@ export type ExitStage = "slide" | "top" | "turn" | "turned" | "pullback" | "done
 export function createExitStages() {
   let stage: ExitStage="slide",progress=0,target=0,elapsed=0,lastInput=-Infinity,wokeAt=-Infinity;
   return {
-    reset(seed=0){stage="slide";progress=0;target=Math.min(1,seed);elapsed=0;lastInput=-Infinity;wokeAt=-Infinity;},
+    reset(seed=0,start=0){stage="slide";progress=Math.min(1,start);target=Math.min(1,seed);elapsed=0;lastInput=-Infinity;wokeAt=-Infinity;},
     // Temporary review shortcuts; scrolling continues from the selected stop.
     preview(view:"slide"|"turned"|"done"){stage=view;progress=target=view==="slide"?.985:1;elapsed=0;lastInput=-Infinity;wokeAt=-Infinity;},
     input(delta:number,now:number,height:number){

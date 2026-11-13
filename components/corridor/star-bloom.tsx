@@ -3,17 +3,20 @@
 import {useEffect,useRef} from "react";
 import {useFrame,useThree} from "@react-three/fiber";
 import {BloomEffect,EffectComposer,Pass,RenderPass} from "postprocessing";
-import {AdditiveBlending,Color,CustomBlending,HalfFloatType,Material,Mesh,MeshBasicMaterial,OneFactor,OneMinusSrcAlphaFactor,Scene,ShaderChunk,ShaderMaterial,Vector2,WebGLRenderer,WebGLRenderTarget} from "three";
+import {AdditiveBlending,Color,CustomBlending,Frustum,HalfFloatType,Material,Matrix4,Mesh,MeshBasicMaterial,OneFactor,OneMinusSrcAlphaFactor,Scene,ShaderChunk,ShaderMaterial,Vector2,WebGLRenderer,WebGLRenderTarget} from "three";
 import type {Camera,Object3D,TextureDataType} from "three";
 import {FullScreenQuad} from "three/addons/postprocessing/Pass.js";
 import {effectQuality,type EffectQuality} from "./effect-quality";
-import {scheduleSceneIdle} from "./scene-idle";
-import {journeyControls} from "./journey-controls";
+import {phoneEyePreparationWindow,scheduleSceneIdle,waitForSceneIdle} from "./scene-idle";
+import {journeyControls,type JourneyPhase} from "./journey-controls";
+import {pageReturn} from "./page-exit";
 import {createSpaceGrade} from "./space-grade";
 import {createSilverToneControl,silverToneAmount} from "./silver-tones";
 import {createPupilFillMask,isPupilFillMaterial,PUPIL_FILL_NAME} from "./pupil-fill";
 import {createPupilPulse,privatePupilLightMaterial,PUPIL_BORDER_NAME,PUPIL_RAY_NAME} from "./pupil-pulse";
-import {compileHiddenGPU,prepareHiddenGPU} from "./hidden-gpu-preparation";
+import {compileByDryRun,compileHiddenGPU,prepareHiddenGPU,prepareMobileMeshes} from "./hidden-gpu-preparation";
+import {LOGO_PARTICLE_EYE_ENABLED} from "./scene-features";
+import {traceMark,traceSpan} from "./loading-trace";
 import {PUPIL_PULSE,pupilPulseUniforms} from "./pupil-pulse-state";
 import {GRAIN_REACTION} from "./pupil-grain-reaction";
 import {cinemaControls,cinemaShot,CINEMA_DEFAULTS,resolveCinemaValues,type CinemaValues} from './cinema-controls';
@@ -83,9 +86,11 @@ export function createStarBloom(gl:WebGLRenderer,scene:Scene,camera:Camera,quali
         gl_FragColor=vec4(light*uGain*open,1.);
       }`});
   const overlay=new FullScreenQuad(overlayMaterial),pixels=new Vector2();
+  const mobile=quality==="mobile",frustum=new Frustum(),viewProjection=new Matrix4();
   const proxies=new Map<Mesh,{mesh:Mesh;sourceMaterial:Material|Material[];owned:Material[]}>();
   let width=0,height=0;
   function sync(warm:boolean){
+    if(mobile)frustum.setFromProjectionMatrix(viewProjection.multiplyMatrices(camera.projectionMatrix,camera.matrixWorldInverse),gl.coordinateSystem);
     const seen=new Set<Mesh>();
     privateScene.children.forEach(child=>child.visible=false);
     const visit=(object:Object3D)=>{
@@ -93,6 +98,7 @@ export function createStarBloom(gl:WebGLRenderer,scene:Scene,camera:Camera,quali
       const source=object.material,isStars=object.name===STAR_NAME,isEye=object.name===EYE_NAME,isPupil=!Array.isArray(source)&&isPupilFillMaterial(source);
       const opaque=Array.isArray(source)?source.some(m=>!m.transparent):!source.transparent,isPulse=object.userData.pupilPulseEmitter===true;
       if(!isStars&&!isEye&&!opaque&&!isPupil&&!isPulse)return;
+      if(mobile&&!isStars&&!isEye&&!isPupil&&!isPulse&&object.frustumCulled&&!frustum.intersectsObject(object))return;
       seen.add(object);
       let entry=proxies.get(object);
       if(entry&&entry.sourceMaterial!==source){
@@ -132,6 +138,8 @@ export function createStarBloom(gl:WebGLRenderer,scene:Scene,camera:Camera,quali
     }
     proxies.forEach((entry,source)=>{
       if(seen.has(source))return;
+      // Keep warmed programs for culled/temporarily hidden sources on phones.
+      if(mobile){let node:Object3D|null=source.parent;while(node&&node!==scene)node=node.parent;if(node===scene)return;}
       privateScene.remove(entry.mesh);
       const near=entry.mesh.userData.nearMask as Mesh|undefined;if(near)privateScene.remove(near);
       entry.owned.forEach(material=>material.dispose());proxies.delete(source);
@@ -170,12 +178,21 @@ export function createStarBloom(gl:WebGLRenderer,scene:Scene,camera:Camera,quali
 }
 
 type LegacyResponse=Map<Material,{compile:Material["onBeforeCompile"];key:Material["customProgramCacheKey"]}>;
+let activeLegacy:LegacyResponse|null=null;
+/** Apply the retained ACES response to a subtree before it is compiled ahead of time, so its first
+ * visible frame does not swap every patched material to a new, synchronously linked program. */
+export function prepareLegacyResponse(root:Object3D){if(activeLegacy)preserveLegacyResponse(root,activeLegacy);}
 function renderBase(gl:WebGLRenderer,scene:Scene,camera:Camera,legacy:LegacyResponse){
+  activeLegacy=legacy;preserveLegacyResponse(scene,legacy);
+  const auto=gl.autoClear;
+  try{gl.autoClear=true;gl.render(scene,camera);}finally{gl.autoClear=auto;}
+}
+function preserveLegacyResponse(root:Object3D,legacy:LegacyResponse){
   // The previous Canvas default was ACES, despite the intended NoToneMapping
   // setup. Retain that *existing* response only on ordinary mapped materials.
   // Every custom particle/LUT material is excluded. A global switch alone
   // would otherwise brighten the corridor and change the approved base image.
-  scene.traverse(object=>{
+  root.traverse(object=>{
     if(!(object instanceof Mesh))return;
     const materials:Material[]=Array.isArray(object.material)?object.material:[object.material];
     for(const material of materials){
@@ -190,25 +207,23 @@ function renderBase(gl:WebGLRenderer,scene:Scene,camera:Camera,legacy:LegacyResp
       material.customProgramCacheKey=()=>cacheKey+"|preserve-authored-response";material.needsUpdate=true;
     }
   });
-  const auto=gl.autoClear;
-  try{gl.autoClear=true;gl.render(scene,camera);}finally{gl.autoClear=auto;}
 }
 
-function renderFrame(gl:WebGLRenderer,scene:Scene,camera:Camera,legacy:LegacyResponse,pipeline:ReturnType<typeof createStarBloom>|null,grade:ReturnType<typeof createSpaceGrade>|null,tones:ReturnType<typeof createSilverToneControl>|null,heroGlow=false,contact?:()=>void,tuning?:CinemaValues,focus?:ReturnType<typeof createCinemaFocus>|null){
+function renderFrame(gl:WebGLRenderer,scene:Scene,camera:Camera,phase:JourneyPhase,legacy:LegacyResponse,pipeline:ReturnType<typeof createStarBloom>|null,grade:ReturnType<typeof createSpaceGrade>|null,tones:ReturnType<typeof createSilverToneControl>|null,heroGlow=false,contact?:()=>void,tuning?:CinemaValues,focus?:ReturnType<typeof createCinemaFocus>|null,mobile=false){
   const autoReset=gl.info.autoReset;gl.info.autoReset=false;gl.info.reset();
   try{
     contact?.();
-    const phase=journeyControls.read().phase;
     const eye=scene.getObjectByName(EYE_NAME) as Mesh|undefined;
     tones?.apply(eye?.material instanceof ShaderMaterial?eye.material:null,silverToneAmount(phase,camera.position.y));
     renderBase(gl,scene,camera,legacy);
     const source=scene.getObjectByName(STAR_NAME);
     const sky=!!(source&&source.visible&&source.parent?.visible);
-    if((sky||heroGlow)&&pipeline&&(!tuning||(tuning.post&&(tuning.bloom||tuning.grade))))pipeline.draw(true,heroGlow,tuning);
+    const extract=(!mobile&&sky)||heroGlow;
+    if(extract&&pipeline&&(!tuning||(tuning.post&&(tuning.bloom||tuning.grade))))pipeline.draw(true,heroGlow,tuning);
     if(tuning&&(phase==='logoReveal'||phase==='logoDone'))focus?.draw(camera,tuning);
     if(grade&&(phase==="logoReveal"||phase==="logoDone")){
       const amount=eye?.material instanceof ShaderMaterial?eye.material.uniforms.uOpacity.value:0;
-      grade.draw(camera,sky&&pipeline?pipeline.mask:null,sky,amount,tuning);
+      grade.draw(camera,extract&&sky&&pipeline?pipeline.mask:null,sky,amount,tuning);
     }
   }finally{gl.info.autoReset=autoReset;}
 }
@@ -216,6 +231,7 @@ function renderFrame(gl:WebGLRenderer,scene:Scene,camera:Camera,legacy:LegacyRes
 /** Existing renderer plus the finite, user-authorised final pupil pulse. */
 export default function StarBloom(){
   const {gl,scene,camera,invalidate}=useThree(),pipeline=useRef<ReturnType<typeof createStarBloom>|null>(null),grade=useRef<ReturnType<typeof createSpaceGrade>|null>(null),tones=useRef<ReturnType<typeof createSilverToneControl>|null>(null),legacy=useRef<LegacyResponse>(new Map());
+  const mobile=effectQuality(gl)==="mobile";
   const pulse=useRef<ReturnType<typeof createPupilPulse>|null>(null),reduce=useRef(false);
   const tuning=useRef<CinemaValues>({...CINEMA_DEFAULTS}),focus=useRef<ReturnType<typeof createCinemaFocus>|null>(null);
   useEffect(()=>cinemaControls.subscribe(invalidate),[invalidate]);
@@ -225,7 +241,36 @@ export default function StarBloom(){
   },[invalidate]);
   useEffect(()=>()=>{focus.current?.dispose();focus.current=null;},[gl,scene]);
   useEffect(()=>{
-    let cancel=()=>{},cancelPulse=()=>{},active=true;
+    let cancel=()=>{},phase:JourneyPhase|undefined;
+    const schedule=()=>{
+      const next=journeyControls.read().phase;
+      if(next===phase)return;
+      phase=next;
+      cancel();
+      pageReturn.warming=false;
+      if(next!=="page")return;
+      const warm=()=>{
+        const eye=scene.getObjectByName(EYE_NAME);
+        if(LOGO_PARTICLE_EYE_ENABLED&&!eye?.userData.eyePrepared)return;
+        // Invalidate after a quiet interval, while the HTML is still opaque.
+        pageReturn.warming=true;
+        invalidate();
+      };
+      cancel=scheduleSceneIdle(warm,21,()=>{
+        const eye=scene.getObjectByName(EYE_NAME);
+        return (!LOGO_PARTICLE_EYE_ENABLED||!!eye?.userData.eyePrepared)
+          && !!document.querySelector(".normal-page")?.scrollTop;
+      });
+    };
+    schedule();
+    const unsubscribe=journeyControls.subscribe(schedule);
+    return()=>{cancel();unsubscribe();pageReturn.warming=false;};
+  },[scene,invalidate]);
+  useEffect(()=>{
+    let cancel=()=>{},cancelPulse=()=>{},cancelBloom=()=>{},pendingBloom:ReturnType<typeof createStarBloom>|null=null,active=true;
+    const controller=new AbortController();
+    const schedule=(work:()=>void,priority:number)=>scheduleSceneIdle(work,mobile?20:priority,mobile?phoneEyePreparationWindow:undefined);
+    const waitForQuiet=()=>waitForSceneIdle(controller.signal,20,phoneEyePreparationWindow);
     tones.current=createSilverToneControl();
     const params=new URLSearchParams(location.search);
     const diagnostics=/^(localhost|127\.)/.test(location.hostname)&&params.has("diagnostics");
@@ -236,39 +281,65 @@ export default function StarBloom(){
       if((disabled||!hdr)&&!grade.current?.enabled){clearInterval(timer);return;}
       const source=scene.getObjectByName(STAR_NAME) as Mesh|undefined;
       if(!source||!(source.material instanceof ShaderMaterial)||!source.material.uniforms.uAtlas.value)return;
-      clearInterval(timer);cancel=scheduleSceneIdle(()=>{
+      // The deferred corridor owns the pupil front; wait for its effect setup
+      // too, rather than permanently accepting a null emitter on a mount race.
+      const fill=scene.getObjectByName(PUPIL_FILL_NAME),eye=scene.getObjectByName(EYE_NAME);
+      if(!(fill instanceof Mesh)||!(eye instanceof Mesh)||!(eye.material instanceof ShaderMaterial))return;
+      clearInterval(timer);cancel=schedule(()=>{
         if(!active)return;
         pulse.current=createPupilPulse(scene,gl,camera,effectQuality(gl));
         if(pulse.current){
           const probe=new Scene();pulse.current.preparationMeshes.forEach(mesh=>{const copy=mesh.clone();copy.visible=true;probe.add(copy);});
-          void compileHiddenGPU(gl,probe,camera).then(()=>{
-            if(active)cancelPulse=scheduleSceneIdle(()=>{if(active){pulse.current?.prepareContact();prepareHiddenGPU(gl,probe,camera,probe.children);invalidate();}},17);
+          void Promise.all([compileHiddenGPU(gl,probe,camera),compileByDryRun(gl,()=>pulse.current?.prepareContact())]).then(()=>{
+            if(active)cancelPulse=schedule(()=>{
+              if(!active)return;
+              if(!mobile){pulse.current?.prepareContact();prepareHiddenGPU(gl,probe,camera,probe.children);invalidate();return;}
+              const end=traceSpan("Phone eye pulse first draws","GPU resource submission");
+              void prepareMobileMeshes(gl,probe,camera,probe.children,()=>active,waitForQuiet).then(()=>{
+                if(active){pulse.current?.prepareContact();invalidate();}
+              }).catch(error=>console.error('Pupil light preparation failed',error)).finally(()=>end());
+            },17);
           }).catch(error=>{if(active)console.error('Pupil light preparation failed',error);});
         }
         // Grading also uses this extraction's foreground alpha. Keep that mask
         // when comparing bloom off, otherwise the diagnostic changes the grade.
-        if(hdr){pipeline.current=createStarBloom(gl,scene,camera,effectQuality(gl),!disabled);pipeline.current.draw(false);}
-        grade.current?.prepare();invalidate();
+        // Compile every pass off-thread first (dry run), then do the same private first draw at a later quiet tick.
+        const bloom=hdr?createStarBloom(gl,scene,camera,effectQuality(gl),!disabled):null;pendingBloom=bloom;
+        const warm=()=>{bloom?.draw(false);grade.current?.prepare();};
+        // The dry run also covers the on-screen variants (composite overlay, grade to the canvas).
+        void compileByDryRun(gl,()=>{warm();bloom?.draw(true,true);if(gl.getRenderTarget()===null)grade.current?.draw(camera,null,false,1);}).catch(error=>console.error('Star bloom compile failed',error)).then(()=>{
+          if(!active)return;
+          cancelBloom=schedule(()=>{if(!active)return;pendingBloom=null;pipeline.current=bloom;warm();invalidate();},16);
+        });
       },16);
     },100);
     const replay=()=>{pulse.current?.restart();invalidate();},preference=matchMedia('(prefers-reduced-motion: reduce)'),update=()=>{reduce.current=preference.matches;invalidate();};update();
     const visibility=()=>{pulse.current?.pause();if(!document.hidden)invalidate();};
     preference.addEventListener('change',update);window.addEventListener('eye-pupil-replay',replay);document.addEventListener('visibilitychange',visibility);
     const responses=legacy.current;
-    return()=>{active=false;clearInterval(timer);cancel();cancelPulse();preference.removeEventListener('change',update);window.removeEventListener('eye-pupil-replay',replay);document.removeEventListener('visibilitychange',visibility);pulse.current?.dispose();pulse.current=null;tones.current?.dispose();tones.current=null;pipeline.current?.dispose();pipeline.current=null;grade.current?.dispose();grade.current=null;responses.forEach(({compile,key},material)=>{material.onBeforeCompile=compile;material.customProgramCacheKey=key;material.needsUpdate=true;});responses.clear();};
-  },[gl,scene,camera,invalidate]);
+    return()=>{active=false;controller.abort();clearInterval(timer);cancel();cancelPulse();cancelBloom();pendingBloom?.dispose();pendingBloom=null;preference.removeEventListener('change',update);window.removeEventListener('eye-pupil-replay',replay);document.removeEventListener('visibilitychange',visibility);pulse.current?.dispose();pulse.current=null;tones.current?.dispose();tones.current=null;pipeline.current?.dispose();pipeline.current=null;grade.current?.dispose();grade.current=null;if(activeLegacy===responses)activeLegacy=null;responses.forEach(({compile,key},material)=>{material.onBeforeCompile=compile;material.customProgramCacheKey=key;material.needsUpdate=true;});responses.clear();};
+  },[gl,scene,camera,invalidate,mobile]);
   useFrame(()=>{
     if(journeyControls.read().finalCovered)return;
-    const phase=journeyControls.read().phase;
-    const values=resolveCinemaValues(cinemaControls.read(),cinemaShot.stage,cinemaShot.progress,tuning.current);
+    const journeyPhase=journeyControls.read().phase;
     const eye=scene.getObjectByName(EYE_NAME) as Mesh|undefined;
+    const eyeReady=!LOGO_PARTICLE_EYE_ENABLED||eye?.userData.eyePrepared;
+    if(journeyPhase==='page'&&!pageReturn.warming)return;
+    const coveredReturn=journeyPhase==='pageReturnLoading';
+    const warming=journeyPhase==='page';
+    const phase=coveredReturn||warming?'logoReveal':journeyPhase;
+    const values=resolveCinemaValues(cinemaControls.read(),cinemaShot.stage,cinemaShot.progress,tuning.current);
     if(eye?.material instanceof ShaderMaterial)eye.material.uniforms.uHeroReactionGain.value=values.particleReaction;
-    if(values.post&&values.dof&&(phase==='logoReveal'||phase==='logoDone')&&!focus.current)focus.current=createCinemaFocus(gl,scene,effectQuality(gl));
+    // Phone skies use the directly drawn grains. Full-screen bokeh softened
+    // their subpixel centres and required a second scene draw and a gather.
+    if(!mobile&&values.post&&values.dof&&(phase==='logoReveal'||phase==='logoDone')&&!focus.current)focus.current=createCinemaFocus(gl,scene,effectQuality(gl));
     // Camera progress drives the early trace; the final pose starts the existing
     // emission clock before its queued public phase notification.
     const pulsePhase=phase==='logoReveal'&&cinemaShot.stage==='done'?'logoDone':phase;
     if(pulse.current?.update(pulsePhase,performance.now(),document.hidden,reduce.current,values,cinemaShot))invalidate();
-    renderFrame(gl,scene,camera,legacy.current,pipeline.current,grade.current,tones.current,pulse.current?.glow,pulse.current?.drawContact,values,focus.current);
+    renderFrame(gl,scene,camera,phase,legacy.current,pipeline.current,grade.current,tones.current,pulse.current?.glow,pulse.current?.drawContact,values,focus.current,mobile);
+    if(warming){pageReturn.warming=false;traceMark("Eye return GPU warmed behind page");}
+    if(coveredReturn&&eyeReady)pageReturn.prepared=true;
   },1);
   return null;
 }

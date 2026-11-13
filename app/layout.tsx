@@ -12,9 +12,15 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const description = "New Wings Solutions — cinema equipment, from the first light to the last seat.";
+
 export const metadata: Metadata = {
-  title: "Corridor — Spatial Study",
-  description: "A lightweight, colour-coded corridor camera and scroll study.",
+  // Set NEXT_PUBLIC_SITE_URL to the live domain so share previews use absolute links.
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
+  title: "New Wings Solutions",
+  description,
+  openGraph: { title: "New Wings Solutions", description, type: "website", siteName: "New Wings Solutions" },
+  twitter: { card: "summary_large_image", title: "New Wings Solutions", description },
 };
 
 export const viewport: Viewport = {

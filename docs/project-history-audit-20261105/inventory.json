@@ -1,0 +1,2560 @@
+{
+  "inspectedAt": "2026-11-05T13:34:39.887Z",
+  "archive": "D:/Cleanup_20261103/codex/dot-codex",
+  "verification": "Read-only database queries; SQLite quick_check passed for state and history. Transcript files were inventoried, not exhaustively validated. No app-state restoration performed.",
+  "threadCount": 31,
+  "projects": [
+    {
+      "id": "01a04bf8-1f55-7f71-8fb6-21a62a2dc6a4",
+      "name": "cosmos-strategy-main",
+      "path": "D:\\T-B\\cosmos\\cosmos-strategy-main"
+    },
+    {
+      "id": "01a04bf8-1f62-7053-baef-c6106ab391bf",
+      "name": "vl",
+      "path": "D:\\vl\\website\\vl"
+    },
+    {
+      "id": "01a04bf8-1f65-70e1-8830-50619f6d3151",
+      "name": "my-ecommerce-store",
+      "path": "D:\\Grocery - singapore\\my-ecommerce-store"
+    },
+    {
+      "id": "01a04bf8-1f6a-74b0-a827-f975c070ded2",
+      "name": "vl_aw",
+      "path": "D:\\vl\\website\\vl_aw"
+    },
+    {
+      "id": "01a04bf8-1f6d-78c0-adf4-29f58e0221dc",
+      "name": "valerie-project-assignment",
+      "path": "D:\\Valerie - singapore\\valerie-project-assignment"
+    },
+    {
+      "id": "01a04bf8-1f70-7541-8d65-8d80931aa5b2",
+      "name": "Blender 5.0",
+      "path": "C:\\Program Files\\Blender Foundation\\Blender 5.0"
+    },
+    {
+      "id": "01a08771-5cb0-78b2-9a19-12a86b1fd427",
+      "name": "retry",
+      "path": "D:\\vl\\website\\vi_lu"
+    },
+    {
+      "id": "01a0ed36-bf0e-7ef1-a106-f7b38630f230",
+      "name": "new_si_two",
+      "path": "D:\\New folio\\new site code\\new_si_two"
+    },
+    {
+      "id": "01a12005-9f32-7200-809c-2dfabfd824ea",
+      "name": "new_si_two",
+      "path": "D:\\New folio\\new site code\\new_si_two"
+    }
+  ],
+  "threads": [
+    {
+      "id": "01a12012-6bd4-7681-9f97-1b59a739ff3b",
+      "name": "Optimize 3D site assets and code",
+      "cwd": "\\\\?\\D:\\New folio\\new site code\\new_si_two",
+      "rollout_path": "\\\\?\\C:\\Users\\Admin\\.codex\\sessions\\2026\\10\\29\\rollout-2026-10-29T16-09-11-01a12012-6bd4-7681-9f97-1b59a739ff3b_01a1873e-069c-7163-a762-86d8e76cb1dc.jsonl",
+      "created_at": 1793270351,
+      "updated_at": 1793506897,
+      "archived": 0
+    },
+    {
+      "id": "01a13a7b-a9aa-7b23-a29a-727ddda5accf",
+      "name": null,
+      "cwd": "\\\\?\\D:\\New folio\\new site code\\new_si_two",
+      "rollout_path": "\\\\?\\C:\\Users\\Admin\\.codex\\sessions\\2026\\10\\14\\rollout-2026-10-14T18-25-45-01a13a7b-a9aa-7b23-a29a-727ddda5accf.jsonl",
+      "created_at": 1791982545,
+      "updated_at": 1791986011,
+      "archived": 0
+    },
+    {
+      "id": "01a13418-5fb2-7271-b506-3f4e3aacd344",
+      "name": "Respond to greeting",
+      "cwd": "\\\\?\\D:\\New folio\\new site code\\new_si_two",
+      "rollout_path": "C:\\Users\\Admin\\.codex\\sessions\\2026\\10\\13\\rollout-2026-10-13T12-39-35-01a13418-5fb2-7271-b506-3f4e3aacd344.jsonl",
+      "created_at": 1791875375,
+      "updated_at": 1791875387,
+      "archived": 0
+    },
+    {
+      "id": "01a0f091-0f09-7590-8d50-f2be2fd9a404",
+      "name": "Center full logo on camera",
+      "cwd": "C:\\Users\\Admin\\Documents\\Codex\\2026-09-30\\can",
+      "rollout_path": "\\\\?\\C:\\Users\\Admin\\.codex\\sessions\\2026\\09\\30\\rollout-2026-09-30T09-57-13-01a0f091-0f09-7590-8d50-f2be2fd9a404.jsonl",
+      "created_at": 1790742433,
+      "updated_at": 1791439410,
+      "archived": 0
+    },
+    {
+      "id": "01a0dd55-5546-7551-85dd-bedc0b37c3a7",
+      "name": "Get Blender and R3F help",
+      "cwd": "\\\\?\\C:\\Users\\Admin\\Documents\\Codex\\2026-09-26\\ca",
+      "rollout_path": "\\\\?\\C:\\Users\\Admin\\.codex\\sessions\\2026\\09\\26\\rollout-2026-09-26T16-19-12-01a0dd55-5546-7551-85dd-bedc0b37c3a7.jsonl",
+      "created_at": 1790419752,
+      "updated_at": 1790693422,
+      "archived": 0
+    },
+    {
+      "id": "01a0ed3b-075b-72b3-b929-b52247634946",
+      "name": "Match sofa appearance in R3F",
+      "cwd": "\\\\?\\D:\\New folio\\new site code\\new_si_two",
+      "rollout_path": "\\\\?\\C:\\Users\\Admin\\.codex\\sessions\\2026\\09\\29\\rollout-2026-09-29T18-24-23-01a0ed3b-075b-72b3-b929-b52247634946.jsonl",
+      "created_at": 1790686463,
+      "updated_at": 1790693218,
+      "archived": 0
+    },
+    {
+      "id": "01a0e716-be33-7d13-8872-ff0957e932eb",
+      "name": "Redesign elite shop architecture",
+      "cwd": "\\\\?\\C:\\Users\\Admin\\Documents\\Codex\\2026-09-28\\ta",
+      "rollout_path": "\\\\?\\C:\\Users\\Admin\\.codex\\sessions\\2026\\09\\28\\rollout-2026-09-28T13-47-02-01a0e716-be33-7d13-8872-ff0957e932eb.jsonl",
+      "created_at": 1790583422,
+      "updated_at": 1790674261,
+      "archived": 0
+    },
+    {
+      "id": "01a0abb0-d9f5-7f52-b4bd-a528fd1ac3a6",
+      "name": "Improve Blender cinematic lighting",
+      "cwd": "\\\\?\\C:\\Users\\Admin\\Documents\\Codex\\2026-09-17\\you",
+      "rollout_path": "\\\\?\\C:\\Users\\Admin\\.codex\\sessions\\2026\\09\\17\\rollout-2026-09-17T00-58-09-01a0abb0-d9f5-7f52-b4bd-a528fd1ac3a6.jsonl",
+      "created_at": 1789586889,
+      "updated_at": 1790419418,
+      "archived": 0
+    },
+    {
+      "id": "01a0dd4e-fbbe-7592-a391-aaf723c6767f",
+      "name": null,
+      "cwd": "\\\\?\\D:\\New folio\\new site code\\new_si_two",
+      "rollout_path": "\\\\?\\C:\\Users\\Admin\\.codex\\sessions\\2026\\09\\26\\rollout-2026-09-26T16-12-16-01a0dd4e-fbbe-7592-a391-aaf723c6767f.jsonl",
+      "created_at": 1790419336,
+      "updated_at": 1790419346,
+      "archived": 0
+    },
+    {
+      "id": "01a09163-fe39-7500-81a6-dd1290885790",
+      "name": "Create realistic projector model",
+      "cwd": "\\\\?\\C:\\Users\\Admin\\Documents\\Codex\\2026-09-11\\w",
+      "rollout_path": "\\\\?\\C:\\Users\\Admin\\.codex\\sessions\\2026\\09\\11\\rollout-2026-09-11T22-24-04-01a09163-fe39-7500-81a6-dd1290885790.jsonl",
+      "created_at": 1789145644,
+      "updated_at": 1790252809,
+      "archived": 0
+    },
+    {
+      "id": "01a08cf7-d946-7c91-9a57-dca852f161e3",
+      "name": "Blender to R3F output matching",
+      "cwd": "\\\\?\\D:\\vl\\website\\vi_lu",
+      "rollout_path": "\\\\?\\C:\\Users\\Admin\\.codex\\sessions\\2026\\09\\11\\rollout-2026-09-11T01-47-28-01a08cf7-d946-7c91-9a57-dca852f161e3.jsonl",
+      "created_at": 1789071448,
+      "updated_at": 1790252614,
+      "archived": 0
+    },
+    {
+      "id": "01a0b9f4-cf87-7ef3-a4d8-b0726b73fd0f",
+      "name": "hu",
+      "cwd": "\\\\?\\C:\\Users\\Admin\\Documents\\Codex\\2026-09-19\\h",
+      "rollout_path": "C:\\Users\\Admin\\.codex\\sessions\\2026\\09\\19\\rollout-2026-09-19T19-27-04-01a0b9f4-cf87-7ef3-a4d8-b0726b73fd0f.jsonl",
+      "created_at": 1789826224,
+      "updated_at": 1789826229,
+      "archived": 0
+    },
+    {
+      "id": "01a090a5-7496-7dc2-acbc-4b028f793a07",
+      "name": "Develop Viro Luxe creative direction",
+      "cwd": "\\\\?\\C:\\Users\\Admin\\Documents\\Codex\\2026-09-11\\sites-plugin-sites-openai-curated-remote",
+      "rollout_path": "C:\\Users\\Admin\\.codex\\sessions\\2026\\09\\11\\rollout-2026-09-11T18-55-57-01a090a5-7496-7dc2-acbc-4b028f793a07.jsonl",
+      "created_at": 1789133157,
+      "updated_at": 1789135353,
+      "archived": 0
+    },
+    {
+      "id": "01a08537-3bbb-7950-9685-7b25cfd818ca",
+      "name": "Fix R3F sofa and curtain",
+      "cwd": "\\\\?\\D:\\vl\\website\\vl_aw",
+      "rollout_path": "\\\\?\\C:\\Users\\Admin\\.codex\\sessions\\2026\\09\\09\\rollout-2026-09-09T13-39-44-01a08537-3bbb-7950-9685-7b25cfd818ca.jsonl",
+      "created_at": 1788941384,
+      "updated_at": 1789106689,
+      "archived": 0
+    },
+    {
+      "id": "01a03e08-3a3f-79e2-8756-eff2cac590dd",
+      "name": null,
+      "cwd": "\\\\?\\D:\\vl\\website\\vl_aw",
+      "rollout_path": "\\\\?\\C:\\Users\\Admin\\.codex\\sessions\\2026\\08\\26\\rollout-2026-08-26T17-55-21-01a03e08-3a3f-79e2-8756-eff2cac590dd.jsonl",
+      "created_at": 1787747121,
+      "updated_at": 1789028599,
+      "archived": 0
+    },
+    {
+      "id": "01a08963-3337-7d50-a115-45f8596748be",
+      "name": "Match Blender floor in R3F",
+      "cwd": "\\\\?\\D:\\vl\\website\\vi_lu",
+      "rollout_path": "C:\\Users\\Admin\\.codex\\sessions\\2026\\09\\10\\rollout-2026-09-10T09-06-14-01a08963-3337-7d50-a115-45f8596748be.jsonl",
+      "created_at": 1789011374,
+      "updated_at": 1789012030,
+      "archived": 0
+    },
+    {
+      "id": "01a08779-d08b-7c50-9f99-8daf865170d4",
+      "name": "Match Blender output in R3F",
+      "cwd": "\\\\?\\D:\\vl\\website\\vi_lu",
+      "rollout_path": "\\\\?\\C:\\Users\\Admin\\.codex\\sessions\\2026\\09\\10\\rollout-2026-09-10T00-11-42-01a08779-d08b-7c50-9f99-8daf865170d4.jsonl",
+      "created_at": 1788979302,
+      "updated_at": 1789011041,
+      "archived": 0
+    },
+    {
+      "id": "01a07af1-d309-7413-a9e8-f0bc4b9244fb",
+      "name": "Create Blender 3D logo model",
+      "cwd": "\\\\?\\D:\\vl\\website\\vl_aw",
+      "rollout_path": "\\\\?\\C:\\Users\\Admin\\.codex\\sessions\\2026\\09\\07\\rollout-2026-09-07T13-47-43-01a07af1-d309-7413-a9e8-f0bc4b9244fb.jsonl",
+      "created_at": 1788769063,
+      "updated_at": 1788974854,
+      "archived": 0
+    },
+    {
+      "id": "01a06543-e9e2-7a22-9478-02ae579b5ba4",
+      "name": null,
+      "cwd": "\\\\?\\D:\\vl\\website\\vl_aw",
+      "rollout_path": "\\\\?\\C:\\Users\\Admin\\.codex\\sessions\\2026\\09\\03\\rollout-2026-09-03T08-45-44-01a06543-e9e2-7a22-9478-02ae579b5ba4.jsonl",
+      "created_at": 1788405344,
+      "updated_at": 1788846385,
+      "archived": 0
+    },
+    {
+      "id": "01a077bc-0a39-7fc3-a402-c6224d54088c",
+      "name": "Check Blender connectivity",
+      "cwd": "\\\\?\\D:\\vl\\website\\vl_aw",
+      "rollout_path": "\\\\?\\C:\\Users\\Admin\\.codex\\sessions\\2026\\09\\06\\rollout-2026-09-06T22-50-07-01a077bc-0a39-7fc3-a402-c6224d54088c.jsonl",
+      "created_at": 1788715207,
+      "updated_at": 1788752461,
+      "archived": 0
+    },
+    {
+      "id": "01a0608d-8ddf-74f3-8504-9e2f2fed881d",
+      "name": null,
+      "cwd": "\\\\?\\C:\\Users\\Admin\\Documents\\Codex\\2026-09-02\\files-mentioned-by-the-user-image",
+      "rollout_path": "C:\\Users\\Admin\\.codex\\sessions\\2026\\09\\02\\rollout-2026-09-02T10-48-04-01a0608d-8ddf-74f3-8504-9e2f2fed881d.jsonl",
+      "created_at": 1788326284,
+      "updated_at": 1788326360,
+      "archived": 0
+    },
+    {
+      "id": "01a06024-5248-74f2-abd5-6e3f32c92ea9",
+      "name": "Find UK or USA frontend jobs",
+      "cwd": "\\\\?\\C:\\Users\\Admin\\Documents\\Codex\\2026-09-02\\can-you-find-job-for-me-5",
+      "rollout_path": "\\\\?\\C:\\Users\\Admin\\.codex\\sessions\\2026\\09\\02\\rollout-2026-09-02T08-53-08-01a06024-5248-74f2-abd5-6e3f32c92ea9.jsonl",
+      "created_at": 1788319388,
+      "updated_at": 1788319744,
+      "archived": 0
+    },
+    {
+      "id": "01a05ce1-9ac1-74b0-82e8-a3e464e154ed",
+      "name": "Find new Three.js developers",
+      "cwd": "\\\\?\\C:\\Users\\Admin\\Documents\\Codex\\2026-09-01\\can",
+      "rollout_path": "C:\\Users\\Admin\\.codex\\sessions\\2026\\09\\01\\rollout-2026-09-01T17-41-24-01a05ce1-9ac1-74b0-82e8-a3e464e154ed.jsonl",
+      "created_at": 1788264684,
+      "updated_at": 1788265220,
+      "archived": 0
+    },
+    {
+      "id": "01a04e4b-f9ea-7ed2-98f0-9d25c72be890",
+      "name": "Find UK remote agency jobs",
+      "cwd": "\\\\?\\C:\\Users\\Admin\\Documents\\Codex\\2026-08-29\\thi",
+      "rollout_path": "C:\\Users\\Admin\\.codex\\sessions\\2026\\08\\29\\rollout-2026-08-29T21-43-17-01a04e4b-f9ea-7ed2-98f0-9d25c72be890.jsonl",
+      "created_at": 1788019997,
+      "updated_at": 1788020079,
+      "archived": 0
+    },
+    {
+      "id": "01a03e08-3b70-7752-8a9f-e86f6bd7a2ac",
+      "name": "Local Blender access",
+      "cwd": "\\\\?\\C:\\Program Files\\Blender Foundation\\Blender 5.0",
+      "rollout_path": "C:\\Users\\Admin\\.codex\\sessions\\2026\\08\\26\\rollout-2026-08-26T17-55-22-01a03e08-3b70-7752-8a9f-e86f6bd7a2ac.jsonl",
+      "created_at": 1785146982,
+      "updated_at": 1787721909,
+      "archived": 0
+    },
+    {
+      "id": "01a03e08-3a0e-7aa2-b44e-fe5e0c378f86",
+      "name": "PMNDRS plugin verification",
+      "cwd": "\\\\?\\D:\\vl\\website\\vl",
+      "rollout_path": "C:\\Users\\Admin\\.codex\\sessions\\2026\\08\\26\\rollout-2026-08-26T17-55-21-01a03e08-3a0e-7aa2-b44e-fe5e0c378f86.jsonl",
+      "created_at": 1787331527,
+      "updated_at": 1787331559,
+      "archived": 0
+    },
+    {
+      "id": "01a03e08-3b4c-7743-a462-465fe00db65c",
+      "name": "Frontend interview assignment strategy",
+      "cwd": "\\\\?\\D:\\Valerie - singapore\\valerie-project-assignment",
+      "rollout_path": "C:\\Users\\Admin\\.codex\\sessions\\2026\\08\\26\\rollout-2026-08-26T17-55-21-01a03e08-3b4c-7743-a462-465fe00db65c.jsonl",
+      "created_at": 1785231781,
+      "updated_at": 1787035993,
+      "archived": 0
+    },
+    {
+      "id": "01a03e08-3ae9-7673-8cac-f899ae031afb",
+      "name": "Cliff experience with r3f",
+      "cwd": "\\\\?\\D:\\vl\\website\\vl",
+      "rollout_path": "C:\\Users\\Admin\\.codex\\sessions\\2026\\08\\26\\rollout-2026-08-26T17-55-21-01a03e08-3ae9-7673-8cac-f899ae031afb.jsonl",
+      "created_at": 1786727039,
+      "updated_at": 1786895731,
+      "archived": 0
+    },
+    {
+      "id": "01a03e08-3a17-7b22-86c8-93243ad1e025",
+      "name": "page.tsx location and structure",
+      "cwd": "\\\\?\\D:\\T-B\\cosmos\\cosmos-strategy-main",
+      "rollout_path": "C:\\Users\\Admin\\.codex\\sessions\\2026\\08\\26\\rollout-2026-08-26T17-55-21-01a03e08-3a17-7b22-86c8-93243ad1e025.jsonl",
+      "created_at": 1786467862,
+      "updated_at": 1786470098,
+      "archived": 0
+    },
+    {
+      "id": "01a03e08-3ad0-75d0-910f-5d87198743c8",
+      "name": "Blender cliff modeling",
+      "cwd": "\\\\?\\D:\\Valerie - singapore\\valerie-project-assignment",
+      "rollout_path": "C:\\Users\\Admin\\.codex\\sessions\\2026\\08\\26\\rollout-2026-08-26T17-55-21-01a03e08-3ad0-75d0-910f-5d87198743c8.jsonl",
+      "created_at": 1786362614,
+      "updated_at": 1786364790,
+      "archived": 0
+    },
+    {
+      "id": "01a03e08-3a19-78f1-8196-7aedf0f8c41a",
+      "name": "Vercel image quota and codebase bugs",
+      "cwd": "\\\\?\\D:\\Grocery - singapore\\my-ecommerce-store",
+      "rollout_path": "C:\\Users\\Admin\\.codex\\sessions\\2026\\08\\26\\rollout-2026-08-26T17-55-21-01a03e08-3a19-78f1-8196-7aedf0f8c41a.jsonl",
+      "created_at": 1784440147,
+      "updated_at": 1784912433,
+      "archived": 0
+    }
+  ],
+  "history": [
+    {
+      "thread_id": "01a03e08-3a0e-7aa2-b44e-fe5e0c378f86",
+      "items": 13,
+      "first_ms": 1787747121809,
+      "last_ms": 1787747121809
+    },
+    {
+      "thread_id": "01a03e08-3a17-7b22-86c8-93243ad1e025",
+      "items": 168,
+      "first_ms": 1787747121809,
+      "last_ms": 1787747121815
+    },
+    {
+      "thread_id": "01a03e08-3a19-78f1-8196-7aedf0f8c41a",
+      "items": 533,
+      "first_ms": 1787747121809,
+      "last_ms": 1787747121829
+    },
+    {
+      "thread_id": "01a03e08-3a3f-79e2-8756-eff2cac590dd",
+      "items": 2231,
+      "first_ms": 1787747121825,
+      "last_ms": 1789028589279
+    },
+    {
+      "thread_id": "01a03e08-3ad0-75d0-910f-5d87198743c8",
+      "items": 215,
+      "first_ms": 1787747121943,
+      "last_ms": 1787747121953
+    },
+    {
+      "thread_id": "01a03e08-3ae9-7673-8cac-f899ae031afb",
+      "items": 1125,
+      "first_ms": 1787747121971,
+      "last_ms": 1787747122010
+    },
+    {
+      "thread_id": "01a03e08-3b4c-7743-a462-465fe00db65c",
+      "items": 2867,
+      "first_ms": 1787747122064,
+      "last_ms": 1787747122144
+    },
+    {
+      "thread_id": "01a03e08-3b70-7752-8a9f-e86f6bd7a2ac",
+      "items": 5725,
+      "first_ms": 1787747122045,
+      "last_ms": 1787747122232
+    },
+    {
+      "thread_id": "01a04e4b-f9ea-7ed2-98f0-9d25c72be890",
+      "items": 4,
+      "first_ms": 1788020070459,
+      "last_ms": 1788020078496
+    },
+    {
+      "thread_id": "01a05ce1-9ac1-74b0-82e8-a3e464e154ed",
+      "items": 47,
+      "first_ms": 1788264807263,
+      "last_ms": 1788265216465
+    },
+    {
+      "thread_id": "01a06024-5248-74f2-abd5-6e3f32c92ea9",
+      "items": 53,
+      "first_ms": 1788319499149,
+      "last_ms": 1788319715968
+    },
+    {
+      "thread_id": "01a0608d-8ddf-74f3-8504-9e2f2fed881d",
+      "items": 14,
+      "first_ms": 1788326287732,
+      "last_ms": 1788326350186
+    },
+    {
+      "thread_id": "01a06543-e9e2-7a22-9478-02ae579b5ba4",
+      "items": 3863,
+      "first_ms": 1788405345085,
+      "last_ms": 1788846353651
+    },
+    {
+      "thread_id": "01a077bc-0a39-7fc3-a402-c6224d54088c",
+      "items": 227,
+      "first_ms": 1788715218499,
+      "last_ms": 1788752459160
+    },
+    {
+      "thread_id": "01a07af1-d309-7413-a9e8-f0bc4b9244fb",
+      "items": 699,
+      "first_ms": 1788769066772,
+      "last_ms": 1788974852032
+    },
+    {
+      "thread_id": "01a08537-3bbb-7950-9685-7b25cfd818ca",
+      "items": 613,
+      "first_ms": 1788941387786,
+      "last_ms": 1789106684776
+    },
+    {
+      "thread_id": "01a08779-d08b-7c50-9f99-8daf865170d4",
+      "items": 323,
+      "first_ms": 1788979304725,
+      "last_ms": 1789011039399
+    },
+    {
+      "thread_id": "01a08963-3337-7d50-a115-45f8596748be",
+      "items": 69,
+      "first_ms": 1789011481640,
+      "last_ms": 1789011979581
+    },
+    {
+      "thread_id": "01a08cf7-d946-7c91-9a57-dca852f161e3",
+      "items": 281,
+      "first_ms": 1789071448474,
+      "last_ms": 1789071448487
+    },
+    {
+      "thread_id": "01a090a5-7496-7dc2-acbc-4b028f793a07",
+      "items": 45,
+      "first_ms": 1789133159585,
+      "last_ms": 1789135328985
+    },
+    {
+      "thread_id": "01a09163-fe39-7500-81a6-dd1290885790",
+      "items": 74,
+      "first_ms": 1789145725984,
+      "last_ms": 1789151622713
+    },
+    {
+      "thread_id": "01a0abb0-d9f5-7f52-b4bd-a528fd1ac3a6",
+      "items": 1625,
+      "first_ms": 1789587113263,
+      "last_ms": 1790354883153
+    },
+    {
+      "thread_id": "01a0b9f4-cf87-7ef3-a4d8-b0726b73fd0f",
+      "items": 1,
+      "first_ms": 1789826228481,
+      "last_ms": 1789826228481
+    },
+    {
+      "thread_id": "01a0dd4e-fbbe-7592-a391-aaf723c6767f",
+      "items": 2369,
+      "first_ms": 1790419336420,
+      "last_ms": 1790419336591
+    },
+    {
+      "thread_id": "01a0dd55-5546-7551-85dd-bedc0b37c3a7",
+      "items": 46,
+      "first_ms": 1790419775695,
+      "last_ms": 1790693366557
+    },
+    {
+      "thread_id": "01a0e716-be33-7d13-8872-ff0957e932eb",
+      "items": 235,
+      "first_ms": 1790583424573,
+      "last_ms": 1790602428141
+    },
+    {
+      "thread_id": "01a0ed3b-075b-72b3-b929-b52247634946",
+      "items": 155,
+      "first_ms": 1790686465732,
+      "last_ms": 1790693105310
+    },
+    {
+      "thread_id": "01a0f091-0f09-7590-8d50-f2be2fd9a404",
+      "items": 1420,
+      "first_ms": 1790742473049,
+      "last_ms": 1791268203042
+    },
+    {
+      "thread_id": "01a12012-6bd4-7681-9f97-1b59a739ff3b",
+      "items": 19220,
+      "first_ms": 1791539443840,
+      "last_ms": 1793266368988
+    },
+    {
+      "thread_id": "01a13418-5fb2-7271-b506-3f4e3aacd344",
+      "items": 2,
+      "first_ms": 1791875378141,
+      "last_ms": 1791875387118
+    },
+    {
+      "thread_id": "01a13a7b-a9aa-7b23-a29a-727ddda5accf",
+      "items": 171,
+      "first_ms": 1791982548602,
+      "last_ms": 1791985977143
+    },
+    {
+      "thread_id": "01a18701-6b44-7bb1-a7c6-c13738b5f386",
+      "items": 110,
+      "first_ms": 1793266382378,
+      "last_ms": 1793270144484
+    },
+    {
+      "thread_id": "01a1873e-069c-7163-a762-86d8e76cb1dc",
+      "items": 2713,
+      "first_ms": 1793270354483,
+      "last_ms": 1793506897221
+    }
+  ],
+  "mainProjectSegments": [
+    "01a12012-6bd4-7681-9f97-1b59a739ff3b",
+    "01a18701-6b44-7bb1-a7c6-c13738b5f386",
+    "01a1873e-069c-7163-a762-86d8e76cb1dc"
+  ],
+  "transcripts": [
+    {
+      "path": "D:\\Cleanup_20261103\\codex\\dot-codex\\sessions\\2026\\10\\09\\rollout-2026-10-09T15-20-40-01a12012-6bd4-7681-9f97-1b59a739ff3b.jsonl",
+      "bytes": 3260027010,
+      "meta": {
+        "type": "session_meta",
+        "id": "01a12012-6bd4-7681-9f97-1b59a739ff3b",
+        "cwd": "D:\\New folio\\new site code\\new_si_two",
+        "timestamp": "2026-10-09T09:50:42.377Z"
+      }
+    },
+    {
+      "path": "D:\\Cleanup_20261103\\codex\\dot-codex\\sessions\\2026\\10\\29\\rollout-2026-10-29T15-02-59-01a12012-6bd4-7681-9f97-1b59a739ff3b_01a18701-6b44-7bb1-a7c6-c13738b5f386.jsonl",
+      "bytes": 19363040,
+      "meta": {
+        "type": "session_meta",
+        "id": "01a12012-6bd4-7681-9f97-1b59a739ff3b",
+        "cwd": "D:\\New folio\\new site code\\new_si_two",
+        "timestamp": "2026-10-29T09:32:59.671Z"
+      }
+    },
+    {
+      "path": "D:\\Cleanup_20261103\\codex\\dot-codex\\sessions\\2026\\10\\29\\rollout-2026-10-29T16-09-11-01a12012-6bd4-7681-9f97-1b59a739ff3b_01a1873e-069c-7163-a762-86d8e76cb1dc.jsonl",
+      "bytes": 2817713291,
+      "meta": {
+        "type": "session_meta",
+        "id": "01a12012-6bd4-7681-9f97-1b59a739ff3b",
+        "cwd": "D:\\New folio\\new site code\\new_si_two",
+        "timestamp": "2026-10-29T10:39:11.643Z"
+      }
+    }
+  ],
+  "outputFolders": [
+    {
+      "path": "D:\\CodexOutputs\\ActiveTheoryStudy",
+      "files": 4,
+      "bytes": 1984326,
+      "types": {
+        ".js": 1,
+        ".cjs": 1,
+        ".txt": 1,
+        ".json": 1
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\All_2K_20261024",
+      "files": 44,
+      "bytes": 60475919,
+      "types": {
+        ".jpg": 3,
+        ".json": 8,
+        ".ktx2": 16,
+        ".png": 8,
+        ".log": 8,
+        ".md": 1
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Approved_Presets_Pulse_Loop_20261028",
+      "files": 17,
+      "bytes": 7435770,
+      "types": {
+        ".md": 1,
+        ".log": 3,
+        ".mjs": 2,
+        ".ts": 3,
+        ".png": 4,
+        ".json": 2,
+        ".tsx": 1,
+        ".cjs": 1
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Approved_Theatre_Corridor_20261020",
+      "files": 144,
+      "bytes": 6657929844,
+      "types": {
+        ".py": 23,
+        ".log": 16,
+        ".json": 35,
+        ".png": 37,
+        ".mjs": 1,
+        ".glb": 13,
+        ".blend": 11,
+        ".tsx": 2,
+        ".ts": 2,
+        ".md": 1,
+        ".bin": 1,
+        ".gz": 1,
+        ".blend1": 1
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\BlenderFloor_BlackMatte_6K_20261010",
+      "files": 40,
+      "bytes": 4231900904,
+      "types": {
+        ".py": 6,
+        ".png": 3,
+        ".blend": 2,
+        ".exr": 10,
+        ".json": 11,
+        ".blend1": 1,
+        ".jpg": 5,
+        ".md": 1,
+        ".mjs": 1
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Blender_Left_Wall_Local_Blue_20261011",
+      "files": 8,
+      "bytes": 3046746167,
+      "types": {
+        ".blend": 2,
+        ".png": 1,
+        ".json": 1,
+        ".log": 2,
+        ".py": 2
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Blender_Wall_Glow_20261010",
+      "files": 9,
+      "bytes": 1580734462,
+      "types": {
+        ".blend": 2,
+        ".png": 2,
+        ".json": 1,
+        ".log": 2,
+        ".py": 2
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Blender_Wall_Neutral_Fill_20261010",
+      "files": 15,
+      "bytes": 2368110627,
+      "types": {
+        ".png": 3,
+        ".blend": 2,
+        ".blend1": 1,
+        ".json": 1,
+        ".txt": 1,
+        ".log": 4,
+        ".py": 3
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Blender_Wall_Subtle_Adjustment_20261010",
+      "files": 22,
+      "bytes": 3162236164,
+      "types": {
+        ".png": 6,
+        ".blend": 4,
+        ".log": 5,
+        ".json": 2,
+        ".py": 5
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Blender_Wall_Visible_Glow_20261010",
+      "files": 9,
+      "bytes": 1580853018,
+      "types": {
+        ".blend": 2,
+        ".png": 2,
+        ".json": 1,
+        ".log": 2,
+        ".py": 2
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Brand_Artwork_Reveal_20261030",
+      "files": 5,
+      "bytes": 207079,
+      "types": {
+        ".md": 1,
+        ".jpg": 3,
+        ".tsx": 1
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Brand_Final_Refinement_20261030",
+      "files": 16,
+      "bytes": 352488,
+      "types": {
+        ".jpg": 4,
+        ".md": 3,
+        ".tsx": 4,
+        ".ts": 5
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Brand_Letter_Motion_20261030",
+      "files": 8,
+      "bytes": 54981,
+      "types": {
+        ".md": 1,
+        ".cjs": 2,
+        ".tsx": 1,
+        ".ts": 2,
+        ".json": 2
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Brand_Object_Motion_20261030",
+      "files": 7,
+      "bytes": 140603,
+      "types": {
+        ".md": 1,
+        ".cjs": 1,
+        ".json": 2,
+        ".jpg": 1,
+        ".tsx": 2
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Ceiling_Palette_Review_20261024",
+      "files": 10,
+      "bytes": 9900536,
+      "types": {
+        ".jpg": 3,
+        ".json": 3,
+        ".ktx2": 1,
+        ".md": 2,
+        ".tsx": 1
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Cinematic_Audit_20261027",
+      "files": 86,
+      "bytes": 124413258,
+      "types": {
+        ".json": 16,
+        ".png": 54,
+        ".log": 5,
+        ".mjs": 1,
+        ".cjs": 6,
+        ".ts": 2,
+        ".tsx": 2
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Cinematic_Bloom_Step1_20261027",
+      "files": 4,
+      "bytes": 204940,
+      "types": {
+        ".json": 2,
+        ".yaml": 1,
+        ".tsx": 1
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Cinematic_Star_Bloom_Matte_20261027",
+      "files": 39,
+      "bytes": 20712942,
+      "types": {
+        ".png": 17,
+        ".index": 1,
+        ".cjs": 5,
+        ".json": 8,
+        ".log": 6,
+        ".yaml": 1,
+        ".tsx": 1
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Cinema_Full_Glasses_20261030",
+      "files": 15,
+      "bytes": 408277,
+      "types": {
+        ".jpg": 3,
+        ".md": 3,
+        ".tsx": 5,
+        ".ts": 2,
+        ".log": 2
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Cinema_Glasses_20261030_154115",
+      "files": 5,
+      "bytes": 1879652,
+      "types": {
+        ".png": 1,
+        ".blend": 1,
+        ".blend1": 1,
+        ".glb": 1,
+        ".json": 1
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Cinema_Glasses_Front_20261030_155101",
+      "files": 5,
+      "bytes": 2629795,
+      "types": {
+        ".png": 1,
+        ".blend": 1,
+        ".blend1": 1,
+        ".glb": 1,
+        ".json": 1
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Cinema_Tuning_Panel_20261028",
+      "files": 30,
+      "bytes": 13266553,
+      "types": {
+        ".md": 1,
+        ".log": 4,
+        ".json": 4,
+        ".cjs": 3,
+        ".ts": 4,
+        ".tsx": 3,
+        ".png": 10,
+        ".css": 1
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\CollectionTransfer_20261016",
+      "files": 35,
+      "bytes": 2588611982,
+      "types": {
+        ".py": 9,
+        ".json": 12,
+        ".png": 7,
+        ".blend": 5,
+        ".blend1": 2
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Colour_Logo_Reveal_20261029",
+      "files": 9,
+      "bytes": 923114,
+      "types": {
+        ".md": 1,
+        ".css": 1,
+        ".jpg": 4,
+        ".ts": 1,
+        ".tsx": 2
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Compression_Lossless_20261024",
+      "files": 8,
+      "bytes": 63078410,
+      "types": {
+        ".ktx2": 6,
+        ".md": 1,
+        ".json": 1
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Corridor_Bake_Preparation_20261024",
+      "files": 6,
+      "bytes": 1554363111,
+      "types": {
+        ".blend": 1,
+        ".blend1": 1,
+        ".json": 4
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Corridor_Big_Screens_20261031",
+      "files": 8,
+      "bytes": 88726,
+      "types": {
+        ".tsx": 1,
+        ".ts": 2,
+        ".mjs": 1,
+        ".jpg": 4
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Corridor_Car_Rocket_Restore_20261031",
+      "files": 4,
+      "bytes": 117974,
+      "types": {
+        ".ts": 2,
+        ".tsx": 1,
+        ".jpg": 1
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Corridor_Floor_4K_20261024",
+      "files": 9,
+      "bytes": 14821993,
+      "types": {
+        ".jpg": 1,
+        ".json": 3,
+        ".ktx2": 2,
+        ".png": 1,
+        ".log": 1,
+        ".md": 1
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Corridor_Floor_Fix_20261010",
+      "files": 27,
+      "bytes": 688836952,
+      "types": {
+        ".jpg": 12,
+        ".json": 7,
+        ".log": 1,
+        ".tsx": 1,
+        ".py": 1,
+        ".exr": 4,
+        ".png": 1
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Corridor_Floor_Realtime_20261010",
+      "files": 11,
+      "bytes": 131158257,
+      "types": {
+        ".png": 1,
+        ".json": 3,
+        ".jpg": 7
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Corridor_Left_Wall_Lighting_20261024",
+      "files": 1,
+      "bytes": 754884461,
+      "types": {
+        ".blend": 1
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Corridor_Optimization_20261018",
+      "files": 329,
+      "bytes": 10179734176,
+      "types": {
+        ".png": 85,
+        ".log": 70,
+        ".py": 91,
+        ".json": 41,
+        ".blend": 14,
+        ".blend1": 11,
+        ".md": 6,
+        ".glb": 4,
+        ".csv": 2,
+        ".html": 1,
+        ".zip": 1,
+        ".jpg": 1,
+        ".exr": 2
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Corridor_Realtime_Stages_20261010",
+      "files": 476,
+      "bytes": 20213363432,
+      "types": {
+        ".json": 66,
+        ".jpg": 195,
+        ".cjs": 2,
+        ".exr": 133,
+        ".png": 46,
+        ".blend": 21,
+        ".tsx": 8,
+        ".html": 4,
+        ".ts": 1
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Corridor_Seam_Fix_20261011",
+      "files": 29,
+      "bytes": 914186354,
+      "types": {
+        ".log": 3,
+        ".py": 3,
+        ".png": 11,
+        ".exr": 2,
+        ".json": 5,
+        ".tsx": 2,
+        ".ktx2": 2,
+        ".mjs": 1
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Current_Claude_Preview_20261031",
+      "files": 1,
+      "bytes": 140143,
+      "types": {
+        ".jpg": 1
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Diagonal_Feather_20261029",
+      "files": 5,
+      "bytes": 286900,
+      "types": {
+        ".css": 1,
+        ".tsx": 2,
+        ".ts": 1,
+        ".jpg": 1
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Diagonal_Feather_Refine_20261029",
+      "files": 3,
+      "bytes": 251368,
+      "types": {
+        ".ts": 2,
+        ".jpg": 1
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Diagonal_Section_20261029",
+      "files": 8,
+      "bytes": 114851,
+      "types": {
+        ".md": 1,
+        ".css": 1,
+        ".log": 2,
+        ".tsx": 3,
+        ".ts": 1
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Eye_One_Checkpoint_20261027",
+      "files": 2,
+      "bytes": 98118,
+      "types": {
+        ".json": 1,
+        ".index": 1
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Eye_One_Restore_20261027",
+      "files": 4,
+      "bytes": 255377,
+      "types": {
+        ".json": 1,
+        ".yaml": 1,
+        ".log": 1,
+        ".index": 1
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Eye_Three_Checkpoint_20261029",
+      "files": 3,
+      "bytes": 153368,
+      "types": {
+        ".json": 1,
+        ".log": 1,
+        ".index": 1
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Eye_Two_Checkpoint_20261029",
+      "files": 35,
+      "bytes": 118220369,
+      "types": {
+        ".png": 14,
+        ".log": 3,
+        ".cjs": 8,
+        ".json": 7,
+        ".webm": 1,
+        ".index": 2
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Five_Fixes_20261026",
+      "files": 16,
+      "bytes": 164830,
+      "types": {
+        ".before": 11,
+        ".log": 4,
+        ".json": 1
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Foreground_Light_20261028",
+      "files": 57,
+      "bytes": 81473259,
+      "types": {
+        ".json": 7,
+        ".png": 34,
+        ".md": 1,
+        ".tsx": 4,
+        ".log": 4,
+        ".cjs": 4,
+        ".ts": 3
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\GeometryTrial_20261014",
+      "files": 18,
+      "bytes": 83427896,
+      "types": {
+        ".gz": 10,
+        ".json": 8
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Glasses_Centre_Fade_20261030",
+      "files": 11,
+      "bytes": 601789,
+      "types": {
+        ".jpg": 8,
+        ".ts": 1,
+        ".log": 2
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Glasses_Clean_Rims_20261030",
+      "files": 10,
+      "bytes": 33975321,
+      "types": {
+        ".blend": 2,
+        ".glb": 1,
+        ".png": 1,
+        ".json": 1,
+        ".blend1": 1,
+        ".py": 1,
+        ".log": 2,
+        ".jpg": 1
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Glasses_Close_Gap_20261030",
+      "files": 9,
+      "bytes": 208817,
+      "types": {
+        ".ts": 2,
+        ".jpg": 2,
+        ".tsx": 1,
+        ".log": 4
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Glasses_Close_Nose_20261030",
+      "files": 8,
+      "bytes": 22331046,
+      "types": {
+        ".blend": 2,
+        ".glb": 1,
+        ".jpg": 1,
+        ".py": 1,
+        ".json": 1,
+        ".log": 2
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Glasses_Near_Controls_20261030",
+      "files": 7,
+      "bytes": 246766,
+      "types": {
+        ".tsx": 2,
+        ".ts": 1,
+        ".jpg": 2,
+        ".log": 2
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Glasses_Open_Inner_Rims_20261030",
+      "files": 8,
+      "bytes": 22272398,
+      "types": {
+        ".blend": 2,
+        ".glb": 1,
+        ".json": 1,
+        ".jpg": 1,
+        ".py": 1,
+        ".log": 2
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Glasses_Placement_20261031",
+      "files": 6,
+      "bytes": 65534,
+      "types": {
+        ".ts": 2,
+        ".mjs": 1,
+        ".tsx": 1,
+        ".jpg": 2
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Glasses_Rebuild_20261031",
+      "files": 12,
+      "bytes": 1882961,
+      "types": {
+        ".jpg": 4,
+        ".tsx": 2,
+        ".ts": 2,
+        ".png": 1,
+        ".blend": 1,
+        ".blend1": 1,
+        ".json": 1
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Glasses_Rigid_Fit_20261030",
+      "files": 9,
+      "bytes": 32462353,
+      "types": {
+        ".ts": 1,
+        ".blend": 2,
+        ".blend1": 1,
+        ".jpg": 1,
+        ".json": 2,
+        ".log": 2
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Glasses_Thin_Rims_20261030",
+      "files": 8,
+      "bytes": 32931716,
+      "types": {
+        ".blend": 2,
+        ".glb": 1,
+        ".json": 1,
+        ".blend1": 1,
+        ".log": 2,
+        ".jpg": 1
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Glasses_Width_Control_20261030",
+      "files": 3,
+      "bytes": 99174,
+      "types": {
+        ".log": 2,
+        ".jpg": 1
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Laptop_Five_20261026",
+      "files": 93,
+      "bytes": 733370,
+      "types": {
+        ".md": 2,
+        ".json": 25,
+        ".log": 5,
+        ".tsx": 19,
+        ".ts": 42
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Left_Wall_Patches_20261011",
+      "files": 15,
+      "bytes": 605278898,
+      "types": {
+        ".png": 4,
+        ".py": 2,
+        ".log": 2,
+        ".json": 3,
+        ".tsx": 2,
+        ".exr": 1,
+        ".mjs": 1
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Lens_Living_Controls_20261030",
+      "files": 13,
+      "bytes": 984453,
+      "types": {
+        ".md": 1,
+        ".jpg": 7,
+        ".tsx": 4,
+        ".ts": 1
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Liquid_Page_20261026",
+      "files": 18,
+      "bytes": 336610,
+      "types": {
+        ".log": 5,
+        ".tsx": 4,
+        ".jpg": 7,
+        ".json": 2
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Liquid_Refinement_20261026",
+      "files": 5,
+      "bytes": 23644,
+      "types": {
+        ".log": 3,
+        ".tsx": 1,
+        ".ts": 1
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Living_Camera_20261029_View1",
+      "files": 28,
+      "bytes": 897744,
+      "types": {
+        ".md": 1,
+        ".log": 4,
+        ".index": 1,
+        ".json": 5,
+        ".txt": 3,
+        ".tsx": 5,
+        ".webm": 1,
+        ".cjs": 2,
+        ".mjs": 1,
+        ".ts": 1,
+        ".jpg": 4
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Loading_Diagnostics_20261025",
+      "files": 15,
+      "bytes": 262120,
+      "types": {
+        ".json": 4,
+        ".css": 1,
+        ".tsx": 7,
+        ".jpg": 1,
+        ".md": 1,
+        ".cjs": 1
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Logo_Eye_Depth_20261027",
+      "files": 27,
+      "bytes": 8621099,
+      "types": {
+        ".log": 3,
+        ".cjs": 1,
+        ".json": 8,
+        ".ts": 1,
+        ".tsx": 2,
+        ".png": 12
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Logo_Eye_Depth_Refinement_20261027",
+      "files": 26,
+      "bytes": 5015318,
+      "types": {
+        ".log": 4,
+        ".cjs": 2,
+        ".json": 7,
+        ".ts": 2,
+        ".tsx": 2,
+        ".png": 8,
+        ".mjs": 1
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Logo_Eye_Stars_20261027",
+      "files": 30,
+      "bytes": 9389675,
+      "types": {
+        ".log": 2,
+        ".cjs": 2,
+        ".json": 8,
+        ".ts": 2,
+        ".tsx": 2,
+        ".png": 12,
+        ".md": 1,
+        ".mjs": 1
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Logo_Eye_Stars_Refinement_20261027",
+      "files": 26,
+      "bytes": 5129448,
+      "types": {
+        ".md": 2,
+        ".log": 2,
+        ".cjs": 2,
+        ".json": 7,
+        ".ts": 2,
+        ".tsx": 2,
+        ".png": 8,
+        ".mjs": 1
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Logo_Eye_Star_Separation_20261027",
+      "files": 26,
+      "bytes": 5096645,
+      "types": {
+        ".md": 2,
+        ".log": 2,
+        ".cjs": 2,
+        ".json": 7,
+        ".ts": 2,
+        ".tsx": 2,
+        ".png": 8,
+        ".mjs": 1
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Logo_Eye_Studio_20261027",
+      "files": 222,
+      "bytes": 652868005,
+      "types": {
+        ".json": 30,
+        ".log": 34,
+        ".py": 33,
+        ".npz": 16,
+        ".png": 63,
+        ".blend": 18,
+        ".md": 13,
+        ".blend1": 15
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Logo_Eye_Tint_Gain_20261027",
+      "files": 9,
+      "bytes": 4479138,
+      "types": {
+        ".log": 1,
+        ".cjs": 1,
+        ".ts": 1,
+        ".png": 4,
+        ".json": 2
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Logo_Eye_Web_20261027",
+      "files": 43,
+      "bytes": 12766123,
+      "types": {
+        ".log": 6,
+        ".json": 12,
+        ".py": 2,
+        ".cjs": 4,
+        ".ts": 1,
+        ".tsx": 1,
+        ".mjs": 1,
+        ".png": 15,
+        ".ktx2": 1
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Logo_Eye_Web_Refinement_20261027",
+      "files": 26,
+      "bytes": 9562193,
+      "types": {
+        ".png": 9,
+        ".json": 8,
+        ".log": 2,
+        ".cjs": 2,
+        ".ts": 1,
+        ".tsx": 2,
+        ".md": 1,
+        ".mjs": 1
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Logo_Grey_20261027",
+      "files": 13,
+      "bytes": 4523356,
+      "types": {
+        ".md": 1,
+        ".log": 2,
+        ".cjs": 1,
+        ".json": 4,
+        ".png": 4,
+        ".tsx": 1
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Logo_Particle_Eye_20261026",
+      "files": 7,
+      "bytes": 108116,
+      "types": {
+        ".json": 3,
+        ".ts": 1,
+        ".png": 1,
+        ".log": 1,
+        ".tsx": 1
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Loki_Rope_20261103",
+      "files": 369,
+      "bytes": 9228104861,
+      "types": {
+        ".py": 33,
+        ".json": 19,
+        ".blend": 27,
+        ".blend1": 8,
+        ".ps1": 3,
+        ".png": 242,
+        ".md": 1,
+        ".glb": 1,
+        ".npy": 16,
+        ".pyc": 19
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Mixed_Resolution_20261024",
+      "files": 78,
+      "bytes": 115514046,
+      "types": {
+        ".jpg": 5,
+        ".tsx": 12,
+        ".json": 21,
+        ".ktx2": 11,
+        ".ts": 13,
+        ".diff": 1,
+        ".log": 6,
+        ".png": 6,
+        ".ndjson": 2,
+        ".md": 1
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Nebula_Framing_20261027",
+      "files": 36,
+      "bytes": 39541842,
+      "types": {
+        ".json": 1,
+        ".png": 25,
+        ".log": 4,
+        ".cjs": 1,
+        ".ts": 3,
+        ".tsx": 2
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Opening_Ambient_20261026",
+      "files": 18,
+      "bytes": 501984,
+      "types": {
+        ".tsx": 4,
+        ".log": 3,
+        ".json": 3,
+        ".jpg": 4,
+        ".ts": 4
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Opening_Loading_Improvement_20261025",
+      "files": 26,
+      "bytes": 683769,
+      "types": {
+        ".jpg": 5,
+        ".json": 11,
+        ".before": 5,
+        ".ts": 2,
+        ".cjs": 1,
+        ".md": 1,
+        ".diff": 1
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Opening_Request_Priority_20261025",
+      "files": 13,
+      "bytes": 255258,
+      "types": {
+        ".jpg": 2,
+        ".json": 6,
+        ".before": 2,
+        ".md": 1,
+        ".diff": 1,
+        ".py": 1
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Optimization_20261011",
+      "files": 765,
+      "bytes": 1321404881,
+      "types": {
+        ".json": 82,
+        ".ktx2": 408,
+        ".png": 16,
+        ".gz": 1,
+        ".js": 59,
+        ".map": 39,
+        "(none)": 9,
+        ".sst": 11,
+        ".meta": 12,
+        ".body": 1,
+        ".html": 5,
+        ".rsc": 12,
+        ".css": 3,
+        ".woff2": 11,
+        ".wasm": 1,
+        ".ico": 3,
+        ".ts": 34,
+        ".yaml": 2,
+        ".mjs": 2,
+        ".tsx": 48,
+        ".cjs": 6
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\PageRevealBackup",
+      "files": 4,
+      "bytes": 23496,
+      "types": {
+        ".tsx": 3,
+        ".css": 1
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Pathway_PBR4K",
+      "files": 834,
+      "bytes": 5365522290,
+      "types": {
+        ".log": 18,
+        ".py": 12,
+        ".json": 10,
+        ".png": 125,
+        ".blend": 2,
+        ".blend1": 1,
+        "(none)": 642,
+        ".bin": 1,
+        ".gltf": 1,
+        ".glb": 3,
+        ".jpg": 15,
+        ".md": 1,
+        ".cjs": 2,
+        ".mjs": 1
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\ProjectBackups",
+      "files": 3244,
+      "bytes": 1727754220,
+      "types": {
+        ".json": 88,
+        ".mjs": 53,
+        ".png": 5,
+        ".gz": 37,
+        ".ktx2": 364,
+        ".pyc": 18,
+        ".tsbuildinfo": 2,
+        ".log": 4,
+        ".txt": 1,
+        "(none)": 16,
+        ".js": 428,
+        ".map": 395,
+        ".sst": 829,
+        ".meta": 832,
+        ".del": 1,
+        ".css": 6,
+        ".woff2": 22,
+        ".wasm": 4,
+        ".ico": 3,
+        ".ts": 29,
+        ".body": 1,
+        ".html": 5,
+        ".rsc": 12,
+        ".md": 11,
+        ".patch": 1,
+        ".yaml": 2,
+        ".exr": 1,
+        ".glb": 1,
+        ".webp": 1,
+        ".py": 39,
+        ".ps1": 2,
+        ".sh": 1,
+        ".cjs": 1,
+        ".tsx": 29
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Pupil_Absorption_20261028",
+      "files": 57,
+      "bytes": 159041796,
+      "types": {
+        ".json": 8,
+        ".log": 8,
+        ".md": 1,
+        ".cjs": 7,
+        ".py": 1,
+        ".png": 26,
+        ".tsx": 2,
+        ".ts": 3,
+        ".webm": 1
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Pupil_Early_Trace_20261028",
+      "files": 21,
+      "bytes": 172585495,
+      "types": {
+        ".md": 1,
+        ".log": 3,
+        ".cjs": 4,
+        ".png": 3,
+        ".ts": 2,
+        ".mjs": 1,
+        ".webm": 1,
+        ".json": 5,
+        ".tsx": 1
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Pupil_Emission_Overlap_20261028",
+      "files": 28,
+      "bytes": 109116547,
+      "types": {
+        ".md": 1,
+        ".log": 4,
+        ".json": 7,
+        ".cjs": 4,
+        ".png": 5,
+        ".mjs": 2,
+        ".ts": 3,
+        ".webm": 1,
+        ".tsx": 1
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Pupil_Energy_Sequence_20261028",
+      "files": 59,
+      "bytes": 181788181,
+      "types": {
+        ".json": 7,
+        ".log": 7,
+        ".md": 1,
+        ".webm": 4,
+        ".cjs": 9,
+        ".png": 23,
+        ".ts": 5,
+        ".tsx": 2,
+        ".mjs": 1
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Pupil_Fill_20261028",
+      "files": 68,
+      "bytes": 86625768,
+      "types": {
+        ".png": 39,
+        ".md": 1,
+        ".json": 8,
+        ".log": 4,
+        ".cjs": 4,
+        ".ts": 5,
+        ".tsx": 3,
+        ".diff": 3,
+        ".mjs": 1
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Pupil_Glint_Detail_20261028",
+      "files": 57,
+      "bytes": 173389130,
+      "types": {
+        ".json": 8,
+        ".log": 7,
+        ".md": 1,
+        ".webm": 2,
+        ".cjs": 7,
+        ".py": 1,
+        ".ts": 3,
+        ".png": 25,
+        ".tsx": 2,
+        ".mjs": 1
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Pupil_Glow_Refine_20261028",
+      "files": 56,
+      "bytes": 158003302,
+      "types": {
+        ".md": 1,
+        ".log": 4,
+        ".cjs": 7,
+        ".png": 23,
+        ".ts": 5,
+        ".tsx": 4,
+        ".diff": 4,
+        ".json": 7,
+        ".webm": 1
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Pupil_Lifecycle_Fix_20261031",
+      "files": 2,
+      "bytes": 40275,
+      "types": {
+        ".tsx": 2
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Pupil_Metal_Reaction_20261028",
+      "files": 50,
+      "bytes": 161795348,
+      "types": {
+        ".json": 7,
+        ".log": 6,
+        ".md": 1,
+        ".webm": 2,
+        ".cjs": 6,
+        ".py": 1,
+        ".ts": 3,
+        ".png": 22,
+        ".tsx": 2
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Pupil_Pulse_20261028",
+      "files": 54,
+      "bytes": 224582848,
+      "types": {
+        ".md": 1,
+        ".log": 4,
+        ".cjs": 7,
+        ".json": 7,
+        ".ts": 5,
+        ".diff": 4,
+        ".png": 20,
+        ".tsx": 5,
+        ".webm": 1
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Pupil_Pulse_Settle_20261028",
+      "files": 36,
+      "bytes": 131405786,
+      "types": {
+        ".png": 15,
+        ".json": 6,
+        ".md": 1,
+        ".cjs": 5,
+        ".log": 2,
+        ".py": 1,
+        ".mjs": 3,
+        ".ts": 2,
+        ".webm": 1
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Pupil_Ray_Contact_20261028",
+      "files": 59,
+      "bytes": 159608951,
+      "types": {
+        ".md": 1,
+        ".log": 4,
+        ".cjs": 7,
+        ".png": 24,
+        ".json": 8,
+        ".ts": 6,
+        ".tsx": 4,
+        ".diff": 4,
+        ".webm": 1
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Pupil_Seamless_Launch_20261028",
+      "files": 20,
+      "bytes": 170808393,
+      "types": {
+        ".md": 1,
+        ".log": 3,
+        ".cjs": 4,
+        ".png": 3,
+        ".ts": 2,
+        ".mjs": 1,
+        ".webm": 1,
+        ".json": 5
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\R3F_Approved_Corridor_6K_20261011",
+      "files": 49,
+      "bytes": 4653489781,
+      "types": {
+        ".blend": 1,
+        ".png": 13,
+        ".mjs": 3,
+        ".tsx": 2,
+        ".py": 3,
+        ".json": 8,
+        ".log": 9,
+        ".exr": 10
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Reflection512_20261014",
+      "files": 5,
+      "bytes": 145000492,
+      "types": {
+        ".ktx2": 4,
+        ".json": 1
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Restoration_20261024",
+      "files": 863,
+      "bytes": 3968980559,
+      "types": {
+        ".png": 589,
+        ".exr": 29,
+        ".json": 210,
+        ".log": 28,
+        ".blend": 2,
+        ".py": 5
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Restoration_6K_20261024",
+      "files": 187,
+      "bytes": 1476053662,
+      "types": {
+        ".ktx2": 17,
+        ".json": 8,
+        ".png": 152,
+        ".log": 5,
+        ".blend": 1,
+        ".exr": 4
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Rope_Bake_20261104",
+      "files": 63,
+      "bytes": 2196325258,
+      "types": {
+        ".npy": 10,
+        ".npz": 3,
+        ".json": 1,
+        ".py": 1,
+        ".ts": 2,
+        ".tsx": 2,
+        ".mjs": 1,
+        ".exr": 18,
+        ".png": 23,
+        ".bin": 2
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Rope_Desktop_Test_20261105",
+      "files": 27,
+      "bytes": 796828549,
+      "types": {
+        ".glb": 17,
+        ".mjs": 7,
+        ".html": 1,
+        ".bin": 2
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Rope_Removed_20261104",
+      "files": 27,
+      "bytes": 122389898,
+      "types": {
+        ".tsx": 3,
+        ".json": 2,
+        ".ts": 5,
+        ".png": 6,
+        ".md": 2,
+        ".bin": 1,
+        ".glb": 2,
+        ".py": 5,
+        ".mjs": 1
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Rope_Restart_20261104",
+      "files": 4,
+      "bytes": 271983916,
+      "types": {
+        ".blend": 2,
+        ".png": 2
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Rope_Sections_20261105",
+      "files": 6,
+      "bytes": 8345847,
+      "types": {
+        ".ts": 1,
+        ".tsx": 3,
+        ".png": 2
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Rope_Speed_20261104",
+      "files": 364,
+      "bytes": 1168928968,
+      "types": {
+        ".png": 110,
+        ".json": 6,
+        ".mjs": 11,
+        ".glb": 8,
+        ".ts": 132,
+        ".tsx": 71,
+        ".py": 8,
+        ".md": 14,
+        ".bin": 4
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Rope_Whole_Test_20261105",
+      "files": 11,
+      "bytes": 32050418,
+      "types": {
+        ".bin": 11
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Scene_Finish_20261025",
+      "files": 122,
+      "bytes": 16985004,
+      "types": {
+        ".json": 31,
+        ".mjs": 4,
+        ".py": 7,
+        ".cjs": 1,
+        ".jpg": 34,
+        ".tif": 1,
+        ".tsx": 13,
+        ".ts": 17,
+        ".png": 5,
+        ".log": 8,
+        ".md": 1
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Scene_Fixes_20261025",
+      "files": 109,
+      "bytes": 90673773,
+      "types": {
+        ".json": 28,
+        ".py": 2,
+        ".jpg": 18,
+        ".tsx": 16,
+        ".ts": 26,
+        ".mjs": 9,
+        ".cjs": 1,
+        ".bin": 1,
+        ".png": 6,
+        ".log": 2
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Scene_Performance_20261025",
+      "files": 119,
+      "bytes": 236481282,
+      "types": {
+        ".json": 32,
+        ".jpg": 13,
+        ".log": 17,
+        ".py": 3,
+        ".tsx": 17,
+        ".ts": 30,
+        ".png": 5,
+        ".mjs": 1,
+        ".npy": 1
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Scene_Polish_20261025",
+      "files": 110,
+      "bytes": 218417349,
+      "types": {
+        ".json": 31,
+        ".jpg": 14,
+        ".log": 5,
+        ".py": 3,
+        ".tsx": 18,
+        ".ts": 31,
+        ".mjs": 1,
+        ".ktx2": 1,
+        ".glb": 1,
+        ".png": 4,
+        ".dds": 1
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\ScreenPlacement_20261011",
+      "files": 97,
+      "bytes": 2407144,
+      "types": {
+        ".png": 43,
+        ".ico": 1,
+        ".css": 1,
+        ".tsx": 24,
+        ".ts": 16,
+        ".json": 11,
+        ".md": 1
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Sequence_Corrections_20261025",
+      "files": 175,
+      "bytes": 4127622,
+      "types": {
+        ".json": 40,
+        ".log": 16,
+        ".txt": 1,
+        ".tsx": 18,
+        ".ts": 33,
+        ".jpg": 63,
+        ".ps1": 1,
+        ".pid": 1,
+        ".py": 2
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Sequence_Refinement_20261031",
+      "files": 154,
+      "bytes": 1479797,
+      "types": {
+        ".tsx": 31,
+        ".json": 30,
+        ".ts": 87,
+        ".jpg": 6
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Silver_Tones_20261028",
+      "files": 50,
+      "bytes": 56541745,
+      "types": {
+        ".png": 29,
+        ".md": 1,
+        ".json": 6,
+        ".log": 5,
+        ".cjs": 4,
+        ".ts": 3,
+        ".tsx": 2
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Sofa3000Trial_20261014",
+      "files": 6,
+      "bytes": 3091153721,
+      "types": {
+        ".png": 2,
+        ".json": 1,
+        ".glb": 1,
+        ".blend": 1,
+        ".blend1": 1
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\SofaBaked_20261015",
+      "files": 112,
+      "bytes": 5565703254,
+      "types": {
+        ".log": 11,
+        ".json": 3,
+        ".png": 28,
+        ".exr": 32,
+        ".npy": 33,
+        ".py": 1,
+        ".tsx": 1,
+        ".blend": 2,
+        ".blend1": 1
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\SofaPriorityTrial_20261014",
+      "files": 6,
+      "bytes": 1548378764,
+      "types": {
+        ".png": 4,
+        ".blend": 1,
+        ".json": 1
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\SofaReplacement_20261015",
+      "files": 22,
+      "bytes": 220079669,
+      "types": {
+        ".png": 12,
+        ".json": 2,
+        ".tsx": 2,
+        ".glb": 2,
+        ".blend": 1,
+        ".ktx2": 3
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Sofa_Astra_Retopo",
+      "files": 49,
+      "bytes": 3504320130,
+      "types": {
+        ".log": 4,
+        ".py": 5,
+        ".json": 2,
+        ".png": 29,
+        ".txt": 1,
+        ".blend": 4,
+        ".blend1": 2,
+        ".glb": 2
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Space_Grade_Step3_20261027",
+      "files": 49,
+      "bytes": 44289184,
+      "types": {
+        ".index": 1,
+        ".log": 7,
+        ".cjs": 5,
+        ".json": 6,
+        ".png": 28,
+        ".tsx": 2
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Star_Parallax_20261027",
+      "files": 21,
+      "bytes": 9476206,
+      "types": {
+        ".mjs": 2,
+        ".index": 1,
+        ".json": 7,
+        ".log": 3,
+        ".cjs": 1,
+        ".ts": 1,
+        ".png": 6
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Temporary_Camera_Buttons_20261027",
+      "files": 12,
+      "bytes": 1739833,
+      "types": {
+        ".md": 1,
+        ".log": 2,
+        ".cjs": 1,
+        ".before": 5,
+        ".json": 1,
+        ".png": 2
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Theatre_Blueprint_Opening_20261030",
+      "files": 16,
+      "bytes": 293637,
+      "types": {
+        ".md": 1,
+        ".jpg": 2,
+        ".tsx": 8,
+        ".ts": 3,
+        ".log": 2
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Theatre_Ceiling_PBR_20261023",
+      "files": 41,
+      "bytes": 966762881,
+      "types": {
+        ".png": 10,
+        ".webp": 1,
+        ".exr": 14,
+        ".glb": 2,
+        ".blend": 2,
+        ".json": 12
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Theatre_Corridor_3D_20261031",
+      "files": 142,
+      "bytes": 992475,
+      "types": {
+        ".tsx": 31,
+        ".json": 30,
+        ".ts": 79,
+        ".txt": 1,
+        ".css": 1
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Theatre_Floor_Quality_20261021",
+      "files": 455,
+      "bytes": 7687594720,
+      "types": {
+        ".png": 73,
+        ".npy": 302,
+        ".gz": 4,
+        ".exr": 61,
+        ".json": 10,
+        ".blend": 2,
+        ".blend1": 1,
+        ".glb": 2
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Theatre_Floor_Restore_20261021",
+      "files": 23,
+      "bytes": 1283924867,
+      "types": {
+        ".exr": 5,
+        ".png": 12,
+        ".json": 2,
+        ".blend": 2,
+        ".glb": 1,
+        ".blend1": 1
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Theatre_Glasses_Dark_20261030",
+      "files": 21,
+      "bytes": 1261542,
+      "types": {
+        ".md": 1,
+        ".jpg": 7,
+        ".tsx": 7,
+        ".ts": 4,
+        ".log": 2
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Theatre_LeftWall_Bake_20261023",
+      "files": 56,
+      "bytes": 1183746897,
+      "types": {
+        ".json": 4,
+        ".log": 10,
+        ".png": 25,
+        ".ktx2": 6,
+        ".exr": 4,
+        ".blend": 1,
+        ".py": 6
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Theatre_Optimization_20261017",
+      "files": 147,
+      "bytes": 2132015937,
+      "types": {
+        ".png": 31,
+        ".json": 24,
+        ".py": 27,
+        ".mjs": 15,
+        ".log": 11,
+        ".blend": 4,
+        ".md": 2,
+        ".exr": 24,
+        ".glsl": 1,
+        ".blend1": 1,
+        ".cjs": 2,
+        ".svg": 1,
+        ".glb": 4
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Theatre_Preparation_Fix_20261025",
+      "files": 10,
+      "bytes": 180638,
+      "types": {
+        ".jpg": 1,
+        ".json": 5,
+        ".cjs": 1,
+        ".md": 1,
+        ".tsx": 1,
+        ".diff": 1
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Theatre_Screen_Artwork_20261030",
+      "files": 6,
+      "bytes": 158225,
+      "types": {
+        ".md": 1,
+        ".tsx": 1,
+        ".ts": 1,
+        ".log": 2,
+        ".jpg": 1
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Theatre_Screen_Wide_20261030",
+      "files": 4,
+      "bytes": 918474,
+      "types": {
+        ".png": 1,
+        ".log": 2,
+        ".jpg": 1
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\Three_Fixes_20261026",
+      "files": 29,
+      "bytes": 4464827,
+      "types": {
+        ".log": 6,
+        ".tsx": 4,
+        ".jpg": 6,
+        ".ts": 4,
+        ".json": 5,
+        ".gz": 4
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\User_Compressed_6K_20261024",
+      "files": 37,
+      "bytes": 119864682,
+      "types": {
+        ".jpg": 7,
+        ".png": 1,
+        ".ktx2": 13,
+        ".json": 7,
+        ".log": 7,
+        ".md": 1,
+        ".tsx": 1
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\View1_Lens_Defaults_20261030",
+      "files": 10,
+      "bytes": 156908,
+      "types": {
+        ".md": 2,
+        ".ts": 3,
+        ".tsx": 1,
+        ".mjs": 1,
+        ".log": 2,
+        ".jpg": 1
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\View1_Spatial_Study_20261029",
+      "files": 31,
+      "bytes": 1696064,
+      "types": {
+        ".md": 3,
+        ".css": 1,
+        ".index": 1,
+        ".jpg": 6,
+        ".tsx": 5,
+        ".ts": 7,
+        ".json": 2,
+        ".log": 3,
+        ".cjs": 1,
+        ".txt": 1,
+        ".mjs": 1
+      }
+    },
+    {
+      "path": "D:\\CodexOutputs\\WebGL_Research_20261025",
+      "files": 173,
+      "bytes": 22837281,
+      "types": {
+        ".js": 25,
+        ".bin": 1,
+        ".json": 47,
+        ".jpg": 4,
+        ".html": 12,
+        ".ktx2": 2,
+        ".ktx": 2,
+        ".glb": 12,
+        ".txt": 2,
+        ".png": 2,
+        ".webp": 8,
+        ".svg": 7,
+        ".md": 8,
+        ".tsx": 18,
+        ".css": 7,
+        ".gltf": 1,
+        ".ts": 14,
+        ".woff2": 1
+      }
+    }
+  ],
+  "scanErrors": [],
+  "skippedDirectories": [
+    "D:\\CodexOutputs\\Loki_Rope_20261103\\_render_tmp",
+    "D:\\CodexOutputs\\Optimization_20261011\\before-app\\node_modules",
+    "D:\\CodexOutputs\\Optimization_20261011\\before-app\\public",
+    "D:\\CodexOutputs\\Pathway_PBR4K\\validation\\node_modules",
+    "D:\\CodexOutputs\\ProjectBackups\\new_si_two_before_laptop_optimization_20261014_140525\\.git",
+    "D:\\CodexOutputs\\ProjectBackups\\new_si_two_before_laptop_optimization_20261014_140525\\node_modules"
+  ],
+  "sessionInventory": {
+    "path": "D:\\Cleanup_20261103\\codex\\dot-codex\\sessions",
+    "files": 33,
+    "bytes": 7545303918,
+    "types": {
+      ".zst": 30,
+      ".jsonl": 3
+    }
+  },
+  "cleanupOther": [
+    {
+      "path": "D:\\Cleanup_20261103\\claude-projects",
+      "files": 18,
+      "bytes": 787905920,
+      "types": {
+        ".json": 5,
+        ".jsonl": 13
+      }
+    },
+    {
+      "path": "D:\\Cleanup_20261103\\blender-autosaves",
+      "files": 20,
+      "bytes": 2969348156,
+      "types": {
+        ".blend": 20
+      }
+    },
+    {
+      "path": "D:\\Cleanup_20261103\\rope_r3f_duplicates",
+      "files": 4,
+      "bytes": 498085168,
+      "types": {
+        ".glb": 4
+      }
+    },
+    {
+      "path": "D:\\Cleanup_20261103\\claude-temp\\D--New-folio-new-site-code-new-site-three",
+      "files": 48,
+      "bytes": 3257061,
+      "types": {
+        ".webp": 23,
+        ".png": 5,
+        ".jpg": 16,
+        ".cjs": 4
+      }
+    },
+    {
+      "path": "D:\\Cleanup_20261103\\claude-temp\\D--New-folio-new-site-code-new-si-two",
+      "files": 0,
+      "bytes": 0,
+      "types": {}
+    }
+  ],
+  "export": {
+    "file": "project-chat-export.md",
+    "messages": 3126,
+    "user": 885,
+    "assistant": 2241,
+    "bytes": 1410709
+  }
+}

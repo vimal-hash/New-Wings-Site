@@ -1,31 +1,61 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { diagnosticsEnabled, loadingReport, traceMark } from "./loading-trace";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { diagnosticsEnabled, loadingReport, startJourneyRecording, traceMark } from "./loading-trace";
 
 const seconds = (v: number | null | undefined) => v == null ? "waiting…" : `${(v / 1000).toFixed(2)} s`;
+const subscribeToFlag = () => () => {};
+const serverFlag = () => false;
+function downloadReport(filename: string, report: unknown) {
+  const url = URL.createObjectURL(new Blob([JSON.stringify(report)], { type: "application/json" }));
+  const link = document.createElement("a"); link.href = url; link.download = `${filename}-${Date.now()}.json`;
+  document.body.appendChild(link); link.click(); link.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 60000);
+}
+
 export default function LoadingDiagnostics() {
   const [report, setReport] = useState<ReturnType<typeof loadingReport>>(null);
-  const [open, setOpen] = useState(true);
+  const enabled = useSyncExternalStore(subscribeToFlag, diagnosticsEnabled, serverFlag);
+  const [open, setOpen] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [recording, setRecording] = useState(false);
+  const stopRecording = useRef<ReturnType<typeof startJourneyRecording> | null>(null);
   useEffect(() => {
-    if (!diagnosticsEnabled()) return;
+    if (!enabled) return;
     traceMark("Application mounted");
+    return () => { stopRecording.current?.(); stopRecording.current = null; };
+  }, [enabled]);
+  useEffect(() => {
+    if (!enabled || !open || recording) return;
     const update = () => setReport(loadingReport());
     update(); const timer = window.setInterval(update, 500);
     return () => window.clearInterval(timer);
-  }, []);
-  if (!report) return null;
-  const marks = report.marks;
+  }, [enabled, open, recording]);
+  if (!enabled) return null;
+  const marks = report?.marks ?? {};
   const save = () => {
-    const current = loadingReport();
-    const url = URL.createObjectURL(new Blob([JSON.stringify(current, null, 2)], { type: "application/json" }));
-    const link = document.createElement("a"); link.href = url; link.download = `loading-report-${Date.now()}.json`;
-    document.body.appendChild(link); link.click(); link.remove(); setTimeout(() => URL.revokeObjectURL(url), 60000); setSaved(true);
+    downloadReport("loading-report", loadingReport());
+    setSaved(true);
   };
-  return <aside className="loading-diagnostics" aria-label="Loading diagnosis">
+  const toggleRecording = () => {
+    if (!stopRecording.current) {
+      setOpen(false);
+      stopRecording.current = startJourneyRecording();
+      setRecording(true);
+      return;
+    }
+    const journeyRecording = stopRecording.current();
+    stopRecording.current = null;
+    setRecording(false);
+    downloadReport("journey-frames", { ...loadingReport(), journeyRecording });
+  };
+  return <>
+  <button className="journey-record" type="button" data-recording={recording} onClick={toggleRecording}>
+    {recording ? "Stop & download" : "Record journey"}
+  </button>
+  {!recording && <aside className="loading-diagnostics" aria-label="Loading diagnosis">
     <button className="diagnosis-heading" onClick={() => setOpen(!open)} aria-expanded={open}>Loading diagnosis <span>{open ? "−" : "+"}</span></button>
-    {open && <>
+    {open && report && <>
       <p>{marks["Opening loading card removed"] !== undefined ? "Opening ready — save this report." : `Measuring… ${seconds(report.elapsed)}`}</p>
       <dl>
         <div><dt>Server first response</dt><dd>{seconds(report.navigation?.responseStart)}</dd></div>
@@ -44,5 +74,6 @@ export default function LoadingDiagnostics() {
       {saved && <p role="status">Report download requested.</p>}
       <small>Times from navigation. ¹ Next-frame estimate. ² Browser-reported; cache affects this. Save once, reload, then save again.</small>
     </>}
-  </aside>;
+  </aside>}
+  </>;
 }

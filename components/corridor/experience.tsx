@@ -9,24 +9,29 @@ import theatreAssets from "./theatre-assets.json";
 import corridorAssets from "./corridor-assets.json";
 import ProjectorButtons from "./projector-buttons";
 import { journeyControls } from "./journey-controls";
-import NormalPage from "./normal-page";
+import NormalPage,{PageReturnCover} from "./normal-page";
 import sofaAssets from "./sofa-assets.json";
 import { SOFAS_ENABLED } from "./scene-features";
-import assetBudget from "./asset-budget.json";
+import SiteLoader from "./site-loader";
+import SiteChrome from "./site-chrome";
+import EnquiryDialog from "./enquiry-dialog";
 import LoadingDiagnostics from "./loading-diagnostics";
 import { traceMark } from "./loading-trace";
 import { assetURL } from "./asset-url";
 import CinemaPanel from './cinema-panel';
 import DiagonalSection from './diagonal-section';
+import {ropeFlightDevice} from "./effect-quality";
+import { scheduleSceneIdle } from "./scene-idle";
 
 const Scene = dynamic(() => {
   traceMark("Scene import requested");
   return import("./scene").then(module => { traceMark("Scene import resolved"); return module; });
 }, { ssr: false });
 
-class SceneBoundary extends Component<{ children: ReactNode }, { failed: boolean }> {
+class SceneBoundary extends Component<{ children: ReactNode;onFailure:()=>void }, { failed: boolean }> {
   state = { failed: false };
   static getDerivedStateFromError() { return { failed: true }; }
+  componentDidCatch(){this.props.onFailure();}
   render() {
     if (this.state.failed) return (
       <div className="scene-message" role="alert">
@@ -50,6 +55,7 @@ export default function CorridorExperience({ view = "corridor" }: { view?: Study
   const modelCount = theatreAssets.models + (isCorridor ? 1 : 0) + (showSofas ? 1 : 0) + 1;
   const sofaTriangles = showSofas ? sofaAssets.sourceTriangles * sofaAssets.count : 0;
   const [metrics] = useState(createMetricsStore);
+  const [sceneFailed,setSceneFailed]=useState(false);
   const progressElement = useRef<HTMLDivElement>(null);
   const [snapshot, setSnapshot] = useState(createMetrics);
   const [idle, setIdle] = useState(true);
@@ -59,7 +65,30 @@ export default function CorridorExperience({ view = "corridor" }: { view?: Study
   const journey = useSyncExternalStore(journeyControls.subscribe, journeyControls.read, journeyControls.read);
   // Temporary framing review: release the camera once the complete journey ends.
   const orbitActive = orbit || (isCorridor && journey.phase === "logoDone" && endOrbit);
-  const fullPage = journey.phase === "page" || journey.phase === "pageReturnLoading";
+  const fullPage = journey.phase === "page" || journey.phase === "pageReturnLoading" || journey.pageReturning;
+  const [prepareFlight,setPrepareFlight]=useState(false);
+  useEffect(()=>{
+    if(!isCorridor||!["done","screensDone"].includes(journey.phase)||ropeFlightDevice()!=="desktop")return;
+    // Desktop flies the rope GLB. It used to load and parse only when the pages opened (a ~210 ms freeze on that
+    // move); parse it at a resting stop into the same R3F loader cache rope-model.tsx reads (same loader + URL).
+    return scheduleSceneIdle(()=>{void Promise.all([import("@react-three/fiber"),import("three/examples/jsm/loaders/GLTFLoader.js"),import("three/examples/jsm/libs/meshopt_decoder.module.js"),import("../rope-model/rope-model")])
+      .then(([{useLoader},{GLTFLoader},{MeshoptDecoder},{ROPE_MODEL}])=>useLoader.preload(GLTFLoader,ROPE_MODEL,loader=>{loader.setMeshoptDecoder(MeshoptDecoder);}))
+      .catch(()=>{}); // The page still loads it itself if this fails.
+    },20);
+  },[isCorridor,journey.phase]);
+  useEffect(()=>{
+    if(!isCorridor||!["awaitAssembly","done","screensDone"].includes(journey.phase)||ropeFlightDevice()!=="laptop")return;
+    void import("../rope-laptop/laptop-data").then(({preloadLaptopFlight})=>preloadLaptopFlight())
+      .catch(()=>{}); // The visible flight can retry a failed preload.
+  },[isCorridor,journey.phase]);
+  useEffect(()=>{
+    if(!isCorridor||prepareFlight||!["done","screensDone"].includes(journey.phase))return;
+    const device=ropeFlightDevice();
+    // Mount the page and its film reel while the camera is resting so the
+    // liquid handoff only has to reveal them.
+    return scheduleSceneIdle(()=>setPrepareFlight(true),device==="mobile"?12:20);
+  },[isCorridor,journey.phase,prepareFlight]);
+  const hiddenFlight=prepareFlight&&["done","screens","screensDone","corridor","panel"].includes(journey.phase);
 
   useEffect(() => {
     const timer = window.setInterval(() => {
@@ -83,8 +112,8 @@ export default function CorridorExperience({ view = "corridor" }: { view?: Study
 
   return (
     <main className="corridor-study" data-page={fullPage} data-journey-phase={journey.phase} data-cinema-stage={journey.cinemaStage} data-opening-stage={journey.openingStage} data-panel-stage={journey.panelStage} data-reveal-stage={journey.revealStage} data-finale-covered={journey.finalCovered}>
-      {fullPage && <NormalPage />}
-      <div id="corridor-viewport" className="scene-fixed" style={{ pointerEvents: orbitActive ? "auto" : "none" }}><SceneBoundary><Scene metrics={metrics} view={view} orbit={orbitActive} /></SceneBoundary></div>
+      {journey.pageReturning ? <PageReturnCover/> : (fullPage||hiddenFlight) && <NormalPage key={journey.pageJump} returnToCorridor active={fullPage}/>}
+      <div id="corridor-viewport" className="scene-fixed" style={{ pointerEvents: orbitActive ? "auto" : "none" }}><SceneBoundary onFailure={()=>setSceneFailed(true)}><Scene metrics={metrics} view={view} orbit={orbitActive} /></SceneBoundary></div>
       <header className="study-header">
         <div><span className="eyebrow">SPATIAL STUDY / 01</span><p>Theatre & corridor</p></div>
         <nav aria-label="Study tools">
@@ -92,7 +121,7 @@ export default function CorridorExperience({ view = "corridor" }: { view?: Study
           <a href="/object-colour-key.html" target="_blank" rel="noreferrer">Colour key ↗</a><button onClick={restart}>Restart</button>
         </nav>
       </header>
-      {isCorridor&&<nav aria-label="Temporary camera views" style={{position:"fixed",bottom:48,left:"50%",transform:"translateX(-50%)",display:"flex",gap:8,zIndex:4}}>
+      {isCorridor&&!fullPage&&<nav aria-label="Temporary camera views" style={{position:"fixed",bottom:118,left:"50%",transform:"translateX(-50%)",display:"flex",gap:8,zIndex:4}}>
         {(["slide","turned"] as const).map((target,index)=><button key={target} type="button" disabled={!snapshot.firstFrame}
           aria-pressed={journey.reviewCamera&&journey.revealStage===target}
           onClick={()=>{setOrbit(false);setEndOrbit(false);window.dispatchEvent(new CustomEvent("eye-camera-view",{detail:target}));}}
@@ -100,7 +129,7 @@ export default function CorridorExperience({ view = "corridor" }: { view?: Study
         {journey.phase==="logoDone"&&<button type="button" onClick={()=>window.dispatchEvent(new Event('eye-pupil-replay'))}
           style={{padding:"8px 14px",border:"1px solid #4d5963",borderRadius:6,background:"#111820",color:"#fff",fontSize:12,cursor:"pointer"}}>Replay light</button>}
       </nav>}
-      {isCorridor&&!['panel','page','pageReturnLoading','pageReturning','logoReveal','logoDone'].includes(journey.phase)&&<nav aria-label="Temporary glasses controls" data-cinema-controls style={{position:'fixed',bottom:96,left:'50%',transform:'translateX(-50%)',display:'flex',gap:8,zIndex:5}}>
+      {isCorridor&&!['panel','page','pageReturnLoading','logoReveal','logoDone'].includes(journey.phase)&&<nav aria-label="Temporary glasses controls" data-cinema-controls style={{position:'fixed',bottom:166,left:'50%',transform:'translateX(-50%)',display:'flex',gap:8,zIndex:5}}>
         {(['remove','wear'] as const).map(action=><button key={action} type="button" onClick={()=>window.dispatchEvent(new CustomEvent('cinema-glasses-action',{detail:action}))}
           style={{padding:'8px 14px',border:'1px solid #4d5963',borderRadius:6,background:'#111820',color:'#fff',fontSize:12,cursor:'pointer'}}>{action==='remove'?'Remove glasses':'Wear 3D glasses'}</button>)}
       </nav>}
@@ -108,9 +137,11 @@ export default function CorridorExperience({ view = "corridor" }: { view?: Study
       {isCorridor&&<CinemaPanel/>}
       {snapshot.waitingForProjector&&<div className="scene-wait" role="status">Preparing projector…</div>}
       <LoadingDiagnostics />
-      {(!snapshot.firstFrame || snapshot.waitingForCorridor) && <div className="loading-card" role="status" aria-live="polite">
-        <span className="loading-dot" /><span>{snapshot.waitingForCorridor ? "Loading corridor" : snapshot.loaded ? "Preparing the view" : "Loading theatre"}</span>
-        <small>{Math.round((snapshot.waitingForCorridor ? (snapshot.desktopTextures?assetBudget.desktopCorridorBytes:assetBudget.corridorBytes) : (snapshot.desktopTextures?assetBudget.desktopOpeningBytes:assetBudget.openingBytes)) / 1000)} KB - {snapshot.waitingForCorridor ? "corridor" : "opening"} assets</small>
+      {isCorridor && <SiteChrome />}
+      {isCorridor && <EnquiryDialog />}
+      {isCorridor ? <SiteLoader sceneFailed={sceneFailed} /> : !snapshot.firstFrame && !sceneFailed && <div className="loading-card" role="status" aria-live="polite"><span className="loading-dot" /><span>Loading</span></div>}
+      {snapshot.waitingForCorridor && <div className="loading-card" role="status" aria-live="polite">
+        <span className="loading-dot" /><span>Loading corridor</span>
       </div>}
       <aside className={`performance-panel ${showStats ? "" : "collapsed"}`} aria-label="Performance indicators">
         <button className="panel-heading" onClick={() => setShowStats(!showStats)} aria-expanded={showStats}>
@@ -136,11 +167,11 @@ export default function CorridorExperience({ view = "corridor" }: { view?: Study
         </>}
       </aside>
       <footer className="study-footer">
-        <span>{isCorridor ? journey.phase === "logoDone" ? "FULL LOGO" : journey.phase === "logoReveal" ? ({slide:"SCROLL UP THE SLIDE",top:"SCROLL TO TURN",turn:"TURNING TOWARD LOGO",turned:"SCROLL TO REVEAL THE LOGO",pullback:"REVEALING LOGO",done:"FULL LOGO"}[journey.revealStage]) : journey.phase === "glassesExit" ? "REMOVING GLASSES · LIGHTS RISING" : journey.phase === "idle" && journey.cinemaStage === "wearing" ? "SCROLL TO CONTINUE" : journey.phase === "awaitAssembly" ? "PARTS READY · SCROLL TO ASSEMBLE" : journey.phase === "panel" ? journey.pageAtEnd ? "SCROLL TO REVEAL THE LOGO" : "SCROLL TO EXPAND THE PAGE" : ["idle","done","screensDone"].includes(journey.phase) ? "SCROLL TO CONTINUE" : "CAMERA JOURNEY" : "GEOMETRY REVIEW"}</span>
+        <span>{isCorridor ? journey.phase === "logoDone" ? "FULL LOGO" : journey.phase === "logoReveal" ? ({slide:"SCROLL UP THE SLIDE",top:"SCROLL TO TURN",turn:"TURNING TOWARD LOGO",turned:"SCROLL TO REVEAL THE LOGO",pullback:"REVEALING LOGO",done:"FULL LOGO"}[journey.revealStage]) : journey.phase === "glassesExit" ? "REMOVING GLASSES · SCREEN OFF" : snapshot.waitingForProjector ? "PREPARING PROJECTOR" : journey.phase === "idle" && journey.cinemaStage === "wearing" ? "SCROLL TO CONTINUE" : journey.phase === "awaitAssembly" ? "PARTS READY · SCROLL TO ASSEMBLE" : ["idle","done","screensDone"].includes(journey.phase) ? "SCROLL TO CONTINUE" : "CAMERA JOURNEY" : "GEOMETRY REVIEW"}</span>
         <span className="asset-caption">{(corridorAssets.triangles + theatreAssets.triangles + sofaTriangles).toLocaleString("en-US")} triangles · geometry study</span>
         <div className="journey-track" aria-hidden="true"><div ref={progressElement} /></div>
       </footer>
-      {isCorridor&&<DiagonalSection/>}
+      {isCorridor&&journey.loaderDone&&<DiagonalSection/>}
     </main>
   );
 }

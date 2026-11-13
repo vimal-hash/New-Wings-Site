@@ -1,4 +1,8 @@
-/** Screen → blueprint → completed white lines → materials → camera. Seconds of visible playback. */
+/** Screen → silver-white tracing → completed outline → materials → camera. Visible seconds. */
+/** The screen's pixels are already full white; its brightness shows as glow and the light it throws. */
+export const SCREEN_GLOW = 1.5;
+/** Seconds for the black hover screen to come in and go out. */
+export const SCREEN_COVER = { in: .55, out: .4, text: .5, swap: .2 };
 export const THEATRE_OPENING = { screen: 1, blueEnd: 2.8, whiteEnd: 3.4, materialStart: 4.15, materialEnd: 5.75, moveStart: 6.05, end: 8.55 };
 export const OPENING_CAMERA_START: [number, number, number] = [.010995, 3.24, 8.3];
 export const OPENING_CAMERA_END: [number, number, number] = [.010995, 4.2, 2.2];
@@ -7,10 +11,10 @@ const ease = (v: number) => { const t = unit(v); return t*t*t*(t*(t*6-15)+10); }
 export function theatreOpeningShot(time: number) {
   const t = THEATRE_OPENING;
   const trace = unit((time-t.screen)/(t.blueEnd-t.screen));
-  const white = ease((time-t.blueEnd)/(t.whiteEnd-t.blueEnd));
+  const white = 1;
   const room = ease((time-t.materialStart)/(t.materialEnd-t.materialStart));
   const progress = unit((time-t.moveStart)/(t.end-t.moveStart));
-  const stage = time<t.screen?'screen':time<t.blueEnd?'blueprint':time<t.whiteEnd?'turning-white':time<t.materialStart?'white-outline':time<t.materialEnd?'materials':time<t.moveStart?'room':progress<1?'pullback':'complete';
+  const stage = time<t.screen?'screen':time<t.blueEnd?'tracing-white':time<t.materialStart?'white-outline':time<t.materialEnd?'materials':time<t.moveStart?'room':progress<1?'pullback':'complete';
   return { stage, trace, white, room, progress, position: ease(progress), lineOpacity: 1-ease((room-.18)/.65), done: progress===1 };
 }
 export function createTheatreOpeningClock() {
@@ -42,6 +46,9 @@ export function openingReviewTime(search:string,host:string) {
 /** Mutable uniforms, shared by theatre materials only. No frame-by-frame React updates. */
 export const theatreOpening = {
   active: { value: 0 }, room: { value: 1 }, trace: { value: 0 }, white: { value: 0 }, lineOpacity: { value: 0 },
-  house: { value: 1 }, glasses: { value: 0 },
+  house: { value: 1 }, glasses: { value: 0 }, screenPower: { value: 1 },
   geometryReady: false, stage: 'screen', elapsed: 0,
 };
+
+/** A finite C2 light cue. It reaches exactly one, then allows deferred GPU work. */
+export function houseLightLevel(seconds:number,reduced=false){return reduced?1:ease(seconds/3.2);}

@@ -104,7 +104,7 @@ export function createDepthLayout(quality:EffectQuality,origin:Vector3,heading:n
 
 const vertexShader=/* glsl */`
 precision highp float;
-uniform float uOpacity,uTime,uMotion,uUnit,uPadding,uViewportHeight,uDpr,uStarParallax;
+uniform float uOpacity,uTime,uMotion,uUnit,uPadding,uViewportHeight,uDpr,uStarParallax,uPhoneStar;
 uniform vec3 uOrigin;
 in vec2 corner;
 in vec3 grainPosition,appearance;
@@ -122,7 +122,8 @@ void main(){
   centre.y+=sin(uTime*.11+seed*9.3)*uUnit*.003*nearAmount;
   vec4 view=modelViewMatrix*vec4(centre,1.);
   float px=detail.x*projectionMatrix[1][1]*.5*uViewportHeight/max(.01,-view.z);
-  float displayPx=clamp(px,mix(.55,.40,appearance.z)*uDpr,mix(1.65,.90,appearance.z)*uDpr);
+  float starMinimum=mix(.40,.68,uPhoneStar),starMaximum=mix(.90,1.12,uPhoneStar);
+  float displayPx=clamp(px,mix(.55,starMinimum,appearance.z)*uDpr,mix(1.65,starMaximum,appearance.z)*uDpr);
   float footprint=displayPx/max(px,.001);
   mat2 rotation=mat2(cos(detail.w),sin(detail.w),-sin(detail.w),cos(detail.w));
   if(appearance.z>.5)view.xy+=corner*detail.x*3.5*footprint;
@@ -152,7 +153,8 @@ void main(){
     float hue=mod(detail.y,8.)/7.;
     vec3 spectral=hue<.78?mix(vec3(.70,.81,1.),vec3(.96,.98,1.),hue/.78):mix(vec3(.96,.98,1.),vec3(1.,.86,.69),(hue-.78)/.22);
     vLighting=spectral*appearance.y;
-    vCoverage=uOpacity*appearance.x*(.55+.45*clamp(px/(.7*uDpr),0.,1.));
+    float minimum=mix(.55,.85,uPhoneStar);
+    vCoverage=uOpacity*appearance.x*mix(minimum,1.,clamp(px/(.7*uDpr),0.,1.));
     // A quieter lower sky separates remote points from the close grain fringe.
     // Use the fixed world horizon, so the transition follows both camera views.
     vec3 direction=normalize(grainPosition-uOrigin);
@@ -161,7 +163,7 @@ void main(){
   }
 }`;
 
-export function createDepthField(data:DepthLayout,unit:number,padding:number,fragmentShader:string){
+export function createDepthField(data:DepthLayout,unit:number,padding:number,fragmentShader:string,mobile=false){
   const starFragment=fragmentShader.replace('in float vHeroWave;','const float vHeroWave=0.;')
     .replace('in float vHeroSpark;','const float vHeroSpark=0.;')
     .replace('in float vHeroWake;','const float vHeroWake=0.;')
@@ -193,7 +195,7 @@ export function createDepthField(data:DepthLayout,unit:number,padding:number,fra
   geometry.setAttribute('detail',new InstancedBufferAttribute(data.details,4));
   geometry.setAttribute('appearance',new InstancedBufferAttribute(data.appearance,3));geometry.instanceCount=data.count;
   const material=new ShaderMaterial({glslVersion:GLSL3,vertexShader,fragmentShader:starFragment,transparent:true,depthWrite:false,depthTest:true,toneMapped:false,
-    uniforms:{uAtlas:{value:null},uOpacity:{value:0},uTime:{value:0},uMotion:{value:0},uUnit:{value:unit},uPadding:{value:padding},uViewportHeight:{value:720},uDpr:{value:1},uOrigin:{value:data.origin.clone()},uStarParallax:{value:STAR_PARALLAX_GAIN}}});
+    uniforms:{uAtlas:{value:null},uOpacity:{value:0},uTime:{value:0},uMotion:{value:0},uUnit:{value:unit},uPadding:{value:padding},uViewportHeight:{value:720},uDpr:{value:1},uOrigin:{value:data.origin.clone()},uStarParallax:{value:STAR_PARALLAX_GAIN},uPhoneStar:{value:mobile?1:0}}});
   const mesh=new Mesh(geometry,material),pixels=new Vector2();
   mesh.name='Logo eye — sparse depth grains';mesh.frustumCulled=false;mesh.visible=false;mesh.renderOrder=7;mesh.userData.excludeFromMirror=true;
   mesh.onBeforeRender=renderer=>{material.uniforms.uViewportHeight.value=renderer.getDrawingBufferSize(pixels).y;material.uniforms.uDpr.value=renderer.getPixelRatio();};

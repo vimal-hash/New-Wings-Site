@@ -15,15 +15,15 @@
       -6.289749622344971
     ]
   ],
-  "triangles": 430417,
-  "modelBytes": 5265476,
+  "triangles": 134104,
+  "modelBytes": 1343960,
   "motionBytes": 50286,
   "motionRawBytes": 1603680,
-  "modelUrl": "/models/projector/projector-materials-draco.glb",
+  "modelUrl": "/models/projector/projector-materials-lean-v2.glb",
   "dataUrl": "/models/projector/projector-poses.bin.gz",
   "fallbackUrl": "/models/projector/projector-poses.bin",
   "particleSeconds": 4,
-  "assemblySeconds": 2,
+  "assemblySeconds": 3,
   "source": "D:\\CodexOutputs\\Theatre_Optimization_20261017\\Theatre_Moon_Projector_optimized.blend",
   "sourceFrames": [
     96,

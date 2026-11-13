@@ -14,7 +14,6 @@ import { particleField } from "./projector-fx/particle-field";
 import { createParticleCache } from "./projector-fx/particle-cache";
 import { particlesLib } from "./projector-fx/particlesLib.glsl";
 import { formationGLSL } from "./projector-fx/formation";
-import { scheduleSceneIdle } from "./scene-idle";
 import { traceMark } from "./loading-trace";
 
 // The laser particle formation (Blender: FX_Particles, geometry nodes "FX • Laser Particle Formation").
@@ -43,7 +42,6 @@ uniform bool uIsViewport;
 uniform float uKeyPower;
 uniform float uGlow;
 uniform float uViewportHeight; // drawing-buffer pixels
-uniform float uKeepFraction;
 uniform int uCacheOffset;
 in vec2 corner;
 ${data ? "in vec3 aPosition;\nin vec3 aNormal;\nin vec4 aMisc; // fx_g, fx_t0, fx_dur, fx_part\nin float aId; // the point's index in FX_ParticleData" : ""}
@@ -68,7 +66,6 @@ float spherePhase(vec3 l, vec3 view) {
 }
 void main() {
   int id = ${data ? "int(aId)" : "gl_InstanceID"};
-  if(fract(sin(float(id)*12.9898)*43758.5453)>uKeepFraction){gl_Position=vec4(2.0,2.0,2.0,1.0);return;}
   ${cached?`int index=gl_InstanceID+${data?"0":"uCacheOffset"};ivec2 texel=ivec2(index%256,index/256);
   vec4 hr=texelFetch(uHeadRadius,texel,0),tc=texelFetch(uTailCoverage,texel,0),ce=texelFetch(uColourEmission,texel,0);
   float rad=abs(hr.w),cov=tc.w,em2=ce.w;bool trail=hr.w<0.;
@@ -104,8 +101,8 @@ void main() {
   // (area pi rad^2 for a grain, width 2 rad per length for a streak). In between, the two are blended.
   float pxPerUnit = projectionMatrix[1][1] * 0.5 * uViewportHeight / max(-h.z, 1e-4);
   float pixels = rad * pxPerUnit;
-  float splatPx = max(1.0, (trail ? 1.875 : 1.7320508) * pixels); // smallest splat whose peak stays <= 1
-  float sharp = smoothstep(1.5, 3.0, pixels);
+  float splatPx = max(0.8, (trail ? 1.875 : 1.7320508) * pixels); // smallest splat whose peak stays <= 1 (0.8 px: crisper than 1 px, still no pixel flicker)
+  float sharp = smoothstep(1.2, 2.5, pixels);
   float drawnPx = sharp >= 1.0 ? pixels : splatPx;
   float drawn = drawnPx / pxPerUnit;
   float peak = trail ? 1.875 * pixels / splatPx : 3.0 * (pixels / splatPx) * (pixels / splatPx);
@@ -132,11 +129,19 @@ void main() {
     glowE += e; glowSum += l * dot(e, vec3(0.3333)); flat_ += e * spherePhase(l, view);
   }
   vec3 albedo = col.rgb / PI;
-  vFlat = albedo * flat_ + col.rgb * em2;
+  // Real dust is uneven: each grain gets its own brightness (mean 1, about 0.6x to 1.7x), and about half are metal
+  // flakes that tumble and flash for a moment when they turn their face to a light (light-coloured, not grain-coloured).
+  float h1 = fract(sin(float(id) * 12.9898) * 43758.5453), h2 = fract(sin(float(id) * 78.233) * 43758.5453), h3 = fract(sin(float(id) * 39.425) * 43758.5453);
+  float tier = exp2((h1 - 0.5) * 1.6) / 1.052;
+  float turn = h3 * 6.2832 + uFrame / uFps * mix(3.0, 9.0, h2);
+  float flash = step(0.5, h2) * pow(max(cos(turn), 0.0), 48.0);
+  vec3 glint = (keyE + glowE) * flash * 0.55;
+  keyE *= tier; glowE *= tier; flat_ *= tier; em2 *= tier;
+  vFlat = albedo * flat_ + col.rgb * em2 + glint;
   vKeyE = keyE; vKeyL = keyL;
   vGlowE = glowE; vGlowL = length(glowSum) > 1e-8 ? normalize(glowSum) : view;
   vAlbedo = albedo;
-  vEmit = col.rgb * em2;
+  vEmit = col.rgb * em2 + glint;
   vAlpha = clamp(cov, 0.0, 1.0);
   vec3 face = normalize(cross(dir, side));
   vDir = dir; vSide = side; vFace = dot(face, view) < 0.0 ? -face : face;
@@ -184,6 +189,8 @@ void main() {
   float shape = 1.0 - smoothstep(1.0 - aa, 1.0 + aa, d);
   float coverage = mix(splat, shape, vSplat.y);
   if (coverage <= 0.0) discard;
+  // A moving grain reads as a comet: brightest at its head, thinning toward the tail (mean 1 over the streak).
+  if (vShape.x > 0.0) coverage *= mix(1.55, 0.45, vCorner.x * 0.5 + 0.5);
   vec3 colour = vFlat;
   float resolved = smoothstep(1.5, 4.0, pixels);
   if (resolved > 0.0) {
@@ -210,7 +217,7 @@ function makeMesh(data: boolean, count: number, attributes: Record<string, Insta
     glslVersion: GLSL3,
     vertexShader: vertexShader(data,cached),
     fragmentShader,
-    uniforms: { uFrame: { value: 0 }, uFps: { value: 24 }, uIsViewport: { value: false }, uKeyPower: { value: 0 }, uGlow: { value: 0 }, uViewportHeight: { value: 1000 },uKeepFraction:{value:1},uDensityWeight:{value:1} },
+    uniforms: { uFrame: { value: 0 }, uFps: { value: 24 }, uIsViewport: { value: false }, uKeyPower: { value: 0 }, uGlow: { value: 0 }, uViewportHeight: { value: 1000 },uDensityWeight:{value:1} },
     transparent: true,
     toneMapped:false,
     side: DoubleSide, // ribbons are built facing the camera; both sides as a safeguard
@@ -233,8 +240,8 @@ function makeMesh(data: boolean, count: number, attributes: Record<string, Insta
 /** Adds the particles under `root` (the projector's PRJ_ROOT, whose local space the node group works in);
  * `frame` is the Blender frame the projector timeline is at. */
 /* eslint-disable react-hooks/immutability -- particle meshes, uniforms and roots are owned imperative GPU objects */
-export default function ProjectorParticles({ root, frame, onReady,quality }: { root: Object3D; frame: RefObject<number>; onReady:()=>void;quality:"desktop"|"laptop" }) {
-  const gl=useThree(state=>state.gl),scene=useThree(state=>state.scene),camera=useThree(state=>state.camera);
+export default function ProjectorParticles({ root, frame, onMount,quality }: { root: Object3D; frame: RefObject<number>; onMount:(compile:Promise<unknown>,upload:()=>void)=>void;quality:"desktop"|"laptop" }) {
+  const gl=useThree(state=>state.gl);
   const display=useBlenderViewLUT();
   const pacing=useRef({average:1/60,slowSeconds:0,keep:1});
   const profile=particleProfiles[quality],count=profile.count;
@@ -255,11 +262,10 @@ export default function ProjectorParticles({ root, frame, onReady,quality }: { r
       offset += n * width * bytes[type];
     }
     const { fx_g: g, fx_part: part, id } = blocks;
-    const misc = new Float32Array(n * 4), ids = new Float32Array(n);
-    for (let k = 0; k < n; k++) {
-      const [t0, dur] = meta.parts[part[k]];
-      misc[k * 4] = g[k]; misc[k * 4 + 1] = t0; misc[k * 4 + 2] = dur; misc[k * 4 + 3] = part[k];
-      ids[k] = id[k];
+    const misc=new Float32Array(n*4),ids=Float32Array.from(id);
+    for(let i=0;i<n;i++){
+      const [t0,dur]=meta.parts[part[i]];
+      misc[i*4]=g[i];misc[i*4+1]=t0;misc[i*4+2]=dur;misc[i*4+3]=part[i];
     }
     const attributes = {
         aPosition: new InstancedBufferAttribute(blocks.position, 3),
@@ -268,49 +274,51 @@ export default function ProjectorParticles({ root, frame, onReady,quality }: { r
         aId: new InstancedBufferAttribute(ids, 1),
     };
     const direct=/^(localhost|127\.)/.test(location.hostname)&&new URLSearchParams(location.search).get("particle-eval")==="vertex";
-    const cache=quality==="laptop"&&!direct?createParticleCache(gl,n,profile.ambient,attributes):null;
+    const cache=direct?null:createParticleCache(gl,n,profile.ambient,attributes);
     const list=[makeMesh(true,n,attributes,!!cache),makeMesh(false,profile.ambient,{},!!cache)];
     if(cache)for(const mesh of list)Object.assign(mesh.material.uniforms,{
-      uHeadRadius:{value:cache.target.textures[0]},uTailCoverage:{value:cache.target.textures[1]},
-      uColourEmission:{value:cache.target.textures[2]},uCacheOffset:{value:n},
+      uHeadRadius:{value:cache.textures[0]},uTailCoverage:{value:cache.textures[1]},
+      uColourEmission:{value:cache.textures[2]},uCacheOffset:{value:n},
     });
     return {list,cache};
-  }, [buffer,meta,profile,quality,gl]);
+  }, [buffer,meta,profile,gl]);
 
   useEffect(() => {
     for (const mesh of meshes) {root.add(mesh); const u=(mesh.material as ShaderMaterial).uniforms;u.blenderView={value:display};u.uDensityWeight={value:metadata.originalCount/count};}
     traceMark("Projector particle evaluation: "+(cache?"once per grain":"original vertex path"));
-    let active=true,cancelPrepare=()=>{};
-    const compile=cache?cache.compile():Promise.resolve();
-    void Promise.all([gl.compileAsync(root,camera,scene),compile]).then(()=>{if(active){
-      cancelPrepare=scheduleSceneIdle(()=>{if(active){cache?.update(66);onReady();}},-20);
-    }});
+    onMount(cache?.compile()??Promise.resolve(),()=>cache?.update(66));
     return () => {
-      active=false;cancelPrepare();cache?.dispose();
+      cache?.dispose();
       for (const mesh of meshes) {
         root.remove(mesh);
         mesh.geometry.dispose();
         (mesh.material as ShaderMaterial).dispose();
       }
     };
-  }, [root,meshes,gl,scene,camera,onReady,display,count,cache]);
+  }, [root,meshes,onMount,display,count,cache]);
 
   useFrame((_,delta) => {
     const f = frame.current ?? 0;
-    if(f>5&&f<96)cache?.update(f);
+    const flying=f>5&&f<96;
+    if(!flying){for(const mesh of meshes)mesh.visible=false;return;}
     const pace=pacing.current;
-    if(quality==="laptop"&&f>5&&f<96.5&&delta>0&&!document.hidden){
-      const sample=Math.min(delta,.25);pace.average=.9*pace.average+.1*sample;pace.slowSeconds=pace.average>1/28?pace.slowSeconds+sample:0;
-      if(pace.slowSeconds>1){pace.keep=Math.max(.65,pace.keep*.85);pace.slowSeconds=0;}
+    if(delta>0&&!document.hidden){
+      const sample=Math.min(delta,.1);
+      pace.average=.9*pace.average+.1*sample;
+      pace.slowSeconds=pace.average>1/55?pace.slowSeconds+sample:0;
+      if(pace.slowSeconds>.55){pace.keep=Math.max(.55,pace.keep*.82);pace.slowSeconds=0;}
     }
-    for (const mesh of meshes) {
+    const mainCount=Math.floor(count*pace.keep),ambientCount=Math.floor(profile.ambient*pace.keep);
+    cache?.update(f,mainCount,ambientCount);
+    meshes.forEach((mesh,index)=>{
       const u = (mesh.material as ShaderMaterial).uniforms;
       u.uFrame.value = f;
       u.uKeyPower.value = keyPower(f);
       u.uGlow.value = glowPower(f);
-      u.uKeepFraction.value=pace.keep;u.uDensityWeight.value=metadata.originalCount/(count*pace.keep);
-      mesh.visible = f > 5 && f < 96; // End exactly with formation; never freeze stray grains at the exploded stop.
-    }
+      u.uDensityWeight.value=.9*metadata.originalCount/mainCount;
+      mesh.geometry.instanceCount=index===0?mainCount:ambientCount;
+      mesh.visible=true;
+    });
   },-.7);
 
   return null;

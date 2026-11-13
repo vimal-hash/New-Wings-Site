@@ -16,3 +16,11 @@ export function localEnvironment(gl:WebGLRenderer){
   const generator=new PMREMGenerator(gl);texture=generator.fromScene(room,.035).texture;
   room.dispose();generator.dispose();environments.set(gl,texture);return texture;
 }
+
+const studios=new WeakMap<WebGLRenderer,Texture>();
+/** Bright neutral product-shot studio, for the corridor's brand film only (black products need softbox reflections). */
+export function studioEnvironment(gl:WebGLRenderer){
+  let texture=studios.get(gl);if(texture)return texture;
+  const room=new RoomEnvironment(),generator=new PMREMGenerator(gl);texture=generator.fromScene(room,.04).texture;
+  room.dispose();generator.dispose();studios.set(gl,texture);return texture;
+}

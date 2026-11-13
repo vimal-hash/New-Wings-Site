@@ -4,8 +4,8 @@
   "particleDrawCalls": 2,
   "particleCountMobile": 32768,
   "particleCountDesktop": 65536,
-  "triangles": 430417,
-  "assemblySeconds": 2,
+  "triangles": 134104,
+  "assemblySeconds": 3,
   "maximumPartIndexError": 0.061553955078125,
   "assembledBoundsErrorMetres": 5.706253762838287e-7,
   "originalPosesUnchanged": true,
@@ -13,16 +13,16 @@
   "motionDecodedBytes": 1603680,
   "actualBounds": [
     [
-      -0.6305058193517059,
-      0.6524958012522905
+      -0.6305058491540372,
+      0.6494958321316053
     ],
     [
-      2.999000132083893,
+      3.0290001928806305,
       3.5460000336170197
     ],
     [
-      -8.20674953302772,
-      -7.482749427944104
+      -8.206749473423073,
+      -7.4827494279441
     ]
   ]
 }

@@ -1,11 +1,11 @@
 /**
- * Contact details shown across the site. PLACEHOLDERS: replace with the client's real details.
- * `email` also receives enquiry-form messages once the mail service key is set (see app/api/enquiry/route.ts).
+ * Contact details shown across the site (client-confirmed 2026-11-15).
+ * The enquiry form is separate: it sends only once the mail service key is set (see app/api/enquiry/route.ts).
  */
 export const SITE_CONTACT = {
-  email: "hello@example.com", // PLACEHOLDER
-  whatsapp: "910000000000", // PLACEHOLDER: country code + number, digits only
-  linkedin: "", // PLACEHOLDER: full LinkedIn company page URL
+  email: "newwingssales@gmail.com",
+  whatsapp: "919444546390", // country code + number, digits only
+  linkedin: "https://in.linkedin.com/in/new-wings-solutions-n-w-s-35a02a287",
 } as const;
 
 export const contactLinks = {

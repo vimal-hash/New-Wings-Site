@@ -1,31 +1,58 @@
-import {BoxGeometry,BufferGeometry,DataTexture,DoubleSide,Float32BufferAttribute,FloatType,InstancedMesh,Matrix4,Mesh,MeshBasicMaterial,MeshPhysicalMaterial,MeshStandardMaterial,NearestFilter,Quaternion,RedFormat,RepeatWrapping,ShaderMaterial,Vector2,Vector3,type Material,type Side,type Texture} from 'three';
+import {BoxGeometry,BufferGeometry,DataTexture,Float32BufferAttribute,FloatType,InstancedMesh,Matrix4,Mesh,MeshPhysicalMaterial,MeshStandardMaterial,NearestFilter,Quaternion,RedFormat,RepeatWrapping,Vector3,type Material,type Side,type Texture} from 'three';
 import route from './scene-route.json';
-import {createArcProjector,createDisplayPower,createScreenPanels,FEATURE_DISPLAYS,SCREEN_COUNT,SCREEN_WALL,SMALL_PANEL} from './corridor-screen-state';
+import {BIG_SECTION,createArcProjector,createScreenPanels,SCREEN_COUNT,SCREEN_WALL,SMALL_PANEL} from './corridor-screen-state';
 
 export const SCREEN_GLASS_TEXTURES=['/textures/corridor/screen-glass/screen-glass-roughness.png','/textures/corridor/screen-glass/screen-glass-normal.png'];
+/** Technical line drawings printed on the lit big sections, desktop only. One texture per wall holds three sheets,
+ *  one per colour channel: R projector, G Galalite screen, B circular-polarised 3D glasses (white = no ink; -v2 replaced the
+ *  laser glasses so they match the 3D system sheet). Left wall (outer side of the bend, seen nearly face-on) and right wall
+ *  (inner side, seen from the side). */
+export const SCREEN_INK_TEXTURES=['/textures/corridor/blueprint/sheets-outer-v2.png','/textures/corridor/blueprint/sheets-inner-v2.png',
+  // Second texture per wall: R cinema sound sheet, G passive 3D system sheet; B white (free for a later sheet).
+  // -v2 names: the textures folder is served immutable, so changed pixels need a new URL.
+  '/textures/corridor/blueprint/sheets2-outer-v2.png','/textures/corridor/blueprint/sheets2-inner-v2.png'];
+/** Big sections that carry the R/G/B sheets on each wall: the projector on the near section seen while walking back, the screen and
+ *  glasses on the two sections before it (so the walk shows glasses, screen, projector). Then the inner wall's horizontal pre-stretch
+ *  (cancels the side-on squeeze, measured ~0.55 vs ~0.8 on the outer wall) and per-wall mirroring. */
+export const SCREEN_INK={section:[[SCREEN_WALL.smallPanels+5,SCREEN_WALL.smallPanels+4,SCREEN_WALL.smallPanels+3],[SCREEN_WALL.smallPanels+6,SCREEN_WALL.smallPanels+5,SCREEN_WALL.smallPanels+4]],
+  /** Sections for the second texture's R/G/B sheets: sound on the section before the glasses on each wall, the 3D system on the
+   *  section before the sound (walk: 3D, sound, glasses, screen, projector); -10 = channel unused. */
+  section2:[[SCREEN_WALL.smallPanels+2,SCREEN_WALL.smallPanels+1,-10],[SCREEN_WALL.smallPanels+3,SCREEN_WALL.smallPanels+2,-10]],stretch:[1,1.45],flip:[1,0]} as const;
 const WALLS=['corridor-wall-red','corridor-wall-connecting'] as const;
 const centreline=createArcProjector(route.samples.map(sample=>[sample.position[0],sample.position[2]] as const));
 
 type Part={mesh:Mesh;material:Material};
 /** Shared uniforms: one object per value, referenced by every screen program. */
 function sharedUniforms(panels:DataTexture,count:number){
-  return {uScreenPanels:{value:panels},uScreenCount:{value:count},uScreenSmall:{value:SMALL_PANEL},uScreenSplit:{value:SCREEN_WALL.split as number},uScreenEnd:{value:SCREEN_WALL.split+1},
+  return {uScreenPanels:{value:panels},uScreenCount:{value:count},uScreenSmall:{value:SMALL_PANEL},uScreenBig:{value:BIG_SECTION},uScreenSplit:{value:SCREEN_WALL.split as number},uScreenEnd:{value:SCREEN_WALL.split+1},
     uScreenBottom:{value:SCREEN_WALL.bottom},uScreenTop:{value:SCREEN_WALL.top},uScreenLitTop:{value:SCREEN_WALL.litTop},
-    uScreenOff:{value:0},uScreenBaked:{value:0},uScreenOn:{value:new Vector3(.95,.98,1)}};
+    uScreenOff:{value:0},uScreenOn:{value:new Vector3(.95,.98,1)}};
 }
 type Shared=ReturnType<typeof sharedUniforms>;
 
-/** Small panels beside the projector floor, then one big screen per wall (the last texel). */
+/** Small panels beside the projector floor, then the big screen's wide sections (one texel each). */
 const PANEL_GLSL=/* glsl */`
-uniform sampler2D uScreenPanels;uniform float uScreenCount,uScreenSmall,uScreenSplit,uScreenEnd,uScreenBottom,uScreenTop,uScreenLitTop,uScreenOff;uniform vec3 uScreenOn;
-float screenIndex(float arc){return arc<uScreenSplit?clamp(floor(arc/uScreenSmall),0.,uScreenCount-2.):uScreenCount-1.;}
+uniform sampler2D uScreenPanels;uniform float uScreenCount,uScreenSmall,uScreenBig,uScreenSplit,uScreenEnd,uScreenBottom,uScreenTop,uScreenLitTop,uScreenOff;uniform vec3 uScreenOn;
+float screenSmallCount(){return floor(uScreenSplit/uScreenSmall+.5);}
+float screenIndex(float arc){
+  float n=screenSmallCount();
+  return arc<uScreenSplit?clamp(floor(arc/uScreenSmall),0.,n-1.):clamp(n+floor((arc-uScreenSplit)/uScreenBig),n,uScreenCount-1.);
+}
 float screenPanel(float arc,float side){
   return texelFetch(uScreenPanels,ivec2(int(screenIndex(arc)),int(side)),0).r*(1.-uScreenOff);
 }
 /** Position across the current screen, 0..1. */
-float screenAcross(float arc){return arc<uScreenSplit?fract(arc/uScreenSmall):clamp((arc-uScreenSplit)/(uScreenEnd-uScreenSplit),0.,1.);}
-/** Soft dark seam at each small panel edge; the big screen only meets the boundary mullion. */
-float screenSeam(float arc,float u,float width){return arc<uScreenSplit?smoothstep(0.,width,u)*smoothstep(1.,1.-width,u):smoothstep(0.,.15,arc-uScreenSplit);}`;
+float screenAcross(float arc){
+  if(arc<uScreenSplit)return fract(arc/uScreenSmall);
+  return clamp((arc-uScreenSplit-(screenIndex(arc)-screenSmallCount())*uScreenBig)/uScreenBig,0.,1.);
+}
+/** Soft dark seam at each small panel edge. Big sections have no mullion: a thin soft seam (arc units)
+ *  between sections, and the first one meets the boundary mullion. */
+float screenSeam(float arc,float u,float width){
+  if(arc<uScreenSplit)return smoothstep(0.,width,u)*smoothstep(1.,1.-width,u);
+  float x=u*uScreenBig,w=width*5.;
+  return smoothstep(0.,.15,arc-uScreenSplit)*smoothstep(0.,w,x)*smoothstep(uScreenBig,uScreenBig-w,x);
+}`;
 
 /** Centre line powers on, opens vertically, then the diffuser settles. p: 0..1. */
 const OPENING_GLSL=/* glsl */`
@@ -42,14 +69,15 @@ float screenOpening(float p,float d,float height){
   return (body*settle+lead+line)*power*flicker;
 }`;
 
-function patchGlass(material:MeshPhysicalMaterial,shared:Shared,side:number,baked:{value:Texture|null},rough:Texture,normal:Texture,clearcoat:boolean){
+type Ink={uScreenInk:{value:Texture|null};uScreenInk2:{value:Texture|null};uScreenInkOn:{value:number};uScreenInkSection:{value:Vector3};uScreenInkSection2:{value:Vector3};uScreenInkStretch:{value:number};uScreenInkFlip:{value:number}};
+function patchGlass(material:MeshPhysicalMaterial,shared:Shared,side:number,rough:Texture,normal:Texture,clearcoat:boolean,ink:Ink){
   material.onBeforeCompile=shader=>{
-    Object.assign(shader.uniforms,shared,{uScreenSide:{value:side},uScreenBakedMap:baked,uScreenRough:{value:rough},uScreenNormal:{value:normal}});
+    Object.assign(shader.uniforms,shared,ink,{uScreenSide:{value:side},uScreenRough:{value:rough},uScreenNormal:{value:normal}});
     shader.vertexShader=shader.vertexShader
-      .replace('#include <common>','#include <common>\nattribute float aScreenArc;varying float vScreenArc;varying vec3 vScreenWorld;varying vec2 vScreenBakedUv;')
-      .replace('#include <project_vertex>','#include <project_vertex>\nvScreenArc=aScreenArc;vScreenWorld=(modelMatrix*vec4(transformed,1.)).xyz;vScreenBakedUv=uv;');
+      .replace('#include <common>','#include <common>\nattribute float aScreenArc;varying float vScreenArc;varying vec3 vScreenWorld;')
+      .replace('#include <project_vertex>','#include <project_vertex>\nvScreenArc=aScreenArc;vScreenWorld=(modelMatrix*vec4(transformed,1.)).xyz;');
     shader.fragmentShader=shader.fragmentShader
-      .replace('#include <common>',`#include <common>\nvarying float vScreenArc;varying vec3 vScreenWorld;varying vec2 vScreenBakedUv;uniform float uScreenSide,uScreenBaked;uniform sampler2D uScreenBakedMap,uScreenRough,uScreenNormal;${PANEL_GLSL}${OPENING_GLSL}`)
+      .replace('#include <common>',`#include <common>\nvarying float vScreenArc;varying vec3 vScreenWorld;uniform float uScreenSide,uScreenInkOn,uScreenInkStretch,uScreenInkFlip;uniform vec3 uScreenInkSection,uScreenInkSection2;uniform sampler2D uScreenRough,uScreenNormal,uScreenInk,uScreenInk2;${PANEL_GLSL}${OPENING_GLSL}`)
       .replace('#include <color_fragment>',/* glsl */`#include <color_fragment>
         float screenY=vScreenWorld.y,screenAA=fwidth(screenY)+.004;
         // Big screen: glass fills the whole wall and lights from the floor to the marked level.
@@ -78,11 +106,27 @@ function patchGlass(material:MeshPhysicalMaterial,shared:Shared,side:number,bake
         float screenRoll=(screenBig?1.:mix(.84,1.,smoothstep(0.,.18,screenU)*smoothstep(1.,.82,screenU)))*mix(.86,1.,smoothstep(0.,.3,screenH)*smoothstep(1.,.66,screenH));
         float screenVary=.965+.05*fract(sin(screenIndex(vScreenArc)*12.9898+uScreenSide*4.13)*43758.5453);
         totalEmissiveRadiance+=uScreenOn*screenLit*screenGap*screenRoll*screenVary*screenGlass+vec3(.010,.011,.013)*screenGlass;
-        diffuseColor.rgb*=1.-.75*min(1.,screenLit)*screenGlass;`)
-      .replace('#include <lights_physical_fragment>',`#include <lights_physical_fragment>\n${clearcoat?'material.clearcoat*=screenGlass;material.clearcoatRoughness=mix(.3,.02+.06*screenSmudge,screenGlass);':''}`)
-      .replace('#include <opaque_fragment>','outgoingLight=mix(outgoingLight,texture2D(uScreenBakedMap,vScreenBakedUv).rgb,uScreenBaked);\n#include <opaque_fragment>');
+        diffuseColor.rgb*=1.-.75*min(1.,screenLit)*screenGlass;
+        // Graphite ink under the glass: only where the section is lit, so it fades with the light.
+        float screenInk=0.;
+        // Pick the texture and channel whose section this is (first: R projector, G screen, B glasses; second: R sound).
+        float inkIndex=screenIndex(vScreenArc);
+        vec3 inkPick=1.-step(.5,abs(vec3(inkIndex)-uScreenInkSection)),inkPick2=1.-step(.5,abs(vec3(inkIndex)-uScreenInkSection2));
+        float inkFirst=inkPick.x+inkPick.y+inkPick.z,inkSecond=inkPick2.x+inkPick2.y+inkPick2.z;
+        if(uScreenInkOn>.5&&inkFirst+inkSecond>.5){
+          float inkU=mix(screenU,1.-screenU,uScreenInkFlip);inkU=(inkU-.5)/uScreenInkStretch+.5;
+          vec2 inkUv=vec2(inkU,screenY/uScreenLitTop);
+          if(inkUv.x>0.&&inkUv.x<1.&&inkUv.y>0.&&inkUv.y<1.)
+            screenInk=pow(1.-(inkFirst>.5?dot(texture2D(uScreenInk,inkUv).rgb,inkPick):dot(texture2D(uScreenInk2,inkUv).rgb,inkPick2)),.7);
+        }
+        screenInk*=min(1.,screenLit)*screenGlass;
+        totalEmissiveRadiance*=1.-.86*screenInk;
+        diffuseColor.rgb*=1.-.7*screenInk;`)
+      // Ink also tones the reflections, so lines read as graphite rather than mid-grey under bright glass.
+      .replace('#include <opaque_fragment>','outgoingLight*=1.-.6*screenInk;\n#include <opaque_fragment>')
+      .replace('#include <lights_physical_fragment>',`#include <lights_physical_fragment>\n${clearcoat?'material.clearcoat*=screenGlass;material.clearcoatRoughness=mix(.3,.02+.06*screenSmudge,screenGlass);':''}`);
   };
-  material.customProgramCacheKey=()=>`corridor-screen-glass-v2|${clearcoat}`;
+  material.customProgramCacheKey=()=>`corridor-screen-glass-v8|${clearcoat}`;
 }
 
 /** Once per floor material (dev StrictMode builds screens twice; hot reload re-runs this module, so the
@@ -108,16 +152,16 @@ function patchFloor(material:Material,shared:Shared){
         outgoingLight+=spill;}
         #include <opaque_fragment>`);
   };
-  material.customProgramCacheKey=()=>key+'|corridor-screen-floor-v2';
+  material.customProgramCacheKey=()=>key+'|corridor-screen-floor-v3';
   material.needsUpdate=true;
   return uniforms;
 }
 
-type Datum={uScreenSplit:{value:number};uScreenBaked:{value:number}};
-/** The thin roof datum crosses the big screen's glass; it is skipped there until the baked walls return. */
+type Datum={uScreenSplit:{value:number};uScreenGlass:{value:number}};
+/** The thin roof datum crosses the big screen's glass; it is skipped there while the display walls exist. */
 function patchDatum(part:Part,start:number){
   const existing=part.material.userData.corridorScreenDatum as Datum|undefined;if(existing)return existing;
-  const uniforms:Datum={uScreenSplit:{value:SCREEN_WALL.split},uScreenBaked:{value:1}};part.material.userData.corridorScreenDatum=uniforms;
+  const uniforms:Datum={uScreenSplit:{value:SCREEN_WALL.split},uScreenGlass:{value:0}};part.material.userData.corridorScreenDatum=uniforms;
   const position=part.mesh.geometry.getAttribute('position'),arcs=new Float32Array(position.count);
   for(let i=0;i<position.count;i++)arcs[i]=centreline.project(position.getX(i),position.getZ(i))[0]-start;
   part.mesh.geometry.setAttribute('aScreenArc',new Float32BufferAttribute(arcs,1));
@@ -129,10 +173,10 @@ function patchDatum(part:Part,start:number){
       .replace('#include <common>','#include <common>\nattribute float aScreenArc;varying float vScreenArc;')
       .replace('#include <project_vertex>','#include <project_vertex>\nvScreenArc=aScreenArc;');
     shader.fragmentShader=shader.fragmentShader
-      .replace('#include <common>','#include <common>\nvarying float vScreenArc;uniform float uScreenSplit,uScreenBaked;')
-      .replace('#include <clipping_planes_fragment>','if(vScreenArc>=uScreenSplit&&uScreenBaked<.5)discard;\n#include <clipping_planes_fragment>');
+      .replace('#include <common>','#include <common>\nvarying float vScreenArc;uniform float uScreenSplit,uScreenGlass;')
+      .replace('#include <clipping_planes_fragment>','if(vScreenArc>=uScreenSplit&&uScreenGlass>.5)discard;\n#include <clipping_planes_fragment>');
   };
-  part.material.customProgramCacheKey=()=>key+'|corridor-screen-datum-v1';
+  part.material.customProgramCacheKey=()=>key+'|corridor-screen-datum-v2';
   part.material.needsUpdate=true;
   return uniforms;
 }
@@ -162,15 +206,10 @@ function distanceToBase(base:[number,number,number][],x:number,z:number){
   return Math.sqrt(best);
 }
 
-/** Thin anodised mullions between small panels and at the big screen's edge; they sink into the wall as the baked wall returns. */
-function createMullions(bases:[number,number,number][][],start:number,sink:{value:number},environment:Texture|null){
+/** Thin anodised mullions between small panels and at the big screen's edge. */
+function createMullions(bases:[number,number,number][][],start:number,environment:Texture|null){
   const height=SCREEN_WALL.top-SCREEN_WALL.bottom+.04,geometry=new BoxGeometry(.085,height,.075);geometry.translate(0,height/2,.0375);
   const material=new MeshStandardMaterial({color:'#1a1c1f',metalness:.88,roughness:.3,envMap:environment,envMapIntensity:.9,toneMapped:false});
-  material.onBeforeCompile=shader=>{
-    shader.uniforms.uScreenSink=sink;
-    shader.vertexShader=shader.vertexShader.replace('#include <common>','#include <common>\nuniform float uScreenSink;').replace('#include <begin_vertex>','#include <begin_vertex>\ntransformed.z*=1.-uScreenSink;');
-  };
-  material.customProgramCacheKey=()=>'corridor-screen-mullion-v1';
   const mesh=new InstancedMesh(geometry,material,SCREEN_WALL.smallPanels*2),matrix=new Matrix4(),rotation=new Quaternion(),forward=new Vector3(0,0,1),inward=new Vector3();
   let n=0;
   bases.forEach(base=>{for(let k=1;k<=SCREEN_WALL.smallPanels;k++){
@@ -182,72 +221,8 @@ function createMullions(bases:[number,number,number][][],start:number,sink:{valu
   return mesh;
 }
 
-/** Feature display: a black screen on the lit wall, floor to lit top, showing its film (opaque, rendered from
- *  the stop's eye) and revealed with the same centre-line opening as the panels. Its backdrop twin is drawn
- *  first in the lens view, so through the glasses the 3D film fully replaces the 2D one. */
-const DISPLAY_VERTEX=/* glsl */`attribute vec2 aLocal;varying vec2 vLocal;void main(){vLocal=aLocal;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}`;
-const DISPLAY_FRAGMENT=/* glsl */`uniform float uPower,uOff,uBezel,uHasContent,uFlipX;uniform vec2 uSize;uniform sampler2D uContent;varying vec2 vLocal;
-${OPENING_GLSL}
-void main(){
-  vec2 q=abs(vLocal);
-  if(uHasContent<.5||q.x>uSize.x*.5||q.y>uSize.y*.5)discard;
-  vec2 uv=vLocal/uSize+.5;uv.x=mix(uv.x,1.-uv.x,uFlipX);
-  // The film arrives premultiplied over an opaque black clear.
-  vec4 film=texture2D(uContent,uv)*min(1.,screenOpening(uPower*(1.-uOff),q.y,uSize.y));
-  if(film.a<.004)discard;
-  gl_FragColor=vec4(film.rgb/film.a,film.a);
-  #include <colorspace_fragment>
-  gl_FragColor.rgb*=gl_FragColor.a;
-}`;
-const BACKDROP_FRAGMENT=/* glsl */`uniform float uPower,uOff;uniform vec2 uSize;varying vec2 vLocal;
-${OPENING_GLSL}
-void main(){
-  vec2 q=abs(vLocal);
-  if(q.x>uSize.x*.5||q.y>uSize.y*.5)discard;
-  float a=min(1.,screenOpening(uPower*(1.-uOff),q.y,uSize.y));
-  if(a<.004)discard;
-  gl_FragColor=vec4(0.,0.,0.,a);
-}`;
-
-function createDisplays(base:[number,number,number][]){
-  const owned:{dispose():void}[]=[];
-  const displays=FEATURE_DISPLAYS.map((display,k)=>{
-    const height=display.top-display.bottom,outer=display.width/2+display.bezel,columns=Math.ceil(outer*2/.5);
-    const positions:number[]=[],locals:number[]=[],index:number[]=[];
-    for(let i=0;i<=columns;i++){
-      const along=-outer+outer*2*i/columns,arc=display.arc+along,[x,z]=baseAt(base,arc),[cx,cz]=centreline.point(arc);
-      const inward=Math.hypot(cx-x,cz-z)||1,ox=x+(cx-x)/inward*.04,oz=z+(cz-z)/inward*.04;
-      for(const y of [display.bottom-display.bezel,display.top+display.bezel]){positions.push(ox,y,oz);locals.push(along,y-(display.bottom+display.top)/2);}
-    }
-    for(let i=0;i<columns;i++){const a=i*2;index.push(a,a+1,a+2,a+1,a+3,a+2);}
-    const geometry=new BufferGeometry();geometry.setAttribute('position',new Float32BufferAttribute(positions,3));geometry.setAttribute('aLocal',new Float32BufferAttribute(locals,2));geometry.setIndex(index);geometry.computeBoundingSphere();
-    const material=new ShaderMaterial({vertexShader:DISPLAY_VERTEX,fragmentShader:DISPLAY_FRAGMENT,side:DoubleSide,toneMapped:false,transparent:true,depthWrite:false,premultipliedAlpha:true,
-      uniforms:{uPower:{value:0},uOff:{value:0},uBezel:{value:display.bezel},uSize:{value:new Vector2(display.width,height)},uContent:{value:null as Texture|null},uHasContent:{value:0},uFlipX:{value:0}}});
-    const mesh=new Mesh(geometry,material);mesh.name=`Corridor feature display ${k}`;
-    const backdropMaterial=new ShaderMaterial({vertexShader:DISPLAY_VERTEX,fragmentShader:BACKDROP_FRAGMENT,side:DoubleSide,toneMapped:false,transparent:true,depthTest:false,depthWrite:false,premultipliedAlpha:true,
-      uniforms:{uPower:material.uniforms.uPower,uOff:material.uniforms.uOff,uSize:material.uniforms.uSize}});
-    const backdrop=new Mesh(geometry,backdropMaterial);backdrop.name=`Corridor feature display ${k} | lens backdrop`;backdrop.renderOrder=-10;backdrop.frustumCulled=false;
-    owned.push(geometry,material,backdropMaterial);
-    // The flat window through which its content is seen: centre, inward normal and the along-wall direction.
-    const [x,z]=baseAt(base,display.arc),[cx,cz]=centreline.point(display.arc),[x0,z0]=baseAt(base,display.arc-.5),[x1,z1]=baseAt(base,display.arc+.5);
-    const normal=new Vector3(cx-x,0,cz-z).normalize(),centre=new Vector3(x,(display.bottom+display.top)/2,z).addScaledVector(normal,.04);
-    const frame={centre,normal,along:new Vector3(x1-x0,0,z1-z0).normalize(),width:display.width,height,bottom:display.bottom};
-    return {mesh,material,frame,backdrop};
-  });
-  return {
-    meshes:displays.map(display=>display.mesh),
-    frames:displays.map(display=>display.frame),
-    /** Black twins of the screens, for the lens view only (never added to the main scene). */
-    backdrops:displays.map(display=>display.backdrop),
-    /** Content texture for display k; `flip` when its rendered right runs against the wall's arc. */
-    setContent(k:number,texture:Texture|null,flip:boolean){const uniforms=displays[k].material.uniforms;uniforms.uContent.value=texture;uniforms.uHasContent.value=texture?1:0;uniforms.uFlipX.value=flip?1:0;},
-    apply(power:readonly number[],off:number){displays.forEach((display,k)=>{display.material.uniforms.uPower.value=power[k];display.material.uniforms.uOff.value=off;});},
-    dispose(){owned.forEach(item=>item.dispose());},
-  };
-}
-
-/** Display-glass walls over the two corridor wall bakes, the floor spill and their shared panel state. */
-export function createCorridorScreens(parts:Map<string,Part>,textures:[Texture,Texture],environment:Texture|null,quality:string){
+/** Display-glass walls on the two corridor walls (plain meshes, no bake texture), the floor spill and their shared panel state. */
+export function createCorridorScreens(parts:Map<string,Part>,textures:[Texture,Texture],environment:Texture|null,quality:string,inkMaps:Texture[]=[]){
   const walls=WALLS.map(item=>parts.get(item));
   if(walls.some(part=>!part))return null;
   const bases=walls.map(part=>wallBase(part!.mesh.geometry));
@@ -265,15 +240,24 @@ export function createCorridorScreens(parts:Map<string,Part>,textures:[Texture,T
   const shared=sharedUniforms(panelTexture,count);shared.uScreenEnd.value=end-start;
   const[rough,normal]=textures.map(texture=>{const copy=texture.clone();copy.wrapS=copy.wrapT=RepeatWrapping;copy.needsUpdate=true;return copy;});
   const owned:{dispose():void}[]=[panelTexture,rough,normal];
+  const inks=[0,1].map(side=>{
+    const [map,map2]=[inkMaps[side],inkMaps[side+2]].map(source=>{
+      const copy=source?source.clone():null;
+      if(copy){copy.anisotropy=8;copy.needsUpdate=true;owned.push(copy);}
+      return copy;
+    });
+    return {uScreenInk:{value:map},uScreenInk2:{value:map2},uScreenInkOn:{value:map?1:0},uScreenInkSection:{value:new Vector3(...SCREEN_INK.section[side])},
+      uScreenInkSection2:{value:map2?new Vector3(...SCREEN_INK.section2[side]):new Vector3(-10,-10,-10)},uScreenInkStretch:{value:SCREEN_INK.stretch[side] as number},uScreenInkFlip:{value:SCREEN_INK.flip[side] as number}};
+  });
   const screens=walls.map((part,side)=>{
-    const {mesh:baked}=part!,geometry=baked.geometry,arcs=Float32Array.from(wallArcs[side],arc=>arc-start);
+    const {mesh:plain}=part!,geometry=plain.geometry,arcs=Float32Array.from(wallArcs[side],arc=>arc-start);
     geometry.setAttribute('aScreenArc',new Float32BufferAttribute(arcs,1));
-    const bakedMap={value:(baked.material as MeshBasicMaterial).map};
-    const material=new MeshPhysicalMaterial({color:'white',roughness:.1,metalness:0,clearcoat:quality==='mobile'?0:1,clearcoatRoughness:.04,ior:1.5,specularIntensity:1,envMap:environment,envMapIntensity:.8,side:(baked.material as Material).side as Side,toneMapped:false});
-    patchGlass(material,shared,side,bakedMap,rough,normal,quality!=='mobile');
+    const material=new MeshPhysicalMaterial({color:'white',roughness:.1,metalness:0,clearcoat:quality==='mobile'?0:1,clearcoatRoughness:.04,ior:1.5,specularIntensity:1,envMap:environment,envMapIntensity:.8,side:(plain.material as Material).side as Side,toneMapped:false});
+    patchGlass(material,shared,side,rough,normal,quality!=='mobile',inks[side]);
     const mesh=new Mesh(geometry,material);mesh.name=`${WALLS[side]} | display glass`;
+    plain.visible=false;
     owned.push(material);
-    return {mesh,baked,bakedMap,material:baked.material as MeshBasicMaterial};
+    return {mesh,plain};
   });
   const floor=parts.get('corridor-floor');let floorUniforms:Shared|null=null;
   if(floor){
@@ -283,24 +267,23 @@ export function createCorridorScreens(parts:Map<string,Part>,textures:[Texture,T
     floorUniforms=patchFloor(floor.material,shared);
   }
   const datumPart=parts.get('corridor-roof-datums'),datum=datumPart?patchDatum(datumPart,start):null;
-  const sink={value:0},mullions=createMullions(bases,start,sink,environment);owned.push(mullions.geometry,mullions.material as Material);
-  const displays=createDisplays(bases[0]),power=createDisplayPower();owned.push(displays);
+  if(datum)datum.uScreenGlass.value=1;
+  const mullions=createMullions(bases,start,environment);owned.push(mullions.geometry,mullions.material as Material);
   return {
-    start,panels,objects:[...screens.map(screen=>screen.mesh),mullions,...displays.meshes],
-    centreline,displays,power,
-    /** Apply this frame's panel values and leave/return transition. */
-    apply(off:number,baked:number){
-      displays.apply(power.values,off);
-      displays.meshes.forEach(mesh=>{mesh.visible=baked<1;});
+    start,panels,objects:[...screens.map(screen=>screen.mesh),mullions],
+    centreline,
+    /** Diagnostics: the inner wall's ink pre-stretch (1 = none), for before/after review. */
+    inkStretch(value:number){inks[1].uScreenInkStretch.value=value;},
+    /** Apply this frame's panel values and the closing as the camera leaves the corridor. */
+    apply(off:number){
       if(panels.dirty){panelTexture.needsUpdate=true;panels.clean();}
-      shared.uScreenOff.value=off;shared.uScreenBaked.value=baked;sink.value=baked;
+      shared.uScreenOff.value=off;
+      // Set each frame: a remount (React dev double-mount) runs dispose, which shows the plain meshes again.
+      screens.forEach(screen=>{screen.mesh.visible=true;screen.plain.visible=false;});
+      if(datum)datum.uScreenGlass.value=1;
       if(floorUniforms){floorUniforms.uScreenPanels.value=panelTexture;floorUniforms.uScreenCount.value=count;floorUniforms.uScreenEnd.value=shared.uScreenEnd.value;floorUniforms.uScreenOff.value=off;}
-      if(datum)datum.uScreenBaked.value=baked;
-      const showBaked=baked>=1;
-      screens.forEach(screen=>{screen.bakedMap.value=screen.material.map;screen.mesh.visible=!showBaked;screen.baked.visible=showBaked;});
-      mullions.visible=!showBaked;
     },
-    dispose(){screens.forEach(screen=>{screen.baked.visible=true;});if(datum)datum.uScreenBaked.value=1;owned.forEach(item=>item.dispose());},
+    dispose(){screens.forEach(screen=>{screen.plain.visible=true;});if(datum)datum.uScreenGlass.value=0;owned.forEach(item=>item.dispose());},
   };
 }
 export type CorridorScreens=NonNullable<ReturnType<typeof createCorridorScreens>>;

@@ -18,7 +18,7 @@ const PEARL_SPIN=.42;
 const MORPH_SECONDS=2;
 const pearlTilt=(spin:number)=>.13*Math.sin(spin*.5);
 
-const visiblePhases=new Set<JourneyPhase>(["screensDone","corridor","panel"]);
+const visiblePhases=new Set<JourneyPhase>(["corridor","panel"]);
 
 /** A single closed surface turns into the first section in one continuous shot. */
 export default function CorridorPage({phase}:{phase:JourneyPhase}){

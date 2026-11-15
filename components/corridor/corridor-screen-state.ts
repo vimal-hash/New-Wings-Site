@@ -4,29 +4,28 @@ export const SCREEN_WALL={
   smallPanels:6,      // small panels beside the projector floor
   bottom:.3,          // small panels: plinth top, world y
   top:7.46,           // small panels: just below the existing roof datum at y 7.68
-  litTop:20,          // big screen: lit display top (user-marked level); its glass fills the whole wall
+  litTop:28.2,        // big screen: lit to just below the wall cap (y 28.33), so the whole wall is white
+  bigSections:8,      // the big screen opens part by part, like the small panels, in 8 wide sections
+  bigLength:226,      // measured big-screen arc: split (30.1) to the longer wall's end (256.1)
+  bigTrigger:.5,      // fraction of a big section the camera passes before it powers on
   openSeconds:1.05,   // centre line, vertical opening and settle
   stagger:.14,        // per-screen random start delay
   triggerInset:.15,   // fraction of a small panel the camera passes before a screen powers on
 } as const;
-/** Arc length of one small panel. Screen k < smallPanels is small; the last screen is the big one. */
+/** Arc length of one small panel. Screens k < smallPanels are small; the rest are big-screen sections. */
 export const SMALL_PANEL=SCREEN_WALL.split/SCREEN_WALL.smallPanels;
-export const SCREEN_COUNT=SCREEN_WALL.smallPanels+1;
+/** Arc length of one big-screen section (no mullion: a soft seam in the shader). */
+export const BIG_SECTION=SCREEN_WALL.bigLength/SCREEN_WALL.bigSections;
+export const SCREEN_COUNT=SCREEN_WALL.smallPanels+SCREEN_WALL.bigSections;
 /** Arc where screen k begins. */
-export const screenStart=(k:number)=>Math.min(k,SCREEN_WALL.smallPanels)*SMALL_PANEL;
+export const screenStart=(k:number)=>k<=SCREEN_WALL.smallPanels?k*SMALL_PANEL:SCREEN_WALL.split+(k-SCREEN_WALL.smallPanels)*BIG_SECTION;
+/** Camera arc at which screen k powers on. */
+export const screenTrigger=(k:number)=>screenStart(k)+(k<SCREEN_WALL.smallPanels?SCREEN_WALL.triggerInset*SMALL_PANEL:SCREEN_WALL.bigTrigger*BIG_SECTION);
 
-/** Mid-corridor stop, by route arc from the theatre stop. The camera keeps facing down the
- *  corridor and looks up a little over the last `approach` units of travel. */
-export const CORRIDOR_STOP={arc:132,yaw:0,pitch:5,approach:34} as const;
-/** The original two film areas: rocket farther away, car nearer the corridor stop.
- *  Transparent films sit directly on the lit wall, without black display backdrops. */
-export const FEATURE_DISPLAYS=[
-  {arc:CORRIDOR_STOP.arc-36,width:16,bottom:.4,top:11.4,bezel:0},
-  {arc:CORRIDOR_STOP.arc-18,width:16,bottom:.4,top:11.4,bezel:0},
-] as const;
-
+/** Where the corridor walk's two legs meet (no stop), by route arc from the theatre stop. */
+export const CORRIDOR_STOP={arc:132} as const;
 /** Phases where the camera is in the corridor and may switch panels on. */
-const LIVE=new Set(['screens','screensDone','corridor','panel','page','pageReturnLoading']);
+const LIVE=new Set(['screens','corridor','panel','page','pageReturnLoading']);
 
 /** Arc length of the nearest point on an xz polyline; extends linearly past both ends. */
 export function createArcProjector(points:readonly (readonly [number,number])[]){
@@ -79,7 +78,7 @@ export function createScreenPanels(count:number=SCREEN_COUNT){
       if(!LIVE.has(phase)&&phase!=='logoReveal'&&phase!=='logoDone'){this.reset();return false;}
       clock+=Math.max(0,Math.min(.05,seconds));
       if(LIVE.has(phase)&&inside){
-        for(let side=0;side<2;side++)for(let i=0;i<count&&cameraArc>=screenStart(i)+SCREEN_WALL.triggerInset*SMALL_PANEL;i++){
+        for(let side=0;side<2;side++)for(let i=0;i<count&&cameraArc>=screenTrigger(i);i++){
           const k=side*count+i;if(Number.isFinite(starts[k]))continue;
           starts[k]=clock+(reduce?-SCREEN_WALL.openSeconds:hash(i,side)*SCREEN_WALL.stagger);
         }
@@ -96,41 +95,13 @@ export function createScreenPanels(count:number=SCREEN_COUNT){
   };
 }
 
-/** Lit fraction of a display's height for power p: matches the shader's vertical opening. */
-export function displayOpen(p:number){
-  if(p<=0)return 0;
-  const open=Math.max(0,Math.min(1,(p-.14)/.62));
-  return 1-(1-open)**3;
-}
-
-/** Power of the two feature displays (0..1 opening progress). They stay on while the camera is in the corridor. */
-export function createDisplayPower(){
-  const values=[0,0],starts=[Infinity,Infinity];let clock=0;
-  return {
-    values,
-    reset(){starts.fill(Infinity);values.fill(0);},
-    /** routeArc is the camera's absolute route arc; `stopped` once the camera rests at the stop or beyond. */
-    advance(phase:string,routeArc:number,stopped:boolean,seconds:number,reduce:boolean){
-      if(!LIVE.has(phase)&&phase!=='logoReveal'&&phase!=='logoDone'){this.reset();return false;}
-      clock+=Math.max(0,Math.min(.05,seconds));
-      if(LIVE.has(phase))FEATURE_DISPLAYS.forEach((display,k)=>{
-        if(starts[k]!==Infinity)return;
-        if(k===0?routeArc>=display.arc-display.width/2:stopped)starts[k]=reduce?-Infinity:clock;
-      });
-      let animating=false;
-      starts.forEach((start,k)=>{if(start===Infinity)return;values[k]=Math.min(1,(clock-start)/SCREEN_WALL.openSeconds);if(values[k]<1)animating=true;});
-      return animating;
-    },
-  };
-}
-
 const smooth=(a:number,b:number,x:number)=>{const t=Math.max(0,Math.min(1,(x-a)/(b-a)));return t*t*(3-2*t);};
 
-/** Leaving the corridor: panels close back to their centre line, then the
- *  approved baked wall returns well before View 1 (slide .985). */
+/** Leaving the corridor: panels close back to their centre line as the camera climbs the slide.
+ *  The walls stay closed display glass; no baked wall texture returns. */
 export function screenTransition(phase:string,stage:string,progress:number){
-  if(phase==='logoDone')return {off:1,baked:1};
-  if(phase!=='logoReveal')return {off:0,baked:0};
-  if(stage!=='slide')return {off:1,baked:1};
-  return {off:smooth(.04,.36,progress),baked:smooth(.34,.6,progress)};
+  if(phase==='logoDone')return {off:1};
+  if(phase!=='logoReveal')return {off:0};
+  if(stage!=='slide')return {off:1};
+  return {off:smooth(.04,.36,progress)};
 }

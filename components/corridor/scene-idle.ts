@@ -11,7 +11,7 @@ const queue=new Map<()=>void,{priority:number;allowed:()=>boolean}>();let timer:
 const input=(event:Event)=>{if(event.type!=="pointermove"||(event as PointerEvent).buttons)lastInput=performance.now();};
 // The HTML page still covers the scene during pageReturnLoading. Critical mounts
 // must run here: its transition waits for projector readiness before moving.
-const settled=new Set(["idle","done","screensDone","awaitAssembly","panel","logoDone","pageReturnLoading"]);
+const settled=new Set(["idle","done","awaitAssembly","panel","logoDone","pageReturnLoading"]);
 // The HTML sections cover the scene. Return preparation can use quiet frames
 // there on every tier while the visitor reads.
 let phone:boolean|undefined;
@@ -31,7 +31,7 @@ function tick(){
     // Give the phone's projector reveal its first frames before starting the eye and HTML sections.
     const projectorJustRevealed=shot.phase==="done"&&isPhone()&&now-phaseSince<1250;
     const phoneMorph=shot.phase==="panel"&&isPhone();
-    const next=[...queue].filter(([,job])=>job.allowed()&&(!holding||job.priority<=OPENING_PROJECTOR_PRIORITY)&&(!waitingForProjector||job.priority<=0)&&!lightsRising&&(!(projectorJustRevealed||phoneMorph)||job.priority<15)&&(job.priority<20||reviewing||["done","screensDone","panel","logoDone","page","pageReturnLoading"].includes(shot.phase))).sort((a,b)=>a[1].priority-b[1].priority)[0];
+    const next=[...queue].filter(([,job])=>job.allowed()&&(!holding||job.priority<=OPENING_PROJECTOR_PRIORITY)&&(!waitingForProjector||job.priority<=0)&&!lightsRising&&(!(projectorJustRevealed||phoneMorph)||job.priority<15)&&(job.priority<20||reviewing||["done","panel","logoDone","page","pageReturnLoading"].includes(shot.phase))).sort((a,b)=>a[1].priority-b[1].priority)[0];
     if(next){queue.delete(next[0]);next[0]();}
   }
   if(queue.size)timer=setTimeout(tick,80);

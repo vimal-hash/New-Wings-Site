@@ -14,7 +14,6 @@ import {compileHiddenGPU,compileHiddenGPUGradually,prepareHiddenGPU,prepareMobil
 import {traceMark,traceSpan} from "../loading-trace";
 import {assetURL} from "../asset-url";
 import {configureBakedTextureLoader} from "../baked-texture-loader";
-import {isMobileDevice} from "../texture-quality";
 import {pageReturn} from "../page-exit";
 import {eyeDimensions,loadEyePoints} from "./field";
 import assets from "./assets.json";
@@ -23,9 +22,8 @@ import {createDepthField,createDepthLayout,depthLayerVisibility} from "./depth-f
 import {HERO_WAVE_GLSL,pupilPulseUniforms} from "../pupil-pulse-state";
 import {GRAIN_REACTION,GRAIN_REACTION_GLSL,GRAIN_OPTICS_GLSL} from "../pupil-grain-reaction";
 
-const preparationPhases=new Set<JourneyPhase>(["screensDone","corridor","panel","page","pageReturnLoading","logoReveal","logoDone"]);
-// Phones walk the corridor without a stop: the eye mounts only once the HTML page covers the scene.
-const phonePreparationPhases=new Set<JourneyPhase>(["done","screens","corridor","panel","page","pageReturnLoading","logoReveal","logoDone"]);
+// The corridor has no stop: the eye mounts at the projector stop; its heavy work waits for resting stops (scene idle).
+const preparationPhases=new Set<JourneyPhase>(["done","screens","corridor","panel","page","pageReturnLoading","logoReveal","logoDone"]);
 const visiblePhases=new Set<JourneyPhase>(["logoReveal","logoDone"]);
 const vertexShader=/* glsl */`
 precision highp float;
@@ -292,6 +290,5 @@ export function AuthoredEyeField({active,review=false,qualityOverride,moving=tru
 }
 export default function LogoParticleEye({enabled=true}:{enabled?:boolean}) {
   const journey=useSyncExternalStore(journeyControls.subscribe,journeyControls.read,journeyControls.read);
-  const phases=isMobileDevice()?phonePreparationPhases:preparationPhases;
-  return enabled&&phases.has(journey.phase)?<AuthoredEyeField active={visiblePhases.has(journey.phase)}/>:null;
+  return enabled&&preparationPhases.has(journey.phase)?<AuthoredEyeField active={visiblePhases.has(journey.phase)}/>:null;
 }

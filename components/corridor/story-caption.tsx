@@ -13,7 +13,6 @@ const CHAPTERS: Record<string, Omit<Chapter, "key">> = {
   theatre: { line: "Lights down. The room goes quiet. This is the moment we build for.", hint: "Hover the room · Scroll to step back" },
   parts: { line: "Every picture starts as light. Here is everything that makes it.", hint: "Hover a part · Scroll to put it together" },
   projector: { line: "Put together, it sends one clean beam to the screen.", hint: "Scroll on" },
-  plan: { line: "Every room begins as lines. Seats, screen and sound find their place first.", hint: "Scroll on" },
   closer: { line: "Look closer. Our mark is made of light, like everything on the screen.", hint: "Scroll on" },
   eye: { line: "From the side, the wings become an eye. We build for people who love to watch.", hint: "Scroll on" },
   vision: { line: "Every light we place and every seat we fit serves one thing: the story.", hint: "Scroll to see where we are going" },
@@ -28,7 +27,6 @@ export function chapterFor(j: Snapshot): Chapter | null {
     case "idle": return pick("theatre");
     case "awaitAssembly": return pick("parts");
     case "done": return pick("projector");
-    case "screensDone": return pick("plan");
   }
   if (!LOGO.has(j.phase) || j.cameraMoving || j.pageReturning || j.finalCovered) return null;
   if (j.revealStage === "slide" || j.revealStage === "top") return pick("closer");

@@ -18,7 +18,7 @@ export const diagnosticsEnabled = () => enabled;
 
 const frameColumns = ["atMs", "intervalMs", "phase", "stage", "cameraMoving", "pageScrollPx", "canvasWidth", "canvasHeight", "mainSubmissions", "offscreenSubmissions", "submissionMs", "section"] as const;
 type RecordedFrame = [number, number | null, string, string | number | null, boolean, number | null, number | null, number | null, number, number, number, string];
-const sectionNames:Record<JourneyPhase,string>={intro:"Theatre opening",idle:"Theatre seat",glassesExit:"Theatre to projector",pullback:"Theatre to projector",hold:"Theatre to projector",approach:"Projector",reveal:"Projector",awaitAssembly:"Projector",returnHold:"Projector",return:"Projector",done:"Projector",screens:"Corridor",screensDone:"Corridor",corridor:"Corridor",panel:"Liquid sphere",page:"Sections",pageReturnLoading:"Return to eye",logoReveal:"Eye approach",logoDone:"Full eye"};
+const sectionNames:Record<JourneyPhase,string>={intro:"Theatre opening",idle:"Theatre seat",glassesExit:"Theatre to projector",pullback:"Theatre to projector",hold:"Theatre to projector",approach:"Projector",reveal:"Projector",awaitAssembly:"Projector",returnHold:"Projector",return:"Projector",done:"Projector",screens:"Corridor",corridor:"Corridor",panel:"Liquid sphere",page:"Sections",pageReturnLoading:"Return to eye",logoReveal:"Eye approach",logoDone:"Full eye"};
 const pageSections=["Products","About Us","Team","Testimonials"];
 type JourneyRecording = {
   startedAtMs: number; frames: RecordedFrame[];

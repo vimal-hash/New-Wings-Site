@@ -5357,8 +5357,6 @@
       "item": "corridor-wall-red",
       "active": true,
       "source": "corridor",
-      "uv": "/textures/corridor/wall-red/corridor-wall-red-uv.bin",
-      "texture": "/textures/corridor/wall-red/corridor-left-clean-2k-v2.ktx2",
       "ids": [
         {
           "name": "Red corridor wall • separate from logo",
@@ -5368,25 +5366,12 @@
         }
       ],
       "triangles": 580,
-      "atlas": [
-        1024,
-        2048
-      ],
-      "bytes": {
-        "uv": 1220,
-        "texture": 656032
-      },
-      "imageSize": [
-        2048,
-        2048
-      ]
+      "note": "Plain mesh: the corridor display-glass walls draw it; no bake texture (removed 2026-11-14)."
     },
     {
       "item": "corridor-wall-connecting",
       "active": true,
       "source": "corridor",
-      "uv": "/textures/corridor/wall-connecting/corridor-wall-connecting-uv.bin",
-      "texture": "/textures/corridor/wall-connecting/corridor-wall-connecting-light-2k.ktx2",
       "ids": [
         {
           "name": "Connecting plane • joins yellow tip",
@@ -5396,18 +5381,7 @@
         }
       ],
       "triangles": 580,
-      "atlas": [
-        1024,
-        2048
-      ],
-      "bytes": {
-        "uv": 1220,
-        "texture": 872645
-      },
-      "imageSize": [
-        2048,
-        2048
-      ]
+      "note": "Plain mesh: the corridor display-glass walls draw it; no bake texture (removed 2026-11-14)."
     },
     {
       "item": "corridor-roof-datums",

@@ -72,7 +72,7 @@ export default function SectionFlight({device,interactive,first,second,startAtEn
     };
     const made:RopeLink&{entry:number;dispose():void}={
       entry,startZ:startAtEnd?-END_DOOR:home,covered:true,wake:null,
-      shouldWarm(){const phase=journeyControls.read().phase;return interactive.current||phase==="done"||phase==="screensDone"||phase==="page";},
+      shouldWarm(){const phase=journeyControls.read().phase;return interactive.current||phase==="done"||phase==="page";},
       attach(found){
         element=found;found.style.overflowY=acceptsEarlyScroll?"auto":"hidden";found.tabIndex=-1;
         found.scrollTop=startAtEnd?found.scrollHeight:0;whiteOut(share());

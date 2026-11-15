@@ -39,7 +39,7 @@ const HOLD_SECONDS=.25;
 /** Menu destinations: 1-4 are the page sections. */
 export type JumpTarget="theatre"|"projector"|"final"|1|2|3|4;
 /** Scrolling back: each leg in reverse, eased at both ends. */
-const BACK_SECONDS={screens:2.6,return:2.1,approach:1.7,pullback:2.6} as const;
+const BACK_SECONDS={return:2.1,approach:1.7,pullback:2.6} as const;
 /** Same duration, but the move gets going a little sooner and spends longer gliding into its stop. */
 const settle = (t: number) => smooth(Math.pow(t,.8));
 const screensIndex = route.samples.findIndex(sample => sample.position[2] <= -55 + reference.stop[2] + 14.2);
@@ -51,17 +51,15 @@ const passageArcs = route.samples.slice(screensIndex).reduce<number[]>((arcs, sa
 }, []);
 const PASSAGE_LENGTH = passageArcs[passageArcs.length-1];
 const STOP_ARC = CORRIDOR_STOP.arc - route.samples.slice(0, screensIndex+1).reduce((arc, sample, i, all) => i ? arc + Math.hypot(sample.position[0]-all[i-1].position[0], sample.position[2]-all[i-1].position[2]) : 0, 0);
-/** Slow, eased corridor legs: into the stop by the displays, then on to the liquid. */
+/** One unbroken walk through the corridor (no stop): it speeds up over the first leg and eases out
+ *  over the second, which starts at the first leg's end speed. `leave` also sets the page-return pace. */
 const CORRIDOR_MOVE = { arrive: 2.6, leave: 2.4 } as const;
 const CORRIDOR_EXIT_SPEED = (PASSAGE_LENGTH-STOP_ARC)/CORRIDOR_MOVE.leave;
-const lookYaw = new Quaternion(), lookPitch = new Quaternion(), worldUp = new Vector3(0,1,0), localSide = new Vector3(1,0,0);
-/** Passage pose at an arc from its start. `look` turns toward the left-wall displays and up a little. */
-function corridorPose(arc: number, look: number, position: Vector3, rotation: Quaternion) {
+/** Passage pose at an arc from its start. */
+function corridorPose(arc: number, position: Vector3, rotation: Quaternion) {
   let i = 1; while (i < passageArcs.length-1 && passageArcs[i] < arc) i++;
   const t = Math.max(0, Math.min(1, (arc-passageArcs[i-1]) / ((passageArcs[i]-passageArcs[i-1]) || 1e-9)));
   passage.sample((i-1+t) / (passageArcs.length-1), position, rotation);
-  lookYaw.setFromAxisAngle(worldUp, look*CORRIDOR_STOP.yaw*Math.PI/180);lookPitch.setFromAxisAngle(localSide, look*CORRIDOR_STOP.pitch*Math.PI/180);
-  rotation.premultiply(lookYaw).multiply(lookPitch);
 }
 export const PAGE_POSE = (() => {
   const position = new Vector3(), rotation = new Quaternion();
@@ -74,7 +72,7 @@ export const PAGE_POSE = (() => {
 export default function FullJourney({ metrics, orbit }: { metrics: MetricsStore; orbit: boolean }) {
   const { camera, invalidate, size,scene,gl } = useThree();
   const projectorTravel=effectQuality(gl)==="desktop"?2.85:2;
-  /** Phones: the projector simply appears at the pulled-back stop (no fly-in, particles or assembly), and the corridor has no glasses stop. */
+  /** Phones: the projector simply appears at the pulled-back stop (no fly-in, particles or assembly). */
   const phone=effectQuality(gl)==="mobile";
   const livingLens=useMemo(()=>createViewOneLens(),[]),lensTouch=useRef(false);
   useEffect(()=>{
@@ -109,8 +107,7 @@ export default function FullJourney({ metrics, orbit }: { metrics: MetricsStore;
     const returned=centre.clone().add(new Vector3(0,.1,-6));
     return { centre, wide: centre.clone().add(new Vector3(0,.25,-9.5)), close: centre.clone().add(new Vector3(-2.7,1.8,-2.7)), returned, screens: new Vector3().fromArray(route.samples[screensIndex].position).setY(centre.y+.1), position: new Vector3(), rotation: new Quaternion(),
       // Canonical resting poses, so scrolling back (or a menu jump) never depends on how the visitor arrived.
-      seat: new Vector3(...OPENING_CAMERA_END), seatFocus: new Vector3(reference.screenCentre[0],OPENING_CAMERA_END[1],reference.screenCentre[2]),
-      doneRotation: new Quaternion().setFromRotationMatrix(new Matrix4().lookAt(returned,centre,new Vector3(0,1,0))) };
+      seat: new Vector3(...OPENING_CAMERA_END), seatFocus: new Vector3(reference.screenCentre[0],OPENING_CAMERA_END[1],reference.screenCentre[2]) };
   }, []);
   useEffect(() => {
     const s = state.current;
@@ -209,14 +206,11 @@ export default function FullJourney({ metrics, orbit }: { metrics: MetricsStore;
         return;
       }
       if(distance<0){
-        // Scrolling back plays each step in reverse: corridor -> projector -> parts -> theatre.
-        if(!["awaitAssembly","done","screensDone"].includes(s.phase))return;
+        // Scrolling back plays each step in reverse: projector -> parts -> theatre.
+        if(!["awaitAssembly","done"].includes(s.phase))return;
         s.amount=0;s.backAmount+=Math.min(-distance,100);if(s.backAmount<100)return;s.backAmount=0;
         s.back=true;
-        if(s.phase==="screensDone"){
-          cinemaGlasses.toggle(1,s.reduce);
-          s.from.copy(points.returned);s.q.copy(points.doneRotation);s.lead=s.from.distanceTo(points.screens);phase("screens");
-        }else if(s.phase==="done"&&phone){
+        if(s.phase==="done"&&phone){
           projectorControls.set("hidden");
           s.from.copy(points.seat);s.to.copy(points.wide);s.fromFocus.copy(points.seatFocus);s.focus.copy(points.centre);phase("pullback");
         }else if(s.phase==="done"){
@@ -229,7 +223,7 @@ export default function FullJourney({ metrics, orbit }: { metrics: MetricsStore;
         s.lockedUntil=Math.max(s.lockedUntil,now+220);return;
       }
       s.backAmount=0;
-      if(!["idle","awaitAssembly","done","screensDone"].includes(s.phase))return;
+      if(!["idle","awaitAssembly","done"].includes(s.phase))return;
       s.amount+=Math.min(distance,100);if(s.amount<100)return;s.amount=0;
       if(s.phase==="idle") { traceMark("Theatre to projector gesture");cinemaGlasses.toggle(1,s.reduce);journeyControls.update({cinemaStage:'removing'});phase("glassesExit"); }
       else if(s.phase==="awaitAssembly") projectorControls.play("assembling");
@@ -237,8 +231,6 @@ export default function FullJourney({ metrics, orbit }: { metrics: MetricsStore;
         if(!metrics.read().corridorReady) {s.pendingScreens=true;sceneIdleUrgent.value=true;metrics.update({waitingForCorridor:true});invalidate();return;}
         s.from.copy(camera.position);s.q.copy(camera.quaternion);s.lead=s.from.distanceTo(points.screens);phase("screens");
       }
-      // Glasses lift first; the camera leaves for the liquid once they are nearly clear.
-      else if(s.phase==="screensDone") { cinemaGlasses.toggle(1,s.reduce);phase("corridor"); }
       s.lockedUntil=Math.max(s.lockedUntil,now+220);
     };
     const tuningInput=(e:Event)=>e.target instanceof Element&&!!e.target.closest('[data-cinema-controls]');
@@ -366,7 +358,7 @@ export default function FullJourney({ metrics, orbit }: { metrics: MetricsStore;
       // Background GPU preparation waits until the glide has settled (scene-idle).
       if(moving){invalidate();sceneMotion.at=performance.now();}
     }
-    if(["idle","reveal","awaitAssembly","done","screensDone","panel","page"].includes(s.phase))return;
+    if(["idle","reveal","awaitAssembly","done","panel","page"].includes(s.phase))return;
     s.elapsed+=dt;
     if(s.phase==="glassesExit"){
       // Follow the glasses' own motion, so a slow frame cannot cut the lift short.
@@ -389,24 +381,27 @@ export default function FullJourney({ metrics, orbit }: { metrics: MetricsStore;
     if(s.phase==="hold") {leadStageLighting(1,0);if(s.elapsed<HOLD_SECONDS){invalidate();return;}
       s.from.copy(camera.position);s.fromFocus.copy(s.focus);s.to.copy(points.close);change("approach");}
     if(s.phase==="returnHold") {if(s.reduce?s.elapsed<1:!s.assemblySettled&&s.elapsed<6||s.assemblySettled&&s.elapsed<.45){invalidate();return;}s.from.copy(camera.position);s.fromFocus.copy(s.focus);s.to.copy(points.returned);change("return");}
-    if((s.phase==="corridor"||s.phase==="screens"&&s.back)&&cinemaGlasses.position<GLASSES_EXIT.liftedAt&&!s.reduce){s.elapsed=0;invalidate();return;}
-    const duration=s.back?BACK_SECONDS[s.phase as keyof typeof BACK_SECONDS]??1:s.phase==="approach"?1.4:s.phase==="corridor"?CORRIDOR_MOVE.leave:s.phase==="screens"?CORRIDOR_MOVE.arrive:s.phase==="return"?.9:s.phase==="pullback"?projectorTravel:.5;
-    const t=s.reduce?1:Math.min(1,s.elapsed/duration), eased=s.back?1-smooth(t):phone&&s.phase==="screens"?t*t:phone&&s.phase==="corridor"?1-(1-t)*(1-t):settle(t);// phones: one unbroken walk, speeding up then easing out
+    // No stop at the join: the first leg's leftover time carries straight into the second in the same frame.
+    if(s.phase==="screens"&&!s.back&&!s.reduce&&s.elapsed>=CORRIDOR_MOVE.arrive){const over=s.elapsed-CORRIDOR_MOVE.arrive;change("corridor");s.elapsed=over;}
+    // The second corridor leg starts at the first leg's end speed (2·distance/duration for both easings).
+    const leave=CORRIDOR_MOVE.arrive*(PASSAGE_LENGTH-STOP_ARC)/Math.max(1,s.lead+STOP_ARC);
+    const duration=s.back?BACK_SECONDS[s.phase as keyof typeof BACK_SECONDS]??1:s.phase==="approach"?1.4:s.phase==="corridor"?leave:s.phase==="screens"?CORRIDOR_MOVE.arrive:s.phase==="return"?.9:s.phase==="pullback"?projectorTravel:.5;
+    const t=s.reduce?1:Math.min(1,s.elapsed/duration), eased=s.back?1-smooth(t):s.phase==="screens"?t*t:s.phase==="corridor"?1-(1-t)*(1-t):settle(t);// corridor: one unbroken walk, speeding up then easing out
     if(s.back&&(s.phase==="approach"||s.phase==="pullback"))restoreStageLighting(s.phase==="approach"?.35*t:.35+.65*t);
     else if(!s.back&&s.phase==="pullback")leadStageLighting(theatrePullbackDim(t),0);
     else if(!s.back&&s.phase==="approach")leadStageLighting(1,smooth(t));
     if(s.phase==="screens") {
-      // One move from the projector: into the passage, along it, easing into the stop by the displays.
-      const total=s.lead+STOP_ARC,u=eased*total,look=smooth(Math.max(0,Math.min(1,(u-total+CORRIDOR_STOP.approach)/CORRIDOR_STOP.approach)));
-      corridorPose(Math.max(0,u-s.lead),phone?0:look,points.position,points.rotation);
+      // First leg from the projector: into the passage and along it to the middle.
+      const total=s.lead+STOP_ARC,u=eased*total;
+      corridorPose(Math.max(0,u-s.lead),points.position,points.rotation);
       if(u<s.lead)points.position.lerpVectors(s.from,points.screens,u/s.lead);
       camera.position.copy(points.position).setY(points.returned.y);
       camera.quaternion.copy(s.q).slerp(points.rotation,smooth(Math.min(1,u/(s.lead+12))));
       metrics.update({progress:eased*STOP_ARC/PASSAGE_LENGTH});
     } else if(s.phase==="corridor") {
-      // From the stop on to the liquid; the look toward the displays unwinds as the camera leaves.
+      // Second leg, without stopping: on to the liquid.
       const u=eased*(PASSAGE_LENGTH-STOP_ARC);
-      corridorPose(STOP_ARC+u,phone?0:1-smooth(Math.min(1,u/CORRIDOR_STOP.approach)),points.position,points.rotation);
+      corridorPose(STOP_ARC+u,points.position,points.rotation);
       camera.position.copy(points.position).setY(points.returned.y);camera.quaternion.copy(points.rotation);
       metrics.update({progress:(STOP_ARC+u)/PASSAGE_LENGTH});
     } else {
@@ -419,8 +414,7 @@ export default function FullJourney({ metrics, orbit }: { metrics: MetricsStore;
     }
     invalidate();
     if(t===1&&s.back){
-      if(s.phase==="screens"){s.focus.copy(points.centre);s.back=false;change("done");}
-      else if(s.phase==="return"){s.back=false;change("awaitAssembly");}
+      if(s.phase==="return"){s.back=false;change("awaitAssembly");}
       else if(s.phase==="approach"){s.from.copy(points.seat);s.to.copy(points.wide);s.fromFocus.copy(points.seatFocus);change("pullback");}
       else if(s.phase==="pullback"){
         s.back=false;s.focus.copy(points.seatFocus);restoreStageLighting(1);
@@ -437,10 +431,8 @@ export default function FullJourney({ metrics, orbit }: { metrics: MetricsStore;
       }
       else if(s.phase==="approach"){change("reveal");queueMicrotask(()=>projectorControls.play("particles"));}
       else if(s.phase==="return")change("done");
-      // At the stop the near display powers on and the glasses come down with it.
-      // Phones have no display stop: the walk carries straight on toward the liquid.
-      else if(s.phase==="screens"&&phone)change("corridor");
-      else if(s.phase==="screens"){cinemaGlasses.toggle(0,s.reduce);change("screensDone");}
+      // No stop in the corridor: the walk carries straight on toward the liquid.
+      else if(s.phase==="screens")change("corridor");
       else if(s.phase==='corridor'){
         change('panel');queueMicrotask(()=>journeyControls.update({panelStage:1}));
       }

@@ -3,7 +3,6 @@ import type { WebGLRenderer } from "three";
 const desktopTextures: Record<string, string> = {
   "/textures/theatre/ceiling/ceiling-light-2k.ktx2": "/textures/theatre/ceiling/ceiling-compressed-6k.ktx2",
   "/textures/theatre/floor/floor-slab-balanced-2048.ktx2": "/textures/theatre/floor/floor-slab-compressed-6k.ktx2",
-  "/textures/corridor/wall-red/corridor-left-clean-2k-v2.ktx2": "/textures/corridor/wall-red/corridor-left-clean-6k-v2.ktx2",
   "/textures/corridor/floor/corridor-floor-light-2k.ktx2": "/textures/corridor/floor/corridor-floor-compressed-6k.ktx2",
 };
 

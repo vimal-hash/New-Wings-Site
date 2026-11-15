@@ -68,7 +68,7 @@ export default function CorridorExperience({ view = "corridor" }: { view?: Study
   const fullPage = journey.phase === "page" || journey.phase === "pageReturnLoading" || journey.pageReturning;
   const [prepareFlight,setPrepareFlight]=useState(false);
   useEffect(()=>{
-    if(!isCorridor||!["done","screensDone"].includes(journey.phase)||ropeFlightDevice()!=="desktop")return;
+    if(!isCorridor||journey.phase!=="done"||ropeFlightDevice()!=="desktop")return;
     // Desktop flies the rope GLB. It used to load and parse only when the pages opened (a ~210 ms freeze on that
     // move); parse it at a resting stop into the same R3F loader cache rope-model.tsx reads (same loader + URL).
     return scheduleSceneIdle(()=>{void Promise.all([import("@react-three/fiber"),import("three/examples/jsm/loaders/GLTFLoader.js"),import("three/examples/jsm/libs/meshopt_decoder.module.js"),import("../rope-model/rope-model")])
@@ -77,18 +77,18 @@ export default function CorridorExperience({ view = "corridor" }: { view?: Study
     },20);
   },[isCorridor,journey.phase]);
   useEffect(()=>{
-    if(!isCorridor||!["awaitAssembly","done","screensDone"].includes(journey.phase)||ropeFlightDevice()!=="laptop")return;
+    if(!isCorridor||!["awaitAssembly","done"].includes(journey.phase)||ropeFlightDevice()!=="laptop")return;
     void import("../rope-laptop/laptop-data").then(({preloadLaptopFlight})=>preloadLaptopFlight())
       .catch(()=>{}); // The visible flight can retry a failed preload.
   },[isCorridor,journey.phase]);
   useEffect(()=>{
-    if(!isCorridor||prepareFlight||!["done","screensDone"].includes(journey.phase))return;
+    if(!isCorridor||prepareFlight||journey.phase!=="done")return;
     const device=ropeFlightDevice();
     // Mount the page and its film reel while the camera is resting so the
     // liquid handoff only has to reveal them.
     return scheduleSceneIdle(()=>setPrepareFlight(true),device==="mobile"?12:20);
   },[isCorridor,journey.phase,prepareFlight]);
-  const hiddenFlight=prepareFlight&&["done","screens","screensDone","corridor","panel"].includes(journey.phase);
+  const hiddenFlight=prepareFlight&&["done","screens","corridor","panel"].includes(journey.phase);
 
   useEffect(() => {
     const timer = window.setInterval(() => {
@@ -129,10 +129,6 @@ export default function CorridorExperience({ view = "corridor" }: { view?: Study
         {journey.phase==="logoDone"&&<button type="button" onClick={()=>window.dispatchEvent(new Event('eye-pupil-replay'))}
           style={{padding:"8px 14px",border:"1px solid #4d5963",borderRadius:6,background:"#111820",color:"#fff",fontSize:12,cursor:"pointer"}}>Replay light</button>}
       </nav>}
-      {isCorridor&&!['panel','page','pageReturnLoading','logoReveal','logoDone'].includes(journey.phase)&&<nav aria-label="Temporary glasses controls" data-cinema-controls style={{position:'fixed',bottom:166,left:'50%',transform:'translateX(-50%)',display:'flex',gap:8,zIndex:5}}>
-        {(['remove','wear'] as const).map(action=><button key={action} type="button" onClick={()=>window.dispatchEvent(new CustomEvent('cinema-glasses-action',{detail:action}))}
-          style={{padding:'8px 14px',border:'1px solid #4d5963',borderRadius:6,background:'#111820',color:'#fff',fontSize:12,cursor:'pointer'}}>{action==='remove'?'Remove glasses':'Wear 3D glasses'}</button>)}
-      </nav>}
       <ProjectorButtons />
       {isCorridor&&<CinemaPanel/>}
       {snapshot.waitingForProjector&&<div className="scene-wait" role="status">Preparing projector…</div>}
@@ -167,7 +163,7 @@ export default function CorridorExperience({ view = "corridor" }: { view?: Study
         </>}
       </aside>
       <footer className="study-footer">
-        <span>{isCorridor ? journey.phase === "logoDone" ? "FULL LOGO" : journey.phase === "logoReveal" ? ({slide:"SCROLL UP THE SLIDE",top:"SCROLL TO TURN",turn:"TURNING TOWARD LOGO",turned:"SCROLL TO REVEAL THE LOGO",pullback:"REVEALING LOGO",done:"FULL LOGO"}[journey.revealStage]) : journey.phase === "glassesExit" ? "REMOVING GLASSES · SCREEN OFF" : snapshot.waitingForProjector ? "PREPARING PROJECTOR" : journey.phase === "idle" && journey.cinemaStage === "wearing" ? "SCROLL TO CONTINUE" : journey.phase === "awaitAssembly" ? "PARTS READY · SCROLL TO ASSEMBLE" : ["idle","done","screensDone"].includes(journey.phase) ? "SCROLL TO CONTINUE" : "CAMERA JOURNEY" : "GEOMETRY REVIEW"}</span>
+        <span>{isCorridor ? journey.phase === "logoDone" ? "FULL LOGO" : journey.phase === "logoReveal" ? ({slide:"SCROLL UP THE SLIDE",top:"SCROLL TO TURN",turn:"TURNING TOWARD LOGO",turned:"SCROLL TO REVEAL THE LOGO",pullback:"REVEALING LOGO",done:"FULL LOGO"}[journey.revealStage]) : journey.phase === "glassesExit" ? "REMOVING GLASSES · SCREEN OFF" : snapshot.waitingForProjector ? "PREPARING PROJECTOR" : journey.phase === "idle" && journey.cinemaStage === "wearing" ? "SCROLL TO CONTINUE" : journey.phase === "awaitAssembly" ? "PARTS READY · SCROLL TO ASSEMBLE" : ["idle","done"].includes(journey.phase) ? "SCROLL TO CONTINUE" : "CAMERA JOURNEY" : "GEOMETRY REVIEW"}</span>
         <span className="asset-caption">{(corridorAssets.triangles + theatreAssets.triangles + sofaTriangles).toLocaleString("en-US")} triangles · geometry study</span>
         <div className="journey-track" aria-hidden="true"><div ref={progressElement} /></div>
       </footer>

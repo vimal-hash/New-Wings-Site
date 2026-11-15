@@ -18,7 +18,7 @@ export const SITE_SECTIONS: { target: JumpTarget; label: string }[] = [
 ];
 
 /** Camera-resting stops. Elsewhere the contact bar steps out of the frame. */
-const RESTING = new Set<JourneyPhase>(["idle", "awaitAssembly", "done", "screensDone", "page"]);
+const RESTING = new Set<JourneyPhase>(["idle", "awaitAssembly", "done", "page"]);
 const THEATRE = new Set<JourneyPhase>(["idle", "glassesExit"]);
 const PROJECTOR = new Set<JourneyPhase>(["pullback", "hold", "approach", "reveal", "awaitAssembly", "returnHold", "return", "done"]);
 

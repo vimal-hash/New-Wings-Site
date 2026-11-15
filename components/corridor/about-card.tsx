@@ -2,6 +2,7 @@
 import {forwardRef,useEffect,useImperativeHandle,useRef} from "react";
 import {createAboutFilm,wallStill,WALL,type AboutFilm} from "./about-film";
 import {ropeFlightDevice} from "./effect-quality";
+import TitleLine,{CARD_WAIT,cardStrength,showTitle,writeTitle} from "./title-card";
 
 /**
  * Section 2, About Us. It is revealed from white, the way Section 1 is: the flight ends in a white portal, and the white
@@ -44,20 +45,26 @@ const CSS=`
 @media (prefers-reduced-motion:reduce){.nw-about-stage[data-drift]{animation:none}}
 `;
 
-const AboutCard=forwardRef<AboutHandle,{live?:boolean;start?:Start}>(function AboutCard({live=false,start="clean"},ref){
+// `line`: the section's title line on the white, written by reveal() (arriving forwards), never flying back up.
+const AboutCard=forwardRef<AboutHandle,{live?:boolean;start?:Start;line?:string}>(function AboutCard({live=false,start="clean",line},ref){
   const root=useRef<HTMLDivElement>(null),stage=useRef<HTMLDivElement>(null),frame=useRef<HTMLDivElement>(null),canvas=useRef<HTMLCanvasElement>(null);
-  const white=useRef<HTMLDivElement>(null),fade=useRef(0);
+  const white=useRef<HTMLDivElement>(null),title=useRef<HTMLParagraphElement>(null),shown=useRef(0),fade=useRef(0);
   const film=useRef<AboutFilm|null>(null),first=useRef(start);
   const settle=(drift:boolean)=>{if(stage.current)stage.current.dataset.drift=drift?"on":"off";};
   const setWhite=(value:number)=>{if(white.current)white.current.style.opacity=value>=1?"1":value<=0?"":value.toFixed(4);};
-  const stopFade=()=>{cancelAnimationFrame(fade.current);fade.current=0;};
-  // One timed fade of the white: from, to, over seconds after a wait, on the quintic ease; then done.
-  const fadeWhite=(from:number,to:number,wait:number,seconds:number,done:()=>void)=>{
-    stopFade();setWhite(from);
+  const setLine=(value:number)=>{if(value!==shown.current){shown.current=value;showTitle(title.current,value);}};
+  const stopFade=()=>{cancelAnimationFrame(fade.current);fade.current=0;if(shown.current>0)setLine(0);};
+  // One timed fade of the white: from, to, over seconds after a wait, on the quintic ease; then done. The title line runs
+  // on the same clock: with `card` it is written from the start, held, then faded; otherwise whatever is shown goes in .35 s.
+  const fadeWhite=(from:number,to:number,wait:number,seconds:number,done:()=>void,card=false)=>{
+    const lineFrom=shown.current;
+    cancelAnimationFrame(fade.current);fade.current=0;setWhite(from);
     const start=performance.now();
     const step=(now:number)=>{
-      const t=((now-start)/1000-wait)/seconds;
+      const elapsed=(now-start)/1000,t=(elapsed-wait)/seconds;
       setWhite(from+(to-from)*smoother(t));
+      if(card){writeTitle(title.current,elapsed);setLine(cardStrength(elapsed));}
+      else if(shown.current>0)setLine(lineFrom*(1-smoother(elapsed/.35)));
       if(t<1){fade.current=requestAnimationFrame(step);return;}
       fade.current=0;done();
     };
@@ -70,8 +77,10 @@ const AboutCard=forwardRef<AboutHandle,{live?:boolean;start?:Start}>(function Ab
       reveal(){
         if(!film.current||reduced()){stopFade();setWhite(0);made.play();return;}
         // The white portal: Section 1's old film already runs under the white, then the white lifts and the print is cleaned.
+        // With a title line, the white first carries it: written, held and faded, then it lifts.
         settle(false);film.current.idle();
-        fadeWhite(1,0,REVEAL.wait,REVEAL.lift,()=>made.play());
+        if(title.current)fadeWhite(1,0,CARD_WAIT,REVEAL.lift,()=>made.play(),true);
+        else fadeWhite(1,0,REVEAL.wait,REVEAL.lift,()=>made.play());
       },
       cover(done){
         if(reduced()){stopFade();setWhite(1);done();return;}
@@ -116,7 +125,7 @@ const AboutCard=forwardRef<AboutHandle,{live?:boolean;start?:Start}>(function Ab
       </div>
       {live?<canvas ref={canvas} className="nw-about-film" aria-hidden="true"/>:null}
     </div>
-    {live?<div ref={white} className="nw-about-white" aria-hidden="true"/>:null}
+    {live?<div ref={white} className="nw-about-white" aria-hidden="true">{line?<TitleLine ref={title} text={line}/>:null}</div>:null}
   </div>;
 });
 export default AboutCard;

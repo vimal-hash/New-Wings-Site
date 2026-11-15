@@ -1,12 +1,15 @@
 "use client";
 import {forwardRef,useEffect,useImperativeHandle,useRef} from "react";
+import TitleLine,{CARD_WAIT,cardStrength,showTitle,writeTitle} from "./title-card";
 
 /**
  * The white portal on a section: arriving, the flight ends in white and it lifts off the section the way Section 1 is
  * revealed: .35 s of white, then 1.65 s on the same quintic ease, 2 s in all, as every section's portal; leaving upwards, it rises first so the flight back
  * starts from the same white. Section 2 has its own, tied to its film.
+ * Arriving forwards (reveal with `titled`), the white first carries the section's title line: written, held, faded into
+ * the white, and only then does it lift (CARD_WAIT instead of WAIT).
  */
-export type WhiteHandle={reveal(done:()=>void):void;cover(done:()=>void):void};
+export type WhiteHandle={reveal(done:()=>void,titled?:boolean):void;cover(done:()=>void):void};
 const WAIT=.35,LIFT=1.65,COVER=1.1;
 // Held white is a hair short of solid (invisible): a solid layer hides the section so completely that the browser skips
 // drawing it, and would then draw all of it for the first time on the first frame of the lift, which stutters. Just
@@ -14,27 +17,33 @@ const WAIT=.35,LIFT=1.65,COVER=1.1;
 const HOLD=.998;
 const smoother=(x:number)=>{const t=Math.min(1,Math.max(0,x));return t*t*t*(t*(t*6-15)+10);};
 
-const SectionWhite=forwardRef<WhiteHandle,{covered?:boolean}>(function SectionWhite({covered=false},ref){
-  const node=useRef<HTMLDivElement>(null),frame=useRef(0);
+// `line`: the section's title line, on this white only when reveal() asks for it (arriving forwards).
+const SectionWhite=forwardRef<WhiteHandle,{covered?:boolean;line?:string}>(function SectionWhite({covered=false,line},ref){
+  const node=useRef<HTMLDivElement>(null),title=useRef<HTMLParagraphElement>(null),frame=useRef(0),shown=useRef(0);
   const set=(value:number)=>{if(node.current)node.current.style.opacity=value.toFixed(4);};
-  const fade=(from:number,to:number,wait:number,seconds:number,done:()=>void)=>{
+  const setLine=(value:number)=>{if(value!==shown.current){shown.current=value;showTitle(title.current,value);}};
+  // One timed fade of the white (from, to, over seconds after a wait, on the quintic ease), then done. The title line runs
+  // on the same clock: with `card` it is written from the start, held, then faded; otherwise whatever is shown goes in .35 s.
+  const fade=(from:number,to:number,wait:number,seconds:number,done:()=>void,card=false)=>{
     cancelAnimationFrame(frame.current);
-    if(window.matchMedia("(prefers-reduced-motion: reduce)").matches){set(to);done();return;}
+    if(window.matchMedia("(prefers-reduced-motion: reduce)").matches){set(to);setLine(0);done();return;}
     set(from);
-    const start=performance.now();
+    const start=performance.now(),lineFrom=shown.current;
     const step=(now:number)=>{
-      const t=((now-start)/1000-wait)/seconds;
+      const elapsed=(now-start)/1000,t=(elapsed-wait)/seconds;
       set(from+(to-from)*smoother(t));
+      if(card){writeTitle(title.current,elapsed);setLine(cardStrength(elapsed));}
+      else if(shown.current>0)setLine(lineFrom*(1-smoother(elapsed/.35)));
       if(t<1){frame.current=requestAnimationFrame(step);return;}
       frame.current=0;done();
     };
     frame.current=requestAnimationFrame(step);
   };
   useImperativeHandle(ref,()=>({
-    reveal(done){fade(HOLD,0,WAIT,LIFT,done);},
+    reveal(done,titled=false){if(titled&&title.current)fade(HOLD,0,CARD_WAIT,LIFT,done,true);else fade(HOLD,0,WAIT,LIFT,done);},
     cover(done){fade(Number(node.current?.style.opacity||0),1,0,COVER,done);},
   }));
   useEffect(()=>()=>cancelAnimationFrame(frame.current),[]);
-  return <div ref={node} aria-hidden="true" style={{position:"absolute",inset:0,zIndex:5,background:"#fff",pointerEvents:"none",opacity:covered?HOLD:0}}/>;
+  return <div ref={node} aria-hidden="true" style={{position:"absolute",inset:0,zIndex:5,background:"#fff",pointerEvents:"none",opacity:covered?HOLD:0}}>{line?<TitleLine ref={title} text={line}/>:null}</div>;
 });
 export default SectionWhite;

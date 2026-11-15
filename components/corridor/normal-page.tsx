@@ -11,6 +11,7 @@ import AboutCard,{type AboutHandle} from "./about-card";
 import {WALL} from "./about-film";
 import OwnerCard,{OWNER_WALL,type OwnerHandle} from "./owner-card";
 import SectionWhite,{type WhiteHandle} from "./section-white";
+import {SECTION_LINES,TITLE} from "./title-card";
 import FeedbackScene,{FEEDBACK_WALL,whenCalm,type FeedbackHandle} from "./feedback-scene";
 
 // Section 1's reel can prepare while the page is still covered.
@@ -66,7 +67,12 @@ export default function NormalPage({returnToCorridor=false,active=true}:{returnT
   const flying=device!=="mobile"&&!flightUnavailable;
   const control=useRef<FlightControl>({where:initialSection===1&&flying?"flight":"rest"});
   const [flight,setFlight]=useState({index:0,startAtEnd:initialSection>1,autoEnter:false,entry:0,entryDistance:0});
-  const film=useRef<ReelHandle>(null),flightIndex=useRef(0),about=useRef<AboutHandle>(null),owner=useRef<OwnerHandle>(null),feedback=useRef<FeedbackHandle>(null),whites=useRef<(WhiteHandle|null)[]>([]),covering=useRef(false);
+  const film=useRef<ReelHandle>(null),flightIndex=useRef(0),about=useRef<AboutHandle>(null),owner=useRef<OwnerHandle>(null),feedback=useRef<FeedbackHandle>(null),whites=useRef<(WhiteHandle|null)[]>([]),covering=useRef(false),cardUntil=useRef(0);
+  // A section's title card is on its arrival white: until its line has gone, a scroll down waits (it never skips the card).
+  // Scrolling back up still turns back, and the line goes with the white.
+  const holdForCard=useCallback(()=>{
+    if(!window.matchMedia("(prefers-reduced-motion: reduce)").matches)cardUntil.current=performance.now()+(TITLE.write+TITLE.hold+TITLE.out)*1000;
+  },[]);
   // The reel has burnt to white: carry the same scroll straight on, so frame 6, the white and the portal are one movement.
   const filmDone=useCallback(()=>{
     const node=panel.current;if(!node||journeyControls.read().phase!=="page")return;
@@ -84,19 +90,20 @@ export default function NormalPage({returnToCorridor=false,active=true}:{returnT
     node.scrollTop=(flight.index+(side==="end"?1:0))*node.clientHeight;
     // Arriving in About Us from Section 1's white portal, the white lifts off the old film and the print is cleaned in
     // front of the visitor. Back in Section 1, it waits worn again.
-    if(flight.index===0){if(side==="end")about.current?.reveal();else about.current?.wait();}
+    // Arriving forwards, each section's white first carries its title line; flying back up the whites stay plain.
+    if(flight.index===0){if(side==="end"){holdForCard();about.current?.reveal();}else about.current?.wait();}
     // Every section is reached from above through a white portal. In Section 3 the old film already runs under the white;
     // once the white has lifted it is cleaned, then colour soaks in. Back above it, it waits as old film again.
     // Flying back up, the flight lands in the section's white too, and it lifts the same way (the section is not replayed).
     const landed=flight.index+(side==="end"?1:0);
     if(side==="start"&&inWhite&&landed===1)about.current?.uncover();
-    if(landed===2){owner.current?.run(true);if(inWhite)whites.current[2]?.reveal(()=>owner.current?.open());}
+    if(landed===2){owner.current?.run(true);if(inWhite){if(side==="end")holdForCard();whites.current[2]?.reveal(()=>owner.current?.open(),side==="end");}}
     else if(landed<2)owner.current?.close();
-    else{owner.current?.run(false);feedback.current?.run(true);if(side==="end")whites.current[3]?.reveal(()=>feedback.current?.play());}
+    else{owner.current?.run(false);feedback.current?.run(true);if(side==="end"){holdForCard();whites.current[3]?.reveal(()=>feedback.current?.play(),true);}}
     // Section 4 waits in Section 3's faded colour until it is reached again; its white has already risen over it.
     if(landed<3){feedback.current?.reset();feedback.current?.run(false);}
     node.style.overflow="";node.focus({preventScroll:true});lastInput.current=performance.now();
-  },[flight.index]);
+  },[flight.index,holdForCard]);
   const flightFailed=useCallback(()=>{
     const node=panel.current;
     if(control.current.where==="flight"&&flight.autoEnter&&flight.startAtEnd&&flight.index===0)about.current?.uncover();
@@ -153,12 +160,14 @@ export default function NormalPage({returnToCorridor=false,active=true}:{returnT
   },[active,initialSection]);
   useEffect(()=>{
     if(!active||!flying)return;
-    if(initialSection===3){owner.current?.run(true);whites.current[2]?.reveal(()=>owner.current?.open());}
+    // Opened straight onto a section (or from the menu), its white carries the title line too.
+    if(initialSection===2)holdForCard();
+    if(initialSection===3){owner.current?.run(true);holdForCard();whites.current[2]?.reveal(()=>owner.current?.open(),true);}
     if(initialSection===4){
       feedback.current?.run(true);
-      return whenCalm(()=>whites.current[3]?.reveal(()=>feedback.current?.play()));
+      return whenCalm(()=>{holdForCard();whites.current[3]?.reveal(()=>feedback.current?.play(),true);});
     }
-  },[active,flying,initialSection]);
+  },[active,flying,initialSection,holdForCard]);
   useEffect(()=>{
     const node=panel.current;if(!node||!active)return;
     if(flying&&control.current.where==="flight")node.style.overflow="hidden";
@@ -183,13 +192,14 @@ export default function NormalPage({returnToCorridor=false,active=true}:{returnT
       const now=performance.now(),fresh=now-lastInput.current>220;lastInput.current=now;
       if(toFilm(distance))return true;
       if(control.current.where==="flight"||journeyControls.read().phase!=="page")return false;
+      if(distance>0&&now<cardUntil.current)return true;
       const height=node.clientHeight,at=Math.round(node.scrollTop/height),onBoundary=Math.abs(node.scrollTop-at*height)<=2;
       // Section 4's cards take the scroll first, one card per gesture, like Section 1's reel.
       if(at===3&&onBoundary&&feedback.current?.input(distance))return true;
       const next=distance>0&&at<3?at:distance<0&&at>0&&at<=3?at-1:-1;
       if(flying&&onBoundary&&next>=0){
         if(covering.current)return true;
-        const fly=()=>{covering.current=false;if(at===3)feedback.current?.run(false);if(at===2)owner.current?.run(false); /* the section left is under the flight now: its dust and films rest */ control.current.where="flight";node.style.overflow="hidden";setFlight(old=>({index:next,startAtEnd:distance<0,autoEnter:true,entry:old.entry+1,entryDistance:distance}));};
+        const fly=()=>{covering.current=false;cardUntil.current=0;if(at===3)feedback.current?.run(false);if(at===2)owner.current?.run(false); /* the section left is under the flight now: its dust and films rest */ control.current.where="flight";node.style.overflow="hidden";setFlight(old=>({index:next,startAtEnd:distance<0,autoEnter:true,entry:old.entry+1,entryDistance:distance}));};
         // Leaving a section upwards: the white rises over it first, so the flight back starts from the same white portal.
         const portal=distance<0?(next===0?about.current:whites.current[at]):null;
         if(fresh&&portal){covering.current=true;node.style.overflow="hidden";portal.cover(fly);}
@@ -211,10 +221,10 @@ export default function NormalPage({returnToCorridor=false,active=true}:{returnT
   return <div ref={panel} className="normal-page" data-snap={flying?undefined:""} tabIndex={-1} aria-label="Page sections" inert={!active} style={active?undefined:{visibility:"hidden",opacity:0,pointerEvents:"none"}}>
     {/* isolate: a section's own layers (its white portal is z-index 5) stay inside it. Flying back, the page still rests on
         the section being left, and its white used to be drawn over the whole flight, so the tunnel was never seen. */}
-    {SECTION_COLOURS.map((colour,index)=><section key={index} aria-label={SECTION_COPY[index].title} style={{background:colour,isolation:"isolate"}}>{index===1?<AboutCard ref={about} live start={initialSection<=1?"wait":initialSection===2?"reveal":"clean"}/>:index===2?<OwnerCard ref={owner} live start={initialSection<=2||(flying&&initialSection===3)?"old":initialSection===3?"play":"done"}/>:index===3?<FeedbackScene ref={feedback} live start={initialSection<=3||flying?"old":"play"}/>:null}{flying&&index>=2?<SectionWhite ref={white=>{whites.current[index]=white;}} covered={index>=2&&index===initialSection-1}/>:null}</section>)}
+    {SECTION_COLOURS.map((colour,index)=><section key={index} aria-label={SECTION_COPY[index].title} style={{background:colour,isolation:"isolate"}}>{index===1?<AboutCard ref={about} live line={flying?SECTION_LINES[1]:undefined} start={initialSection<=1?"wait":initialSection===2?"reveal":"clean"}/>:index===2?<OwnerCard ref={owner} live start={initialSection<=2||(flying&&initialSection===3)?"old":initialSection===3?"play":"done"}/>:index===3?<FeedbackScene ref={feedback} live start={initialSection<=3||flying?"old":"play"}/>:null}{flying&&index>=2?<SectionWhite ref={white=>{whites.current[index]=white;}} line={SECTION_LINES[index]} covered={index>=2&&index===initialSection-1}/>:null}</section>)}
     {flying?<SectionFlight device={device} interactive={interactive} blue={flight.index===1} yellow={flight.index===2} first={SECTION_COLOURS[flight.index]} second="#ffffff" startAtEnd={flight.startAtEnd} autoEnter={flight.autoEnter} entry={flight.entry} entryDistance={flight.entryDistance} control={control} onArrive={arrived} onFailure={flightFailed} destination={null}>
       {flight.index===1?<AboutCard/>:flight.index===2?<OwnerCard/>:null}
     </SectionFlight>:null}
-    <FilmReel handle={film} running={active} ended={initialSection>1} onExit={filmDone}/>
+    <FilmReel handle={film} running={active} ended={initialSection>1} line={SECTION_LINES[0]} onExit={filmDone}/>
   </div>;
 }

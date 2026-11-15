@@ -25,6 +25,7 @@ export type ReelShot={
   lamp:number; // light through the gate, about 0 to 1.5 with the flash
   burn:number; // 0 to 1: the last frame burning up into white
   white:number; // opacity of the white cover over everything
+  held:number; // seconds since the opening white began, until the lights are down (its title line runs on this clock)
   visible:boolean; // false once the reel has handed over to the white portal
   moving:boolean; // anything still changing, so the canvas must draw again
   landed:number; // the frame that has just come to rest this step, or -1
@@ -37,12 +38,13 @@ const smoother=(value:number)=>{const v=clamp(value,0,1);return v*v*v*(v*(v*6-15
 
 export type ReelMotion=ReturnType<typeof createReelMotion>;
 
-export function createReelMotion({frames,calm=false}:{frames:number;calm?:boolean}){
+// hold: seconds of opening white before the house lights go down (the site holds it while its title line is written).
+export function createReelMotion({frames,calm=false,hold=REEL.lightsWait}:{frames:number;calm?:boolean;hold?:number}){
   const last=frames-1,lightsTime=calm?.6:REEL.lightsDown,exitTime=calm?.6:REEL.exit;
-  let lights=1,dimming=false,wait=REEL.lightsWait; // lights runs 1 -> 0 while dimming
+  let lights=1,dimming=false,wait=hold; // lights runs 1 -> 0 while dimming
   let position=0,velocity=0,target=0,origin=0,rested=-1;
   let exitRaw=0,exitTarget=0;
-  let flash=0,kick=0,clock=0,lastInput=-1e9,started=false,out=false;
+  let flash=0,kick=0,clock=0,lastInput=-1e9,started=false,out=false,opened=0;
 
   const shot=():ReelShot=>{
     const burn=smoother(exitRaw);
@@ -52,16 +54,17 @@ export function createReelMotion({frames,calm=false}:{frames:number;calm?:boolea
     const quiet=clock-lastInput>REEL.gesture;
     const settled=Math.abs(position-target)<1e-4&&Math.abs(velocity)<1e-4&&Number.isInteger(target);
     const moving=(dimming&&lights>0)||(started&&lights>0&&!dimming)||!settled||flash>1e-3||kick>1e-3||(exitRaw>0&&exitRaw<1)||exitRaw!==exitTarget||(exitRaw>=1&&!quiet);
-    return {lights:smooth(lights),position,lamp,burn,white,visible:!(exitRaw>=1&&exitTarget===1),moving,landed:-1,exited:false};
+    const held=started?opened:0;
+    return {lights:smooth(lights),position,lamp,burn,white,held,visible:!(exitRaw>=1&&exitTarget===1),moving,landed:-1,exited:false};
   };
 
   return {
     /** The section is on screen and ready: start the house lights going down. */
-    begin(){if(!started){started=true;wait=REEL.lightsWait;}},
+    begin(){if(!started){started=true;wait=hold;opened=0;}},
     /** Arrive from the far side (coming back from Section 2): dark, last frame, already burnt to white. */
     atEnd(){started=true;dimming=true;lights=0;position=target=origin=rested=last;velocity=0;exitRaw=exitTarget=1;flash=kick=0;out=true;},
     /** Back to the very start: white, frame 1, nothing running. */
-    reset(){started=false;dimming=false;lights=1;position=target=origin=0;rested=-1;velocity=0;exitRaw=exitTarget=0;flash=kick=0;out=false;},
+    reset(){started=false;dimming=false;wait=hold;opened=0;lights=1;position=target=origin=0;rested=-1;velocity=0;exitRaw=exitTarget=0;flash=kick=0;out=false;},
     /** True while the reel would take a scroll in this direction instead of letting the page have it. */
     wants(pixels:number){
       if(exitRaw>=1&&exitTarget===1&&pixels>0)return false; // finished: the page carries the scroll on into the white portal
@@ -87,6 +90,7 @@ export function createReelMotion({frames,calm=false}:{frames:number;calm?:boolea
     /** Advance time. Returns what the reel looks like now. */
     step(delta:number):ReelShot{
       const dt=clamp(delta,0,.1);clock+=dt;
+      if(started&&lights>0)opened+=dt;
       if(started&&!dimming){wait-=dt;if(wait<=0)dimming=true;}
       if(dimming&&lights>0)lights=Math.max(0,lights-dt/lightsTime);
       // When input stops, land on a whole frame: the next one if the gesture moved far enough, otherwise back where it began.

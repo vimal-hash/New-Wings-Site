@@ -10,6 +10,7 @@ import {createReelMotion,type ReelMotion,type ReelShot} from "./reel-motion";
 import {sceneMotion} from "../corridor/scene-idle";
 import {uploadTexturesGradually} from "../corridor/hidden-gpu-preparation";
 import {traceMark,traceSpan} from "../corridor/loading-trace";
+import TitleLine,{CARD_WAIT,cardStrength,showTitle,writeTitle} from "../corridor/title-card";
 
 const FOV=28;
 // Review only (?drive on /film-study or /sections): a hand-turned clock, so the reel can be stepped and checked frame by frame in a browser that is not painting.
@@ -106,11 +107,16 @@ const live=(shot:ReelShot)=>{
  * `running` starts the house lights once the strip is ready. With `listen`, the layer reads the wheel, touch and keys itself (the review page);
  * in the site the page routes the scroll through `handle` instead.
  */
-export default function FilmReel({handle,running=true,ended=false,listen=false,onIdle,onExit}:{handle?:Ref<ReelHandle>;running?:boolean;ended?:boolean;listen?:boolean;onIdle?:(showing:boolean)=>void;onExit?:()=>void}){
+export default function FilmReel({handle,running=true,ended=false,listen=false,line,onIdle,onExit}:{handle?:Ref<ReelHandle>;running?:boolean;ended?:boolean;listen?:boolean;line?:string;onIdle?:(showing:boolean)=>void;onExit?:()=>void}){
   const [calm]=useState(()=>typeof window!=="undefined"&&window.matchMedia("(prefers-reduced-motion: reduce)").matches);
   // Arriving from a later section, the reel has already run: it waits, burnt white and out of sight, for a scroll back up.
-  const [motion]=useState(()=>{const made=createReelMotion({frames:FILM_PRODUCTS.length,calm});if(ended)made.atEnd();return made;});
+  // With a title line, the opening white is held while it is written, read and half faded (as every section's white);
+  // then the house lights go down as before.
+  const [motion]=useState(()=>{const made=createReelMotion({frames:FILM_PRODUCTS.length,calm,hold:line?CARD_WAIT:undefined});if(ended)made.atEnd();return made;});
   const layer=useRef<HTMLDivElement>(null),white=useRef<HTMLDivElement>(null),voice=useRef<HTMLParagraphElement>(null);
+  // `line`: the section's title line, on the opening white page only (the house lights), never on the last frame's burn.
+  // It writes in on the reel's own clock, holds, then fades into the still-white page, gone as the lights start down.
+  const title=useRef<HTMLParagraphElement>(null);
   const looks=useRef<FilmLooks|null>(null),wake=useRef<(()=>void)|null>(null),showing=useRef(!ended);
   const [ready,setReady]=useState(false),markReady=useCallback(()=>setReady(true),[setReady]);
 
@@ -118,6 +124,10 @@ export default function FilmReel({handle,running=true,ended=false,listen=false,o
 
   const onShot=useCallback((shot:ReelShot)=>{
     if(white.current)white.current.style.opacity=shot.white.toFixed(4);
+    if(title.current){
+      showTitle(title.current,shot.burn===0&&shot.held>0?cardStrength(shot.held):0);
+      writeTitle(title.current,calm?Infinity:shot.held);
+    }
     if(shot.exited)onExit?.();
     if(layer.current&&shot.visible!==showing.current){
       showing.current=shot.visible;
@@ -125,7 +135,7 @@ export default function FilmReel({handle,running=true,ended=false,listen=false,o
       onIdle?.(shot.visible);
     }
     if(shot.landed>=0&&voice.current)voice.current.textContent=live(shot);
-  },[onIdle,onExit]);
+  },[onIdle,onExit,calm]);
 
   const take=useCallback((pixels:number)=>{
     const used=motion.input(pixels);
@@ -136,7 +146,7 @@ export default function FilmReel({handle,running=true,ended=false,listen=false,o
 
   useImperativeHandle(handle,()=>({
     input:take,
-    atEnd(){motion.atEnd();showing.current=false;if(layer.current)layer.current.style.visibility="hidden";if(white.current)white.current.style.opacity="1";wake.current?.();},
+    atEnd(){motion.atEnd();showing.current=false;showTitle(title.current,0);if(layer.current)layer.current.style.visibility="hidden";if(white.current)white.current.style.opacity="1";wake.current?.();},
     showing:()=>showing.current,
   }),[take,motion]);
 
@@ -168,7 +178,7 @@ export default function FilmReel({handle,running=true,ended=false,listen=false,o
       <color attach="background" args={[FILM_VOID]}/>
       <Suspense fallback={null}><Rig motion={motion} looks={looks} calm={calm||!running} onReady={markReady} onShot={onShot} wake={wake}/></Suspense>
     </Canvas>
-    <div ref={white} style={{position:"absolute",inset:0,background:"#fff",pointerEvents:"none"}}/>
+    <div ref={white} style={{position:"absolute",inset:0,background:"#fff",pointerEvents:"none"}}>{line?<TitleLine ref={title} text={line}/>:null}</div>
     <h2 className="film-reel-title">Products</h2>
     <ol className="film-reel-list">{FILM_PRODUCTS.map(product=><li key={product.picture}>{product.name}, {product.brand}</li>)}</ol>
     <p ref={voice} className="film-reel-list" aria-live="polite"/>

@@ -15,7 +15,7 @@ import { pageCoverScale,pageEase } from "./liquid-page-motion";
 
 /** The pearl's steady turn (rad/s) and its slow, precessing tilt. */
 const PEARL_SPIN=.42;
-const MORPH_SECONDS=2;
+const MORPH_SECONDS=2.4; // was 2: the same curve, a little slower, so the sphere settles into the white page more softly
 const pearlTilt=(spin:number)=>.13*Math.sin(spin*.5);
 
 const visiblePhases=new Set<JourneyPhase>(["corridor","panel"]);

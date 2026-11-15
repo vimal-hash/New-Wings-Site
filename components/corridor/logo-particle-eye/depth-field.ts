@@ -7,27 +7,49 @@ export const STAR_RANGE={start:40,end:140} as const;
 // Make its parallax readable, while retaining full camera rotation and still
 // moving much more slowly than the nearby 1.2–5-unit grains. No lag/clock.
 export const STAR_PARALLAX_GAIN=4;
-/** A faint distant horizon, without adding lights or changing room materials. */
+/** One faint galactic band, fixed in world space and shared by the dome glow and the distant star layout.
+ *  Heading-relative [azimuth, elevation] (radians): its brightest clouds sit in View 1's open upper-right sky,
+ *  and the band arcs over the top of that view; View 2 sees its lower reach. */
+export const SKY_BAND={core:[.86,.40],through:[1.72,.86],width:.17} as const;
+/** Display-space (sRGB) strengths for the close-view sky. The dome never draws in the final eye. */
+export const SKY_LOOK={zenith:.55,glow:.14,lanes:.75,dust:.64,cell:.0032} as const;
+/** Dome tessellation. Every smooth sky term (horizon glow, zenith, band clouds and lane path) is evaluated
+ *  per vertex at this spacing (~5.6° x 2.9°); per pixel the dome adds only the lane profile and star dust.
+ *  Measured: 128x56 and 96x40 look the same (horizon within 1/255) but cost more; per-pixel clouds cost ~3x. */
+export const SKY_DOME_SEGMENTS=[64,32] as const;
+/** Unit vectors of the band: pole (band latitude = dot with pole), core (brightest point) and side. */
+export function skyBandFrame(heading:number){
+  const direction=(azimuth:number,elevation:number)=>new Vector3(Math.sin(azimuth+heading)*Math.cos(elevation),Math.sin(elevation),Math.cos(azimuth+heading)*Math.cos(elevation));
+  const core=direction(SKY_BAND.core[0],SKY_BAND.core[1]),through=direction(SKY_BAND.through[0],SKY_BAND.through[1]);
+  const pole=new Vector3().crossVectors(core,through).normalize();
+  return {pole,core,side:new Vector3().crossVectors(pole,core).normalize()};
+}
+const glslFloat=(value:number)=>Number.isInteger(value)?`${value}.`:`${value}`;
+const SKY_HASH=/* glsl */`float skyHash(vec2 p){vec3 q=fract(vec3(p.xyx)*.1031);q+=dot(q,q.yzx+33.33);return fract((q.x+q.y)*q.z);}`;
+/** A faint distant horizon, without adding lights or changing room materials. The same single draw also
+ *  deepens the zenith and carries the galactic band (soft clouds, broken dark lanes, unresolved star dust). */
 function createStarAtmosphere(origin:Vector3,radius:number,heading:number){
-  const geometry=new SphereGeometry(radius,32,12,0,Math.PI*2,0,Math.PI*.52);
+  const geometry=new SphereGeometry(radius,SKY_DOME_SEGMENTS[0],SKY_DOME_SEGMENTS[1],0,Math.PI*2,0,Math.PI*.52);
+  // The shaders read positions only.
+  geometry.deleteAttribute('normal');geometry.deleteAttribute('uv');
+  const band=skyBandFrame(heading);
   const material=new ShaderMaterial({glslVersion:GLSL3,side:BackSide,transparent:true,depthTest:true,depthWrite:false,toneMapped:false,
-    uniforms:{uOpacity:{value:0},uHeading:{value:heading}},
+    uniforms:{uOpacity:{value:0},uHeading:{value:heading},uBandPole:{value:band.pole},uBandCore:{value:band.core},uBandSide:{value:band.side}},
     vertexShader:/* glsl */`
       precision highp float;
-      out vec3 vDirection;
+      uniform float uHeading;
+      uniform vec3 uBandPole,uBandCore,uBandSide;
+      out vec4 vHorizon;   // approved horizon glow: display-space colour, alpha
+      out vec4 vGlow;      // band glow before lanes, lane path, lane breakup, dust density before lanes
+      out vec3 vBandSky;   // zenith deepening, core tint weight, band-region flag
+      out vec2 vBand;      // along the band (0 at its core), band latitude
+      ${SKY_HASH}
+      float skyNoise(vec2 p){
+        vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);
+        return mix(mix(skyHash(i),skyHash(i+vec2(1.,0.)),f.x),mix(skyHash(i+vec2(0.,1.)),skyHash(i+vec2(1.,1.)),f.x),f.y);
+      }
       void main(){
-        vDirection=normalize(position);
-        gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);
-        // Background depth retains camera clipping and foreground occlusion.
-        gl_Position.z=gl_Position.w*.9999998;
-      }`,
-    fragmentShader:/* glsl */`
-      precision highp float;
-      uniform float uOpacity,uHeading;
-      in vec3 vDirection;
-      out vec4 fragmentColour;
-      void main(){
-        vec3 direction=normalize(vDirection);
+        vec3 direction=normalize(position);
         float elevation=asin(clamp(direction.y,-1.,1.));
         // Two regions of one world-space sky: the turn reveals another colour,
         // rather than switching a screen overlay when the camera changes phase.
@@ -42,7 +64,57 @@ function createStarAtmosphere(origin:Vector3,radius:number,heading:number){
         vec3 colour=mix(upper,horizon,low*.8);
         float teal=turned*exp((cos(azimuth-.45)-1.)*4.5)*exp(-pow((elevation-.14)/.22,2.));
         colour=mix(colour,vec3(.065,.23,.22)*1.5,teal*.8);
-        fragmentColour=vec4(colour,mix(.17,.23,turned)*band*variation*uOpacity);
+        // Square-root display encoding: the approved colour round-trips exactly where it is the only layer.
+        vHorizon=vec4(sqrt(colour),mix(.17,.23,turned)*band*variation);
+        // The galactic band. Its seam lies behind both views, below the horizon.
+        float latitude=dot(direction,uBandPole);
+        vBand=vec2(atan(dot(direction,uBandSide),dot(direction,uBandCore)),latitude);
+        float profile=exp(-pow(latitude/${glslFloat(SKY_BAND.width)},2.));
+        float core=exp(-pow(vBand.x/.62,2.));
+        float clouds=skyNoise(vBand*vec2(2.7,7.4)+vec2(3.1,.7))*.62+skyNoise(vBand*vec2(6.1,12.)+vec2(9.7,4.2))*.38;
+        float lanePath=latitude-.035*sin(vBand.x*5.3+1.1)-.02*sin(vBand.x*11.7);
+        float breakup=smoothstep(.25,.7,skyNoise(vec2(vBand.x*6.5+5.,latitude*6.+2.)));
+        vGlow=vec4(profile*(.42+.58*core)*smoothstep(.15,.85,clouds)*${glslFloat(SKY_LOOK.glow)},lanePath,breakup,
+          profile*(.14+.26*core)*(.25+1.2*clouds*clouds));
+        vBandSky=vec3(${glslFloat(SKY_LOOK.zenith)}*smoothstep(.28,1.22,elevation),core*.85,abs(latitude)<.41&&elevation>-.07?1.:0.);
+        gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);
+        // Background depth retains camera clipping and foreground occlusion.
+        gl_Position.z=gl_Position.w*.9999998;
+      }`,
+    fragmentShader:/* glsl */`
+      precision highp float;
+      uniform float uOpacity;
+      in vec4 vHorizon,vGlow;
+      in vec3 vBandSky;
+      in vec2 vBand;
+      out vec4 fragmentColour;
+      ${SKY_HASH}
+      void main(){
+        // Screen footprint for filtering the star dust; taken in uniform control flow.
+        float footprint=length(fwidth(vBand));
+        // Layers composite over the framebuffer in an approximate display space.
+        // 1. The open sky deepens toward the zenith; the slate mid-sky and horizon stay as approved.
+        vec3 premultiplied=vec3(.016,.021,.036)*vBandSky.x;float coverage=vBandSky.x;
+        // 2. The approved horizon glow.
+        premultiplied=vHorizon.rgb*vHorizon.a+premultiplied*(1.-vHorizon.a);coverage=vHorizon.a+coverage*(1.-vHorizon.a);
+        // 3. The galactic band: soft clouds cut by broken dark lanes, then unresolved star dust.
+        if(vBandSky.z>.5){
+          float lane=exp(-pow(vGlow.y/${glslFloat(+(SKY_BAND.width*.3).toFixed(4))},2.))*vGlow.z;
+          float glow=vGlow.x*(1.-${glslFloat(SKY_LOOK.lanes)}*lane);
+          vec3 tint=mix(vec3(.56,.62,.76),vec3(.72,.68,.63),vBandSky.y);
+          premultiplied=tint*glow+premultiplied*(1.-glow);coverage=glow+coverage*(1.-glow);
+          // One pixel-filtered point per occupied cell, clumped with the clouds and mostly very faint.
+          vec2 cell=vBand/${glslFloat(SKY_LOOK.cell)},id=floor(cell);
+          float density=vGlow.w*(1.-.8*lane),presence=skyHash(id);
+          if(presence<density){
+            vec2 offset=fract(cell)-(.2+.6*vec2(skyHash(id+19.19),skyHash(id+47.47)));
+            float sigma=max(.42*footprint/${glslFloat(SKY_LOOK.cell)},.02);
+            float dust=exp(-dot(offset,offset)/(2.*sigma*sigma))*(.08+.8*pow(1.-presence/density,5.))*${glslFloat(SKY_LOOK.dust)};
+            premultiplied=vec3(.86,.89,.96)*dust+premultiplied*(1.-dust);coverage=dust+coverage*(1.-dust);
+          }
+        }
+        vec3 display=premultiplied/max(coverage,.0001);
+        fragmentColour=vec4(display*display,coverage*uOpacity);
         #define gl_FragColor fragmentColour
         #include <colorspace_fragment>
       }`});
@@ -57,11 +129,22 @@ export function depthLayerVisibility(phase:string,stage:string,travelFraction:nu
   return stage==='pullback'?1-smooth((travelFraction-.015)/.205):1;
 }
 export type DepthLayout={count:number;origin:Vector3;heading:number;positions:Float32Array;details:Float32Array;appearance:Float32Array};
+// Distant stars cover both views' whole sky, area-uniform in elevation (View 1 looks up to ~.93 rad).
+const STAR_SKY={azimuth:[-1.05,2.75],elevation:[-.025,1.02]} as const;
+// The fixed distant count gathers inside the two close views' frames (heading-relative, measured for 16:10–21:9
+// screens): View 1's top edge dips toward its corners; View 2 carries the camera roll. The sky seen only during
+// the turn keeps a sparse field.
+const STAR_ELSEWHERE=.1;
+const inRange=(value:number,low:number,high:number,soft:number)=>smooth((value-low)/soft+.5)*smooth((high-value)/soft+.5);
+const starViewWeight=(azimuth:number,elevation:number)=>Math.max(STAR_ELSEWHERE,
+  .78*inRange(azimuth,.2,2.6,.15)*inRange(elevation,-.1,.95-.31*(azimuth-1.39)**2,.08),
+  inRange(azimuth,-.75,.75,.15)*inRange(elevation-(.05-.33*azimuth),-.33,.33,.08));
 
 /** Fixed world-space grains above the roof, shared by both travelling views. */
 export function createDepthLayout(quality:EffectQuality,origin:Vector3,heading:number,unit:number):DepthLayout{
   const counts=DEPTH_COUNTS[quality],count=counts.near+counts.far;
   const positions=new Float32Array(count*3),details=new Float32Array(count*4),appearance=new Float32Array(count*3);
+  const band=skyBandFrame(heading),lowSky=Math.sin(STAR_SKY.elevation[0]),highSky=Math.sin(STAR_SKY.elevation[1]);
   let offset=0;
   // Transparent instances do not write depth: submit the distant stars first,
   // then the nearby grains, so a background point cannot paint over a grain.
@@ -71,12 +154,18 @@ export function createDepthLayout(quality:EffectQuality,origin:Vector3,heading:n
     const occupied=new Map<string,[number,number][]>(),spacing=distant?.010:.025;
     const wanted=distant?counts.far:counts.near;
     for(let i=0;i<wanted;){
-      const azimuth=-.98+random()*3.35;
-      const elevation=distant?-.025+Math.pow(random(),.9)*.65:.025+Math.pow(random(),1.6)*.31;
-      // Broad variations in density leave natural open pockets, without bands.
+      const azimuth=distant?STAR_SKY.azimuth[0]+random()*(STAR_SKY.azimuth[1]-STAR_SKY.azimuth[0]):-.98+random()*3.35;
+      const elevation=distant?Math.asin(lowSky+random()*(highSky-lowSky)):.025+Math.pow(random(),1.6)*.31;
+      // Broad variations in density leave natural open pockets; distant stars also gather along the galactic band.
       const pocket=(a:number,e:number,w:number,h:number)=>Math.exp(-(((azimuth-a)/w)**2+((elevation-e)/h)**2));
-      const density=distant?.13+.75*pocket(.08,.19,.45,.20)+.70*pocket(1.35,.24,.50,.22)+.27*pocket(-.55,.42,.26,.15)
-        :.72+.28*Math.sin(azimuth*4.1+Math.sin(elevation*11))*Math.cos(elevation*4.5-azimuth);
+      let density=.72+.28*Math.sin(azimuth*4.1+Math.sin(elevation*11))*Math.cos(elevation*4.5-azimuth);
+      if(distant){
+        const yaw=heading+azimuth,x=Math.sin(yaw)*Math.cos(elevation),y=Math.sin(elevation),z=Math.cos(yaw)*Math.cos(elevation);
+        const latitude=x*band.pole.x+y*band.pole.y+z*band.pole.z;
+        const along=Math.atan2(x*band.side.x+y*band.side.y+z*band.side.z,x*band.core.x+y*band.core.y+z*band.core.z);
+        const galaxy=Math.exp(-((latitude/(SKY_BAND.width*1.2))**2))*(.55+.45*Math.exp(-((along/.9)**2)))*(.72+.28*Math.sin(along*7.3+latitude*19));
+        density=(.17+.52*galaxy+.75*pocket(.08,.19,.45,.20)+.38*pocket(1.35,.24,.50,.22)+.18*pocket(-.55,.42,.26,.15))*starViewWeight(azimuth,elevation);
+      }
       if(random()>density)continue;
       const gx=Math.floor(azimuth/spacing),gy=Math.floor(elevation/spacing);
       let overlaps=false;
@@ -126,7 +215,9 @@ void main(){
   float displayPx=clamp(px,mix(.55,starMinimum,appearance.z)*uDpr,mix(1.65,starMaximum,appearance.z)*uDpr);
   float footprint=displayPx/max(px,.001);
   mat2 rotation=mat2(cos(detail.w),sin(detail.w),-sin(detail.w),cos(detail.w));
-  if(appearance.z>.5)view.xy+=corner*detail.x*3.5*footprint;
+  // Only the brightest stars get a wider quad, for a soft glow; every other sprite keeps its footprint.
+  float reach=mix(3.5,6.,smoothstep(6.4,8.9,appearance.y)*appearance.z);
+  if(appearance.z>.5)view.xy+=corner*detail.x*reach*footprint;
   else view.xy+=rotation*(corner*vec2(detail.x,detail.x*detail.z)*uPadding*footprint);
   gl_Position=projectionMatrix*view;
   if(appearance.z>.5){
@@ -148,10 +239,10 @@ void main(){
   float coverageScale=max(1.,footprint);
   vCoverage=uOpacity*appearance.x/(coverageScale*coverageScale);
   vLighting=vec3(appearance.y);
-  vStarUV=corner*3.5;vDistant=appearance.z;
+  vStarUV=corner*reach;vDistant=appearance.z;
   if(appearance.z>.5){
     float hue=mod(detail.y,8.)/7.;
-    vec3 spectral=hue<.78?mix(vec3(.70,.81,1.),vec3(.96,.98,1.),hue/.78):mix(vec3(.96,.98,1.),vec3(1.,.86,.69),(hue-.78)/.22);
+    vec3 spectral=hue<.78?mix(vec3(.60,.74,1.),vec3(.96,.98,1.),hue/.78):mix(vec3(.96,.98,1.),vec3(1.,.80,.60),(hue-.78)/.22);
     vLighting=spectral*appearance.y;
     float minimum=mix(.55,.85,uPhoneStar);
     vCoverage=uOpacity*appearance.x*mix(minimum,1.,clamp(px/(.7*uDpr),0.,1.));
@@ -181,7 +272,9 @@ export function createDepthField(data:DepthLayout,unit:number,padding:number,fra
         float core=exp(-r2/(2.*variance))*.16/variance;
         float strength=max(vLighting.r,max(vLighting.g,vLighting.b));
         float halo=exp(-r2*.9)*.025*smoothstep(3.,8.,strength);
-        float alpha=(1.-exp(-(core+halo)*strength))*vCoverage;
+        // The few brightest stars also carry a wide soft glow (static; no twinkle animation).
+        float glow=exp(-r2*.11)*.014*smoothstep(6.4,8.9,strength);
+        float alpha=(1.-exp(-(core+halo+glow)*strength))*vCoverage;
         if(alpha<.006)discard;
         fragmentColour=vec4(vLighting/strength,alpha);
         #define gl_FragColor fragmentColour

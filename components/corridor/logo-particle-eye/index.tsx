@@ -1,7 +1,7 @@
 "use client";
 import {useEffect,useMemo,useRef,useSyncExternalStore} from "react";
 import {useFrame,useThree} from "@react-three/fiber";
-import {BufferAttribute,GLSL3,Group,InstancedBufferAttribute,InstancedBufferGeometry,Matrix4,Mesh,Quaternion,Scene,ShaderMaterial,SRGBColorSpace,Vector2,Vector3,type Texture} from "three";
+import {BufferAttribute,GLSL3,Group,InstancedBufferAttribute,InstancedBufferGeometry,Matrix4,Mesh,Quaternion,Scene,ShaderMaterial,SRGBColorSpace,Vector2,Vector3,Vector4,type Texture} from "three";
 import {KTX2Loader} from "three/examples/jsm/loaders/KTX2Loader.js";
 import {journeyControls,type JourneyPhase} from "../journey-controls";
 import {effectQuality,type EffectQuality} from "../effect-quality";
@@ -25,11 +25,18 @@ import {GRAIN_REACTION,GRAIN_REACTION_GLSL,GRAIN_OPTICS_GLSL} from "../pupil-gra
 // The corridor has no stop: the eye mounts at the projector stop; its heavy work waits for resting stops (scene idle).
 const preparationPhases=new Set<JourneyPhase>(["done","screens","corridor","panel","page","pageReturnLoading","logoReveal","logoDone"]);
 const visiblePhases=new Set<JourneyPhase>(["logoReveal","logoDone"]);
+/** Close-view grain look (View 1 / View 2 only; weight 0 in the approved final eye). Lighting only: a per-grain
+ *  tone hierarchy, sparse view-dependent facet glints, a darker out-of-focus foreground and cool aerial depth.
+ *  Distances are in eye units; light is a heading-relative [azimuth, elevation]. */
+export const GRAIN_LOOK={toneLow:.48,toneHigh:1.18,toneCurve:1.4,glint:5,sharpness:60,foreground:.62,near:[1.3,4.6],haze:[7.9,15],hazeTint:[.70,.78,.92],light:[1,.30]} as const;
 const vertexShader=/* glsl */`
 precision highp float;
 uniform vec3 uMin,uExtent;
 uniform vec3 uLighting[16];
 uniform float uTime,uRadiusMax,uSizeBias,uPadding,uOpacity,uMotion,uViewportHeight,uDpr;
+uniform float uCloseLook;
+uniform vec3 uLookLight;
+uniform vec4 uLookDepth;
 in vec2 corner;
 in vec3 authoredPosition,grain;
 out vec2 vUV;
@@ -64,6 +71,22 @@ void main(){
     vHeroWave=reaction.x*character;vHeroSpark=reaction.y*character;vHeroWake=reaction.z*character;
   }
   vec4 view=modelViewMatrix*vec4(centre,1.);
+  if(uCloseLook>.0001){
+    // A stable mix of darker and brighter steel, a sparse set of facets catching the light (they change
+    // only with the camera, never with time), a darker out-of-focus foreground and a cool falloff with
+    // distance. Coverage, size and motion are unchanged.
+    float tone=fract(sin(seed*91.7+3.1)*43758.5453);
+    float albedo=mix(${GRAIN_LOOK.toneLow.toFixed(3)},${GRAIN_LOOK.toneHigh.toFixed(3)},pow(tone,${GRAIN_LOOK.toneCurve.toFixed(2)}));
+    vec3 facet=vec3(fract(sin(seed*17.13+1.)*43758.5453),fract(sin(seed*31.71+2.)*43758.5453),fract(sin(seed*57.37+3.)*43758.5453))*2.-1.;
+    vec3 world=(modelMatrix*vec4(uMin+authoredPosition*uExtent,1.)).xyz;
+    vec3 halfway=normalize(uLookLight+normalize(cameraPosition-world));
+    float glint=pow(max(0.,dot(facet,halfway)/max(.0001,length(facet))),${GRAIN_LOOK.sharpness.toFixed(1)});
+    float grainDistance=-view.z;
+    float foreground=mix(${GRAIN_LOOK.foreground.toFixed(3)},1.,smoothstep(uLookDepth.x,uLookDepth.y,grainDistance));
+    float haze=smoothstep(uLookDepth.z,uLookDepth.w,grainDistance);
+    vec3 look=albedo*foreground*mix(vec3(1.),vec3(${GRAIN_LOOK.hazeTint.map(v=>v.toFixed(3)).join(",")}),haze)*(1.+${GRAIN_LOOK.glint.toFixed(2)}*glint);
+    vLighting*=mix(vec3(1.),look,uCloseLook);
+  }
   float radius=grain.x/255.*uRadiusMax*uSizeBias;
   float aspect=floor(grain.y/16.)/15.;
   float angle=mod(grain.y,16.)*6.283185307/16.;
@@ -179,7 +202,8 @@ export function AuthoredEyeField({active,review=false,qualityOverride,moving=tru
     geometry.setIndex([0,1,2,0,2,3]);geometry.instanceCount=0;
     const material=new ShaderMaterial({glslVersion:GLSL3,vertexShader,fragmentShader,transparent:true,depthWrite:false,depthTest:true,toneMapped:false,
       uniforms:{...pupilPulseUniforms,uHeroReactionGain:{value:GRAIN_REACTION.brightness},uTime:{value:0},uMin:{value:new Vector3()},uExtent:{value:new Vector3()},uRadiusMax:{value:assets.radiusMax},uAtlas:{value:null},uLighting:{value:lighting.values.map(v=>new Vector3(...v))},
-        uSizeBias:{value:Math.min(2,Math.sqrt(assets.authoringCount/tier.count))},uPadding:{value:assets.atlas.quadPadding},uOpacity:{value:0},uMotion:{value:0},uViewportHeight:{value:720},uDpr:{value:1}}});
+        uSizeBias:{value:Math.min(2,Math.sqrt(assets.authoringCount/tier.count))},uPadding:{value:assets.atlas.quadPadding},uOpacity:{value:0},uMotion:{value:0},uViewportHeight:{value:720},uDpr:{value:1},
+        uCloseLook:{value:0},uLookLight:{value:new Vector3(0,1,0)},uLookDepth:{value:new Vector4(1,2,3,4)}}});
     const mesh=new Mesh(geometry,material),group=new Group(),pixels=new Vector2();
     mesh.frustumCulled=false;mesh.renderOrder=8;mesh.name="Approved revision 16 — authored steel grains";mesh.userData.excludeFromMirror=true;
     mesh.onBeforeRender=renderer=>{material.uniforms.uViewportHeight.value=renderer.getDrawingBufferSize(pixels).y;material.uniforms.uDpr.value=renderer.getPixelRatio();};
@@ -189,10 +213,14 @@ export function AuthoredEyeField({active,review=false,qualityOverride,moving=tru
     const reveal=createLogoReveal(bounds.blenderBounds,layout.slides[1],PAGE_POSE.position[1],16/9,start,initial);
     const stop=new Vector3(),stopRotation=new Quaternion();reveal.sampleTurn(1,stop,stopRotation);
     const forward=new Vector3(0,0,-1).applyQuaternion(stopRotation),unit=(bounds.blenderBounds[1][1]-bounds.blenderBounds[1][0])/3.5;
+    // Close-view look: a fixed world-space key above the far horizon and the eye-unit depth range.
+    const heading=Math.atan2(forward.x,forward.z),[lightAzimuth,lightElevation]=GRAIN_LOOK.light;
+    material.uniforms.uLookLight.value.set(Math.sin(heading+lightAzimuth)*Math.cos(lightElevation),Math.sin(lightElevation),Math.cos(heading+lightAzimuth)*Math.cos(lightElevation));
+    material.uniforms.uLookDepth.value.set(GRAIN_LOOK.near[0]*unit,GRAIN_LOOK.near[1]*unit,GRAIN_LOOK.haze[0]*unit,GRAIN_LOOK.haze[1]*unit);
     // Local diagnostic comparison; normal/LAN viewers always receive the layer.
     const params=typeof location==='undefined'?null:new URLSearchParams(location.search);
     const disabled=typeof location!=='undefined'&&/^(localhost|127\.)/.test(location.hostname)&&params?.has('diagnostics')&&params.get('eye-depth')==='off';
-    const depth=review||disabled?null:createDepthField(createDepthLayout(quality,stop,Math.atan2(forward.x,forward.z),unit),unit,assets.atlas.quadPadding,fragmentShader,quality==="mobile");
+    const depth=review||disabled?null:createDepthField(createDepthLayout(quality,stop,heading,unit),unit,assets.atlas.quadPadding,fragmentShader,quality==="mobile");
     if(depth)root.add(depth.root);
     return {geometry,material,mesh,group,root,depth,stop,travelDistance:reveal.finalPosition.distanceTo(stop)};
   },[tier.count,quality,review]);
@@ -276,9 +304,12 @@ export function AuthoredEyeField({active,review=false,qualityOverride,moving=tru
     if(!warming)motion.opacity=review||motion.reduce?1:Math.min(1,motion.opacity+step*2.5);
     const alpha=warming?1:motion.opacity;
     resources.material.uniforms.uTime.value=motion.time;resources.material.uniforms.uOpacity.value=alpha;resources.material.uniforms.uMotion.value=animate?1:0;
+    // The close-view grain look follows the sky layer and is exactly 0 in the approved final eye.
+    const travel=camera.position.distanceTo(resources.stop)/resources.travelDistance;
+    const close=review?0:depthLayerVisibility(coveredReturn||warming?'logoReveal':journey.phase,journey.revealStage,travel);
+    resources.material.uniforms.uCloseLook.value=close;
     if(resources.depth){
-      const travel=camera.position.distanceTo(resources.stop)/resources.travelDistance;
-      const opacity=alpha*depthLayerVisibility(coveredReturn||warming?'logoReveal':journey.phase,journey.revealStage,travel);
+      const opacity=alpha*close;
       resources.depth.mesh.visible=opacity>.0001;
       resources.depth.haze.mesh.visible=opacity>.0001;resources.depth.haze.material.uniforms.uOpacity.value=opacity;
       resources.depth.material.uniforms.uOpacity.value=opacity;resources.depth.material.uniforms.uTime.value=motion.time;resources.depth.material.uniforms.uMotion.value=animate?1:0;

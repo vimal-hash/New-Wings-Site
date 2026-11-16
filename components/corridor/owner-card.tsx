@@ -5,18 +5,22 @@ import {forwardRef,useEffect,useImperativeHandle,useRef} from "react";
  * Section 3, About the Owner: the era of early colour and wide-screen. A dull, faded colour picture in the brand's
  * colours, lit like a projection and not printed like a card. On arrival it retells the story so far, on one smooth
  * timeline: Section 1's old film (dim black and white, heavy grain, scratches, flicker, dark edges, a little shake) is
- * cleaned to Section 2's bright, crisp black and white, a calm moment, then colour slowly soaks in. In colour the picture
+ * cleaned to Section 2's bright, crisp black and white, held a moment, then colour soaks in (1 s each). In colour the picture
  * holds still; only a quiet grain and two faint lines remain.
  *
  * Film layers over the words only ever darken and white scratches run beneath the words, so no light can land on the
  * text. Only the live section runs them; the flight's copies of this section are plain stills in colour.
  */
-export type OwnerHandle={open():void;close():void;run(on:boolean):void;root:HTMLElement|null};
+export type OwnerHandle={open(hold?:number):void;close():void;run(on:boolean):void;root:HTMLElement|null};
 /** old: the old film, waiting to be played. play: play on mount. done: already in colour. */
 type Start="old"|"play"|"done";
 
-// Seconds after the white has lifted. Each step ends before the next begins.
-const OLD_HOLD=1,CLEANING=2,CALM=1.2,COLOURING=3,END=OLD_HOLD+CLEANING+CALM+COLOURING;
+// Seconds from open(). Each step ends before the next begins. The user asked for each era to be on screen for 1 s, joined
+// by 1 s soft blends (the quintic ease starts and ends at rest): Section 1's old film, blend 1 s, Section 2's clean black
+// and white 1 s, blend 1 s, then Section 3's colour stays. Was 1 / 2 / 1.2 / 3 (7.2 s).
+// OLD_HOLD is the old film's hold when nothing else shows it (phones, scrolled into view). Arriving through the white
+// portal, the page passes a shorter hold: the old film is already seen through the lifting white.
+const OLD_HOLD=1,CLEANING=1,CALM=1,COLOURING=1;
 const SHAKE=.6; // px at most, at full old film (the user found more too much)
 const smoother=(x:number)=>{const t=Math.min(1,Math.max(0,x));return t*t*t*(t*(t*6-15)+10);};
 const wobble=(n:number,seed:number)=>{const s=Math.sin(n*12.9898+seed*78.233)*43758.5453;return s-Math.floor(s)-.5;};
@@ -88,7 +92,7 @@ const CSS=`
 
 const OwnerCard=forwardRef<OwnerHandle,{live?:boolean;start?:Start}>(function OwnerCard({live=false,start="done"},ref){
   const root=useRef<HTMLDivElement>(null),picture=useRef<HTMLDivElement>(null),first=useRef(start),api=useRef<OwnerHandle|null>(null);
-  const clock=useRef({frame:0,playing:false,start:0,shot:-1});
+  const clock=useRef({frame:0,playing:false,start:0,hold:OLD_HOLD,shot:-1});
   useImperativeHandle(ref,()=>{
     const reduced=()=>window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const still=()=>{const c=clock.current;cancelAnimationFrame(c.frame);c.frame=0;if(picture.current)picture.current.style.translate="";};
@@ -104,10 +108,10 @@ const OwnerCard=forwardRef<OwnerHandle,{live?:boolean;start?:Start}>(function Ow
       let old=1;
       if(c.playing){
         const t=(now-c.start)/1000;
-        if(t>=END){finish();return;}
-        old=1-smoother((t-OLD_HOLD)/CLEANING);
+        if(t>=c.hold+CLEANING+CALM+COLOURING){finish();return;}
+        old=1-smoother((t-c.hold)/CLEANING);
         el.style.setProperty("--old",old.toFixed(4));
-        el.style.setProperty("--colour",smoother((t-OLD_HOLD-CLEANING-CALM)/COLOURING).toFixed(4));
+        el.style.setProperty("--colour",smoother((t-c.hold-CLEANING-CALM)/COLOURING).toFixed(4));
       }
       const shot=Math.floor(now*.012); // a new shake position 12 times a second, fading with the old film
       if(shot!==c.shot&&picture.current){
@@ -124,13 +128,14 @@ const OwnerCard=forwardRef<OwnerHandle,{live?:boolean;start?:Start}>(function Ow
     };
     const made:OwnerHandle={
       run,
-      // From the moment the white has lifted. Coming back to a section already in colour, nothing replays.
-      open(){
+      // Starts the timeline; `hold`: seconds of old film before it is cleaned. Coming back to a section already in colour,
+      // nothing replays.
+      open(hold=OLD_HOLD){
         run(true);
         const el=root.current,c=clock.current;
         if(!el||el.dataset.era!=="old"||c.playing)return;
         if(reduced()){finish();return;}
-        c.playing=true;c.start=performance.now();
+        c.playing=true;c.hold=hold;c.start=performance.now();
       },
       close(){
         clock.current.playing=false;run(false);

@@ -112,7 +112,9 @@ export default function CorridorExperience({ view = "corridor" }: { view?: Study
 
   return (
     <main className="corridor-study" data-page={fullPage} data-journey-phase={journey.phase} data-cinema-stage={journey.cinemaStage} data-opening-stage={journey.openingStage} data-panel-stage={journey.panelStage} data-reveal-stage={journey.revealStage} data-finale-covered={journey.finalCovered}>
-      {journey.pageReturning ? <PageReturnCover/> : (fullPage||hiddenFlight) && <NormalPage key={journey.pageJump} returnToCorridor active={fullPage}/>}
+      {/* Section 4's white box on screen while the camera returns; at View 1 the same box, fixed in the corridor, takes over (end-box.ts). */}
+      {journey.pageReturning&&<PageReturnCover/>}
+      {!journey.pageReturning&&(fullPage||hiddenFlight)&&<NormalPage key={journey.pageJump} returnToCorridor active={fullPage}/>}
       <div id="corridor-viewport" className="scene-fixed" style={{ pointerEvents: orbitActive ? "auto" : "none" }}><SceneBoundary onFailure={()=>setSceneFailed(true)}><Scene metrics={metrics} view={view} orbit={orbitActive} /></SceneBoundary></div>
       <header className="study-header">
         <div><span className="eyebrow">SPATIAL STUDY / 01</span><p>Theatre & corridor</p></div>
@@ -123,7 +125,7 @@ export default function CorridorExperience({ view = "corridor" }: { view?: Study
       </header>
       {isCorridor&&!fullPage&&<nav aria-label="Temporary camera views" style={{position:"fixed",bottom:118,left:"50%",transform:"translateX(-50%)",display:"flex",gap:8,zIndex:4}}>
         {(["slide","turned"] as const).map((target,index)=><button key={target} type="button" disabled={!snapshot.firstFrame}
-          aria-pressed={journey.reviewCamera&&journey.revealStage===target}
+          aria-pressed={journey.reviewCamera&&journey.revealStage===(target==="slide"?"top":target)}
           onClick={()=>{setOrbit(false);setEndOrbit(false);window.dispatchEvent(new CustomEvent("eye-camera-view",{detail:target}));}}
           style={{padding:"8px 14px",border:"1px solid #4d5963",borderRadius:6,background:"#111820",color:"#fff",fontSize:12,cursor:"pointer"}}>View {index+1}</button>)}
         {journey.phase==="logoDone"&&<button type="button" onClick={()=>window.dispatchEvent(new Event('eye-pupil-replay'))}
@@ -163,7 +165,7 @@ export default function CorridorExperience({ view = "corridor" }: { view?: Study
         </>}
       </aside>
       <footer className="study-footer">
-        <span>{isCorridor ? journey.phase === "logoDone" ? "FULL LOGO" : journey.phase === "logoReveal" ? ({slide:"SCROLL UP THE SLIDE",top:"SCROLL TO TURN",turn:"TURNING TOWARD LOGO",turned:"SCROLL TO REVEAL THE LOGO",pullback:"REVEALING LOGO",done:"FULL LOGO"}[journey.revealStage]) : journey.phase === "glassesExit" ? "REMOVING GLASSES · SCREEN OFF" : snapshot.waitingForProjector ? "PREPARING PROJECTOR" : journey.phase === "idle" && journey.cinemaStage === "wearing" ? "SCROLL TO CONTINUE" : journey.phase === "awaitAssembly" ? "PARTS READY · SCROLL TO ASSEMBLE" : ["idle","done"].includes(journey.phase) ? "SCROLL TO CONTINUE" : "CAMERA JOURNEY" : "GEOMETRY REVIEW"}</span>
+        <span>{isCorridor ? journey.phase === "logoDone" ? "FULL LOGO" : journey.phase === "logoReveal" ? ({slide:journey.pageReturning?"BACK UP THE SLIDE":"SCROLL UP THE SLIDE",top:journey.cameraMoving?"TURNING TOWARD LOGO":"SCROLL TO TURN",turn:"TURNING TOWARD LOGO",turned:"SCROLL TO REVEAL THE LOGO",pullback:"REVEALING LOGO",done:"FULL LOGO"}[journey.revealStage]) : journey.phase === "glassesExit" ? "REMOVING GLASSES · SCREEN OFF" : snapshot.waitingForProjector ? "PREPARING PROJECTOR" : journey.phase === "idle" && journey.cinemaStage === "wearing" ? "SCROLL TO CONTINUE" : journey.phase === "awaitAssembly" ? "PARTS READY · SCROLL TO ASSEMBLE" : ["idle","done"].includes(journey.phase) ? "SCROLL TO CONTINUE" : "CAMERA JOURNEY" : "GEOMETRY REVIEW"}</span>
         <span className="asset-caption">{(corridorAssets.triangles + theatreAssets.triangles + sofaTriangles).toLocaleString("en-US")} triangles · geometry study</span>
         <div className="journey-track" aria-hidden="true"><div ref={progressElement} /></div>
       </footer>

@@ -47,11 +47,15 @@ test('opening is a finite, monotonic animation and reduced motion is instant',()
   assert.ok(quiet.values.every(v=>v===1));
 });
 
-test('leaving for the logo closes the panels; no baked wall texture returns',()=>{
+test('the panels stay open back up to View 1 and close early in the turn; no baked wall texture returns',()=>{
   assert.deepEqual(screenTransition('corridor','slide',0),{off:0});
-  const early=screenTransition('logoReveal','slide',.2);assert.ok(early.off>0&&early.off<1,'panels close as the slide begins');
-  assert.deepEqual(screenTransition('logoReveal','slide',.6),{off:1});
-  assert.deepEqual(screenTransition('logoReveal','slide',.985),{off:1});
-  for(const stage of ['turn','turned','pullback','done'])assert.deepEqual(screenTransition('logoReveal',stage,0),{off:1});
+  for(const progress of [0,.2,.6,.985,1])assert.deepEqual(screenTransition('logoReveal','slide',progress),{off:0});
+  assert.deepEqual(screenTransition('logoReveal','top',1),{off:0});
+  for(const progress of [0,.5,1])assert.deepEqual(screenTransition('logoReveal','turn',progress),{off:0},'open through the turn');
+  assert.deepEqual(screenTransition('logoReveal','turned',1),{off:0},'open at View 2');
+  assert.equal(screenTransition('logoReveal','pullback',0).off,0);
+  const early=screenTransition('logoReveal','pullback',.09);assert.ok(early.off>0&&early.off<1,'panels close early in the pullback');
+  assert.deepEqual(screenTransition('logoReveal','pullback',.18),{off:1});
+  assert.deepEqual(screenTransition('logoReveal','done',1),{off:1});
   assert.deepEqual(screenTransition('logoDone','done',1),{off:1});
 });

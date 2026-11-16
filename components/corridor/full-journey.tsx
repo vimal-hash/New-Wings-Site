@@ -28,6 +28,8 @@ import {cinemaGlasses} from './cinema-glasses-state';
 import {CORRIDOR_STOP} from './corridor-screen-state';
 import {sceneIdleUrgent,sceneMotion} from './scene-idle';
 import {effectQuality} from './effect-quality';
+import {LOGO_KEY,logoKey,logoKeyAmount} from './logo-material';
+import {createEndBox} from './end-box';
 
 /** One fresh scroll in the lit theatre: the glasses lift, the screen powers down once
  *  they are nearly clear, then the camera leaves for the projector. */
@@ -90,6 +92,18 @@ export default function FullJourney({ metrics, orbit }: { metrics: MetricsStore;
     const initialRotation=new Quaternion().setFromRotationMatrix(new Matrix4().lookAt(new Vector3(...PAGE_POSE.position),new Vector3(...PAGE_POSE.target),new Vector3(0,1,0)));
     return createLogoReveal(logoBounds.blenderBounds,layout.slides[1],PAGE_POSE.position[1],size.width/Math.max(1,size.height),new Vector3(...PAGE_POSE.position),initialRotation);
   },[size.width,size.height]);
+  // Section 4's white, fixed in the corridor at the liquid sphere's spot (see end-box.ts).
+  const endBox=useMemo(()=>createEndBox(),[]);
+  useEffect(()=>{scene.add(endBox.group);return()=>endBox.dispose();},[scene,endBox]);
+  // View 2's key light on the logo: placed once per framing, relative to the View 2 camera (see LOGO_KEY).
+  useEffect(()=>{
+    const position=new Vector3(),rotation=new Quaternion();reveal.sampleTurn(1,position,rotation);
+    logoKey.position.copy(position)
+      .addScaledVector(new Vector3(0,0,-1).applyQuaternion(rotation),LOGO_KEY.ahead)
+      .addScaledVector(new Vector3(1,0,0).applyQuaternion(rotation),LOGO_KEY.side)
+      .addScaledVector(new Vector3(0,1,0).applyQuaternion(rotation),LOGO_KEY.lift);
+    invalidate();
+  },[reveal,invalidate]);
   const exitStages=useRef(createExitStages());
   const jumpProjector=useRef(()=>{});
   const openingClock=useRef(createTheatreOpeningClock());
@@ -131,7 +145,7 @@ export default function FullJourney({ metrics, orbit }: { metrics: MetricsStore;
       s.amount=0;s.elapsed=0;s.last=performance.now();s.lockedUntil=0;s.revealFov=LOGO_FOV;
       exitStages.current.preview(view==='final'?'done':view);updateStageLighting(576,true);
       metrics.update({progress:1,waitingForProjector:false,waitingForCorridor:false});
-      journeyControls.update({phase:s.phase,revealStage:view==='final'?'done':view,pageReturning:false,reviewCamera:true,openingMoving:false,cinemaStage:'clear'});invalidate();
+      journeyControls.update({phase:s.phase,revealStage:view==='final'?'done':view==='slide'?'top':view,pageReturning:false,reviewCamera:true,openingMoving:false,cinemaStage:'clear'});invalidate();
     };
     window.addEventListener("eye-camera-view",preview);
     // Menu: straight to a section's resting state. No camera move or build plays.
@@ -143,8 +157,9 @@ export default function FullJourney({ metrics, orbit }: { metrics: MetricsStore;
       if(scene.background instanceof Color)scene.background.copy(corridorBackground);
     };
     const jump=(event:Event)=>{
+      endBox.hide();
       const target=(event as CustomEvent).detail as JumpTarget;
-      const common={pageReturning:false,reviewCamera:false,revealStage:"slide" as ExitStage,pageAtEnd:false,finalCovered:false,panelStage:0,openingMoving:false};
+      const common={pageReturning:false,pageEndBox:false,reviewCamera:false,revealStage:"slide" as ExitStage,pageAtEnd:false,finalCovered:false,panelStage:0,openingMoving:false};
       s.back=false;s.pendingScreens=false;s.amount=s.backAmount=0;s.elapsed=0;s.last=performance.now();s.lockedUntil=performance.now()+300;
       livingLens.reset();exitStages.current.reset();theatreOpening.house.value=1;
       metrics.update({waitingForCorridor:false});
@@ -252,7 +267,7 @@ export default function FullJourney({ metrics, orbit }: { metrics: MetricsStore;
     window.addEventListener("pointermove",gazePointer,{passive:true});window.addEventListener("blur",clearGaze);document.documentElement.addEventListener("pointerleave",clearGaze);
     document.addEventListener("visibilitychange",visibility);query.addEventListener("change",preference);
     return()=>{unsubscribe();unsubscribeJourney();window.removeEventListener("eye-camera-view",preview);window.removeEventListener("journey-jump",jump);window.removeEventListener("wheel",wheel);window.removeEventListener("touchstart",touchStart);window.removeEventListener("touchmove",touchMove);window.removeEventListener("keydown",key);window.removeEventListener("pointermove",gazePointer);window.removeEventListener("blur",clearGaze);document.documentElement.removeEventListener("pointerleave",clearGaze);document.removeEventListener("visibilitychange",visibility);query.removeEventListener("change",preference);};
-  },[camera,invalidate,orbit,points,metrics,livingLens,scene,size.width,size.height,corridorBackground,phone]);
+  },[camera,invalidate,orbit,points,metrics,livingLens,scene,size.width,size.height,corridorBackground,phone,endBox]);
 
   /* eslint-disable react-hooks/immutability -- Camera projection/clipping are imperative Three.js state. */
   useFrame(()=>{
@@ -280,11 +295,13 @@ export default function FullJourney({ metrics, orbit }: { metrics: MetricsStore;
       s.from.copy(camera.position);s.q.copy(camera.quaternion);s.lead=s.from.distanceTo(points.screens);change("screens");
     }
     if(s.phase==="logoReveal" || s.phase==="logoDone") {
-      const leaving=journeyControls.read().pageReturning?pageReturn.tick(dt,reveal.viewOneDistance/CORRIDOR_EXIT_SPEED,s.reduce):null;
+      // Back from the page sections the camera climbs all the way to the top of the slide (View 1), where the turn begins.
+      const leaving=journeyControls.read().pageReturning?pageReturn.tick(dt,reveal.topDistance/CORRIDOR_EXIT_SPEED,s.reduce):null;
       const shot=leaving
-        ? {stage:"slide" as ExitStage,progress:reveal.progressToViewOne(settle(leaving.travel)),moving:leaving.moving}
+        ? {stage:"slide" as ExitStage,progress:reveal.progressToTop(settle(leaving.travel)),moving:leaving.moving}
         : exitStages.current.tick(dt,now,s.reduce);
       cinemaShot.stage=shot.stage;cinemaShot.progress=shot.progress;
+      logoKey.view=logoKeyAmount(shot.stage,shot.progress);
       pupilFillState.value=pupilFillProgress(shot.stage,shot.progress);
       if(shot.stage==="slide"||shot.stage==="top")reveal.sampleSlide(shot.progress,points.position,points.rotation);
       else if(shot.stage==="turn"||shot.stage==="turned")reveal.sampleTurn(shot.progress,points.position,points.rotation);
@@ -304,14 +321,19 @@ export default function FullJourney({ metrics, orbit }: { metrics: MetricsStore;
       }
       if(camera instanceof PerspectiveCamera&&livingLens.apply(camera,shot.stage,shot.progress,Math.min(.05,dt),s.reduce||lensTouch.current,camera.position.distanceTo(reveal.centre)))invalidate();
       if(shot.moving)invalidate();
-      // The contact bar and menu step aside while the camera travels.
-      const moving=!!shot.moving||!!leaving?.moving;
+      // Section 4's white: fixed in the corridor at the liquid sphere's spot from the first frame of the return (under
+      // the screen white, which hands over to it just before the camera moves). Plain white, no glow.
+      if(leaving&&!endBox.visible&&journeyControls.read().pageEndBox)endBox.place(camera);
+      // The contact bar and menu step aside while the camera travels. The return's last frame counts too: the hold at
+      // the top follows straight on, so View 1's caption never flashes up between them.
+      const moving=!!shot.moving||!!leaving;
       if(journeyControls.read().cameraMoving!==moving)queueMicrotask(()=>journeyControls.update({cameraMoving:moving}));
       if(leaving&&!leaving.moving){
-        exitStages.current.preview("slide");
+        // At the top: hold for a second, then turn to View 2 by itself.
+        exitStages.current.arrive();invalidate();
         // Consume the gesture's momentum before allowing the next leg.
         s.lastInput=now;s.lockedUntil=now+220;
-        queueMicrotask(()=>journeyControls.update({pageReturning:false}));
+        queueMicrotask(()=>journeyControls.update({pageReturning:false,revealStage:'top'}));
       }
       if(shot.stage!==journeyControls.read().revealStage)queueMicrotask(()=>journeyControls.update({revealStage:shot.stage}));
       if(shot.stage==="done" && s.phase!=="logoDone")change("logoDone");

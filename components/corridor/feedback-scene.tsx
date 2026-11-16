@@ -1,6 +1,6 @@
 "use client";
-import {forwardRef,useEffect,useImperativeHandle,useLayoutEffect,useRef,useState,type PointerEvent as ReactPointerEvent} from "react";
-import {createDust,type Dust} from "./feedback-dust";
+import {forwardRef,useEffect,useImperativeHandle,useLayoutEffect,useRef,useState} from "react";
+import {createSpecks,type Specks} from "./feedback-specks";
 import {ropeFlightDevice} from "./effect-quality";
 
 /**
@@ -12,10 +12,12 @@ import {ropeFlightDevice} from "./effect-quality";
  *
  * Arriving, the picture passes through every era, each blending into the next: Section 1's old film (black and white,
  * dark, grain, scratches, flicker) → Section 2's clean black and white → Section 3's faded colour (light grain, lines) →
- * full colour. Only then does the lens come in: real depth and field of view, the card in focus steps forward with a
- * white glow, the others step back, turn a little and soften, and white dust floats at every distance, out of focus in
- * front of the lens. The card in focus leans gently towards the mouse, its light sliding across it. Last, a deep red
- * light rises in the bottom right corner. None of that depth is present during the older eras.
+ * full colour. Only then does the lens come in: real depth and field of view, the card in focus steps forward, the
+ * others step back and dim, still facing straight on, and a few tiny specks of dust appear in the air behind the
+ * cards (feedback-specks.ts): at the cards sharp, further back a little soft. Last, a deep green
+ * light rises in the bottom right corner and up the gap between the cards. None of that depth is present during the older eras.
+ * Today's picture is otherwise clean, like print: no glow round the card, no light spot on it, no blurred side cards
+ * and no lean towards the mouse (the user found them AI-looking, 2026-11-15).
  */
 export type FeedbackHandle={play():void;reset():void;run(on:boolean):void;input(pixels:number):boolean;root:HTMLElement|null};
 /** old: waits as old film. play: plays on mount. done: already in today's look (a still copy). */
@@ -53,13 +55,12 @@ const LAST=QUOTES.length-1;
 
 // The scroll, as Section 1's reel answers it.
 const PER_CARD=440,NUDGE=.12,SETTLE=.28,QUIET=140,GESTURE=220;
-// The arrival, in seconds after the white has lifted: all four eras in three seconds, then the depth comes in, and with
-// it the red light rises in the bottom right corner.
-const ERA_END=3,DEPTH_WAIT=.01,DEPTH=1.5,RED_AT=ERA_END+.05,RED=1,END=Math.max(ERA_END+DEPTH_WAIT+DEPTH,RED_AT+RED);
+// The arrival, in seconds after the white has lifted (the user's timings, 2026-11-15): old film at 0, clean black and
+// white at 1, faded colour at 1.8, full colour at 3 (ERA_AT, ERA_END); then the depth comes in, 3 to 3.5, with the specks,
+// and the green light rises with it, 3 to 3.5; everything has settled at 3.5.
+const ERA_AT=[1,1.8],ERA_END=3,DEPTH_WAIT=.01,DEPTH=.49,LIGHT_AT=ERA_END+DEPTH_WAIT,LIGHT=DEPTH,END=Math.max(ERA_END+DEPTH_WAIT+DEPTH,LIGHT_AT+LIGHT);
 // How much the motion slows on each era (1 would stop on it for an instant; less keeps it flowing).
 const DWELL=.8;
-// The card in focus leans gently towards the mouse (degrees), or sways very slowly without one.
-const TILT_Y=6,TILT_X=4.5,SWAY=.22;
 // The look of each era: 0 old film, 1 clean B&W, 2 faded colour, 3 today.
 const LOOK={
   grey:[1,1,0,0],sepia:[0,0,.3,0],saturate:[1,1,.55,1],contrast:[1.15,1.3,.92,1],bright:[.8,1.08,.92,1],
@@ -67,54 +68,59 @@ const LOOK={
 };
 // The lens once today's picture has arrived: field of view (degrees) without and with the depth.
 const FOV_FLAT=44,FOV_DEEP=56;
-// The glow, light and red layers never rest fully at zero: kept just above it (invisible), they are drawn once while the
-// white still covers the section, instead of all at once on the frame the depth begins.
+// The green light and the era films never rest fully at zero: kept just above it (invisible), they are drawn once while
+// the white still covers the section, instead of all at once on the frame they begin.
 const REST=.003;
-// The side cards go out of focus by fading in a copy of the card that is always blurred by the same amount. (Changing a
-// blur's size every frame makes the browser rebuild it at every new size, which stalls frames; a fade costs nothing.)
-const BLUR=2.4;
 
 const TAU=Math.PI*2;
 const clamp=(v:number,low:number,high:number)=>Math.min(high,Math.max(low,v));
 const smoother=(x:number)=>{const t=clamp(x,0,1);return t*t*t*(t*(t*6-15)+10);};
+/**
+ * The base ease (out of the old film, into today) is bent just enough to reach each look at its time in ERA_AT: it adds
+ * sin²·(a + b·cos) of the same angle, which is zero, and flat, at both ends, so the start and the finish stay soft.
+ * a and b are solved once here from the two times (it stays monotonic for these; keep checking if they change).
+ */
+const ERA_BEND=(()=>{
+  const base=(t:number)=>3*(1-Math.cos(Math.PI*t/ERA_END))/2;
+  const terms=(t:number)=>{const angle=Math.PI*t/ERA_END,s2=Math.sin(angle)**2;return [s2,s2*Math.cos(angle)];};
+  const [p,q]=terms(ERA_AT[0]),[r,w]=terms(ERA_AT[1]),e1=1-base(ERA_AT[0]),e2=2-base(ERA_AT[1]),det=p*w-q*r;
+  return [(e1*w-q*e2)/det,(p*e2-e1*r)/det];
+})();
 /**
  * Seconds since the white lifted → era (0..3). One unbroken curve: it eases out of the old film and into today, and
  * slows as it passes each era, so every look is seen in turn, without ever stopping or jerking (its speed and
  * acceleration change smoothly everywhere).
  */
 function eraAt(t:number){
-  const u=clamp(t/ERA_END,0,1),x=3*(1-Math.cos(Math.PI*u))/2;
-  return u>=1?3:clamp(x-DWELL*Math.sin(TAU*x)/TAU,0,3);
+  const u=clamp(t/ERA_END,0,1);
+  if(u>=1)return 3;
+  const angle=Math.PI*u,x=3*(1-Math.cos(angle))/2+Math.sin(angle)**2*(ERA_BEND[0]+ERA_BEND[1]*Math.cos(angle));
+  return clamp(x-DWELL*Math.sin(TAU*x)/TAU,0,3);
 }
 const look=(key:keyof typeof LOOK,era:number)=>{const k=LOOK[key],i=Math.min(2,Math.floor(era)),f=era-i;return k[i]+(k[i+1]-k[i])*f;};
 
-// The red light in the bottom right corner: a deep cinema red, falling off smoothly into the dark wall.
-const RED_LIGHT=(()=>{
-  const stops=[];
-  for(let k=0;k<=12;k++){
-    const t=k/12,a=.9*Math.pow(1-t,2.3),m=Math.min(1,t*1.4);
-    stops.push(`rgba(${Math.round(206-80*m)},${Math.round(28-16*m)},${Math.round(38-18*m)},${a.toFixed(3)}) ${(t*100).toFixed(1)}%`);
+// The light in the bottom right corner: a deep emerald green the user chose (2026-11-15; it was a cinema red), a little
+// brighter and paler right in the corner, falling off smoothly through dark green into the wall. Taller than it is wide,
+// so it rises up the gap between the cards. Many stops keep the fall-off free of visible bands.
+const CORNER_LIGHT=(()=>{
+  const core=[60,226,112],deep=[8,82,38],stops=[];
+  for(let k=0;k<=24;k++){
+    const t=k/24,a=.9*Math.pow(1-t,2.3),m=Math.min(1,t*1.4),hot=.175*Math.max(0,1-t/.18);
+    const colour=core.map((v,i)=>Math.round(v+(deep[i]-v)*m+(255-v)*hot));
+    stops.push(`rgba(${colour.join(",")},${a.toFixed(3)}) ${(t*100).toFixed(1)}%`);
   }
-  return `radial-gradient(ellipse 78% 88% at 100% 100%,${stops.join(",")})`;
+  return `radial-gradient(ellipse 90% 160% at 100% 100%,${stops.join(",")})`;
 })();
 
 const CSS=`
 .nw-fb{--w:min(50vw,(100dvh - 18dvh - 40px)*1.6,1500px);--h:calc(var(--w)/1.6);--gap:calc(var(--w)*.07);--left:max(24px,100vw - var(--w)*1.5 - var(--gap));position:absolute;inset:0;overflow:hidden;background:${FEEDBACK_WALL};color:#111214}
-.nw-fb-dust{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
-.nw-fb-red{position:absolute;inset:0;pointer-events:none;opacity:.003;transform-origin:100% 100%;will-change:opacity,transform;background:${RED_LIGHT}}
-/* Light on the card in focus: a soft highlight from the upper left and a little shade on the far side; both move as the card leans. */
-/* Each is painted once; only its opacity and position change, so nothing is repainted while the card moves. */
-.nw-fb-glow{position:absolute;inset:0;pointer-events:none;opacity:.003;will-change:opacity;box-shadow:0 0 0 1px rgba(255,255,255,.55),0 0 46px 4px rgba(255,255,255,.26),0 0 140px 12px rgba(255,255,255,.09)}
-.nw-fb-light{position:absolute;inset:0;pointer-events:none;overflow:hidden;opacity:.003;will-change:opacity}
-.nw-fb-light i{position:absolute;left:-50%;top:-50%;width:200%;height:200%;will-change:transform}
-.nw-fb-light i:first-child{background:radial-gradient(42.5% 37.5% at 50% 50%,rgba(255,250,236,.3),rgba(255,250,236,.12) 30%,rgba(255,250,236,0) 62%)}
-.nw-fb-light i:last-child{background:radial-gradient(45% 40% at 50% 50%,rgba(0,0,0,.12),rgba(0,0,0,.05) 32%,rgba(0,0,0,0) 66%)}
+.nw-fb-light{position:absolute;inset:0;pointer-events:none;opacity:.003;transform-origin:100% 100%;will-change:opacity,transform;background:${CORNER_LIGHT}}
+.nw-fb-specks{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
 .nw-fb-stage{position:absolute;inset:0;perspective:900px}
 .nw-fb[data-era="old"] .nw-fb-card{filter:grayscale(1) contrast(1.15) brightness(.8)}
 .nw-fb-track{position:absolute;left:var(--left);top:calc(50% - var(--h)/2);display:flex;gap:var(--gap);transform-style:preserve-3d;will-change:transform}
 .nw-fb-card{flex:none;position:relative;width:var(--w);height:var(--h);backface-visibility:hidden;will-change:transform}
 .nw-fb-face{position:absolute;inset:0;box-sizing:border-box;margin:0;padding:clamp(12px,calc(var(--w)*.05),72px);display:grid;grid-template-rows:auto 1fr auto}
-.nw-fb-soft{filter:blur(${BLUR}px);opacity:${REST};will-change:opacity}
 .nw-fb-top,.nw-fb-who{display:flex;justify-content:space-between;align-items:baseline;gap:16px;font:500 clamp(9px,calc(var(--w)*.015),15px)/1.3 var(--font-geist-mono),monospace;letter-spacing:.16em;text-transform:uppercase}
 .nw-fb-text{align-self:center;max-width:22ch;margin:0;font-size:clamp(13px,calc(var(--w)*.046),68px);font-weight:500;line-height:1.08;letter-spacing:-.03em}
 .nw-fb-name{font:500 clamp(12px,calc(var(--w)*.024),30px)/1.2 var(--font-geist-sans),system-ui,sans-serif;letter-spacing:-.01em;text-transform:none}
@@ -157,15 +163,18 @@ const CSS=`
 @media (prefers-reduced-motion:reduce){.nw-fb *{animation:none!important}}
 `;
 
-type Controller=FeedbackHandle&{settle(era:number,depth:number):void;dust(back:HTMLCanvasElement,front:HTMLCanvasElement):()=>void;aim(x:number,y:number):void};
-type Parts={root:{current:HTMLDivElement|null};red:{current:HTMLDivElement|null};stage:{current:HTMLDivElement|null};track:{current:HTMLDivElement|null};cards:{current:(HTMLElement|null)[]};shown:(i:number)=>void;card:number};
+type Controller=FeedbackHandle&{settle(era:number,depth:number):void;resize():void;specks(canvas:HTMLCanvasElement):()=>void};
+type Parts={root:{current:HTMLDivElement|null};light:{current:HTMLDivElement|null};stage:{current:HTMLDivElement|null};track:{current:HTMLDivElement|null};cards:{current:(HTMLElement|null)[]};shown:(i:number)=>void;card:number};
 
-function createController({root,red,stage,track,cards,shown,card}:Parts):Controller{
+function createController({root,light,stage,track,cards,shown,card}:Parts):Controller{
   const reduced=()=>window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  // One clock for the arrival, the cards and the dust. pos follows goal like a soft spring; while a gesture is held,
+  // One clock for the arrival, the cards and the specks. pos follows goal like a soft spring; while a gesture is held,
   // goal follows the scroll (at most one card from where it began); once the scroll is quiet, goal is a whole card.
-  const c={frame:0,playing:false,start:0,era:0,depth:0,pos:card,vel:0,goal:card,origin:card,drag:0,held:false,mine:false,last:-1e9,time:0,dustTime:0,
-    shown:card,drawnDepth:NaN,aim:[0,0],cam:[0,0],tilt:[0,0],sway:0,red:0,dust:null as Dust|null};
+  // pitch: pixels from one card to the next, which carries the specks with the cards.
+  const c={frame:0,playing:false,start:0,era:0,depth:0,pos:card,vel:0,goal:card,origin:card,drag:0,held:false,mine:false,last:-1e9,time:0,
+    shown:card,drawnDepth:NaN,light:0,pitch:0,specks:null as Specks|null,
+    // Where the flat strip puts things, in pixels from the stage's centre (the lens's centre): measured on resize.
+    layout:{lefts:[] as number[],height:0}};
   const running=()=>root.current?.dataset.run!==undefined;
   const fov=()=>FOV_FLAT+(FOV_DEEP-FOV_FLAT)*c.depth;
   // Writes a style only when it changes (the cards are placed every frame while the lens is live).
@@ -187,44 +196,32 @@ function createController({root,red,stage,track,cards,shown,card}:Parts):Control
     // Never quite zero while the eras run: each film is then already drawn before its era comes (see REST).
     films(Math.max(REST,look("old",e)),Math.max(REST,look("vintage",e)));
   };
-  // The cards: where the strip is, and, with the depth, which card is in focus, and how it leans.
+  // The cards: where the strip is and, with the depth, how far each stands from the lens. All face straight on.
   const placeCards=()=>{
     const d=c.depth;
     if(track.current)put(track.current,"transform",`translateX(calc(${(-c.pos).toFixed(4)} * (var(--w) + var(--gap))))`);
-    if(stage.current&&root.current&&c.depth!==c.drawnDepth){c.drawnDepth=c.depth;stage.current.style.perspective=`${(root.current.clientHeight/2/Math.tan(fov()*Math.PI/360)).toFixed(1)}px`;}
+    const lens=c.layout.height/2/Math.tan(fov()*Math.PI/360);
+    if(stage.current&&c.depth!==c.drawnDepth){c.drawnDepth=c.depth;stage.current.style.perspective=`${lens.toFixed(1)}px`;}
     cards.current.forEach((el,i)=>{
       if(!el)return;
-      const k=clamp(i-c.pos,-1,1),a=Math.abs(k),focus=(1-a)*d;
+      const a=Math.abs(clamp(i-c.pos,-1,1)),z=((1-a)*34-a*70)*d;
+      // The lens only changes a card's size, not where it stands: each card's centre stays where the flat strip puts it
+      // (moved back by z, a card would otherwise slide towards the lens's centre and close the gap to its neighbour).
+      const centre=(c.layout.lefts[i]??0)-c.pos*c.pitch,shift=lens>0?-centre*z/lens:0;
       put(el,"opacity",(1-(.12+.18*d)*a).toFixed(3));
-      put(el,"transform",d>0?`translateZ(${(((1-a)*34-a*70)*d).toFixed(2)}px) rotateY(${(-5*k*d).toFixed(3)}deg) rotateX(${(-c.tilt[1]*TILT_X*focus).toFixed(3)}deg) rotateY(${(c.tilt[0]*TILT_Y*focus).toFixed(3)}deg)`:"none");
-      // Out of focus: the blurred copy fades in over the sharp card; the sharp one goes only once it is fully covered.
-      const soft=a*d,face=el.children[1] as HTMLElement|undefined,copy=el.children[2] as HTMLElement|undefined;
-      if(copy)put(copy,"opacity",Math.max(REST,soft).toFixed(3));
-      if(face)put(face,"opacity",(1-smoother((soft-.9)/.1)).toFixed(3));
-      const glow=el.firstElementChild as HTMLElement|null,light=el.lastElementChild as HTMLElement|null;
-      if(glow)put(glow,"opacity",Math.max(REST,focus).toFixed(3));
-      if(light){
-        // The light on it: the highlight slides against the lean, as on a real tilted surface, the shade the other way.
-        // (Each layer is twice the card, so it moves half as many of its own percent.)
-        put(light,"opacity",Math.max(REST,.75*focus).toFixed(3));
-        const hx=(30-c.tilt[0]*26-50)/2,hy=(22-c.tilt[1]*22-50)/2,high=light.firstElementChild as HTMLElement|null,shade=light.lastElementChild as HTMLElement|null;
-        if(focus>.001){
-          if(high)put(high,"transform",`translate(${hx.toFixed(2)}%,${hy.toFixed(2)}%)`);
-          if(shade)put(shade,"transform",`translate(${(-hx).toFixed(2)}%,${(-hy).toFixed(2)}%)`);
-        }
-      }
+      put(el,"transform",d>0?`translateX(${shift.toFixed(2)}px) translateZ(${z.toFixed(2)}px)`:"none");
     });
     const near=Math.round(c.pos);if(near!==c.shown){c.shown=near;shown(near);}
   };
-  // The red light in the corner, last of all: it rises and opens out from the corner.
-  const paintRed=()=>{
-    const el=red.current;if(!el)return;
-    const e=smoother(c.red);put(el,"opacity",Math.max(REST,e).toFixed(3));put(el,"transform",`scale(${(.82+.18*e).toFixed(4)})`);
+  // The green light in the corner, last of all: it rises and opens out from the corner.
+  const paintLight=()=>{
+    const el=light.current;if(!el)return;
+    const e=smoother(c.light);put(el,"opacity",Math.max(REST,e).toFixed(3));put(el,"transform",`scale(${(.82+.18*e).toFixed(4)})`);
   };
   const finish=()=>{
-    c.playing=false;c.era=3;c.depth=1;c.red=1;
+    c.playing=false;c.era=3;c.depth=1;c.light=1;
     const el=root.current;if(el)el.dataset.era="hd";
-    paintEra();placeCards();paintRed();
+    paintEra();placeCards();paintLight();
   };
   const tick=(now:number)=>{
     c.frame=0;if(!root.current)return;
@@ -235,17 +232,10 @@ function createController({root,red,stage,track,cards,shown,card}:Parts):Control
       if(t>=END)finish();
       else{
         busy=true;
-        c.era=eraAt(t);c.depth=smoother((t-ERA_END-DEPTH_WAIT)/DEPTH);c.red=clamp((t-RED_AT)/RED,0,1);
+        c.era=eraAt(t);c.depth=smoother((t-ERA_END-DEPTH_WAIT)/DEPTH);c.light=clamp((t-LIGHT_AT)/LIGHT,0,1);
         if(c.era>=3&&root.current.dataset.era!=="now")root.current.dataset.era="now";
-        paintEra();paintRed();
+        paintEra();paintLight();
       }
-    }
-    // The card in focus leans towards the mouse, or sways very slowly; it follows softly, never snapping.
-    if(c.depth>0&&!reduced()){
-      c.sway+=dt;
-      const tx=c.aim[0]+SWAY*Math.sin(c.sway*.41),ty=c.aim[1]*.8+SWAY*.7*Math.sin(c.sway*.29+1.3),follow=Math.min(1,dt*3);
-      c.tilt[0]+=(clamp(tx,-1,1)-c.tilt[0])*follow;c.tilt[1]+=(clamp(ty,-1,1)-c.tilt[1])*follow;
-      busy=true;
     }
     if(c.held&&performance.now()-c.last>QUIET){
       c.held=false;const share=c.drag/PER_CARD;
@@ -260,15 +250,12 @@ function createController({root,red,stage,track,cards,shown,card}:Parts):Control
     }
     placeCards();
     if(c.held||c.pos!==c.goal)busy=true;
-    // The dust: the camera breathes slowly and leans a little towards the mouse.
-    if(c.dust){
-      if(c.depth>0&&!reduced()){
-        c.dustTime+=dt;
-        c.cam[0]+=(c.aim[0]-c.cam[0])*Math.min(1,dt*2.2);c.cam[1]+=(c.aim[1]-c.cam[1])*Math.min(1,dt*2.2);
-        c.dust.draw(c.dustTime,dt,{fov:fov(),camX:.016*Math.sin(c.dustTime*.071)+c.cam[0]*.03,camY:.01*Math.sin(c.dustTime*.053+1)+c.cam[1]*.018,strength:c.depth});
-        busy=true;
-      }else if(c.depth>0)c.dust.draw(c.dustTime,0,{fov:fov(),camX:0,camY:0,strength:c.depth}); // reduced motion: one still frame
-      else c.dust.clear();
+    // The specks drift in the air and move with the cards by their distance; they come in with the depth.
+    if(c.specks){
+      const view={shift:c.pos*c.pitch,strength:c.depth};
+      if(c.depth>0&&!reduced()){c.specks.draw(dt,view);busy=true;}
+      else if(c.depth>0)c.specks.draw(0,view); // reduced motion: still
+      else c.specks.clear();
     }
     if(busy&&running())c.frame=requestAnimationFrame(tick);else c.time=0;
   };
@@ -285,14 +272,14 @@ function createController({root,red,stage,track,cards,shown,card}:Parts):Control
       made.run(true);
       if(el.dataset.era!=="old"||c.playing)return;
       if(reduced()){finish();wake();return;}
-      c.playing=true;c.start=performance.now();c.time=0;c.dust?.warm();wake();
+      c.playing=true;c.start=performance.now();c.time=0;c.specks?.warm();wake();
     },
     reset(){
       const el=root.current;
-      c.playing=false;c.era=0;c.depth=0;c.red=0;c.tilt=[0,0];c.pos=c.goal=c.origin=0;c.vel=0;c.drag=0;c.held=false;c.mine=false;
+      c.playing=false;c.era=0;c.depth=0;c.light=0;c.pos=c.goal=c.origin=0;c.vel=0;c.drag=0;c.held=false;c.mine=false;
       if(el)el.dataset.era="old";
       paintEra();
-      c.dust?.clear();placeCards();paintRed();
+      c.specks?.clear();placeCards();paintLight();
     },
     // One scroll event in pixels (down is positive). True when the cards used it; false when it belongs to the page.
     input(pixels){
@@ -308,33 +295,41 @@ function createController({root,red,stage,track,cards,shown,card}:Parts):Control
       c.goal=clamp(c.origin+clamp(c.drag/PER_CARD,-1,1),0,LAST);
       wake();return true;
     },
-    settle(era,depth){c.era=era;c.depth=depth;c.red=era>=3&&depth>=1?1:0;paintEra();placeCards();paintRed();},
-    dust(back,front){
-      const device=ropeFlightDevice();
-      // Fewer specks and pixels on weaker devices; the look stays the same.
-      const el=root.current,area=el?el.clientWidth*el.clientHeight/(1440*800):1,cores=navigator.hardwareConcurrency||4;
-      const base=(device==="desktop"?560:device==="laptop"?340:170)*(cores<=4?.7:1);
-      const dust=createDust(back,front,Math.round(base*clamp(area,.45,1.4)),device==="mobile"?1.25:1);
-      const size=()=>{const el=root.current;if(el){dust.resize(el.clientWidth,el.clientHeight);c.drawnDepth=NaN;placeCards();wake();}};
-      const watch=new ResizeObserver(size);if(root.current)watch.observe(root.current);
-      c.dust=dust;size();
-      dust.warm(); // its sprites are first drawn now, while the section is still hidden, not when the dust appears
-      return()=>{watch.disconnect();dust.clear();c.dust=null;};
+    settle(era,depth){c.era=era;c.depth=depth;c.light=era>=3&&depth>=1?1:0;paintEra();placeCards();paintLight();},
+    // The lens's perspective follows the section's height; the specks follow its size and the cards' spacing.
+    resize(){
+      const el=root.current,first=cards.current[0],next=cards.current[1];
+      c.pitch=first&&next?next.offsetLeft-first.offsetLeft:0;
+      if(el){
+        // Each card's centre (with the strip at its first card) from the stage's centre; the strip's own left included.
+        const from=(track.current?.offsetLeft??0)-el.clientWidth/2;
+        c.layout={lefts:cards.current.map(card=>card?from+card.offsetLeft+card.offsetWidth/2:0),height:el.clientHeight};
+        c.specks?.resize(el.clientWidth,el.clientHeight);
+      }
+      c.drawnDepth=NaN;placeCards();wake();
     },
-    aim(x,y){c.aim=[x,y];},
+    specks(canvas){
+      const device=ropeFlightDevice();
+      // Fewer on phones; the canvas at one pixel per CSS pixel on computers, a little sharper on phones.
+      c.specks=createSpecks(canvas,device==="mobile"?.6:1,device==="mobile"?1.25:1);
+      made.resize();
+      c.specks.warm(); // its sprites are first drawn now, while the section is still hidden
+      return()=>{c.specks?.clear();c.specks=null;};
+    },
     get root(){return root.current;},
   };
   return made;
 }
 
 const FeedbackScene=forwardRef<FeedbackHandle,{live?:boolean;start?:Start;card?:number}>(function FeedbackScene({live=false,start="done",card=0},ref){
-  const root=useRef<HTMLDivElement>(null),red=useRef<HTMLDivElement>(null),stage=useRef<HTMLDivElement>(null),track=useRef<HTMLDivElement>(null),cards=useRef<(HTMLElement|null)[]>([]);
-  const back=useRef<HTMLCanvasElement>(null),front=useRef<HTMLCanvasElement>(null),first=useRef(start),ctl=useRef<Controller|null>(null);
+  const root=useRef<HTMLDivElement>(null),light=useRef<HTMLDivElement>(null),stage=useRef<HTMLDivElement>(null),track=useRef<HTMLDivElement>(null),cards=useRef<(HTMLElement|null)[]>([]);
+  const dust=useRef<HTMLCanvasElement>(null),first=useRef(start),ctl=useRef<Controller|null>(null);
   const [shown,setShown]=useState(card);
-  const ensure=()=>ctl.current??=createController({root,red,stage,track,cards,shown:setShown,card});
+  const ensure=()=>ctl.current??=createController({root,light,stage,track,cards,shown:setShown,card});
   useImperativeHandle(ref,()=>ensure(),[]); // eslint-disable-line react-hooks/exhaustive-deps -- one controller for the component's life
   useLayoutEffect(()=>{
     const made=ensure();
+    made.resize(); // the strip's layout, for the lens
     if(first.current==="done")made.settle(3,1);else made.settle(0,0);
     return()=>made.run(false); // its frame is cancelled, so a remount (React's dev double mount) can start it again
   },[]); // eslint-disable-line react-hooks/exhaustive-deps
@@ -355,43 +350,34 @@ const FeedbackScene=forwardRef<FeedbackHandle,{live?:boolean;start?:Start;card?:
     return()=>{gone=true;if(link){layers.forEach(layer=>{layer.style.backgroundImage="";});URL.revokeObjectURL(link);}};
   },[live]);
   useEffect(()=>{
-    if(!live||!back.current||!front.current)return;
-    return ensure().dust(back.current,front.current);
+    const el=root.current;if(!el)return;
+    const made=ensure(),watch=new ResizeObserver(()=>made.resize());watch.observe(el);
+    return()=>watch.disconnect();
+  },[]); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(()=>{
+    if(!live||!dust.current)return;
+    return ensure().specks(dust.current);
   },[live]); // eslint-disable-line react-hooks/exhaustive-deps
   useEffect(()=>{
     if(!live||first.current!=="play")return;
     const wait=requestAnimationFrame(()=>ensure().play());
     return()=>cancelAnimationFrame(wait);
   },[live]); // eslint-disable-line react-hooks/exhaustive-deps
-  const aim=(event:ReactPointerEvent<HTMLDivElement>)=>{
-    if(event.pointerType!=="mouse")return;
-    const box=event.currentTarget.getBoundingClientRect();
-    ctl.current?.aim((event.clientX-box.left)/box.width*2-1,(event.clientY-box.top)/box.height*2-1);
-  };
-  return <div ref={root} className="nw-fb" data-live={live||undefined} data-era={start==="done"?"hd":"old"}
-    onPointerMove={live?aim:undefined} onPointerLeave={live?()=>ctl.current?.aim(0,0):undefined}>
+  return <div ref={root} className="nw-fb" data-live={live||undefined} data-era={start==="done"?"hd":"old"}>
     <style href="nw-feedback-scene" precedence="default">{CSS}</style>
-    <div ref={red} className="nw-fb-red" aria-hidden="true"/>
-    {live?<canvas ref={back} className="nw-fb-dust" aria-hidden="true"/>:null}
+    <div ref={light} className="nw-fb-light" aria-hidden="true"/>
+    {live?<canvas ref={dust} className="nw-fb-specks" aria-hidden="true"/>:null}
     <div ref={stage} className="nw-fb-stage" role="group" aria-roledescription="carousel" aria-label="Client feedback">
       <div ref={track} className="nw-fb-track">
         {QUOTES.map((q,i)=><div key={i} ref={el=>{cards.current[i]=el;}} className="nw-fb-card" aria-hidden={i!==shown}>
-          <span className="nw-fb-glow" aria-hidden="true"/>
           <figure className="nw-fb-face" style={{background:q.colour}}>
             <div className="nw-fb-top"><span>Client feedback</span><span>{String(i+1).padStart(2,"0")} / {String(QUOTES.length).padStart(2,"0")}</span></div>
             <blockquote className="nw-fb-text">{q.text}</blockquote>
             <figcaption className="nw-fb-who"><span className="nw-fb-name">{q.name}</span><span>{q.place}</span></figcaption>
           </figure>
-          <div className="nw-fb-face nw-fb-soft" style={{background:q.colour}} aria-hidden="true">
-            <div className="nw-fb-top"><span>Client feedback</span><span>{String(i+1).padStart(2,"0")} / {String(QUOTES.length).padStart(2,"0")}</span></div>
-            <div className="nw-fb-text">{q.text}</div>
-            <div className="nw-fb-who"><span className="nw-fb-name">{q.name}</span><span>{q.place}</span></div>
-          </div>
-          <span className="nw-fb-light" aria-hidden="true"><i/><i/></span>
         </div>)}
       </div>
     </div>
-    {live?<canvas ref={front} className="nw-fb-dust" aria-hidden="true"/>:null}
     <div className="nw-fb-film nw-fb-old" aria-hidden="true"><div className="nw-fb-oldgrain"/><div className="nw-fb-oldedge"/><div className="nw-fb-oldflicker"/></div>
     <div className="nw-fb-scratches" aria-hidden="true"><i/></div>
     <div className="nw-fb-film nw-fb-vintage" aria-hidden="true"><div className="nw-fb-grain"/><div className="nw-fb-lines"/><div className="nw-fb-flicker"/></div>

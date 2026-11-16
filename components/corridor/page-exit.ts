@@ -9,11 +9,15 @@ const ease=(x:number)=>{const t=unit(x);return t*t*t*(t*(t*6-15)+10);};
 const COVER_LEAD=.4;
 /** The return to View 1 used to be a sub-second dash; this floor keeps it a slow glide. */
 export const RETURN_TRAVEL_MIN=3.4;
-const COVER_SECONDS=1.35;
+/** Leaving Section 4 (the user, 2026-11-16): the section turns plain white over .3 s on screen. Just before the camera
+ *  starts back (HANDOVER), the screen white hands over to a plain white panel fixed in the corridor at the liquid
+ *  sphere's spot, which fills the view exactly at that moment (end-box.ts). The panel stays there; the camera moves away
+ *  from it. Nothing on screen follows the camera. */
+export const WHITE_SECONDS=.3,HANDOVER=COVER_LEAD;
 /** One clock for the retreating section and the overlapping camera move. */
 export function createPageReturn(){
   let elapsed=0;
-  const initial={scale:1,opacity:1,copy:1,glow:0,travel:0,moving:true};
+  const initial={scale:1,opacity:1,copy:1,white:0,travel:0,moving:true};
   let shot=initial;
   return {
     prepared:false,
@@ -23,16 +27,9 @@ export function createPageReturn(){
     tick(delta:number,authored:number,reduced=false){
       const travelSeconds=Math.max(RETURN_TRAVEL_MIN,authored),total=COVER_LEAD+travelSeconds;
       elapsed=reduced?total:Math.min(total,elapsed+Math.min(.05,Math.max(0,delta)));
-      const cover=elapsed/Math.min(COVER_SECONDS,total);
+      const white=ease(elapsed/WHITE_SECONDS);
       const travel=elapsed===total?1:unit((elapsed-COVER_LEAD)/travelSeconds);
-      shot={
-        scale:1/(1+2.8*ease(cover)),
-        opacity:1-ease((cover-.24)/.76),
-        copy:1-ease(cover/.48),
-        glow:Math.sin(Math.PI*unit(cover))**2,
-        travel,
-        moving:travel<1,
-      };
+      shot={scale:1,opacity:elapsed<HANDOVER?1:0,copy:1-white,white,travel,moving:travel<1};
       return shot;
     },
   };

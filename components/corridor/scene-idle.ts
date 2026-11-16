@@ -23,7 +23,7 @@ function tick(){
   const shot=journeyControls.read(),holding=shot.phase==="intro"&&!shot.openingMoving;
   const now=performance.now();
   if(shot.phase!==previousPhase){previousPhase=shot.phase;phaseSince=now;}
-  const reviewing=shot.reviewCamera&&shot.phase==="logoReveal"&&(shot.revealStage==="slide"||shot.revealStage==="turned");
+  const reviewing=shot.reviewCamera&&shot.phase==="logoReveal"&&(shot.revealStage==="slide"||shot.revealStage==="top"||shot.revealStage==="turned");
   const waitingForProjector=shot.phase==="glassesExit"&&sceneIdleUrgent.value;
   const resting=settled.has(shot.phase)||shot.phase==="page";
   if(!document.hidden&&(resting||holding||reviewing||waitingForProjector)&&fx!=="particles"&&fx!=="assembling"&&(holding||shot.phase==="pageReturnLoading"||sceneIdleUrgent.value||(now-lastInput>450&&now-sceneMotion.at>250))){

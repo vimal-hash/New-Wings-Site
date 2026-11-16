@@ -40,4 +40,28 @@ test('upward scroll reverses slide travel; turn input cannot skip the next stop'
  c.input(100,5400,800);c.input(10000,5500,800);s=c.tick(1.4,6800);assert.equal(s.stage,'turned');
  assert.equal(c.tick(10,16800).stage,'turned');
 });
+test('back from the page sections: the top holds one second, then turns to View 2 by itself; input cannot skip it',()=>{
+ const c=createExitStages();let now=0,s;c.arrive();
+ s=c.tick(1/60,now+=16);assert.equal(s.stage,'top');assert.equal(s.progress,1);assert.equal(s.moving,true);
+ c.input(10000,now,800);c.input(100,now+400,800);
+ for(let i=0;i<55;i++)s=c.tick(1/60,now+=16);
+ assert.equal(s.stage,'top','still holding just before one second');
+ for(let i=0;i<10;i++)s=c.tick(1/60,now+=16);
+ assert.equal(s.stage,'turn');assert.ok(s.progress>0&&s.progress<.1,'the turn starts where the hold ends');
+ c.input(10000,now+1000,800);
+ for(let i=0;i<120&&s.stage!=='turned';i++)s=c.tick(1/60,now+=16);
+ assert.equal(s.stage,'turned');assert.equal(s.moving,false);
+ assert.equal(c.tick(5,now+=5000).stage,'turned','no pullback without a fresh gesture after View 2');
+ c.input(100,now+=1000,800);assert.equal(c.tick(1/60,now+=16).stage,'pullback');
+});
+test('the View 1 review stop rests at the top until a fresh scroll turns it',()=>{
+ const c=createExitStages();let now=0,s;c.preview('slide');
+ s=c.tick(10,now+=10000);assert.equal(s.stage,'top');assert.equal(s.progress,1);assert.equal(s.moving,false);
+ c.input(100,now+=1000,800);s=c.tick(1/60,now+=16);assert.equal(s.stage,'turn');
+});
+test('reduced motion still holds at the top, then lands on View 2',()=>{
+ const c=createExitStages();c.arrive();
+ assert.equal(c.tick(.5,500,true).stage,'top');
+ assert.equal(c.tick(.6,1100,true).stage,'turned');
+});
 

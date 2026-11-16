@@ -206,9 +206,10 @@ dt { color: #8996a7; } dd { margin: 0; text-align: right; font-variant-numeric: 
 .section-copy p { max-width:37ch;margin:clamp(14px,3vh,30px) 0 0;font-size:clamp(1rem,1.55vw,1.4rem);line-height:1.45; }
 /* Section 1, the film reel: read out to screen readers, the picture says the rest. */
 .film-reel-title, .film-reel-list { position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap; }
+/* Leaving Section 4: the page turns white, then the solid white sheet shrinks to a half-size box at the centre and
+   stays there for good (no feathered edge, glow or fade out). It never takes input. */
 .page-return-cover { position:fixed;inset:0;z-index:10;pointer-events:none;will-change:transform,opacity; }
-.page-return-surface { position:absolute;inset:0;--feather:calc(var(--page-return-glow,0)*36px);mask-image:linear-gradient(to right,transparent,#000 var(--feather),#000 calc(100% - var(--feather)),transparent),linear-gradient(to bottom,transparent,#000 var(--feather),#000 calc(100% - var(--feather)),transparent);mask-composite:intersect; }
-.page-return-cover::after { content:"";position:absolute;inset:0;border-radius:calc(var(--page-return-glow,0)*32px);opacity:calc(var(--page-return-glow,0)*.72);box-shadow:inset 0 0 40px #f5fbff,0 0 44px #e4f0ffb3; }
+.page-return-surface { position:absolute;inset:0; }
 .page-return-cover[hidden] { display:none; }
 .diagonal-next-section { position:fixed;inset:0;width:100%;height:100vh;height:100dvh;z-index:30;background:#fff;visibility:hidden;pointer-events:none;clip-path:polygon(0 124%,100% 100%,100% 100%,0 100%);touch-action:none;overscroll-behavior:none; }
 .corridor-study[data-finale-covered="true"] > :not(.diagonal-next-section):not(.scene-fixed):not(.cinema-panel[data-open="true"]):not(.site-menu):not(.contact-bar):not(.enquiry):not(.journey-record) { visibility:hidden;pointer-events:none; }

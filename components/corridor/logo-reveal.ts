@@ -9,6 +9,18 @@ export const LOGO_FOV = 40;
 export const VIEW_ONE_PITCH=.36;
 export const VIEW_ONE_PROGRESS=.985;
 const slideAngle=(u:number)=>(6*u**3-8*u**4+3*u**5)*Math.PI/2;
+/** Slide progress at a share of the arc length up to the slide progress `end`. */
+function progressAlong(share:number,end:number){
+  if(share<=0)return 0;
+  if(share>=1)return end;
+  let low=0,high=end;
+  const target=share*slideAngle(end);
+  for(let i=0;i<20;i++){
+    const middle=(low+high)/2;
+    if(slideAngle(middle)<target)low=middle;else high=middle;
+  }
+  return (low+high)/2;
+}
 
 /** Authored slide followed by a C2-continuous pullback; no camera cut at the lip. */
 export function createLogoReveal(bounds: number[][], slide: Slide, eyeHeight: number, aspect: number, start: Vector3, initialRotation: Quaternion) {
@@ -47,18 +59,12 @@ export function createLogoReveal(bounds: number[][], slide: Slide, eyeHeight: nu
   return {
     centre, finalPosition, finalRotation, far:Math.max(1200,distance+depth+200),
     viewOneDistance:radius*viewOneAngle,
+    /** The whole climb, to the top of the slide where the turn begins. */
+    topDistance:radius*slideAngle(1),
     /** Convert arc-length pacing back to the authored slide/lens progress. */
-    progressToViewOne(share:number){
-      if(share<=0)return 0;
-      if(share>=1)return VIEW_ONE_PROGRESS;
-      let low=0,high=VIEW_ONE_PROGRESS;
-      const target=share*viewOneAngle;
-      for(let i=0;i<20;i++){
-        const middle=(low+high)/2;
-        if(slideAngle(middle)<target)low=middle;else high=middle;
-      }
-      return (low+high)/2;
-    },
+    progressToViewOne(share:number){return progressAlong(share,VIEW_ONE_PROGRESS);},
+    /** The same, for the return from the page sections: it climbs all the way to the top (the user, 2026-11-16). */
+    progressToTop(share:number){return progressAlong(share,1);},
     sample(progress:number,position:Vector3,rotation:Quaternion) {
       const t=Math.max(0,Math.min(1,progress));
       if(t<=split) {

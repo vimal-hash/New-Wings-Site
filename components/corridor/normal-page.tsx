@@ -18,14 +18,17 @@ import FeedbackScene,{FEEDBACK_WALL,whenCalm,type FeedbackHandle} from "./feedba
 const FilmReel=dynamic(()=>import("../film-reel/film-reel"),{ssr:false});
 
 const SECTION_COLOURS=["#ffffff",WALL,OWNER_WALL,FEEDBACK_WALL];
-const SECTION_COPY=[
+// Section 3's film (old -> clean -> colour) starts once its white has lifted 90% (as seen), not after it has gone, and
+// the old film begins to clean .26 s later, as the white finishes (it is gone about .28 s after 90%).
+const TEAM_FILM_AT=.9,TEAM_OLD_HOLD=.26;const SECTION_COPY=[
   {title:"Products",body:"Projection, screens, sound, seating and finishes: everything a theatre needs, chosen to work together."},
   {title:"About Us",body:"A cinema is many parts from many makers. We bring them into one plan, so the room works as one."},
   {title:"Team",body:"The people who plan, fit and tune each room, and care how every film looks and sounds."},
   {title:"Testimonials",body:"Theatre owners and partners, in their own words."},
 ];
 
-/** A departing copy of the fourth section (a still of its HD scene), sampled from the camera's clock. */
+/** A departing copy of the fourth section (a still of its HD scene), sampled from the camera's clock: it turns white,
+ *  then the white sheet shrinks to a half-size box at the centre and stays there (no fade out, glow or soft edge). */
 export function PageReturnCover(){
   const sheet=useRef<HTMLDivElement>(null),copy=useRef<HTMLDivElement>(null);
   useLayoutEffect(()=>{
@@ -36,7 +39,7 @@ export function PageReturnCover(){
       const shot=pageReturn.read();
       node.style.transform=`scale(${shot.scale})`;
       node.style.opacity=String(shot.opacity);
-      node.style.setProperty("--page-return-glow",String(shot.glow));
+      node.style.setProperty("--page-return-white",String(shot.white));
       text.style.opacity=String(shot.copy);
       text.style.visibility=shot.copy>0?"":"hidden";
       node.hidden=shot.opacity<=0;
@@ -45,7 +48,7 @@ export function PageReturnCover(){
     paint();return()=>cancelAnimationFrame(frame);
   },[]);
   return <div className="page-return-cover" ref={sheet} aria-hidden="true">
-    <div className="page-return-surface" style={{backgroundColor:`color-mix(in srgb, ${FEEDBACK_WALL}, white calc(var(--page-return-glow, 0) * 82%))`}}>
+    <div className="page-return-surface" style={{backgroundColor:`color-mix(in srgb, ${FEEDBACK_WALL}, white calc(var(--page-return-white, 0) * 100%))`}}>
       <div ref={copy} style={{position:"absolute",inset:0}}><FeedbackScene card={2}/></div>
     </div>
   </div>;
@@ -67,8 +70,7 @@ export default function NormalPage({returnToCorridor=false,active=true}:{returnT
   const flying=device!=="mobile"&&!flightUnavailable;
   const control=useRef<FlightControl>({where:initialSection===1&&flying?"flight":"rest"});
   const [flight,setFlight]=useState({index:0,startAtEnd:initialSection>1,autoEnter:false,entry:0,entryDistance:0});
-  const film=useRef<ReelHandle>(null),flightIndex=useRef(0),about=useRef<AboutHandle>(null),owner=useRef<OwnerHandle>(null),feedback=useRef<FeedbackHandle>(null),whites=useRef<(WhiteHandle|null)[]>([]),covering=useRef(false),cardUntil=useRef(0);
-  // A section's title card is on its arrival white: until its line has gone, a scroll down waits (it never skips the card).
+  const film=useRef<ReelHandle>(null),flightIndex=useRef(0),about=useRef<AboutHandle>(null),owner=useRef<OwnerHandle>(null),feedback=useRef<FeedbackHandle>(null),whites=useRef<(WhiteHandle|null)[]>([]),covering=useRef(false),cardUntil=useRef(0);  // A section's title card is on its arrival white: until its line has gone, a scroll down waits (it never skips the card).
   // Scrolling back up still turns back, and the line goes with the white.
   const holdForCard=useCallback(()=>{
     if(!window.matchMedia("(prefers-reduced-motion: reduce)").matches)cardUntil.current=performance.now()+(TITLE.write+TITLE.hold+TITLE.out)*1000;
@@ -97,7 +99,7 @@ export default function NormalPage({returnToCorridor=false,active=true}:{returnT
     // Flying back up, the flight lands in the section's white too, and it lifts the same way (the section is not replayed).
     const landed=flight.index+(side==="end"?1:0);
     if(side==="start"&&inWhite&&landed===1)about.current?.uncover();
-    if(landed===2){owner.current?.run(true);if(inWhite){if(side==="end")holdForCard();whites.current[2]?.reveal(()=>owner.current?.open(),side==="end");}}
+    if(landed===2){owner.current?.run(true);if(inWhite){if(side==="end")holdForCard();whites.current[2]?.reveal(()=>owner.current?.open(TEAM_OLD_HOLD),side==="end",TEAM_FILM_AT);}}
     else if(landed<2)owner.current?.close();
     else{owner.current?.run(false);feedback.current?.run(true);if(side==="end"){holdForCard();whites.current[3]?.reveal(()=>feedback.current?.play(),true);}}
     // Section 4 waits in Section 3's faded colour until it is reached again; its white has already risen over it.
@@ -162,7 +164,7 @@ export default function NormalPage({returnToCorridor=false,active=true}:{returnT
     if(!active||!flying)return;
     // Opened straight onto a section (or from the menu), its white carries the title line too.
     if(initialSection===2)holdForCard();
-    if(initialSection===3){owner.current?.run(true);holdForCard();whites.current[2]?.reveal(()=>owner.current?.open(),true);}
+    if(initialSection===3){owner.current?.run(true);holdForCard();whites.current[2]?.reveal(()=>owner.current?.open(TEAM_OLD_HOLD),true,TEAM_FILM_AT);}
     if(initialSection===4){
       feedback.current?.run(true);
       return whenCalm(()=>{holdForCard();whites.current[3]?.reveal(()=>feedback.current?.play(),true);});
@@ -207,8 +209,10 @@ export default function NormalPage({returnToCorridor=false,active=true}:{returnT
         return true;
       }
       if(!returnToCorridor||distance<=0||!fresh||!pageAtBottom(node.scrollTop,node.scrollHeight,height))return false;
+      // Leaving Section 4: the page turns white, shrinks to a half-size white box that stays (pageEndBox), and the
+      // camera goes back to the corridor behind it (the user, 2026-11-16).
       traceMark("Final page section reached");pageReturn.reset();
-      journeyControls.update({phase:"pageReturnLoading",panelStage:0,pageAtEnd:true});
+      journeyControls.update({phase:"pageReturnLoading",panelStage:0,pageAtEnd:true,pageEndBox:true});
       return true;
     };
     const wheel=(event:WheelEvent)=>{if(event.ctrlKey||event.metaKey)return;const pixels=event.deltaY*(event.deltaMode===1?16:event.deltaMode===2?node.clientHeight:1);if(advance(pixels))event.preventDefault();};
@@ -225,6 +229,5 @@ export default function NormalPage({returnToCorridor=false,active=true}:{returnT
     {flying?<SectionFlight device={device} interactive={interactive} blue={flight.index===1} yellow={flight.index===2} first={SECTION_COLOURS[flight.index]} second="#ffffff" startAtEnd={flight.startAtEnd} autoEnter={flight.autoEnter} entry={flight.entry} entryDistance={flight.entryDistance} control={control} onArrive={arrived} onFailure={flightFailed} destination={null}>
       {flight.index===1?<AboutCard/>:flight.index===2?<OwnerCard/>:null}
     </SectionFlight>:null}
-    <FilmReel handle={film} running={active} ended={initialSection>1} line={SECTION_LINES[0]} onExit={filmDone}/>
-  </div>;
+    <FilmReel handle={film} running={active} ended={initialSection>1} line={SECTION_LINES[0]} onExit={filmDone}/>  </div>;
 }

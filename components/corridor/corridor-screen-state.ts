@@ -97,11 +97,16 @@ export function createScreenPanels(count:number=SCREEN_COUNT){
 
 const smooth=(a:number,b:number,x:number)=>{const t=Math.max(0,Math.min(1,(x-a)/(b-a)));return t*t*(3-2*t);};
 
-/** Leaving the corridor: panels close back to their centre line as the camera climbs the slide.
- *  The walls stay closed display glass; no baked wall texture returns. */
+/** Leaving the corridor: the panels stay open and white all the way back up to View 1 (the user, 2026-11-16: they used
+ *  to close as the camera climbed the slide). They close back to their centre line early in the turn to View 2, while
+ *  the camera still looks up, so View 2 and the final eye keep their approved look. The walls stay closed display glass;
+ *  no baked wall texture returns. */
 export function screenTransition(phase:string,stage:string,progress:number){
   if(phase==='logoDone')return {off:1};
   if(phase!=='logoReveal')return {off:0};
-  if(stage!=='slide')return {off:1};
-  return {off:smooth(.04,.36,progress)};
+  // Open on the climb, the hold, the turn and at View 2 (the corridor is out of sight there); they close in the first
+  // ~0.8 s of the pullback, before the camera looks down into the logo's slit, so the final eye is unchanged.
+  if(stage==='pullback')return {off:smooth(0,.18,progress)};
+  if(stage==='done')return {off:1};
+  return {off:0};
 }

@@ -30,3 +30,19 @@ test('logo reflection uses a private shared material and recovers the approved f
  assert.equal(steel.color.getHexString(),'828d96');assert.equal(steel.emissive.getHexString(),'30373d');
  steel.dispose();sourceMaterial.dispose();geometry.dispose();environment.dispose();
 });
+
+test('View 2 key light: rises through the turn, gone early in the pullback and never in the final eye',async()=>{
+ const {logoKeyAmount,logoKey}=await import('../components/corridor/logo-material.ts');
+ for(const [stage,progress] of [['slide',0],['slide',1],['top',1],['turn',0],['pullback',.35],['pullback',1],['done',1]])assert.equal(logoKeyAmount(stage,progress),0);
+ assert.equal(logoKeyAmount('turned',1),1);assert.equal(logoKeyAmount('turn',1),1);assert.equal(logoKeyAmount('pullback',0),1);
+ let previous=0;for(let i=0;i<=100;i++){const value=logoKeyAmount('turn',i/100);assert.ok(value>=previous);previous=value;}
+ const sourceMaterial=new MeshStandardMaterial(),geometry=new BoxGeometry(),source=new Group();
+ const logo=new Mesh(geometry,sourceMaterial);logo.name='Swoosh_A';source.add(logo);
+ let phase='logoReveal';const steel=applyLogoMaterial(source,null,()=>phase),owned=source.getObjectByName('Swoosh_A');
+ const shader={uniforms:{},fragmentShader:'#include <common>\nvoid main(){\n#include <opaque_fragment>\n}',vertexShader:''};steel.onBeforeCompile(shader,null);
+ assert.match(shader.fragmentShader,/uLogoKey/);
+ const camera=new PerspectiveCamera(),scene=new Scene();camera.position.y=34;camera.updateMatrixWorld();
+ logoKey.view=1;owned.onBeforeRender(null,scene,camera,geometry,steel,null);assert.equal(shader.uniforms.uLogoKey.value,1);
+ phase='logoDone';owned.onBeforeRender(null,scene,camera,geometry,steel,null);assert.equal(shader.uniforms.uLogoKey.value,0,'the final eye is unchanged');
+ logoKey.view=0;steel.dispose();sourceMaterial.dispose();geometry.dispose();
+});

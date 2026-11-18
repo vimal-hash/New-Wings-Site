@@ -13,6 +13,7 @@ import sofaAssets from "./sofa-assets.json";
 import { SOFAS_ENABLED } from "./scene-features";
 import SiteLoader from "./site-loader";
 import SiteChrome from "./site-chrome";
+import SoundToggle from "./sound-toggle";
 import EnquiryDialog from "./enquiry-dialog";
 import LoadingDiagnostics from "./loading-diagnostics";
 import { traceMark } from "./loading-trace";
@@ -361,6 +362,7 @@ export default function CorridorExperience() {
       <SiteChrome />
       <EnquiryDialog />
       <SiteLoader sceneFailed={sceneFailed} />
+      <SoundToggle />
       {waitingForCorridor && (
         <div className="loading-card" role="status" aria-live="polite">
           <span className="loading-dot" />

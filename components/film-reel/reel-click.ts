@@ -1,5 +1,7 @@
 // The small projector click when a frame lands in the gate. Made with Web Audio, no sound file.
 // Browsers only allow sound after the visitor has clicked, tapped or pressed a key somewhere on the site, so before that it stays silent.
+// It follows the site's sound button (theme-sound.ts): with sound off, no click.
+import { themeSound } from "../corridor/theme-sound";
 
 let context: AudioContext | null = null,
   noise: AudioBuffer | null = null;
@@ -27,7 +29,7 @@ function tick(at: number, band: number, level: number, length: number) {
 
 /** A claw engaging and the gate closing on the film: two dry ticks a few milliseconds apart, over a soft knock. Never twice the same. */
 export function reelClick() {
-  if (!allowed()) return;
+  if (!allowed() || !themeSound.read().enabled) return;
   try {
     if (!context) {
       context = new AudioContext();

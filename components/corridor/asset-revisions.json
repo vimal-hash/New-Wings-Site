@@ -91,5 +91,9 @@
   "/rope-model/yellow/palette-laptop.png": "3e48bdc9ef35",
   "/rope-laptop/rope.bin": "dc0992e5fc9c",
   "/rope-flight-laptop/rope.bin": "668315ceda4b",
-  "/images/theatre-screen-ghosted.webp": "b1b11e6d3219"
+  "/images/theatre-screen-ghosted.webp": "b1b11e6d3219",
+  "/sound/projector-hum.mp3": "2e7d12391559",
+  "/sound/theme-drop.mp3": "819538ead248",
+  "/sound/theme-end.mp3": "64848c44d876",
+  "/sound/theme-opening.mp3": "1be17994291b"
 }

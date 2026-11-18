@@ -19,5 +19,7 @@ for (const dir of ["models", "textures", "basis", "draco"])
 for (const dir of ["rope-model", "rope-laptop", "rope-flight-laptop"])
   walk(path.join("public", dir), /\.(?:glb|bin|png)$/);
 add(path.join("public", "images", "theatre-screen-ghosted.webp"));
+// The theme on the story (theme-sound.ts), fetched only once a visitor turns sound on.
+walk(path.join("public", "sound"), /.mp3$/);
 fs.writeFileSync("components/corridor/asset-revisions.json", JSON.stringify(revisions, null, 2) + "\n");
 console.log("Versioned assets:", Object.keys(revisions).length);

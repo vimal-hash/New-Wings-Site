@@ -1,5 +1,5 @@
 /** Original landing mask, evaluated in PRJ_ROOT Blender coordinates for colour and shadow. */
-export const surfaceFormationGLSL=`
+export const surfaceFormationGLSL = `
 float surfaceFormation(vec3 position,vec4 timing,vec4 sweep,vec4 axis,float frame){
  vec3 p=vec3(position.x,-position.z,position.y);
  float noise=mapRangeLinear(noiseTexFac(p,2.6,2.0,.5,2.0,0.0,true),.3,.7,0.0,1.0,true);

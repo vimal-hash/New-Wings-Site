@@ -1,8 +1,8 @@
 "use client";
-import {forwardRef,useEffect,useImperativeHandle,useRef} from "react";
-import {createAboutFilm,wallStill,WALL,type AboutFilm} from "./about-film";
-import {ropeFlightDevice} from "./effect-quality";
-import TitleLine,{CARD_WAIT,cardStrength,showTitle,writeTitle} from "./title-card";
+import { forwardRef, useEffect, useImperativeHandle, useRef } from "react";
+import { createAboutFilm, wallStill, WALL, type AboutFilm } from "./about-film";
+import { ropeFlightDevice } from "./effect-quality";
+import TitleLine, { CARD_WAIT, cardStrength, showTitle, writeTitle } from "./title-card";
 
 /**
  * Section 2, About Us. It is revealed from white, the way Section 1 is: the flight ends in a white portal, and the white
@@ -12,23 +12,32 @@ import TitleLine,{CARD_WAIT,cardStrength,showTitle,writeTitle} from "./title-car
  *
  * Only the live section owns the film layer. The flight's copies of this section are plain stills.
  */
-export type AboutHandle={
+export type AboutHandle = {
   /** Arriving from the white portal: white over the running film, the white lifts, then the print is cleaned. */
-  reveal():void;
+  reveal(): void;
   /** Leaving upwards: the white rises over the section, then done() (the flight back starts from white). */
-  cover(done:()=>void):void;
+  cover(done: () => void): void;
   /** Arriving back from below in white: only the white lifts. */
-  uncover():void;
-  play():void;wait():void;clean():void;idle():void;waiting():boolean;root:HTMLElement|null;
+  uncover(): void;
+  play(): void;
+  wait(): void;
+  clean(): void;
+  idle(): void;
+  waiting(): boolean;
+  root: HTMLElement | null;
 };
-type Start="wait"|"reveal"|"clean";
+type Start = "wait" | "reveal" | "clean";
 
 // Every section's portal: .35 s of white, then 1.65 s for the white to lift (2 s in all), on the same quintic ease.
-const REVEAL={wait:.35,lift:1.65},COVER=1.1;
-const smoother=(x:number)=>{const t=Math.min(1,Math.max(0,x));return t*t*t*(t*(t*6-15)+10);};
+const REVEAL = { wait: 0.35, lift: 1.65 },
+  COVER = 1.1;
+const smoother = (x: number) => {
+  const t = Math.min(1, Math.max(0, x));
+  return t * t * t * (t * (t * 6 - 15) + 10);
+};
 
 // The card's own styles travel with it (React hoists this once into the head), so it never depends on the global sheet.
-const CSS=`
+const CSS = `
 .nw-about{position:absolute;inset:0;overflow:hidden;background:${WALL} var(--nw-about-wall,none) center/100% 100% no-repeat}
 .nw-about[data-live]{background-image:none} /* the live section draws its lights itself */
 .nw-about-stage{position:absolute;inset:-8px;display:grid;place-items:center;padding:24px}
@@ -46,86 +55,184 @@ const CSS=`
 `;
 
 // `line`: the section's title line on the white, written by reveal() (arriving forwards), never flying back up.
-const AboutCard=forwardRef<AboutHandle,{live?:boolean;start?:Start;line?:string}>(function AboutCard({live=false,start="clean",line},ref){
-  const root=useRef<HTMLDivElement>(null),stage=useRef<HTMLDivElement>(null),frame=useRef<HTMLDivElement>(null),canvas=useRef<HTMLCanvasElement>(null);
-  const white=useRef<HTMLDivElement>(null),title=useRef<HTMLParagraphElement>(null),shown=useRef(0),fade=useRef(0);
-  const film=useRef<AboutFilm|null>(null),first=useRef(start);
-  const settle=(drift:boolean)=>{if(stage.current)stage.current.dataset.drift=drift?"on":"off";};
-  const setWhite=(value:number)=>{if(white.current)white.current.style.opacity=value>=1?"1":value<=0?"":value.toFixed(4);};
-  const setLine=(value:number)=>{if(value!==shown.current){shown.current=value;showTitle(title.current,value);}};
-  const stopFade=()=>{cancelAnimationFrame(fade.current);fade.current=0;if(shown.current>0)setLine(0);};
-  // One timed fade of the white: from, to, over seconds after a wait, on the quintic ease; then done. The title line runs
-  // on the same clock: with `card` it is written from the start, held, then faded; otherwise whatever is shown goes in .35 s.
-  const fadeWhite=(from:number,to:number,wait:number,seconds:number,done:()=>void,card=false)=>{
-    const lineFrom=shown.current;
-    cancelAnimationFrame(fade.current);fade.current=0;setWhite(from);
-    const start=performance.now();
-    const step=(now:number)=>{
-      const elapsed=(now-start)/1000,t=(elapsed-wait)/seconds;
-      setWhite(from+(to-from)*smoother(t));
-      if(card){writeTitle(title.current,elapsed);setLine(cardStrength(elapsed));}
-      else if(shown.current>0)setLine(lineFrom*(1-smoother(elapsed/.35)));
-      if(t<1){fade.current=requestAnimationFrame(step);return;}
-      fade.current=0;done();
+const AboutCard = forwardRef<AboutHandle, { live?: boolean; start?: Start; line?: string }>(
+  function AboutCard({ live = false, start = "clean", line }, ref) {
+    const root = useRef<HTMLDivElement>(null),
+      stage = useRef<HTMLDivElement>(null),
+      frame = useRef<HTMLDivElement>(null),
+      canvas = useRef<HTMLCanvasElement>(null);
+    const white = useRef<HTMLDivElement>(null),
+      title = useRef<HTMLParagraphElement>(null),
+      shown = useRef(0),
+      fade = useRef(0);
+    const film = useRef<AboutFilm | null>(null),
+      first = useRef(start);
+    const settle = (drift: boolean) => {
+      if (stage.current) stage.current.dataset.drift = drift ? "on" : "off";
     };
-    fade.current=requestAnimationFrame(step);
-  };
-  const reduced=()=>window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const handle=useRef<AboutHandle|null>(null);
-  useImperativeHandle(ref,()=>{
-    const made:AboutHandle={
-      reveal(){
-        if(!film.current||reduced()){stopFade();setWhite(0);made.play();return;}
-        // The white portal: Section 1's old film already runs under the white, then the white lifts and the print is cleaned.
-        // With a title line, the white first carries it: written, held and faded, then it lifts.
-        settle(false);film.current.idle();
-        if(title.current)fadeWhite(1,0,CARD_WAIT,REVEAL.lift,()=>made.play(),true);
-        else fadeWhite(1,0,REVEAL.wait,REVEAL.lift,()=>made.play());
-      },
-      cover(done){
-        if(reduced()){stopFade();setWhite(1);done();return;}
-        fadeWhite(Number(white.current?.style.opacity||0),1,0,COVER,done);
-      },
-      // Flying back up from Section 3: the flight lands in this white, which lifts the same way; the print stays clean.
-      uncover(){
-        if(reduced()){stopFade();setWhite(0);return;}
-        fadeWhite(1,0,REVEAL.wait,REVEAL.lift,()=>{});
-      },
-      play(){stopFade();setWhite(0);if(film.current){settle(false);film.current.play();}else settle(true);},
-      wait(){stopFade();settle(false);film.current?.wait();},
-      clean(){stopFade();setWhite(0);film.current?.clean();settle(true);},
-      idle(){settle(false);film.current?.idle();},
-      waiting:()=>film.current?.mode()==="wait"||film.current?.mode()==="idle",
-      get root(){return root.current;},
+    const setWhite = (value: number) => {
+      if (white.current) white.current.style.opacity = value >= 1 ? "1" : value <= 0 ? "" : value.toFixed(4);
     };
-    handle.current=made;
-    return made;
-  });
-  useEffect(()=>{
-    if(!live||!canvas.current||!frame.current)return;
-    // The flight's copies of this section have no film: give them a still of the same corner lights.
-    if(ropeFlightDevice()!=="mobile"){
-      const still=wallStill(320,Math.max(90,Math.round(320*window.innerHeight/Math.max(1,window.innerWidth))));
-      if(still)document.documentElement.style.setProperty("--nw-about-wall",`url("${still}")`);
-    }
-    const made=createAboutFilm(canvas.current,frame.current,()=>{if(stage.current)stage.current.dataset.drift="on";});
-    film.current=made;
-    if(first.current==="reveal")handle.current?.reveal();
-    else if(made&&first.current==="wait"){settle(false);made.wait();}
-    else{made?.clean();settle(true);}
-    return()=>{cancelAnimationFrame(fade.current);made?.dispose();film.current=null;};
-  },[live]);
-  return <div ref={root} className="nw-about" data-live={live||undefined}>
-    <style href="nw-about-card" precedence="default">{CSS}</style>
-    <div ref={stage} className="nw-about-stage">
-      <div ref={frame} className="nw-about-frame">
-        <span className="nw-about-label">About us</span>
-        {/* Draft line for the client to confirm: the problem cinemas face, and how New Wings answers it. */}
-        <p className="nw-about-line">A cinema is many parts from many makers. We bring them into one plan, so the room works as one.</p>
+    const setLine = (value: number) => {
+      if (value !== shown.current) {
+        shown.current = value;
+        showTitle(title.current, value);
+      }
+    };
+    const stopFade = () => {
+      cancelAnimationFrame(fade.current);
+      fade.current = 0;
+      if (shown.current > 0) setLine(0);
+    };
+    // One timed fade of the white: from, to, over seconds after a wait, on the quintic ease; then done. The title line runs
+    // on the same clock: with `card` it is written from the start, held, then faded; otherwise whatever is shown goes in .35 s.
+    const fadeWhite = (
+      from: number,
+      to: number,
+      wait: number,
+      seconds: number,
+      done: () => void,
+      card = false,
+    ) => {
+      const lineFrom = shown.current;
+      cancelAnimationFrame(fade.current);
+      fade.current = 0;
+      setWhite(from);
+      const start = performance.now();
+      const step = (now: number) => {
+        const elapsed = (now - start) / 1000,
+          t = (elapsed - wait) / seconds;
+        setWhite(from + (to - from) * smoother(t));
+        if (card) {
+          writeTitle(title.current, elapsed);
+          setLine(cardStrength(elapsed));
+        } else if (shown.current > 0) setLine(lineFrom * (1 - smoother(elapsed / 0.35)));
+        if (t < 1) {
+          fade.current = requestAnimationFrame(step);
+          return;
+        }
+        fade.current = 0;
+        done();
+      };
+      fade.current = requestAnimationFrame(step);
+    };
+    const reduced = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const handle = useRef<AboutHandle | null>(null);
+    useImperativeHandle(ref, () => {
+      const made: AboutHandle = {
+        reveal() {
+          if (!film.current || reduced()) {
+            stopFade();
+            setWhite(0);
+            made.play();
+            return;
+          }
+          // The white portal: Section 1's old film already runs under the white, then the white lifts and the print is cleaned.
+          // With a title line, the white first carries it: written, held and faded, then it lifts.
+          settle(false);
+          film.current.idle();
+          if (title.current) fadeWhite(1, 0, CARD_WAIT, REVEAL.lift, () => made.play(), true);
+          else fadeWhite(1, 0, REVEAL.wait, REVEAL.lift, () => made.play());
+        },
+        cover(done) {
+          if (reduced()) {
+            stopFade();
+            setWhite(1);
+            done();
+            return;
+          }
+          fadeWhite(Number(white.current?.style.opacity || 0), 1, 0, COVER, done);
+        },
+        // Flying back up from Section 3: the flight lands in this white, which lifts the same way; the print stays clean.
+        uncover() {
+          if (reduced()) {
+            stopFade();
+            setWhite(0);
+            return;
+          }
+          fadeWhite(1, 0, REVEAL.wait, REVEAL.lift, () => {});
+        },
+        play() {
+          stopFade();
+          setWhite(0);
+          if (film.current) {
+            settle(false);
+            film.current.play();
+          } else settle(true);
+        },
+        wait() {
+          stopFade();
+          settle(false);
+          film.current?.wait();
+        },
+        clean() {
+          stopFade();
+          setWhite(0);
+          film.current?.clean();
+          settle(true);
+        },
+        idle() {
+          settle(false);
+          film.current?.idle();
+        },
+        waiting: () => film.current?.mode() === "wait" || film.current?.mode() === "idle",
+        get root() {
+          return root.current;
+        },
+      };
+      handle.current = made;
+      return made;
+    });
+    useEffect(() => {
+      if (!live || !canvas.current || !frame.current) return;
+      // The flight's copies of this section have no film: give them a still of the same corner lights.
+      if (ropeFlightDevice() !== "mobile") {
+        const still = wallStill(
+          320,
+          Math.max(90, Math.round((320 * window.innerHeight) / Math.max(1, window.innerWidth))),
+        );
+        if (still) document.documentElement.style.setProperty("--nw-about-wall", `url("${still}")`);
+      }
+      const made = createAboutFilm(canvas.current, frame.current, () => {
+        if (stage.current) stage.current.dataset.drift = "on";
+      });
+      film.current = made;
+      if (first.current === "reveal") handle.current?.reveal();
+      else if (made && first.current === "wait") {
+        settle(false);
+        made.wait();
+      } else {
+        made?.clean();
+        settle(true);
+      }
+      return () => {
+        cancelAnimationFrame(fade.current);
+        made?.dispose();
+        film.current = null;
+      };
+    }, [live]);
+    return (
+      <div ref={root} className="nw-about" data-live={live || undefined}>
+        <style href="nw-about-card" precedence="default">
+          {CSS}
+        </style>
+        <div ref={stage} className="nw-about-stage">
+          <div ref={frame} className="nw-about-frame">
+            <span className="nw-about-label">About us</span>
+            {/* Draft line for the client to confirm: the problem cinemas face, and how New Wings answers it. */}
+            <p className="nw-about-line">
+              A cinema is many parts from many makers. We bring them into one plan, so the room works as one.
+            </p>
+          </div>
+          {live ? <canvas ref={canvas} className="nw-about-film" aria-hidden="true" /> : null}
+        </div>
+        {live ? (
+          <div ref={white} className="nw-about-white" aria-hidden="true">
+            {line ? <TitleLine ref={title} text={line} /> : null}
+          </div>
+        ) : null}
       </div>
-      {live?<canvas ref={canvas} className="nw-about-film" aria-hidden="true"/>:null}
-    </div>
-    {live?<div ref={white} className="nw-about-white" aria-hidden="true">{line?<TitleLine ref={title} text={line}/>:null}</div>:null}
-  </div>;
-});
+    );
+  },
+);
 export default AboutCard;

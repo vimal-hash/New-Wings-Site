@@ -114,10 +114,24 @@ void main(){
   #include <colorspace_fragment>
 }`;
 
-export function createLiquidPageMaterial(pageColour="white") {
+export function createLiquidPageMaterial(pageColour = "white") {
   return new ShaderMaterial({
-    name:"Liquid pearl → page",
-    uniforms:{uMorph:{value:0},uFlat:{value:0},uTime:{value:0},uWave:{value:0},uWavePhase:{value:0},uCurl:{value:0},uOpacity:{value:0},uPage:{value:new Color(pageColour)},uLightDirection:{value:new Vector3(-.6,.8,.3).normalize()}},
-    vertexShader,fragmentShader,transparent:true,depthWrite:true,toneMapped:false,
+    name: "Liquid pearl → page",
+    uniforms: {
+      uMorph: { value: 0 },
+      uFlat: { value: 0 },
+      uTime: { value: 0 },
+      uWave: { value: 0 },
+      uWavePhase: { value: 0 },
+      uCurl: { value: 0 },
+      uOpacity: { value: 0 },
+      uPage: { value: new Color(pageColour) },
+      uLightDirection: { value: new Vector3(-0.6, 0.8, 0.3).normalize() },
+    },
+    vertexShader,
+    fragmentShader,
+    transparent: true,
+    depthWrite: true,
+    toneMapped: false,
   });
 }

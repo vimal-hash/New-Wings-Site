@@ -1,18 +1,36 @@
-import {DataTexture,FramebufferTexture,Matrix4,NoBlending,NoColorSpace,RGBAFormat,ShaderMaterial,UnsignedByteType,Vector2,WebGLRenderTarget} from "three";
-import type {Camera,Texture,WebGLRenderer} from "three";
-import {FullScreenQuad} from "three/addons/postprocessing/Pass.js";
-import type {EffectQuality} from "./effect-quality";
-import type {CinemaValues} from './cinema-controls';
+import {
+  DataTexture,
+  FramebufferTexture,
+  Matrix4,
+  NoBlending,
+  NoColorSpace,
+  RGBAFormat,
+  ShaderMaterial,
+  UnsignedByteType,
+  Vector2,
+  WebGLRenderTarget,
+} from "three";
+import type { Camera, Texture, WebGLRenderer } from "three";
+import { FullScreenQuad } from "three/addons/postprocessing/Pass.js";
+import type { EffectQuality } from "./effect-quality";
+import type { CinemaValues } from "./cinema-controls";
 
 /** Artistic controls in display space, after the existing LUT and star bloom. */
-export const SPACE_GRADE={pools:.20,vignette:.105,contrast:.12,shadowToe:.028,silver:.55,shadowCool:.12} as const;
-export const SPACE_GRADE_TIERS={
-  desktop:{octaves:3,grainSamples:2,grain:.65/255},
-  laptop:{octaves:2,grainSamples:1,grain:.55/255},
-  mobile:{octaves:1,grainSamples:1,grain:.45/255},
+const SPACE_GRADE = {
+  pools: 0.2,
+  vignette: 0.105,
+  contrast: 0.12,
+  shadowToe: 0.028,
+  silver: 0.55,
+  shadowCool: 0.12,
+} as const;
+const SPACE_GRADE_TIERS = {
+  desktop: { octaves: 3, grainSamples: 2, grain: 0.65 / 255 },
+  laptop: { octaves: 2, grainSamples: 1, grain: 0.55 / 255 },
+  mobile: { octaves: 1, grainSamples: 1, grain: 0.45 / 255 },
 } as const;
 
-const vertexShader=/* glsl */`
+const vertexShader = /* glsl */ `
 varying vec2 vUv;
 varying vec3 vWorldRay;
 uniform mat4 uCameraWorld,uProjectionInverse;
@@ -22,7 +40,7 @@ void main(){
   vWorldRay=(uCameraWorld*vec4(ray.xyz,0.)).xyz;
   gl_Position=vec4(position.xy,0.,1.);
 }`;
-const fragmentShader=/* glsl */`
+const fragmentShader = /* glsl */ `
 uniform sampler2D uFrame,uOcclusion;
 uniform float uStrength,uHasMask,uNebula,uPools,uVignette,uContrast,uToe,uSilver,uShadowCool,uGrain,uNebulaGain;
 varying vec2 vUv;
@@ -96,39 +114,114 @@ void main(){
 }`;
 
 /** One native-size GPU copy + one fullscreen pass; never rerender the subject. */
-export function createSpaceGrade(gl:WebGLRenderer,quality:EffectQuality,options:{enabled?:boolean;identity?:boolean;grain?:boolean}={}){
-  const profile=SPACE_GRADE_TIERS[quality],pixels=new Vector2();
-  let frame=new FramebufferTexture(1,1);frame.colorSpace=NoColorSpace;
-  const emptyMask=new DataTexture(new Uint8Array([0,0,0,0]),1,1,RGBAFormat,UnsignedByteType);emptyMask.needsUpdate=true;
-  const material=new ShaderMaterial({name:"Space grade — display artistic pass",toneMapped:false,depthTest:false,depthWrite:false,blending:NoBlending,
-    defines:{POOL_OCTAVES:profile.octaves,GRAIN_SAMPLES:profile.grainSamples},
-    uniforms:{uFrame:{value:frame},uOcclusion:{value:emptyMask},uStrength:{value:0},uHasMask:{value:0},uNebula:{value:0},uNebulaGain:{value:1},
-      uCameraWorld:{value:new Matrix4()},uProjectionInverse:{value:new Matrix4()},
-      uPools:{value:SPACE_GRADE.pools},uVignette:{value:SPACE_GRADE.vignette},uContrast:{value:SPACE_GRADE.contrast},uToe:{value:SPACE_GRADE.shadowToe},
-      uSilver:{value:SPACE_GRADE.silver},uShadowCool:{value:SPACE_GRADE.shadowCool},uGrain:{value:options.grain===false?0:profile.grain}},vertexShader,fragmentShader});
-  const quad=new FullScreenQuad(material);
-  const enabled=options.enabled!==false;
-  let ready=false;
-  function prepare(){
-    if(!enabled)return;
-    const target=gl.getRenderTarget(),auto=gl.autoClear,probe=new WebGLRenderTarget(1,1,{depthBuffer:false});
-    try{gl.setRenderTarget(probe);gl.autoClear=false;quad.render(gl);ready=true;}finally{gl.setRenderTarget(target);gl.autoClear=auto;probe.dispose();}
+export function createSpaceGrade(
+  gl: WebGLRenderer,
+  quality: EffectQuality,
+  options: { enabled?: boolean; identity?: boolean; grain?: boolean } = {},
+) {
+  const profile = SPACE_GRADE_TIERS[quality],
+    pixels = new Vector2();
+  let frame = new FramebufferTexture(1, 1);
+  frame.colorSpace = NoColorSpace;
+  const emptyMask = new DataTexture(new Uint8Array([0, 0, 0, 0]), 1, 1, RGBAFormat, UnsignedByteType);
+  emptyMask.needsUpdate = true;
+  const material = new ShaderMaterial({
+    name: "Space grade — display artistic pass",
+    toneMapped: false,
+    depthTest: false,
+    depthWrite: false,
+    blending: NoBlending,
+    defines: { POOL_OCTAVES: profile.octaves, GRAIN_SAMPLES: profile.grainSamples },
+    uniforms: {
+      uFrame: { value: frame },
+      uOcclusion: { value: emptyMask },
+      uStrength: { value: 0 },
+      uHasMask: { value: 0 },
+      uNebula: { value: 0 },
+      uNebulaGain: { value: 1 },
+      uCameraWorld: { value: new Matrix4() },
+      uProjectionInverse: { value: new Matrix4() },
+      uPools: { value: SPACE_GRADE.pools },
+      uVignette: { value: SPACE_GRADE.vignette },
+      uContrast: { value: SPACE_GRADE.contrast },
+      uToe: { value: SPACE_GRADE.shadowToe },
+      uSilver: { value: SPACE_GRADE.silver },
+      uShadowCool: { value: SPACE_GRADE.shadowCool },
+      uGrain: { value: options.grain === false ? 0 : profile.grain },
+    },
+    vertexShader,
+    fragmentShader,
+  });
+  const quad = new FullScreenQuad(material);
+  const enabled = options.enabled !== false;
+  let ready = false;
+  function prepare() {
+    if (!enabled) return;
+    const target = gl.getRenderTarget(),
+      auto = gl.autoClear,
+      probe = new WebGLRenderTarget(1, 1, { depthBuffer: false });
+    try {
+      gl.setRenderTarget(probe);
+      gl.autoClear = false;
+      quad.render(gl);
+      ready = true;
+    } finally {
+      gl.setRenderTarget(target);
+      gl.autoClear = auto;
+      probe.dispose();
+    }
   }
-  function draw(camera:Camera,occlusion:Texture|null,nebula:boolean,amount:number,tuning?:CinemaValues){
-    if(!enabled||!ready||amount<=0||gl.getRenderTarget()!==null)return;
-    if(tuning&&(!tuning.post||!tuning.grade))return;
-    if(tuning){const u=material.uniforms;u.uNebulaGain.value=tuning.nebulaStrength;u.uPools.value=tuning.pools;u.uVignette.value=tuning.vignette;u.uContrast.value=tuning.contrast;u.uToe.value=tuning.shadowToe;u.uSilver.value=tuning.silver;u.uShadowCool.value=tuning.shadowCool;u.uGrain.value=(options.grain===false?0:profile.grain)*tuning.grain;}
+  function draw(
+    camera: Camera,
+    occlusion: Texture | null,
+    nebula: boolean,
+    amount: number,
+    tuning?: CinemaValues,
+  ) {
+    if (!enabled || !ready || amount <= 0 || gl.getRenderTarget() !== null) return;
+    if (tuning && (!tuning.post || !tuning.grade)) return;
+    if (tuning) {
+      const u = material.uniforms;
+      u.uNebulaGain.value = tuning.nebulaStrength;
+      u.uPools.value = tuning.pools;
+      u.uVignette.value = tuning.vignette;
+      u.uContrast.value = tuning.contrast;
+      u.uToe.value = tuning.shadowToe;
+      u.uSilver.value = tuning.silver;
+      u.uShadowCool.value = tuning.shadowCool;
+      u.uGrain.value = (options.grain === false ? 0 : profile.grain) * tuning.grain;
+    }
     gl.getDrawingBufferSize(pixels);
-    if(frame.image.width!==pixels.x||frame.image.height!==pixels.y){
-      frame.dispose();frame=new FramebufferTexture(pixels.x,pixels.y);frame.colorSpace=NoColorSpace;material.uniforms.uFrame.value=frame;
+    if (frame.image.width !== pixels.x || frame.image.height !== pixels.y) {
+      frame.dispose();
+      frame = new FramebufferTexture(pixels.x, pixels.y);
+      frame.colorSpace = NoColorSpace;
+      material.uniforms.uFrame.value = frame;
     }
     gl.copyFramebufferToTexture(frame);
     material.uniforms.uCameraWorld.value.copy(camera.matrixWorld);
     material.uniforms.uProjectionInverse.value.copy(camera.projectionMatrixInverse);
-    material.uniforms.uOcclusion.value=occlusion??emptyMask;material.uniforms.uHasMask.value=occlusion?1:0;
-    material.uniforms.uNebula.value=nebula?1:0;material.uniforms.uStrength.value=options.identity?0:Math.min(1,amount)*(tuning?.gradeMix??1);
-    const auto=gl.autoClear;
-    try{gl.autoClear=false;quad.render(gl);}finally{gl.autoClear=auto;}
+    material.uniforms.uOcclusion.value = occlusion ?? emptyMask;
+    material.uniforms.uHasMask.value = occlusion ? 1 : 0;
+    material.uniforms.uNebula.value = nebula ? 1 : 0;
+    material.uniforms.uStrength.value = options.identity ? 0 : Math.min(1, amount) * (tuning?.gradeMix ?? 1);
+    const auto = gl.autoClear;
+    try {
+      gl.autoClear = false;
+      quad.render(gl);
+    } finally {
+      gl.autoClear = auto;
+    }
   }
-  return {enabled,prepare,draw,dispose(){frame.dispose();emptyMask.dispose();material.dispose();quad.dispose();}};
+  return {
+    enabled,
+    prepare,
+    draw,
+    dispose() {
+      frame.dispose();
+      emptyMask.dispose();
+      material.dispose();
+      quad.dispose();
+    },
+  };
 }

@@ -7,15 +7,21 @@ const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
 /** Returns one message per invalid field (empty when the enquiry is valid). */
 export function validateEnquiry(value: Partial<Record<keyof Enquiry, unknown>>) {
-  const text = (key: keyof Enquiry) => typeof value[key] === "string" ? (value[key] as string).trim() : "";
+  const text = (key: keyof Enquiry) => (typeof value[key] === "string" ? (value[key] as string).trim() : "");
   const errors: Partial<Record<keyof Enquiry, string>> = {};
-  const name = text("name"), email = text("email"), phone = text("phone"), product = text("product"), message = text("message");
+  const name = text("name"),
+    email = text("email"),
+    phone = text("phone"),
+    product = text("product"),
+    message = text("message");
   if (!name) errors.name = "Please enter your name.";
   if (!EMAIL.test(email)) errors.email = "Please enter a valid email address.";
   const digits = phone.replace(/\D/g, "");
-  if (!/^[+\d\s()-]*$/.test(phone) || digits.length < 7 || digits.length > 15) errors.phone = "Please enter a valid mobile number.";
+  if (!/^[+\d\s()-]*$/.test(phone) || digits.length < 7 || digits.length > 15)
+    errors.phone = "Please enter a valid mobile number.";
   if (!product) errors.product = "Please choose a product.";
-  for (const key of Object.keys(ENQUIRY_LIMITS) as (keyof Enquiry)[]) if (text(key).length > ENQUIRY_LIMITS[key]) errors[key] = "This is too long.";
+  for (const key of Object.keys(ENQUIRY_LIMITS) as (keyof Enquiry)[])
+    if (text(key).length > ENQUIRY_LIMITS[key]) errors[key] = "This is too long.";
   return { errors, enquiry: { name, email, phone, product, message } as Enquiry };
 }
 

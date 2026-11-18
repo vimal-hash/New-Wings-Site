@@ -1,17 +1,20 @@
-import {DataTexture,ShaderMaterial,type Texture,Vector2} from "three";
-import {FILM_PRODUCTS,FRAME_PITCH} from "./film-data";
-import {WEAR_SPAN} from "./film-wear";
+import { DataTexture, ShaderMaterial, type Texture, Vector2 } from "three";
+import { FILM_PRODUCTS, FRAME_PITCH } from "./film-data";
+import { WEAR_SPAN } from "./film-wear";
 
 // The film look, made in code. Three small programs: the dark base with its holes and window, the picture and text sheets, and the open holes.
 // There is no scene light and no environment map. The film shows two things only: what the room reflects in its gloss, and what the lamp sends through it.
 // The section is black and white, so every level is one grey number.
 
-const number=(value:number)=>{const text=String(value);return /[.e]/.test(text)?text:`${text}.`;};
+const number = (value: number) => {
+  const text = String(value);
+  return /[.e]/.test(text) ? text : `${text}.`;
+};
 
 // Measured from Frame_1.blend, in frame units (a frame is 2 x 2, centre at 0).
-const WINDOW="vec2(.8915,.7116)"; // half size of the picture window
+const WINDOW = "vec2(.8915,.7116)"; // half size of the picture window
 
-const VERTEX=`
+const VERTEX = `
 uniform float uShift;
 varying vec2 vUv,vStrip;
 varying vec3 vLocal,vWorld,vN,vT,vB;
@@ -31,7 +34,7 @@ void main(){
 
 // The lamp sits behind the gate, one frame wide. It is a little dimmer toward the corners, and a little of it spills past the gate's two ends.
 // At the very end the last frame burns up: the lamp runs far past white and its light floods out along the strip.
-const LAMP=`
+const LAMP = `
 uniform float uLampX,uLamp,uBurn;
 varying vec2 vUv,vStrip;
 varying vec3 vLocal,vWorld,vN,vT,vB;
@@ -48,7 +51,7 @@ float lampAt(vec2 strip){
 }
 float floodAt(vec2 strip){return uBurn*uBurn*1.6*exp(-.9*max(0.,abs(strip.x-uLampX)-.9));}`;
 
-const WEAR=`
+const WEAR = `
 uniform sampler2D uWear;
 // Two copies of the marks at different lengths, one upside down, so the eye finds no repeat. x = scratches, y = dust, z = haze.
 vec3 wearAt(vec2 strip){
@@ -59,7 +62,7 @@ vec3 wearAt(vec2 strip){
 
 // What the gloss shows. The room is dark and nothing in it has a hard edge: a faint glow up to the left,
 // and a wider opening far round to the side that only a strip seen at an angle catches.
-const SHINE=`
+const SHINE = `
 float glow(vec2 p,vec2 centre,vec2 size){vec2 d=(p-centre)/size;return exp(-dot(d,d));}
 float room(vec2 p,float soft){
   return .07*glow(p,vec2(-.55,.4),vec2(.6,.85)+soft)+.45*glow(p,vec2(-1.6,.15),vec2(.45,.7)+soft)+.015;
@@ -78,7 +81,7 @@ float shineAt(vec3 wear){
 // The old-film look of this section, laid over the finished picture in screen space: a light that wavers, dark corners,
 // grain that changes with every film frame, and now and then a thin scratch line running down the picture.
 // uFrame counts film frames at 24 a second; uFlicker is the exposure of the current one.
-const LOOK=`
+const LOOK = `
 uniform vec2 uScreen;
 uniform float uFrame,uFlicker,uScratch;
 float hash12(vec2 p){vec3 q=fract(vec3(p.xyx)*.1031);q+=dot(q,q.yzx+33.33);return fract((q.x+q.y)*q.z);}
@@ -125,12 +128,12 @@ vec3 filmLook(vec3 c){
   return c;
 }`;
 
-const FINISH=`
+const FINISH = `
   #include <colorspace_fragment>
   gl_FragColor.rgb=filmLook(gl_FragColor.rgb);
   gl_FragColor.rgb+=(fract(52.9829189*fract(dot(gl_FragCoord.xy,vec2(.06711056,.00583715))))-.5)/255.; // one step of noise, so dark slopes do not band`;
 
-const BASE=`${LAMP}${WEAR}${SHINE}${LOOK}
+const BASE = `${LAMP}${WEAR}${SHINE}${LOOK}
 float box(vec2 p,vec2 size){vec2 d=abs(p)-size;return length(max(d,0.))+min(max(d.x,d.y),0.);}
 // Lamp light also creeps a short way into the base round the picture window. The sprocket holes stay dark.
 float creepAt(vec2 at){
@@ -150,7 +153,7 @@ void main(){
   gl_FragColor=vec4(vec3(level),1.);${FINISH}
 }`;
 
-const SHEET=`${LAMP}${WEAR}${SHINE}${LOOK}
+const SHEET = `${LAMP}${WEAR}${SHINE}${LOOK}
 uniform sampler2D uMap;
 void main(){
   vec3 wear=wearAt(vStrip);
@@ -163,12 +166,13 @@ void main(){
   gl_FragColor=vec4(vec3(level),1.);${FINISH}
 }`;
 
-
-// The dark the strip hangs in, drawn as one screen-filling triangle behind everything. When the last frame burns up, its light blooms out into the dark.
-const VOID_VERTEX=`
+// The dark the strip hangs in: one screen-filling triangle at the far end of the depth range. It is drawn after the strip and
+// depth tested, so it is only shaded where the strip leaves the screen empty (the picture is the same as drawing it first).
+// When the last frame burns up, its light blooms out into the dark.
+const VOID_VERTEX = `
 varying vec2 vScreen;
 void main(){vScreen=position.xy;gl_Position=vec4(position.xy,.9999,1.);}`;
-const VOID=`${LOOK}
+const VOID = `${LOOK}
 uniform float uBurn,uAspect;
 varying vec2 vScreen;
 void main(){
@@ -186,20 +190,54 @@ void main(){
 }`;
 
 /** Every material of the strip. They share the lamp and the wear map, so one change reaches all of them. */
-export function filmLooks(pictures:Texture[]){
-  const blank=new DataTexture(new Uint8Array([0,0,0,255]),1,1);blank.needsUpdate=true;
-  const lamp={uLampX:{value:0},uLamp:{value:0},uBurn:{value:0}};
-  const look={uScreen:{value:new Vector2(1,1)},uFrame:{value:0},uFlicker:{value:1},uScratch:{value:1}};
-  const wear:{value:Texture}={value:blank},still={value:0};
-  const sheet=(map:Texture,index:number)=>new ShaderMaterial({vertexShader:VERTEX,fragmentShader:SHEET,uniforms:{...lamp,...look,uWear:wear,uMap:{value:map},uShift:{value:index*FRAME_PITCH}}});
-  const looks={
-    lamp,look,wear,blank,
-    base:new ShaderMaterial({vertexShader:VERTEX,fragmentShader:BASE,uniforms:{...lamp,...look,uWear:wear,uShift:still}}),
-    pictures:pictures.map(sheet),
-    contents:FILM_PRODUCTS.map((_,index)=>sheet(blank,index)),
-    leader:sheet(blank,0), // the opaque black leader before the first frame and after the last
-    void:new ShaderMaterial({vertexShader:VOID_VERTEX,fragmentShader:VOID,uniforms:{...look,uBurn:lamp.uBurn,uAspect:{value:1}},depthTest:false,depthWrite:false}),
-    dispose(){for(const look of [looks.base,looks.leader,looks.void,...looks.pictures,...looks.contents])look.dispose();blank.dispose();},
+export function filmLooks(pictures: Texture[]) {
+  const blank = new DataTexture(new Uint8Array([0, 0, 0, 255]), 1, 1);
+  blank.needsUpdate = true;
+  const lamp = { uLampX: { value: 0 }, uLamp: { value: 0 }, uBurn: { value: 0 } };
+  const look = {
+    uScreen: { value: new Vector2(1, 1) },
+    uFrame: { value: 0 },
+    uFlicker: { value: 1 },
+    uScratch: { value: 1 },
+  };
+  const wear: { value: Texture } = { value: blank },
+    still = { value: 0 };
+  const sheet = (map: Texture, index: number) =>
+    new ShaderMaterial({
+      vertexShader: VERTEX,
+      fragmentShader: SHEET,
+      uniforms: {
+        ...lamp,
+        ...look,
+        uWear: wear,
+        uMap: { value: map },
+        uShift: { value: index * FRAME_PITCH },
+      },
+    });
+  const looks = {
+    lamp,
+    look,
+    wear,
+    blank,
+    base: new ShaderMaterial({
+      vertexShader: VERTEX,
+      fragmentShader: BASE,
+      uniforms: { ...lamp, ...look, uWear: wear, uShift: still },
+    }),
+    pictures: pictures.map(sheet),
+    contents: FILM_PRODUCTS.map((_, index) => sheet(blank, index)),
+    leader: sheet(blank, 0), // the opaque black leader before the first frame and after the last
+    void: new ShaderMaterial({
+      vertexShader: VOID_VERTEX,
+      fragmentShader: VOID,
+      uniforms: { ...look, uBurn: lamp.uBurn, uAspect: { value: 1 } },
+      depthWrite: false,
+    }),
+    dispose() {
+      for (const look of [looks.base, looks.leader, looks.void, ...looks.pictures, ...looks.contents])
+        look.dispose();
+      blank.dispose();
+    },
   };
   return looks;
 }

@@ -14,13 +14,22 @@ vec3 blenderDisplayLinear(vec3 radiance) {
 }`;
 
 // Shared immutable display lookup, identical to the reference project's AgX look.
-const displays=new WeakMap<ArrayBuffer,Data3DTexture>();
-function getDisplay(buffer:ArrayBuffer){
-  let texture=displays.get(buffer);
-  if(!texture){texture=new Data3DTexture(new Uint16Array(buffer),64,64,64);texture.format=RGBAFormat;texture.type=HalfFloatType;texture.minFilter=texture.magFilter=LinearFilter;texture.wrapS=texture.wrapT=texture.wrapR=ClampToEdgeWrapping;texture.unpackAlignment=1;texture.needsUpdate=true;displays.set(buffer,texture);}
+const displays = new WeakMap<ArrayBuffer, Data3DTexture>();
+function getDisplay(buffer: ArrayBuffer) {
+  let texture = displays.get(buffer);
+  if (!texture) {
+    texture = new Data3DTexture(new Uint16Array(buffer), 64, 64, 64);
+    texture.format = RGBAFormat;
+    texture.type = HalfFloatType;
+    texture.minFilter = texture.magFilter = LinearFilter;
+    texture.wrapS = texture.wrapT = texture.wrapR = ClampToEdgeWrapping;
+    texture.unpackAlignment = 1;
+    texture.needsUpdate = true;
+    displays.set(buffer, texture);
+  }
   return texture;
 }
 export function useBlenderViewLUT() {
   const buffer = useCompressedBuffer("/textures/shared/blender-view.bin.gz");
-  return useMemo(()=>getDisplay(buffer),[buffer]);
+  return useMemo(() => getDisplay(buffer), [buffer]);
 }

@@ -1,35 +1,76 @@
 "use client";
-import {useEffect,useMemo,useRef,useSyncExternalStore} from "react";
-import {useFrame,useThree} from "@react-three/fiber";
-import {BufferAttribute,GLSL3,Group,InstancedBufferAttribute,InstancedBufferGeometry,Matrix4,Mesh,Quaternion,Scene,ShaderMaterial,SRGBColorSpace,Vector2,Vector3,Vector4,type Texture} from "three";
-import {KTX2Loader} from "three/examples/jsm/loaders/KTX2Loader.js";
-import {journeyControls,type JourneyPhase} from "../journey-controls";
-import {effectQuality,type EffectQuality} from "../effect-quality";
-import {createLogoReveal,LOGO_FOV} from "../logo-reveal";
-import {PAGE_POSE} from "../full-journey";
+import { useEffect, useMemo, useRef, useSyncExternalStore } from "react";
+import { useFrame, useThree } from "@react-three/fiber";
+import {
+  BufferAttribute,
+  GLSL3,
+  Group,
+  InstancedBufferAttribute,
+  InstancedBufferGeometry,
+  Matrix4,
+  Mesh,
+  Quaternion,
+  Scene,
+  ShaderMaterial,
+  SRGBColorSpace,
+  Vector2,
+  Vector3,
+  Vector4,
+  type Texture,
+} from "three";
+import { KTX2Loader } from "three/examples/jsm/loaders/KTX2Loader.js";
+import { journeyControls, type JourneyPhase } from "../journey-controls";
+import { effectQuality, type EffectQuality } from "../effect-quality";
+import { createLogoReveal, LOGO_FOV } from "../logo-reveal";
+import { PAGE_POSE } from "../full-journey";
 import bounds from "../logo-reveal.json";
 import layout from "../blender-layout.json";
-import {phoneEyePreparationWindow,scheduleSceneIdle,waitForSceneIdle} from "../scene-idle";
-import {compileHiddenGPU,compileHiddenGPUGradually,prepareHiddenGPU,prepareMobileMeshes} from "../hidden-gpu-preparation";
-import {traceMark,traceSpan} from "../loading-trace";
-import {assetURL} from "../asset-url";
-import {configureBakedTextureLoader} from "../baked-texture-loader";
-import {pageReturn} from "../page-exit";
-import {eyeDimensions,loadEyePoints} from "./field";
+import { phoneEyePreparationWindow, scheduleSceneIdle, waitForSceneIdle } from "../scene-idle";
+import {
+  compileHiddenGPU,
+  compileHiddenGPUGradually,
+  prepareHiddenGPU,
+  prepareMobileMeshes,
+} from "../hidden-gpu-preparation";
+import { traceMark, traceSpan } from "../loading-trace";
+import { assetURL } from "../asset-url";
+import { configureBakedTextureLoader } from "../baked-texture-loader";
+import { pageReturn } from "../page-exit";
+import { eyeDimensions, loadEyePoints } from "./field";
 import assets from "./assets.json";
 import lighting from "./lighting.json";
-import {createDepthField,createDepthLayout,depthLayerVisibility} from "./depth-field";
-import {HERO_WAVE_GLSL,pupilPulseUniforms} from "../pupil-pulse-state";
-import {GRAIN_REACTION,GRAIN_REACTION_GLSL,GRAIN_OPTICS_GLSL} from "../pupil-grain-reaction";
+import { createDepthField, createDepthLayout, depthLayerVisibility } from "./depth-field";
+import { HERO_WAVE_GLSL, pupilPulseUniforms } from "../pupil-pulse-state";
+import { GRAIN_REACTION, GRAIN_REACTION_GLSL, GRAIN_OPTICS_GLSL } from "../pupil-grain-reaction";
 
 // The corridor has no stop: the eye mounts at the projector stop; its heavy work waits for resting stops (scene idle).
-const preparationPhases=new Set<JourneyPhase>(["done","screens","corridor","panel","page","pageReturnLoading","logoReveal","logoDone"]);
-const visiblePhases=new Set<JourneyPhase>(["logoReveal","logoDone"]);
+const preparationPhases = new Set<JourneyPhase>([
+  "done",
+  "screens",
+  "corridor",
+  "panel",
+  "page",
+  "pageReturnLoading",
+  "logoReveal",
+  "logoDone",
+]);
+const visiblePhases = new Set<JourneyPhase>(["logoReveal", "logoDone"]);
 /** Close-view grain look (View 1 / View 2 only; weight 0 in the approved final eye). Lighting only: a per-grain
  *  tone hierarchy, sparse view-dependent facet glints, a darker out-of-focus foreground and cool aerial depth.
  *  Distances are in eye units; light is a heading-relative [azimuth, elevation]. */
-export const GRAIN_LOOK={toneLow:.48,toneHigh:1.18,toneCurve:1.4,glint:5,sharpness:60,foreground:.62,near:[1.3,4.6],haze:[7.9,15],hazeTint:[.70,.78,.92],light:[1,.30]} as const;
-const vertexShader=/* glsl */`
+export const GRAIN_LOOK = {
+  toneLow: 0.48,
+  toneHigh: 1.18,
+  toneCurve: 1.4,
+  glint: 5,
+  sharpness: 60,
+  foreground: 0.62,
+  near: [1.3, 4.6],
+  haze: [7.9, 15],
+  hazeTint: [0.7, 0.78, 0.92],
+  light: [1, 0.3],
+} as const;
+const vertexShader = /* glsl */ `
 precision highp float;
 uniform vec3 uMin,uExtent;
 uniform vec3 uLighting[16];
@@ -76,15 +117,21 @@ void main(){
     // only with the camera, never with time), a darker out-of-focus foreground and a cool falloff with
     // distance. Coverage, size and motion are unchanged.
     float tone=fract(sin(seed*91.7+3.1)*43758.5453);
-    float albedo=mix(${GRAIN_LOOK.toneLow.toFixed(3)},${GRAIN_LOOK.toneHigh.toFixed(3)},pow(tone,${GRAIN_LOOK.toneCurve.toFixed(2)}));
+    float albedo=mix(${GRAIN_LOOK.toneLow.toFixed(3)},${GRAIN_LOOK.toneHigh.toFixed(
+      3,
+    )},pow(tone,${GRAIN_LOOK.toneCurve.toFixed(2)}));
     vec3 facet=vec3(fract(sin(seed*17.13+1.)*43758.5453),fract(sin(seed*31.71+2.)*43758.5453),fract(sin(seed*57.37+3.)*43758.5453))*2.-1.;
     vec3 world=(modelMatrix*vec4(uMin+authoredPosition*uExtent,1.)).xyz;
     vec3 halfway=normalize(uLookLight+normalize(cameraPosition-world));
     float glint=pow(max(0.,dot(facet,halfway)/max(.0001,length(facet))),${GRAIN_LOOK.sharpness.toFixed(1)});
     float grainDistance=-view.z;
-    float foreground=mix(${GRAIN_LOOK.foreground.toFixed(3)},1.,smoothstep(uLookDepth.x,uLookDepth.y,grainDistance));
+    float foreground=mix(${GRAIN_LOOK.foreground.toFixed(
+      3,
+    )},1.,smoothstep(uLookDepth.x,uLookDepth.y,grainDistance));
     float haze=smoothstep(uLookDepth.z,uLookDepth.w,grainDistance);
-    vec3 look=albedo*foreground*mix(vec3(1.),vec3(${GRAIN_LOOK.hazeTint.map(v=>v.toFixed(3)).join(",")}),haze)*(1.+${GRAIN_LOOK.glint.toFixed(2)}*glint);
+    vec3 look=albedo*foreground*mix(vec3(1.),vec3(${GRAIN_LOOK.hazeTint
+      .map((v) => v.toFixed(3))
+      .join(",")}),haze)*(1.+${GRAIN_LOOK.glint.toFixed(2)}*glint);
     vLighting*=mix(vec3(1.),look,uCloseLook);
   }
   float radius=grain.x/255.*uRadiusMax*uSizeBias;
@@ -115,7 +162,7 @@ void main(){
   float coverageScale=max(1.,footprint);
   vCoverage=uOpacity/(coverageScale*coverageScale)*mix(1.,lifeFade,uMotion);
 }`;
-const fragmentShader=/* glsl */`
+const fragmentShader = /* glsl */ `
 precision highp float;
 uniform sampler2D uAtlas;
 in vec2 vUV;
@@ -170,156 +217,421 @@ void main(){
   #include <colorspace_fragment>
 }`;
 
-export type EyeStats={quality:EffectQuality;count:number;downloadBytes:number;attributeBytes:number;loadDecodeMs:number};
-type EyeFieldProps={active:boolean;review?:boolean;qualityOverride?:EffectQuality;moving?:boolean;onReady?:(stats:EyeStats)=>void};
+export type EyeStats = {
+  quality: EffectQuality;
+  count: number;
+  downloadBytes: number;
+  attributeBytes: number;
+  loadDecodeMs: number;
+};
+type EyeFieldProps = {
+  active: boolean;
+  review?: boolean;
+  qualityOverride?: EffectQuality;
+  moving?: boolean;
+  onReady?: (stats: EyeStats) => void;
+};
 /** Shared by the actual journey and the isolated /eye-study review. */
-export function AuthoredEyeField({active,review=false,qualityOverride,moving=true,onReady}:EyeFieldProps) {
-  const gl=useThree(s=>s.gl),camera=useThree(s=>s.camera),size=useThree(s=>s.size),invalidate=useThree(s=>s.invalidate);
-  const quality=qualityOverride??effectQuality(gl),tier=assets.tiers[quality];
-  const state=useRef({ready:false,time:0,opacity:0,reduce:false});
-  const callback=useRef(onReady);
-  useEffect(()=>{callback.current=onReady;},[onReady]);
-  const anchor=useMemo(()=>{
-    if(review){
-      const aspect=size.width/Math.max(1,size.height);
-      const distance=19.7209459118*Math.max(1,(16/9)/aspect);
-      const dimensions=eyeDimensions(3.5,distance,aspect,40);
-      return {centre:new Vector3(),rotation:new Quaternion(),...dimensions};
+export function AuthoredEyeField({
+  active,
+  review = false,
+  qualityOverride,
+  moving = true,
+  onReady,
+}: EyeFieldProps) {
+  const gl = useThree((s) => s.gl),
+    camera = useThree((s) => s.camera),
+    size = useThree((s) => s.size),
+    invalidate = useThree((s) => s.invalidate);
+  const quality = qualityOverride ?? effectQuality(gl),
+    tier = assets.tiers[quality];
+  const state = useRef({ ready: false, time: 0, opacity: 0, reduce: false });
+  const callback = useRef(onReady);
+  useEffect(() => {
+    callback.current = onReady;
+  }, [onReady]);
+  const anchor = useMemo(() => {
+    if (review) {
+      const aspect = size.width / Math.max(1, size.height);
+      const distance = 19.7209459118 * Math.max(1, 16 / 9 / aspect);
+      const dimensions = eyeDimensions(3.5, distance, aspect, 40);
+      return { centre: new Vector3(), rotation: new Quaternion(), ...dimensions };
     }
-    const start=new Vector3(...PAGE_POSE.position),rotation=new Quaternion().setFromRotationMatrix(new Matrix4().lookAt(start,new Vector3(...PAGE_POSE.target),new Vector3(0,1,0)));
-    const reveal=createLogoReveal(bounds.blenderBounds,layout.slides[1],PAGE_POSE.position[1],size.width/Math.max(1,size.height),start,rotation);
-    const diameter=Math.max(bounds.blenderBounds[0][1]-bounds.blenderBounds[0][0],bounds.blenderBounds[1][1]-bounds.blenderBounds[1][0]);
-    const dimensions=eyeDimensions(diameter,reveal.finalPosition.distanceTo(reveal.centre),size.width/Math.max(1,size.height),LOGO_FOV);
+    const start = new Vector3(...PAGE_POSE.position),
+      rotation = new Quaternion().setFromRotationMatrix(
+        new Matrix4().lookAt(start, new Vector3(...PAGE_POSE.target), new Vector3(0, 1, 0)),
+      );
+    const reveal = createLogoReveal(
+      bounds.blenderBounds,
+      layout.slides[1],
+      PAGE_POSE.position[1],
+      size.width / Math.max(1, size.height),
+      start,
+      rotation,
+    );
+    const diameter = Math.max(
+      bounds.blenderBounds[0][1] - bounds.blenderBounds[0][0],
+      bounds.blenderBounds[1][1] - bounds.blenderBounds[1][0],
+    );
+    const dimensions = eyeDimensions(
+      diameter,
+      reveal.finalPosition.distanceTo(reveal.centre),
+      size.width / Math.max(1, size.height),
+      LOGO_FOV,
+    );
     // Narrow and portrait screens keep the approved 16:9 almond: the eye is never squeezed to the screen width;
     // its tips run past the edges instead (a closer crop of the same eye), and the lids and pupil stay unchanged.
-    const wide=createLogoReveal(bounds.blenderBounds,layout.slides[1],PAGE_POSE.position[1],16/9,start,rotation);
-    const wideFit=eyeDimensions(diameter,wide.finalPosition.distanceTo(wide.centre),16/9,LOGO_FOV).fit;
-    return {centre:reveal.centre,rotation:reveal.finalRotation,scale:dimensions.scale,scaleX:dimensions.scale*Math.max(dimensions.fit,wideFit),front:dimensions.front};
-  },[review,size.width,size.height]);
-  const resources=useMemo(()=>{
-    const geometry=new InstancedBufferGeometry();
-    geometry.setAttribute("corner",new BufferAttribute(new Float32Array([-1,-1,1,-1,1,1,-1,1]),2));
-    geometry.setIndex([0,1,2,0,2,3]);geometry.instanceCount=0;
-    const material=new ShaderMaterial({glslVersion:GLSL3,vertexShader,fragmentShader,transparent:true,depthWrite:false,depthTest:true,toneMapped:false,
-      uniforms:{...pupilPulseUniforms,uHeroReactionGain:{value:GRAIN_REACTION.brightness},uTime:{value:0},uMin:{value:new Vector3()},uExtent:{value:new Vector3()},uRadiusMax:{value:assets.radiusMax},uAtlas:{value:null},uLighting:{value:lighting.values.map(v=>new Vector3(...v))},
-        uSizeBias:{value:Math.min(2,Math.sqrt(assets.authoringCount/tier.count))},uPadding:{value:assets.atlas.quadPadding},uOpacity:{value:0},uMotion:{value:0},uViewportHeight:{value:720},uDpr:{value:1},
-        uCloseLook:{value:0},uLookLight:{value:new Vector3(0,1,0)},uLookDepth:{value:new Vector4(1,2,3,4)}}});
-    const mesh=new Mesh(geometry,material),group=new Group(),pixels=new Vector2();
-    mesh.frustumCulled=false;mesh.renderOrder=8;mesh.name="Approved revision 16 — authored steel grains";mesh.userData.excludeFromMirror=true;
-    mesh.onBeforeRender=renderer=>{material.uniforms.uViewportHeight.value=renderer.getDrawingBufferSize(pixels).y;material.uniforms.uDpr.value=renderer.getPixelRatio();};
-    group.name="LogoParticleEye — removable authored effect";group.add(mesh);group.visible=false;
-    const root=new Group();root.add(group);
-    const start=new Vector3(...PAGE_POSE.position),initial=new Quaternion().setFromRotationMatrix(new Matrix4().lookAt(start,new Vector3(...PAGE_POSE.target),new Vector3(0,1,0)));
-    const reveal=createLogoReveal(bounds.blenderBounds,layout.slides[1],PAGE_POSE.position[1],16/9,start,initial);
-    const stop=new Vector3(),stopRotation=new Quaternion();reveal.sampleTurn(1,stop,stopRotation);
-    const forward=new Vector3(0,0,-1).applyQuaternion(stopRotation),unit=(bounds.blenderBounds[1][1]-bounds.blenderBounds[1][0])/3.5;
-    // Close-view look: a fixed world-space key above the far horizon and the eye-unit depth range.
-    const heading=Math.atan2(forward.x,forward.z),[lightAzimuth,lightElevation]=GRAIN_LOOK.light;
-    material.uniforms.uLookLight.value.set(Math.sin(heading+lightAzimuth)*Math.cos(lightElevation),Math.sin(lightElevation),Math.cos(heading+lightAzimuth)*Math.cos(lightElevation));
-    material.uniforms.uLookDepth.value.set(GRAIN_LOOK.near[0]*unit,GRAIN_LOOK.near[1]*unit,GRAIN_LOOK.haze[0]*unit,GRAIN_LOOK.haze[1]*unit);
-    // Local diagnostic comparison; normal/LAN viewers always receive the layer.
-    const params=typeof location==='undefined'?null:new URLSearchParams(location.search);
-    const disabled=typeof location!=='undefined'&&/^(localhost|127\.)/.test(location.hostname)&&params?.has('diagnostics')&&params.get('eye-depth')==='off';
-    const depth=review||disabled?null:createDepthField(createDepthLayout(quality,stop,heading,unit),unit,assets.atlas.quadPadding,fragmentShader,quality==="mobile");
-    if(depth)root.add(depth.root);
-    return {geometry,material,mesh,group,root,depth,stop,travelDistance:reveal.finalPosition.distanceTo(stop)};
-  },[tier.count,quality,review]);
-  useEffect(()=>{
-    resources.group.position.copy(anchor.centre);resources.group.quaternion.copy(anchor.rotation);resources.group.scale.set(anchor.scaleX,anchor.scale,anchor.scale);invalidate();
-  },[anchor,resources,invalidate]);
-  useEffect(()=>{
-    // Matched-camera material QA only; the normal experience always uses the bake.
-    if(review&&new URLSearchParams(location.search).get('lighting')==='raw'){
-      resources.material.uniforms.uLighting.value.forEach((value:Vector3)=>value.setScalar(1));invalidate();
-    }
-  },[review,resources,invalidate]);
-  /* eslint-disable react-hooks/immutability -- The loader fills the mount-owned mesh, attributes and uniforms. */
-  useEffect(()=>{
-    const motion=state.current,query=matchMedia("(prefers-reduced-motion: reduce)");
-    motion.ready=false;motion.opacity=0;motion.time=0;
-    resources.mesh.userData.eyePrepared=false;
-    const update=()=>{motion.reduce=query.matches;invalidate();};update();
-    const visibility=()=>{if(!document.hidden)invalidate();};
-    query.addEventListener("change",update);document.addEventListener("visibilitychange",visibility);
-    let alive=true,cancelCompile=()=>{},cancelDraw=()=>{};let texture:Texture|undefined;
-    const controller=new AbortController(),loader=new KTX2Loader();
-    const mobile=quality==="mobile"&&!review;
-    const schedule=(job:()=>void,gpu=false)=>review?(job(),()=>{}):scheduleSceneIdle(job,mobile?20:15,gpu&&mobile?phoneEyePreparationWindow:undefined);
-    const waitForQuiet=()=>waitForSceneIdle(controller.signal,20,phoneEyePreparationWindow);
-    const failed=(error:unknown)=>{if(!alive||controller.signal.aborted)return;resources.mesh.userData.eyePrepared=true;console.error("Authored eye preparation failed",error);invalidate();};
-    const cancelLoad=schedule(()=>{
-      const end=traceSpan("Authored logo eye load","worker decode and grain atlas",{quality,count:tier.count});
-      configureBakedTextureLoader(loader,gl);
-      void Promise.all([
-        loadEyePoints(assetURL(assets.worker),assetURL(tier.url),controller.signal),
-        loader.loadAsync(assetURL(assets.atlas.url)).then(value=>{if(!alive){value.dispose();throw new DOMException('Eye load cancelled','AbortError');}texture=value;return value;}),
-      ]).then(([data,atlas])=>{
-        if(!alive)return;
-        end({loadDecodeMs:data.loadDecodeMs});
-        cancelCompile=schedule(()=>{
-          if(!alive)return;
-          atlas.colorSpace=SRGBColorSpace;atlas.anisotropy=Math.min(4,gl.capabilities.getMaxAnisotropy());
-          resources.geometry.setAttribute("authoredPosition",new InstancedBufferAttribute(data.positions,3,true));
-          // Same 0-255 values as floats: byte data on a float attribute makes Windows
-          // (ANGLE/D3D11) recompile this shader on the GPU thread at its first draw.
-          resources.geometry.setAttribute("grain",new InstancedBufferAttribute(Float32Array.from(data.grains),3));resources.geometry.instanceCount=data.count;
-          resources.material.uniforms.uMin.value.fromArray(data.min);resources.material.uniforms.uExtent.value.fromArray(data.extent);
-          resources.material.uniforms.uAtlas.value=atlas;
-          const probe=new Mesh(resources.geometry,resources.material),privateScene=new Scene();privateScene.add(probe);
-          if(resources.depth){resources.depth.material.uniforms.uAtlas.value=atlas;privateScene.add(new Mesh(resources.depth.geometry,resources.depth.material),resources.depth.haze.mesh.clone());}
-          const compilation=mobile?compileHiddenGPUGradually(gl,privateScene,camera,()=>alive,privateScene,false,waitForQuiet):compileHiddenGPU(gl,privateScene,camera);
-          void compilation.then(()=>{
-            if(!alive)return;
-            cancelDraw=schedule(()=>{
-              if(!alive)return;
-              const prepared=()=>{
-                if(!alive)return;
-                motion.ready=true;resources.mesh.userData.eyePrepared=true;traceMark("Authored logo eye ready");
-                callback.current?.({quality,count:data.count,downloadBytes:tier.bytes+assets.atlas.bytes,attributeBytes:data.positions.byteLength+data.grains.byteLength,loadDecodeMs:data.loadDecodeMs});invalidate();
-              };
-              if(mobile)void prepareMobileMeshes(gl,privateScene,camera,privateScene.children,()=>alive,waitForQuiet).then(prepared,failed);
-              else try{prepareHiddenGPU(gl,privateScene,camera,privateScene.children);prepared();}catch(error){failed(error);}
-            },true);
-          }).catch(failed);
-        },true);
-      }).catch(error=>{end({error:String(error)});failed(error);});
+    const wide = createLogoReveal(
+      bounds.blenderBounds,
+      layout.slides[1],
+      PAGE_POSE.position[1],
+      16 / 9,
+      start,
+      rotation,
+    );
+    const wideFit = eyeDimensions(diameter, wide.finalPosition.distanceTo(wide.centre), 16 / 9, LOGO_FOV).fit;
+    return {
+      centre: reveal.centre,
+      rotation: reveal.finalRotation,
+      scale: dimensions.scale,
+      scaleX: dimensions.scale * Math.max(dimensions.fit, wideFit),
+      front: dimensions.front,
+    };
+  }, [review, size.width, size.height]);
+  const resources = useMemo(() => {
+    const geometry = new InstancedBufferGeometry();
+    geometry.setAttribute("corner", new BufferAttribute(new Float32Array([-1, -1, 1, -1, 1, 1, -1, 1]), 2));
+    geometry.setIndex([0, 1, 2, 0, 2, 3]);
+    geometry.instanceCount = 0;
+    const material = new ShaderMaterial({
+      glslVersion: GLSL3,
+      vertexShader,
+      fragmentShader,
+      transparent: true,
+      depthWrite: false,
+      depthTest: true,
+      toneMapped: false,
+      uniforms: {
+        ...pupilPulseUniforms,
+        uHeroReactionGain: { value: GRAIN_REACTION.brightness },
+        uTime: { value: 0 },
+        uMin: { value: new Vector3() },
+        uExtent: { value: new Vector3() },
+        uRadiusMax: { value: assets.radiusMax },
+        uAtlas: { value: null },
+        uLighting: { value: lighting.values.map((v) => new Vector3(...v)) },
+        uSizeBias: { value: Math.min(2, Math.sqrt(assets.authoringCount / tier.count)) },
+        uPadding: { value: assets.atlas.quadPadding },
+        uOpacity: { value: 0 },
+        uMotion: { value: 0 },
+        uViewportHeight: { value: 720 },
+        uDpr: { value: 1 },
+        uCloseLook: { value: 0 },
+        uLookLight: { value: new Vector3(0, 1, 0) },
+        uLookDepth: { value: new Vector4(1, 2, 3, 4) },
+      },
     });
-    return()=>{alive=false;motion.ready=false;cancelLoad();cancelCompile();cancelDraw();controller.abort();loader.dispose();texture?.dispose();
-      query.removeEventListener("change",update);document.removeEventListener("visibilitychange",visibility);resources.geometry.dispose();resources.material.dispose();resources.depth?.geometry.dispose();resources.depth?.material.dispose();resources.depth?.haze.geometry.dispose();resources.depth?.haze.material.dispose();};
-  },[gl,camera,resources,quality,tier,review,invalidate]);
+    const mesh = new Mesh(geometry, material),
+      group = new Group(),
+      pixels = new Vector2();
+    mesh.frustumCulled = false;
+    mesh.renderOrder = 8;
+    mesh.name = "Approved revision 16 — authored steel grains";
+    mesh.userData.excludeFromMirror = true;
+    mesh.onBeforeRender = (renderer) => {
+      material.uniforms.uViewportHeight.value = renderer.getDrawingBufferSize(pixels).y;
+      material.uniforms.uDpr.value = renderer.getPixelRatio();
+    };
+    group.name = "LogoParticleEye — removable authored effect";
+    group.add(mesh);
+    group.visible = false;
+    const root = new Group();
+    root.add(group);
+    const start = new Vector3(...PAGE_POSE.position),
+      initial = new Quaternion().setFromRotationMatrix(
+        new Matrix4().lookAt(start, new Vector3(...PAGE_POSE.target), new Vector3(0, 1, 0)),
+      );
+    const reveal = createLogoReveal(
+      bounds.blenderBounds,
+      layout.slides[1],
+      PAGE_POSE.position[1],
+      16 / 9,
+      start,
+      initial,
+    );
+    const stop = new Vector3(),
+      stopRotation = new Quaternion();
+    reveal.sampleTurn(1, stop, stopRotation);
+    const forward = new Vector3(0, 0, -1).applyQuaternion(stopRotation),
+      unit = (bounds.blenderBounds[1][1] - bounds.blenderBounds[1][0]) / 3.5;
+    // Close-view look: a fixed world-space key above the far horizon and the eye-unit depth range.
+    const heading = Math.atan2(forward.x, forward.z),
+      [lightAzimuth, lightElevation] = GRAIN_LOOK.light;
+    material.uniforms.uLookLight.value.set(
+      Math.sin(heading + lightAzimuth) * Math.cos(lightElevation),
+      Math.sin(lightElevation),
+      Math.cos(heading + lightAzimuth) * Math.cos(lightElevation),
+    );
+    material.uniforms.uLookDepth.value.set(
+      GRAIN_LOOK.near[0] * unit,
+      GRAIN_LOOK.near[1] * unit,
+      GRAIN_LOOK.haze[0] * unit,
+      GRAIN_LOOK.haze[1] * unit,
+    );
+    // Local diagnostic comparison; normal/LAN viewers always receive the layer.
+    const params = typeof location === "undefined" ? null : new URLSearchParams(location.search);
+    const disabled =
+      typeof location !== "undefined" &&
+      /^(localhost|127\.)/.test(location.hostname) &&
+      params?.has("diagnostics") &&
+      params.get("eye-depth") === "off";
+    const depth =
+      review || disabled
+        ? null
+        : createDepthField(
+            createDepthLayout(quality, stop, heading, unit),
+            unit,
+            assets.atlas.quadPadding,
+            fragmentShader,
+            quality === "mobile",
+          );
+    if (depth) root.add(depth.root);
+    return {
+      geometry,
+      material,
+      mesh,
+      group,
+      root,
+      depth,
+      stop,
+      travelDistance: reveal.finalPosition.distanceTo(stop),
+    };
+  }, [tier.count, quality, review]);
+  useEffect(() => {
+    resources.group.position.copy(anchor.centre);
+    resources.group.quaternion.copy(anchor.rotation);
+    resources.group.scale.set(anchor.scaleX, anchor.scale, anchor.scale);
+    invalidate();
+  }, [anchor, resources, invalidate]);
+  useEffect(() => {
+    // Matched-camera material QA only; the normal experience always uses the bake.
+    if (review && new URLSearchParams(location.search).get("lighting") === "raw") {
+      resources.material.uniforms.uLighting.value.forEach((value: Vector3) => value.setScalar(1));
+      invalidate();
+    }
+  }, [review, resources, invalidate]);
+  /* eslint-disable react-hooks/immutability -- The loader fills the mount-owned mesh, attributes and uniforms. */
+  useEffect(() => {
+    const motion = state.current,
+      query = matchMedia("(prefers-reduced-motion: reduce)");
+    motion.ready = false;
+    motion.opacity = 0;
+    motion.time = 0;
+    resources.mesh.userData.eyePrepared = false;
+    const update = () => {
+      motion.reduce = query.matches;
+      invalidate();
+    };
+    update();
+    const visibility = () => {
+      if (!document.hidden) invalidate();
+    };
+    query.addEventListener("change", update);
+    document.addEventListener("visibilitychange", visibility);
+    let alive = true,
+      cancelCompile = () => {},
+      cancelDraw = () => {};
+    let texture: Texture | undefined;
+    const controller = new AbortController(),
+      loader = new KTX2Loader();
+    const mobile = quality === "mobile" && !review;
+    const schedule = (job: () => void, gpu = false) =>
+      review
+        ? (job(), () => {})
+        : scheduleSceneIdle(job, mobile ? 20 : 15, gpu && mobile ? phoneEyePreparationWindow : undefined);
+    const waitForQuiet = () => waitForSceneIdle(controller.signal, 20, phoneEyePreparationWindow);
+    const failed = (error: unknown) => {
+      if (!alive || controller.signal.aborted) return;
+      resources.mesh.userData.eyePrepared = true;
+      console.error("Authored eye preparation failed", error);
+      invalidate();
+    };
+    const cancelLoad = schedule(() => {
+      const end = traceSpan("Authored logo eye load", "worker decode and grain atlas", {
+        quality,
+        count: tier.count,
+      });
+      configureBakedTextureLoader(loader, gl);
+      void Promise.all([
+        loadEyePoints(assetURL(assets.worker), assetURL(tier.url), controller.signal),
+        loader.loadAsync(assetURL(assets.atlas.url)).then((value) => {
+          if (!alive) {
+            value.dispose();
+            throw new DOMException("Eye load cancelled", "AbortError");
+          }
+          texture = value;
+          return value;
+        }),
+      ])
+        .then(([data, atlas]) => {
+          if (!alive) return;
+          end({ loadDecodeMs: data.loadDecodeMs });
+          cancelCompile = schedule(() => {
+            if (!alive) return;
+            atlas.colorSpace = SRGBColorSpace;
+            atlas.anisotropy = Math.min(4, gl.capabilities.getMaxAnisotropy());
+            resources.geometry.setAttribute(
+              "authoredPosition",
+              new InstancedBufferAttribute(data.positions, 3, true),
+            );
+            // Same 0-255 values as floats: byte data on a float attribute makes Windows
+            // (ANGLE/D3D11) recompile this shader on the GPU thread at its first draw.
+            resources.geometry.setAttribute(
+              "grain",
+              new InstancedBufferAttribute(Float32Array.from(data.grains), 3),
+            );
+            resources.geometry.instanceCount = data.count;
+            resources.material.uniforms.uMin.value.fromArray(data.min);
+            resources.material.uniforms.uExtent.value.fromArray(data.extent);
+            resources.material.uniforms.uAtlas.value = atlas;
+            const probe = new Mesh(resources.geometry, resources.material),
+              privateScene = new Scene();
+            privateScene.add(probe);
+            if (resources.depth) {
+              resources.depth.material.uniforms.uAtlas.value = atlas;
+              privateScene.add(
+                new Mesh(resources.depth.geometry, resources.depth.material),
+                resources.depth.haze.mesh.clone(),
+              );
+            }
+            const compilation = mobile
+              ? compileHiddenGPUGradually(
+                  gl,
+                  privateScene,
+                  camera,
+                  () => alive,
+                  privateScene,
+                  false,
+                  waitForQuiet,
+                )
+              : compileHiddenGPU(gl, privateScene, camera);
+            void compilation
+              .then(() => {
+                if (!alive) return;
+                cancelDraw = schedule(() => {
+                  if (!alive) return;
+                  const prepared = () => {
+                    if (!alive) return;
+                    motion.ready = true;
+                    resources.mesh.userData.eyePrepared = true;
+                    traceMark("Authored logo eye ready");
+                    callback.current?.({
+                      quality,
+                      count: data.count,
+                      downloadBytes: tier.bytes + assets.atlas.bytes,
+                      attributeBytes: data.positions.byteLength + data.grains.byteLength,
+                      loadDecodeMs: data.loadDecodeMs,
+                    });
+                    invalidate();
+                  };
+                  if (mobile)
+                    void prepareMobileMeshes(
+                      gl,
+                      privateScene,
+                      camera,
+                      privateScene.children,
+                      () => alive,
+                      waitForQuiet,
+                    ).then(prepared, failed);
+                  else
+                    try {
+                      prepareHiddenGPU(gl, privateScene, camera, privateScene.children);
+                      prepared();
+                    } catch (error) {
+                      failed(error);
+                    }
+                }, true);
+              })
+              .catch(failed);
+          }, true);
+        })
+        .catch((error) => {
+          end({ error: String(error) });
+          failed(error);
+        });
+    });
+    return () => {
+      alive = false;
+      motion.ready = false;
+      cancelLoad();
+      cancelCompile();
+      cancelDraw();
+      controller.abort();
+      loader.dispose();
+      texture?.dispose();
+      query.removeEventListener("change", update);
+      document.removeEventListener("visibilitychange", visibility);
+      resources.geometry.dispose();
+      resources.material.dispose();
+      resources.depth?.geometry.dispose();
+      resources.depth?.material.dispose();
+      resources.depth?.haze.geometry.dispose();
+      resources.depth?.haze.material.dispose();
+    };
+  }, [gl, camera, resources, quality, tier, review, invalidate]);
   /* eslint-enable react-hooks/immutability */
-  useEffect(()=>{invalidate();},[active,moving,invalidate]);
+  useEffect(() => {
+    invalidate();
+  }, [active, moving, invalidate]);
   /* eslint-disable react-hooks/immutability -- imperative updates to owned Three.js objects. */
-  useFrame((_,delta)=>{
-    const journey=journeyControls.read(),coveredReturn=journey.phase==='pageReturnLoading';
-    const warming=journey.phase==='page'&&pageReturn.warming;
-    const motion=state.current,visible=(active||coveredReturn||warming)&&motion.ready;
-    resources.root.visible=resources.group.visible=visible;
-    if(!visible||document.hidden||journey.finalCovered)return;
-    const step=Math.min(delta,.05),animate=moving&&!motion.reduce;
+  useFrame((_, delta) => {
+    const journey = journeyControls.read(),
+      coveredReturn = journey.phase === "pageReturnLoading";
+    const warming = journey.phase === "page" && pageReturn.warming;
+    const motion = state.current,
+      visible = (active || coveredReturn || warming) && motion.ready;
+    resources.root.visible = resources.group.visible = visible;
+    if (!visible || document.hidden || journey.finalCovered) return;
+    const step = Math.min(delta, 0.05),
+      animate = moving && !motion.reduce;
     // Keep the same grain positions when the phone camera settles. A resting
     // view no longer runs the scene solely for the tiny grain drift.
-    const ticking=animate&&(quality!=="mobile"||journey.cameraMoving||journey.phase==="logoDone");
-    if(ticking)motion.time+=step;
-    if(!warming)motion.opacity=review||motion.reduce?1:Math.min(1,motion.opacity+step*2.5);
-    const alpha=warming?1:motion.opacity;
-    resources.material.uniforms.uTime.value=motion.time;resources.material.uniforms.uOpacity.value=alpha;resources.material.uniforms.uMotion.value=animate?1:0;
+    const ticking = animate && (quality !== "mobile" || journey.cameraMoving || journey.phase === "logoDone");
+    if (ticking) motion.time += step;
+    if (!warming) motion.opacity = review || motion.reduce ? 1 : Math.min(1, motion.opacity + step * 2.5);
+    const alpha = warming ? 1 : motion.opacity;
+    resources.material.uniforms.uTime.value = motion.time;
+    resources.material.uniforms.uOpacity.value = alpha;
+    resources.material.uniforms.uMotion.value = animate ? 1 : 0;
     // The close-view grain look follows the sky layer and is exactly 0 in the approved final eye.
-    const travel=camera.position.distanceTo(resources.stop)/resources.travelDistance;
-    const close=review?0:depthLayerVisibility(coveredReturn||warming?'logoReveal':journey.phase,journey.revealStage,travel);
-    resources.material.uniforms.uCloseLook.value=close;
-    if(resources.depth){
-      const opacity=alpha*close;
-      resources.depth.mesh.visible=opacity>.0001;
-      resources.depth.haze.mesh.visible=opacity>.0001;resources.depth.haze.material.uniforms.uOpacity.value=opacity;
-      resources.depth.material.uniforms.uOpacity.value=opacity;resources.depth.material.uniforms.uTime.value=motion.time;resources.depth.material.uniforms.uMotion.value=animate?1:0;
+    const travel = camera.position.distanceTo(resources.stop) / resources.travelDistance;
+    const close = review
+      ? 0
+      : depthLayerVisibility(
+          coveredReturn || warming ? "logoReveal" : journey.phase,
+          journey.revealStage,
+          travel,
+        );
+    resources.material.uniforms.uCloseLook.value = close;
+    if (resources.depth) {
+      const opacity = alpha * close;
+      resources.depth.mesh.visible = opacity > 0.0001;
+      resources.depth.haze.mesh.visible = opacity > 0.0001;
+      resources.depth.haze.material.uniforms.uOpacity.value = opacity;
+      resources.depth.material.uniforms.uOpacity.value = opacity;
+      resources.depth.material.uniforms.uTime.value = motion.time;
+      resources.depth.material.uniforms.uMotion.value = animate ? 1 : 0;
     }
-    if(!warming&&(ticking||motion.opacity<1))invalidate();
-  },-.35);
+    if (!warming && (ticking || motion.opacity < 1)) invalidate();
+  }, -0.35);
   /* eslint-enable react-hooks/immutability */
-  return <primitive object={resources.root} dispose={null}/>;
+  return <primitive object={resources.root} dispose={null} />;
 }
-export default function LogoParticleEye({enabled=true}:{enabled?:boolean}) {
-  const journey=useSyncExternalStore(journeyControls.subscribe,journeyControls.read,journeyControls.read);
-  return enabled&&preparationPhases.has(journey.phase)?<AuthoredEyeField active={visiblePhases.has(journey.phase)}/>:null;
+const readPhase = () => journeyControls.read().phase;
+export default function LogoParticleEye({ enabled = true }: { enabled?: boolean }) {
+  // Only the phase: other journey updates must not re-render the field.
+  const phase = useSyncExternalStore(journeyControls.subscribe, readPhase, readPhase);
+  return enabled && preparationPhases.has(phase) ? (
+    <AuthoredEyeField active={visiblePhases.has(phase)} />
+  ) : null;
 }

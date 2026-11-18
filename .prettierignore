@@ -1,0 +1,10 @@
+# Data, records, vendored files and local folders are not formatted.
+*.json
+public/
+docs/
+*.md
+.tmp/
+.codex-remote-attachments/
+.claude/
+pnpm-lock.yaml
+next.config.ts

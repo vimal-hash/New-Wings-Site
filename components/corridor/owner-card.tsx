@@ -1,5 +1,5 @@
 "use client";
-import {forwardRef,useEffect,useImperativeHandle,useRef} from "react";
+import { forwardRef, useEffect, useImperativeHandle, useRef } from "react";
 
 /**
  * Section 3, About the Owner: the era of early colour and wide-screen. A dull, faded colour picture in the brand's
@@ -11,25 +11,39 @@ import {forwardRef,useEffect,useImperativeHandle,useRef} from "react";
  * Film layers over the words only ever darken and white scratches run beneath the words, so no light can land on the
  * text. Only the live section runs them; the flight's copies of this section are plain stills in colour.
  */
-export type OwnerHandle={open(hold?:number):void;close():void;run(on:boolean):void;root:HTMLElement|null};
+export type OwnerHandle = {
+  open(hold?: number): void;
+  close(): void;
+  run(on: boolean): void;
+  root: HTMLElement | null;
+};
 /** old: the old film, waiting to be played. play: play on mount. done: already in colour. */
-type Start="old"|"play"|"done";
+type Start = "old" | "play" | "done";
 
 // Seconds from open(). Each step ends before the next begins. The user asked for each era to be on screen for 1 s, joined
 // by 1 s soft blends (the quintic ease starts and ends at rest): Section 1's old film, blend 1 s, Section 2's clean black
 // and white 1 s, blend 1 s, then Section 3's colour stays. Was 1 / 2 / 1.2 / 3 (7.2 s).
 // OLD_HOLD is the old film's hold when nothing else shows it (phones, scrolled into view). Arriving through the white
 // portal, the page passes a shorter hold: the old film is already seen through the lifting white.
-const OLD_HOLD=1,CLEANING=1,CALM=1,COLOURING=1;
-const SHAKE=.6; // px at most, at full old film (the user found more too much)
-const smoother=(x:number)=>{const t=Math.min(1,Math.max(0,x));return t*t*t*(t*(t*6-15)+10);};
-const wobble=(n:number,seed:number)=>{const s=Math.sin(n*12.9898+seed*78.233)*43758.5453;return s-Math.floor(s)-.5;};
+const OLD_HOLD = 1,
+  CLEANING = 1,
+  CALM = 1,
+  COLOURING = 1;
+const SHAKE = 0.6; // px at most, at full old film (the user found more too much)
+const smoother = (x: number) => {
+  const t = Math.min(1, Math.max(0, x));
+  return t * t * t * (t * (t * 6 - 15) + 10);
+};
+const wobble = (n: number, seed: number) => {
+  const s = Math.sin(n * 12.9898 + seed * 78.233) * 43758.5453;
+  return s - Math.floor(s) - 0.5;
+};
 
 /** The dark wall around the picture. */
-export const OWNER_WALL="#0e0b09";
+export const OWNER_WALL = "#0e0b09";
 
 // --old and --colour (0..1) drive every film layer and the black-and-white; the timeline sets them on the root.
-const CSS=`
+const CSS = `
 .nw-owner{--h:min(100dvh - 96px,(100vw - 48px)/2.39);--cols:1fr calc(var(--h)*.6) 1fr;--old:0;--colour:1;position:absolute;inset:0;display:grid;place-items:center;overflow:hidden;background:${OWNER_WALL}}
 .nw-owner[data-era="old"]{--old:1;--colour:0}
 .nw-owner::after{content:"";position:absolute;inset:0;pointer-events:none;background:var(--nw-owner-grain,none);mix-blend-mode:multiply;opacity:.5}
@@ -90,119 +104,198 @@ const CSS=`
 @media (prefers-reduced-motion:reduce){.nw-owner *{animation:none!important}}
 `;
 
-const OwnerCard=forwardRef<OwnerHandle,{live?:boolean;start?:Start}>(function OwnerCard({live=false,start="done"},ref){
-  const root=useRef<HTMLDivElement>(null),picture=useRef<HTMLDivElement>(null),first=useRef(start),api=useRef<OwnerHandle|null>(null);
-  const clock=useRef({frame:0,playing:false,start:0,hold:OLD_HOLD,shot:-1});
-  useImperativeHandle(ref,()=>{
-    const reduced=()=>window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const still=()=>{const c=clock.current;cancelAnimationFrame(c.frame);c.frame=0;if(picture.current)picture.current.style.translate="";};
-    const finish=()=>{
-      clock.current.playing=false;still();
-      const el=root.current;if(!el)return;
-      el.dataset.era="colour";el.style.removeProperty("--old");el.style.removeProperty("--colour");
+const OwnerCard = forwardRef<OwnerHandle, { live?: boolean; start?: Start }>(function OwnerCard(
+  { live = false, start = "done" },
+  ref,
+) {
+  const root = useRef<HTMLDivElement>(null),
+    picture = useRef<HTMLDivElement>(null),
+    first = useRef(start),
+    api = useRef<OwnerHandle | null>(null);
+  const clock = useRef({ frame: 0, playing: false, start: 0, hold: OLD_HOLD, shot: -1 });
+  useImperativeHandle(ref, () => {
+    const reduced = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const still = () => {
+      const c = clock.current;
+      cancelAnimationFrame(c.frame);
+      c.frame = 0;
+      if (picture.current) picture.current.style.translate = "";
+    };
+    const finish = () => {
+      clock.current.playing = false;
+      still();
+      const el = root.current;
+      if (!el) return;
+      el.dataset.era = "colour";
+      el.style.removeProperty("--old");
+      el.style.removeProperty("--colour");
     };
     // One clock for the old film's shake and, once played, the whole old → clean → colour timeline.
-    const tick=(now:number)=>{
-      const c=clock.current,el=root.current;c.frame=0;
-      if(!el||el.dataset.run===undefined||el.dataset.era!=="old")return;
-      let old=1;
-      if(c.playing){
-        const t=(now-c.start)/1000;
-        if(t>=c.hold+CLEANING+CALM+COLOURING){finish();return;}
-        old=1-smoother((t-c.hold)/CLEANING);
-        el.style.setProperty("--old",old.toFixed(4));
-        el.style.setProperty("--colour",smoother((t-c.hold-CLEANING-CALM)/COLOURING).toFixed(4));
+    const tick = (now: number) => {
+      const c = clock.current,
+        el = root.current;
+      c.frame = 0;
+      if (!el || el.dataset.run === undefined || el.dataset.era !== "old") return;
+      let old = 1;
+      if (c.playing) {
+        const t = (now - c.start) / 1000;
+        if (t >= c.hold + CLEANING + CALM + COLOURING) {
+          finish();
+          return;
+        }
+        old = 1 - smoother((t - c.hold) / CLEANING);
+        el.style.setProperty("--old", old.toFixed(4));
+        el.style.setProperty("--colour", smoother((t - c.hold - CLEANING - CALM) / COLOURING).toFixed(4));
       }
-      const shot=Math.floor(now*.012); // a new shake position 12 times a second, fading with the old film
-      if(shot!==c.shot&&picture.current){
-        c.shot=shot;const a=reduced()?0:SHAKE*2*old;
-        picture.current.style.translate=a>.02?`${(a*wobble(shot,1)).toFixed(2)}px ${(a*wobble(shot,2)).toFixed(2)}px`:"";
+      const shot = Math.floor(now * 0.012); // a new shake position 12 times a second, fading with the old film
+      if (shot !== c.shot && picture.current) {
+        c.shot = shot;
+        const a = reduced() ? 0 : SHAKE * 2 * old;
+        picture.current.style.translate =
+          a > 0.02 ? `${(a * wobble(shot, 1)).toFixed(2)}px ${(a * wobble(shot, 2)).toFixed(2)}px` : "";
       }
-      c.frame=requestAnimationFrame(tick);
+      c.frame = requestAnimationFrame(tick);
     };
-    const run=(on:boolean)=>{
-      const el=root.current;if(!el)return;
-      if(!on){delete el.dataset.run;still();return;}
-      el.dataset.run="";
-      if(!clock.current.frame)clock.current.frame=requestAnimationFrame(tick);
+    const run = (on: boolean) => {
+      const el = root.current;
+      if (!el) return;
+      if (!on) {
+        delete el.dataset.run;
+        still();
+        return;
+      }
+      el.dataset.run = "";
+      if (!clock.current.frame) clock.current.frame = requestAnimationFrame(tick);
     };
-    const made:OwnerHandle={
+    const made: OwnerHandle = {
       run,
       // Starts the timeline; `hold`: seconds of old film before it is cleaned. Coming back to a section already in colour,
       // nothing replays.
-      open(hold=OLD_HOLD){
+      open(hold = OLD_HOLD) {
         run(true);
-        const el=root.current,c=clock.current;
-        if(!el||el.dataset.era!=="old"||c.playing)return;
-        if(reduced()){finish();return;}
-        c.playing=true;c.hold=hold;c.start=performance.now();
+        const el = root.current,
+          c = clock.current;
+        if (!el || el.dataset.era !== "old" || c.playing) return;
+        if (reduced()) {
+          finish();
+          return;
+        }
+        c.playing = true;
+        c.hold = hold;
+        c.start = performance.now();
       },
-      close(){
-        clock.current.playing=false;run(false);
-        const el=root.current;if(!el)return;
-        el.dataset.era="old";el.style.removeProperty("--old");el.style.removeProperty("--colour");
+      close() {
+        clock.current.playing = false;
+        run(false);
+        const el = root.current;
+        if (!el) return;
+        el.dataset.era = "old";
+        el.style.removeProperty("--old");
+        el.style.removeProperty("--colour");
       },
-      get root(){return root.current;},
+      get root() {
+        return root.current;
+      },
     };
-    api.current=made;
+    api.current = made;
     return made;
   });
-  useEffect(()=>{
-    const c=clock.current;
-    return()=>{cancelAnimationFrame(c.frame);c.frame=0;}; // cleared, so a remount (React's dev double mount) can start it again
-  },[]);
-  useEffect(()=>{
-    if(!live)return;
+  useEffect(() => {
+    const c = clock.current;
+    return () => {
+      cancelAnimationFrame(c.frame);
+      c.frame = 0;
+    }; // cleared, so a remount (React's dev double mount) can start it again
+  }, []);
+  useEffect(() => {
+    if (!live) return;
     // One small tile of grain, shared with the flight's copies. Light grey to white, so under multiply it can only darken.
-    const tile=document.createElement("canvas");tile.width=tile.height=192;
-    const paint=tile.getContext("2d");
+    const tile = document.createElement("canvas");
+    tile.width = tile.height = 192;
+    const paint = tile.getContext("2d");
     // The page-wide variable holds a short blob link, not the picture itself: a long data text in a variable is read
     // again every time a grain layer is restyled, which cost frames on slower computers during the yellow flight.
-    let link="",gone=false;
-    if(paint){
-      const image=paint.createImageData(192,192);
-      for(let i=0;i<image.data.length;i+=4){const v=165+Math.random()*90;image.data[i]=image.data[i+1]=image.data[i+2]=v;image.data[i+3]=255;}
-      paint.putImageData(image,0,0);
-      tile.toBlob(blob=>{
-        if(!blob||gone)return;
-        link=URL.createObjectURL(blob);
-        document.documentElement.style.setProperty("--nw-owner-grain",`url("${link}")`);
-      },"image/png");
+    let link = "",
+      gone = false;
+    if (paint) {
+      const image = paint.createImageData(192, 192);
+      for (let i = 0; i < image.data.length; i += 4) {
+        const v = 165 + Math.random() * 90;
+        image.data[i] = image.data[i + 1] = image.data[i + 2] = v;
+        image.data[i + 3] = 255;
+      }
+      paint.putImageData(image, 0, 0);
+      tile.toBlob((blob) => {
+        if (!blob || gone) return;
+        link = URL.createObjectURL(blob);
+        document.documentElement.style.setProperty("--nw-owner-grain", `url("${link}")`);
+      }, "image/png");
     }
-    const wait=first.current==="play"?requestAnimationFrame(()=>api.current?.open()):0; // after one painted frame, so the old film is seen first
-    return()=>{
-      gone=true;cancelAnimationFrame(wait);
-      if(link){document.documentElement.style.removeProperty("--nw-owner-grain");URL.revokeObjectURL(link);}
+    const wait = first.current === "play" ? requestAnimationFrame(() => api.current?.open()) : 0; // after one painted frame, so the old film is seen first
+    return () => {
+      gone = true;
+      cancelAnimationFrame(wait);
+      if (link) {
+        document.documentElement.style.removeProperty("--nw-owner-grain");
+        URL.revokeObjectURL(link);
+      }
     };
-  },[live]);
-  return <div ref={root} className="nw-owner" data-live={live||undefined} data-era={start==="done"?"colour":"old"}>
-    <style href="nw-owner-card" precedence="default">{CSS}</style>
-    <div className="nw-owner-stage">
-      <div className="nw-owner-spill" aria-hidden="true"/>
-      <div className="nw-owner-frame">
-        <div ref={picture} className="nw-owner-picture">
-          <div className="nw-owner-blocks" aria-hidden="true">
-            <div className="nw-owner-circle"><svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMax meet"><circle cx="50" cy="38" r="17"/><path d="M12 100c0-26 17-42 38-42s38 16 38 42z"/></svg></div>
-          </div>
-          <div className="nw-owner-hot" aria-hidden="true"/>
-          <div className="nw-owner-lamp" aria-hidden="true"/>
-          <div className="nw-owner-scratches" aria-hidden="true"><i/></div>
-          {/* Placeholders until the team's own names, portrait and words arrive; the note is a draft to confirm. */}
-          <div className="nw-owner-words">
-            <div className="nw-owner-side nw-owner-name">
-              <span className="nw-owner-label">New Wings Solutions</span>
-              <h2 className="nw-owner-title">The team</h2>
+  }, [live]);
+  return (
+    <div
+      ref={root}
+      className="nw-owner"
+      data-live={live || undefined}
+      data-era={start === "done" ? "colour" : "old"}
+    >
+      <style href="nw-owner-card" precedence="default">
+        {CSS}
+      </style>
+      <div className="nw-owner-stage">
+        <div className="nw-owner-spill" aria-hidden="true" />
+        <div className="nw-owner-frame">
+          <div ref={picture} className="nw-owner-picture">
+            <div className="nw-owner-blocks" aria-hidden="true">
+              <div className="nw-owner-circle">
+                <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMax meet">
+                  <circle cx="50" cy="38" r="17" />
+                  <path d="M12 100c0-26 17-42 38-42s38 16 38 42z" />
+                </svg>
+              </div>
             </div>
-            <div/>
-            <div className="nw-owner-side nw-owner-note">
-              <p className="nw-owner-text">The people who plan, fit and tune each room, and care how every film looks and sounds. Names and faces coming soon.</p>
+            <div className="nw-owner-hot" aria-hidden="true" />
+            <div className="nw-owner-lamp" aria-hidden="true" />
+            <div className="nw-owner-scratches" aria-hidden="true">
+              <i />
+            </div>
+            {/* Placeholders until the team's own names, portrait and words arrive; the note is a draft to confirm. */}
+            <div className="nw-owner-words">
+              <div className="nw-owner-side nw-owner-name">
+                <span className="nw-owner-label">New Wings Solutions</span>
+                <h2 className="nw-owner-title">The team</h2>
+              </div>
+              <div />
+              <div className="nw-owner-side nw-owner-note">
+                <p className="nw-owner-text">
+                  The people who plan, fit and tune each room, and care how every film looks and sounds. Names
+                  and faces coming soon.
+                </p>
+              </div>
+            </div>
+            <div className="nw-owner-film nw-owner-old" aria-hidden="true">
+              <div className="nw-owner-oldgrain" />
+              <div className="nw-owner-oldedge" />
+              <div className="nw-owner-oldflicker" />
+            </div>
+            <div className="nw-owner-film nw-owner-now" aria-hidden="true">
+              <div className="nw-owner-grain" />
+              <div className="nw-owner-lines" />
+              <div className="nw-owner-flicker" />
             </div>
           </div>
-          <div className="nw-owner-film nw-owner-old" aria-hidden="true"><div className="nw-owner-oldgrain"/><div className="nw-owner-oldedge"/><div className="nw-owner-oldflicker"/></div>
-          <div className="nw-owner-film nw-owner-now" aria-hidden="true"><div className="nw-owner-grain"/><div className="nw-owner-lines"/><div className="nw-owner-flicker"/></div>
         </div>
       </div>
     </div>
-  </div>;
+  );
 });
 export default OwnerCard;

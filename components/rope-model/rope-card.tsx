@@ -1,46 +1,70 @@
 "use client";
-import {useCallback,useEffect,useSyncExternalStore} from "react";
-import {createCardCount} from "./rope-card-state";
+import { useCallback, useEffect, useSyncExternalStore } from "react";
+import { createCardCount } from "./rope-card-state";
 
-type CardView={open:boolean;number:number;off:boolean};
+type CardView = { open: boolean; number: number; off: boolean };
 
 /** Joins the frame loop and the mouse to the card on the page. Made once per page, and does nothing until a page calls it. */
-export function createRopeCard(){
-  const count=createCardCount(),listeners=new Set<()=>void>();
-  let view:CardView={open:false,number:1,off:false},over=false,element:HTMLElement|null=null;
-  const publish=()=>{
-    if(count.open===view.open&&count.number===view.number&&count.off===view.off)return;
-    view={open:count.open,number:count.number,off:count.off};
-    listeners.forEach(listener=>listener());
+export function createRopeCard() {
+  const count = createCardCount(),
+    listeners = new Set<() => void>();
+  let view: CardView = { open: false, number: 1, off: false },
+    over = false,
+    element: HTMLElement | null = null;
+  const publish = () => {
+    if (count.open === view.open && count.number === view.number && count.off === view.off) return;
+    view = { open: count.open, number: count.number, off: count.off };
+    listeners.forEach((listener) => listener());
   };
   return {
-    subscribe(listener:()=>void){listeners.add(listener);return ()=>{listeners.delete(listener);};},
-    read:()=>view,
-    attach(found:HTMLElement|null){element=found;},
+    subscribe(listener: () => void) {
+      listeners.add(listener);
+      return () => {
+        listeners.delete(listener);
+      };
+    },
+    read: () => view,
+    attach(found: HTMLElement | null) {
+      element = found;
+    },
     /** Whether the mouse is on the open card. If so the ropes behind it do not react. */
-    holdsPointer(x:number,y:number){
-      if(!view.open||!element){over=false;return false;}
-      const box=element.getBoundingClientRect();
-      over=x>=box.left&&x<=box.right&&y>=box.top&&y<=box.bottom;
+    holdsPointer(x: number, y: number) {
+      if (!view.open || !element) {
+        over = false;
+        return false;
+      }
+      const box = element.getBoundingClientRect();
+      over = x >= box.left && x <= box.right && y >= box.top && y <= box.bottom;
       return over;
     },
     /** The mouse moved over the ropes. */
-    moved(){count.moved();},
-    release(){over=false;},
-    dismiss(){over=false;count.dismiss(performance.now());publish();},
-    enable(){count.enable();publish();},
+    moved() {
+      count.moved();
+    },
+    release() {
+      over = false;
+    },
+    dismiss() {
+      over = false;
+      count.dismiss(performance.now());
+      publish();
+    },
+    enable() {
+      count.enable();
+      publish();
+    },
     /** Once a frame. Returns true while a timer is running and more frames are needed. */
-    update(now:number,rope:number,atStop:boolean){
-      const running=count.update(now,rope,atStop,over);
-      if(!count.open)over=false;
+    update(now: number, rope: number, atStop: boolean) {
+      const running = count.update(now, rope, atStop, over);
+      if (!count.open) over = false;
       publish();
       return running;
     },
   };
 }
-export type RopeCardControl=ReturnType<typeof createRopeCard>;
+export type RopeCardControl = ReturnType<typeof createRopeCard>;
 
-const STYLE=`
+const STYLE = `
 .rope-card{position:absolute;left:50%;top:50%;width:min(32vw,calc(52dvh*1.45));aspect-ratio:1.45;border-radius:clamp(18px,1.9vw,32px);overflow:hidden;pointer-events:none;opacity:0;visibility:hidden;
   transform:translate(-50%,-50%) perspective(1800px) rotateX(2.5deg) rotateY(-5deg) scale(.96);
   transition:opacity .3s ease,transform .3s ease,visibility 0s linear .3s;
@@ -63,24 +87,56 @@ const STYLE=`
 }`;
 
 /** The card in the middle of the tunnel, and the small button that brings cards back after one was closed. The glow takes the tunnel's colour, given as "r,g,b". For now the image is only its number. */
-export function RopeCard({card,tint}:{card:RopeCardControl;tint:string}){
-  const {open,number,off}=useSyncExternalStore(card.subscribe,card.read,card.read);
-  const attach=useCallback((element:HTMLDivElement|null)=>card.attach(element),[card]);
-  useEffect(()=>{
-    if(!open)return;
-    const key=(event:KeyboardEvent)=>{if(event.key==="Escape")card.dismiss();};
-    window.addEventListener("keydown",key);
-    return ()=>window.removeEventListener("keydown",key);
-  },[open,card]);
-  const colour={"--rope-card-tint":tint} as React.CSSProperties;
-  return <>
-    <style>{STYLE}</style>
-    <div ref={attach} className="rope-card" data-rope-card data-open={open} data-number={number} aria-hidden={!open} style={colour}>
-      <div className="rope-card__image"><span className="rope-card__number">{number}</span></div>
-      <button type="button" className="rope-card__close" data-rope-card-close aria-label="Close card" onClick={()=>card.dismiss()}>
-        <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M1 1l10 10M11 1L1 11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
+export function RopeCard({ card, tint }: { card: RopeCardControl; tint: string }) {
+  const { open, number, off } = useSyncExternalStore(card.subscribe, card.read, card.read);
+  const attach = useCallback((element: HTMLDivElement | null) => card.attach(element), [card]);
+  useEffect(() => {
+    if (!open) return;
+    const key = (event: KeyboardEvent) => {
+      if (event.key === "Escape") card.dismiss();
+    };
+    window.addEventListener("keydown", key);
+    return () => window.removeEventListener("keydown", key);
+  }, [open, card]);
+  const colour = { "--rope-card-tint": tint } as React.CSSProperties;
+  return (
+    <>
+      <style>{STYLE}</style>
+      <div
+        ref={attach}
+        className="rope-card"
+        data-rope-card
+        data-open={open}
+        data-number={number}
+        aria-hidden={!open}
+        style={colour}
+      >
+        <div className="rope-card__image">
+          <span className="rope-card__number">{number}</span>
+        </div>
+        <button
+          type="button"
+          className="rope-card__close"
+          data-rope-card-close
+          aria-label="Close card"
+          onClick={() => card.dismiss()}
+        >
+          <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true">
+            <path d="M1 1l10 10M11 1L1 11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+          </svg>
+        </button>
+      </div>
+      <button
+        type="button"
+        className="rope-card-on"
+        data-rope-card-on
+        data-shown={off}
+        aria-hidden={!off}
+        style={colour}
+        onClick={() => card.enable()}
+      >
+        Show cards
       </button>
-    </div>
-    <button type="button" className="rope-card-on" data-rope-card-on data-shown={off} aria-hidden={!off} style={colour} onClick={()=>card.enable()}>Show cards</button>
-  </>;
+    </>
+  );
 }

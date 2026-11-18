@@ -4,13 +4,31 @@ import { useSyncExternalStore } from "react";
 import { isMobileDevice } from "./texture-quality";
 import { projectorControls } from "./projector-controls";
 
-const noEvents=()=>()=>{};
+const noEvents = () => () => {};
 export default function ProjectorButtons() {
-  const mobile=useSyncExternalStore(noEvents,isMobileDevice,()=>false);
-  const state = useSyncExternalStore(projectorControls.subscribe, projectorControls.read, projectorControls.read);
+  const mobile = useSyncExternalStore(noEvents, isMobileDevice, () => false);
+  const state = useSyncExternalStore(
+    projectorControls.subscribe,
+    projectorControls.read,
+    projectorControls.read,
+  );
   const busy = state.phase === "particles" || state.phase === "assembling";
-  return <div className="projector-buttons" role="group" aria-label="Projector animations" aria-busy={busy}>
-    <button disabled={!state.ready || busy} onClick={() => mobile?projectorControls.set("assembled"):projectorControls.play("particles")}>{mobile?"Reveal":"Particles"}</button>
-    {!mobile&&<button disabled={!state.ready || busy || state.phase==="hidden"} onClick={() => projectorControls.play("assembling")}>Assemble</button>}
-  </div>;
+  return (
+    <div className="projector-buttons" role="group" aria-label="Projector animations" aria-busy={busy}>
+      <button
+        disabled={!state.ready || busy}
+        onClick={() => (mobile ? projectorControls.set("assembled") : projectorControls.play("particles"))}
+      >
+        {mobile ? "Reveal" : "Particles"}
+      </button>
+      {!mobile && (
+        <button
+          disabled={!state.ready || busy || state.phase === "hidden"}
+          onClick={() => projectorControls.play("assembling")}
+        >
+          Assemble
+        </button>
+      )}
+    </div>
+  );
 }

@@ -2,10 +2,6 @@ import { MathUtils, Matrix4, Quaternion, Vector3 } from "three";
 
 type Sample = { position: readonly number[] };
 
-export function scrollProgress(scrollY: number, travelDistance: number) {
-  return travelDistance > 0 ? MathUtils.clamp(scrollY / travelDistance, 0, 1) : 0;
-}
-
 export function createJourneySampler(samples: readonly Sample[], up: readonly number[]) {
   const points = samples.map(({ position }) => new Vector3().fromArray(position));
   const floorUp = new Vector3().fromArray(up).normalize();
@@ -14,7 +10,8 @@ export function createJourneySampler(samples: readonly Sample[], up: readonly nu
 
   function positionAt(progress: number, output: Vector3) {
     const index = MathUtils.clamp(progress, 0, 1) * (points.length - 1);
-    const low = Math.floor(index), high = Math.min(low + 1, points.length - 1);
+    const low = Math.floor(index),
+      high = Math.min(low + 1, points.length - 1);
     return output.lerpVectors(points[low], points[high], index - low);
   }
 
@@ -35,7 +32,8 @@ export function createJourneySampler(samples: readonly Sample[], up: readonly nu
   return {
     sample(progress: number, position: Vector3, rotation: Quaternion) {
       const index = MathUtils.clamp(progress, 0, 1) * (points.length - 1);
-      const low = Math.floor(index), high = Math.min(low + 1, points.length - 1);
+      const low = Math.floor(index),
+        high = Math.min(low + 1, points.length - 1);
       positionAt(progress, position);
       rotation.slerpQuaternions(rotations[low], rotations[high], index - low);
     },

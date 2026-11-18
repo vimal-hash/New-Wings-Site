@@ -1,26 +1,33 @@
-import {ClampToEdgeWrapping,LinearFilter,NoColorSpace,type Texture} from "three";
+import { ClampToEdgeWrapping, LinearFilter, NoColorSpace, type Texture } from "three";
 import source from "./blue-look.json";
-import {assetURL} from "../corridor/asset-url";
-import type {RopeLook} from "./rope-materials";
+import { assetURL } from "../corridor/asset-url";
+import type { RopeLook } from "./rope-materials";
 
-export const BLUE_PALETTE=assetURL("/rope-model/blue/palette-desktop.png");
-export const BLUE_PALETTE_LAPTOP=assetURL("/rope-model/blue/palette-laptop.png");
+export const BLUE_PALETTE = assetURL("/rope-model/blue/palette-desktop.png");
+export const BLUE_PALETTE_LAPTOP = assetURL("/rope-model/blue/palette-laptop.png");
 // The same dark haze as the approved red, transformed by the source colour-family rule.
-export const BLUE_BACKDROP=[.000015,.000555,.0035];
-export const BLUE_SIDE=source.side as [number,number,number];
-export const BLUE_FACE=source.face as [number,number,number];
-export function blueRopeLook(red:RopeLook):RopeLook{
-  return {...red,exposure:source.exposure,core_color:source.core as [number,number,number],grade:source.grade as [number,number][][]};
+export const BLUE_BACKDROP = [0.000015, 0.000555, 0.0035];
+export const BLUE_SIDE = source.side as [number, number, number];
+export const BLUE_FACE = source.face as [number, number, number];
+export function blueRopeLook(red: RopeLook): RopeLook {
+  return {
+    ...red,
+    exposure: source.exposure,
+    core_color: source.core as [number, number, number],
+    grade: source.grade as [number, number][][],
+  };
 }
 /** Shared loader-owned lookup, sampled as data and decoded exactly once in the shader. */
-export function prepareBluePalette(texture:Texture|undefined){
-  if(!texture)return undefined;
-  texture.colorSpace=NoColorSpace;texture.minFilter=texture.magFilter=LinearFilter;
-  texture.wrapS=texture.wrapT=ClampToEdgeWrapping;texture.generateMipmaps=false;
-  texture.needsUpdate=true;
+export function prepareBluePalette(texture: Texture | undefined) {
+  if (!texture) return undefined;
+  texture.colorSpace = NoColorSpace;
+  texture.minFilter = texture.magFilter = LinearFilter;
+  texture.wrapS = texture.wrapT = ClampToEdgeWrapping;
+  texture.generateMipmaps = false;
+  texture.needsUpdate = true;
   return texture;
 }
-export const bluePaletteGlsl=/* glsl */`
+export const bluePaletteGlsl = /* glsl */ `
   uniform sampler2D uBluePalette;
   uniform float uBluePaletteWidth;
   vec3 blueRamp(vec3 red){

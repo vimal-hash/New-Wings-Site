@@ -10,7 +10,14 @@
  *  space; the part fills from `from` to `to` along it. ragged: share of the noise in the mask (0 = a straight edge).
  *  revealDelay: frames (24 fps) between a grain landing and the surface showing there. */
 import aligned from "../projector-formation-aligned.json";
-export type Sweep = { part: number; axis: [number, number, number]; from: number; to: number; ragged: number; revealDelay: number };
+type Sweep = {
+  part: number;
+  axis: [number, number, number];
+  from: number;
+  to: number;
+  ragged: number;
+  revealDelay: number;
+};
 
 const REVEAL_DELAY = 1; // one frame (0.04 s): the surface shows as its grains finish landing
 const RAGGED = 0.25;
@@ -18,13 +25,27 @@ const RAGGED = 0.25;
 const SCREEN_RIGHT: [number, number, number] = [-0.707107, 0.707107, 0];
 
 /** A sweep right to left on screen across `from`..`to` (the part's grains' span along SCREEN_RIGHT). */
-const across = (part: number, from: number, to: number): Sweep => ({ part, axis: SCREEN_RIGHT, from, to, ragged: RAGGED, revealDelay: REVEAL_DELAY });
+const across = (part: number, from: number, to: number): Sweep => ({
+  part,
+  axis: SCREEN_RIGHT,
+  from,
+  to,
+  ragged: RAGGED,
+  revealDelay: REVEAL_DELAY,
+});
 /** The centre chassis box: its parts swept as one, across the whole box (-0.63..0.63). */
 const box = (part: number) => across(part, 0.63, -0.63);
 
 const SOURCE_SWEEPS: Record<string, Sweep> = {
   // the operator's-left side panel, across its length: right end (+y) to left end (-y)
-  SH_Non_operator_side_panel: { part: 473, axis: [0, 1, 0], from: 0.44, to: -0.49, ragged: RAGGED, revealDelay: REVEAL_DELAY },
+  SH_Non_operator_side_panel: {
+    part: 473,
+    axis: [0, 1, 0],
+    from: 0.44,
+    to: -0.49,
+    ragged: RAGGED,
+    revealDelay: REVEAL_DELAY,
+  },
   CH_Structural_frame_posts_rails_bulkhead: box(6),
   CH_Base_tray_plus_floor_channels: box(0),
   CH_Upper_frame_band: box(7),
@@ -56,20 +77,27 @@ const SOURCE_SWEEPS: Record<string, Sweep> = {
 };
 
 // Keep the approved sweep order, but measure its span on the currently shipped parts.
-export const SWEEPS:Record<string,Sweep>=Object.fromEntries(Object.entries(SOURCE_SWEEPS).map(([name,s])=>{
-  const span=(aligned.spans as Record<string,number[]>)[name];
-  if(!span||aligned.names[s.part]!==name)throw new Error("Projector formation owner/span mismatch: "+name);
-  return [name,{...s,from:span[0],to:span[1]}];
-}));
+const SWEEPS: Record<string, Sweep> = Object.fromEntries(
+  Object.entries(SOURCE_SWEEPS).map(([name, s]) => {
+    const span = (aligned.spans as Record<string, number[]>)[name];
+    if (!span || aligned.names[s.part] !== name)
+      throw new Error("Projector formation owner/span mismatch: " + name);
+    return [name, { ...s, from: span[0], to: span[1] }];
+  }),
+);
 const f = (x: number) => x.toFixed(6);
 const sweepMask = (s: Sweep, noise: string, p: string) =>
-  `clamp(mix(clamp((dot(${p}, vec3(${s.axis.map(f).join(", ")})) - ${f(s.from)}) / ${f(s.to - s.from)}, 0.0, 1.0), ${noise}, ${f(s.ragged)}), 0.0, 1.0)`;
+  `clamp(mix(clamp((dot(${p}, vec3(${s.axis.map(f).join(", ")})) - ${f(s.from)}) / ${f(
+    s.to - s.from,
+  )}, 0.0, 1.0), ${noise}, ${f(s.ragged)}), 0.0, 1.0)`;
 
 /** GLSL for the particles: the landing mask by part (other parts: the node group's own mix, unchanged). */
 export const formationGLSL = /* glsl */ `
 float fxFormation(float noise, float g, float w, vec3 p, int part) {
   switch (part) {
-${Object.values(SWEEPS).map((s) => `    case ${s.part}: return ${sweepMask(s, "noise", "p")};`).join("\n")}
+${Object.values(SWEEPS)
+  .map((s) => `    case ${s.part}: return ${sweepMask(s, "noise", "p")};`)
+  .join("\n")}
   }
   return mix(noise, g, w);
 }`;
@@ -77,5 +105,9 @@ ${Object.values(SWEEPS).map((s) => `    case ${s.part}: return ${sweepMask(s, "n
 /** Uniform values for a part's surface reveal: vec4(from, to, ragged, on), its axis and reveal delay (frames). */
 export function sweepUniforms(partName: string) {
   const s = SWEEPS[partName];
-  return { sweep: s ? [s.from, s.to, s.ragged, 1] : [0, 1, 0, 0], axis: s ? s.axis : [1, 0, 0], revealDelay: REVEAL_DELAY } as const;
+  return {
+    sweep: s ? [s.from, s.to, s.ragged, 1] : [0, 1, 0, 0],
+    axis: s ? s.axis : [1, 0, 0],
+    revealDelay: REVEAL_DELAY,
+  } as const;
 }

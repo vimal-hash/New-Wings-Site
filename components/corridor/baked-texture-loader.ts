@@ -13,7 +13,10 @@ export function configureBakedTextureLoader(loader: KTX2Loader, gl: WebGLRendere
     const finish = traceSpan("Basis transcoder initialization", "decoder initialization");
     // Observe failure here to avoid an unhandled prefetch rejection. The loader's
     // original promise stays rejected and its normal asset load reports the error.
-    void loader.init().then(() => finish(), error => finish({ error: String(error) }));
+    void loader.init().then(
+      () => finish(),
+      (error) => finish({ error: String(error) }),
+    );
   }
   return loader;
 }

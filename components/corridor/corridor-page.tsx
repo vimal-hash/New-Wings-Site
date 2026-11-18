@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useMemo, useRef } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
-import { Mesh, Object3D, PerspectiveCamera, Scene, Vector3 } from "three";
+import { Mesh, Object3D, PerspectiveCamera, Scene, Vector3, type Group } from "three";
 import { PAGE_POSE } from "./full-journey";
 import { journeyControls, type JourneyPhase } from "./journey-controls";
 import { projectorControls } from "./projector-controls";
@@ -24,8 +24,10 @@ const visiblePhases = new Set<JourneyPhase>(["corridor", "panel"]);
 export default function CorridorPage({ phase }: { phase: JourneyPhase }) {
   const { camera, size, invalidate, gl } = useThree();
   const mesh = useRef<LiquidPearlMesh>(null),
+    holder = useRef<Group>(null),
     ready = useRef(false);
-  const motion = useRef({ elapsed: 0, complete: false, flow: 0, spin: 0, startSpin: 0 });
+  // back: scrolling back from the start of Section 1, the morph plays in reverse, from the page to the sphere.
+  const motion = useRef({ elapsed: 0, complete: false, flow: 0, spin: 0, startSpin: 0, back: false });
   const reduce = useRef(false);
   const fov = camera instanceof PerspectiveCamera ? camera.fov : 40;
   const width = Math.min(
@@ -144,13 +146,63 @@ export default function CorridorPage({ phase }: { phase: JourneyPhase }) {
     };
   }, [phase, invalidate]);
 
+  // Back from the start of Section 1 (the user, 2026-11-18: scrolling back works on the whole site): the white page is
+  // drawn here exactly as it was handed over, full screen, then the page is taken away and the morph runs backwards.
+  useEffect(() => {
+    let was = journeyControls.read().leavingPage,
+      frame = 0,
+      nextFrame = 0,
+      timer = 0;
+    const handOver = () => {
+      if (!journeyControls.read().leavingPage) return;
+      invalidate();
+      if (!ready.current) {
+        timer = window.setTimeout(handOver, 80);
+        return;
+      }
+      // Two frames: the full-screen white is on the canvas before the page above it goes.
+      frame = requestAnimationFrame(() => {
+        nextFrame = requestAnimationFrame(() => {
+          const journey = journeyControls.read();
+          if (journey.leavingPage && journey.phase === "page") journeyControls.update({ phase: "panel" });
+        });
+      });
+    };
+    const unsubscribe = journeyControls.subscribe(() => {
+      const leaving = journeyControls.read().leavingPage,
+        s = motion.current;
+      if (leaving && !was) {
+        s.back = true;
+        s.complete = false;
+        s.elapsed = MORPH_SECONDS;
+        handOver();
+      } else if (!leaving && was && s.back) {
+        // Interrupted (a menu jump): ready to play forwards again from the sphere.
+        s.back = false;
+        s.elapsed = 0;
+      }
+      was = leaving;
+    });
+    return () => {
+      unsubscribe();
+      cancelAnimationFrame(frame);
+      cancelAnimationFrame(nextFrame);
+      clearTimeout(timer);
+    };
+  }, [invalidate]);
+
   useFrame((_, delta) => {
-    const object = mesh.current,
-      s = motion.current;
-    if (!object || !visible || !ready.current || s.complete || document.hidden) return;
+    // The phase as it is now (the prop can be a frame behind the journey's own record).
+    const now = journeyControls.read().phase,
+      object = mesh.current,
+      s = motion.current,
+      shown = visiblePhases.has(now) || s.back;
+    if (holder.current && holder.current.visible !== shown) holder.current.visible = shown;
+    if (!object || !shown || !ready.current || s.complete || document.hidden) return;
     const u = object.material.uniforms,
       step = reduce.current ? 0 : Math.min(delta, 0.05);
-    const playing = phase === "panel";
+    const playing = now === "panel" && !s.back,
+      unplaying = now === "panel" && s.back;
     if (playing) {
       if (s.elapsed === 0) {
         s.startSpin = Math.atan2(Math.sin(s.spin), Math.cos(s.spin));
@@ -158,6 +210,9 @@ export default function CorridorPage({ phase }: { phase: JourneyPhase }) {
       }
       s.elapsed = reduce.current ? MORPH_SECONDS : Math.min(MORPH_SECONDS, s.elapsed + step);
       // The morph is motion, not a rest: background loading and shader work must wait until it covers the screen.
+      sceneMotion.at = performance.now();
+    } else if (unplaying) {
+      s.elapsed = reduce.current ? 0 : Math.max(0, s.elapsed - step);
       sceneMotion.at = performance.now();
     }
     s.spin += step * PEARL_SPIN;
@@ -172,7 +227,7 @@ export default function CorridorPage({ phase }: { phase: JourneyPhase }) {
     const projected = 0.72 + ((cover * 14) / 0.6 - 0.72) * e;
     object.position.copy(placement.origin).addScaledVector(placement.direction, distance);
     object.quaternion.copy(placement.rotation);
-    object.rotateY(playing ? (s.startSpin + s.elapsed * PEARL_SPIN) * (1 - morph) : s.spin);
+    object.rotateY(playing || s.back ? (s.startSpin + s.elapsed * PEARL_SPIN) * (1 - morph) : s.spin);
     object.rotateX(pearlTilt(s.spin) * (1 - morph) - 0.055 * Math.sin(Math.PI * flat));
     object.scale.setScalar((((width / 2) * distance) / 14) * projected);
     u.uMorph.value = morph;
@@ -182,16 +237,26 @@ export default function CorridorPage({ phase }: { phase: JourneyPhase }) {
     u.uCurl.value = 0.06 * Math.sin(Math.PI * flat);
     u.uTime.value = s.flow;
     u.uOpacity.value = 1;
-    if (t === 1) {
+    if (t === 1 && !s.back) {
       s.complete = true;
       traceMark("Liquid page covers viewport");
       queueMicrotask(() => {
         if (journeyControls.read().phase === "panel") journeyControls.update({ phase: "page" });
       });
-    } else if (playing || !reduce.current) invalidate();
+    } else if (unplaying && s.elapsed === 0) {
+      // A sphere again, turning on as it did before the morph: the camera walks back from it (full-journey.tsx).
+      s.back = false;
+      s.spin = s.startSpin;
+      traceMark("Liquid page back to sphere");
+      queueMicrotask(() => {
+        const journey = journeyControls.read();
+        if (journey.leavingPage && journey.phase === "panel") journeyControls.update({ phase: "corridor" });
+      });
+      invalidate();
+    } else if (playing || s.back || !reduce.current) invalidate();
   });
   return (
-    <group visible={visible}>
+    <group ref={holder} visible={visible}>
       <LiquidPearl ref={mesh} mobile={mobile} />
     </group>
   );

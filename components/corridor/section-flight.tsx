@@ -29,7 +29,9 @@ const ACROSS = 36 / 2 / 24,
   DOOR_MARGIN = 1.05;
 // At the far end the next section's plane is whole until the camera is this close: it rests there, not deeper in it.
 const END_DOOR = WHITE_BY * 0.9;
-export type FlightControl = { where: "flight" | "rest" };
+/** where: the flight or the page has the scroll. step: the flight's answer to one step of the site's scroll
+ *  (scroll-step.ts), passed on by the page while `where` is "flight"; false at either end, where the page has it. */
+export type FlightControl = { where: "flight" | "rest"; step?: (step: number) => boolean };
 type Props = {
   device: "desktop" | "laptop";
   interactive: RefObject<boolean>;
@@ -85,7 +87,6 @@ export default function SectionFlight({
   const profile = yellow ? YELLOW_FLIGHT : blue ? BLUE_FLIGHT : FLIGHT;
   const link = useMemo(() => {
     const whiteOutAt = sectionWhiteShare(profile);
-    const acceptsEarlyScroll = device === "laptop" && entry === 0 && !startAtEnd;
     const eased = (blue || yellow) && !window.matchMedia("(prefers-reduced-motion: reduce)").matches,
       fade = createSectionFade(startAtEnd ? 1 : 0);
     // The white door: the camera rests where the white opening just fills the screen, corners and all, so the section's
@@ -176,7 +177,7 @@ export default function SectionFlight({
         made.camera(home);
       wake();
     };
-    const made: RopeLink & { entry: number; dispose(): void } = {
+    const made: RopeLink & { entry: number; step(way: number): boolean; dispose(): void } = {
       entry,
       startZ: startAtEnd ? -END_DOOR : home,
       covered: true,
@@ -187,7 +188,8 @@ export default function SectionFlight({
       },
       attach(found) {
         element = found;
-        found.style.overflowY = acceptsEarlyScroll ? "auto" : "hidden";
+        // Never scrolled by the browser: the page passes each step of the site's scroll on to the glide (step below).
+        found.style.overflowY = "hidden";
         found.tabIndex = -1;
         found.scrollTop = startAtEnd ? found.scrollHeight : 0;
         whiteOut(share());
@@ -247,7 +249,6 @@ export default function SectionFlight({
       ready() {
         if (!element || ready) return;
         ready = true;
-        element.style.overflowY = "auto";
         if (autoEnter) {
           control.current.where = "flight";
           element.focus({ preventScroll: true });
@@ -263,6 +264,20 @@ export default function SectionFlight({
         wake();
       },
       failed: onFailure,
+      // One step of the site's scroll. With motion the glide flies the leg (rope-flight.ts); with reduced motion there is
+      // no glide, and the step goes straight to the next resting place, as the glide would end it.
+      step(way) {
+        if (!element || !way) return true;
+        if (made.glide.take) return made.glide.take(way);
+        const total = element.scrollHeight - element.clientHeight,
+          top = element.scrollTop,
+          from = profile.holdFrom * total,
+          to = profile.holdTo * total;
+        if ((way < 0 && top <= 1) || (way > 0 && top >= total - 1)) return false;
+        const atStop = top >= from - 2 && top <= to + 2;
+        element.scrollTop = atStop ? (way > 0 ? total : 0) : top < from ? (way > 0 ? from : 0) : way > 0 ? total : to;
+        return true;
+      },
       dispose() {
         cancelAnimationFrame(launchFrame);
         cancelAnimationFrame(fadeFrame);
@@ -271,7 +286,6 @@ export default function SectionFlight({
     };
     return made;
   }, [
-    device,
     interactive,
     control,
     onArrive,
@@ -284,6 +298,15 @@ export default function SectionFlight({
     blue,
     yellow,
   ]);
+  // The page passes each step of the site's scroll on to this flight while it has the scroll.
+  useLayoutEffect(() => {
+    const flight = control.current,
+      step = (way: number) => link.step(way);
+    flight.step = step;
+    return () => {
+      if (flight.step === step) flight.step = undefined;
+    };
+  }, [link, control]);
   useLayoutEffect(() => {
     const node = layer.current;
     node?.addEventListener("webglcontextlost", onFailure, true);

@@ -15,8 +15,10 @@ import { PUPIL_ABSORPTION_GLSL, PUPIL_ABSORPTION_STEPS } from "./pupil-absorptio
 import { createPupilFrontGeometry, PUPIL_FILL_NAME } from "./pupil-fill";
 import {
   createPupilPulseClock,
+  fadePupilState,
   HERO_WAVE_GLSL,
   PUPIL_PULSE,
+  pupilLeaveFade,
   pupilPulseUniforms,
   resetPupilPulse,
   samplePupilPreTrace,
@@ -162,7 +164,10 @@ export function createPupilPulse(scene: Scene, gl: WebGLRenderer, camera: Camera
   const clock = createPupilPulseClock(),
     point = new Vector3();
   let glow = false,
-    preTraced = false;
+    preTraced = false,
+    // The emission clock ran last frame, and a step back from the final eye is fading its light out.
+    lit = false,
+    leaving = false;
   function update(
     phase: string,
     now: number,
@@ -171,19 +176,25 @@ export function createPupilPulse(scene: Scene, gl: WebGLRenderer, camera: Camera
     tuning: Readonly<CinemaValues> = CINEMA_DEFAULTS,
     shot?: { stage: string; progress: number },
   ) {
+    // Back from the final eye the light there fades out with the reversed pullback instead of cutting off, on its own
+    // clock; turning forward again before it has gone brings it back as it was.
+    leaving = phase === "logoReveal" && !reduce && shot?.stage === "pullback" && (lit || leaving);
+    const fade = leaving ? pupilLeaveFade(shot!.progress) : 1;
     const early =
-      phase === "logoReveal" && !hidden && !reduce && shot
+      phase === "logoReveal" && !hidden && !reduce && shot && !leaving
         ? samplePupilPreTrace(shot.stage, shot.progress)
         : null;
-    const state =
-      clock.tick(
-        phase === "logoDone",
-        now,
-        hidden,
-        reduce,
-        tuning.logoPeak,
-        preTraced ? PUPIL_PULSE.traceLead : 0,
-      ) ?? early;
+    const running = clock.tick(
+      phase === "logoDone" || (leaving && fade > 0),
+      now,
+      hidden,
+      reduce,
+      tuning.logoPeak,
+      preTraced ? PUPIL_PULSE.traceLead : 0,
+    );
+    lit = !!running;
+    if (leaving && !running) leaving = false;
+    const state = running && fade < 1 ? fadePupilState(running, fade) : (running ?? early);
     if (!state) {
       preTraced = false;
       resetPupilPulse();

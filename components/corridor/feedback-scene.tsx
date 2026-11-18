@@ -23,7 +23,9 @@ export type FeedbackHandle = {
   play(): void;
   reset(): void;
   run(on: boolean): void;
-  input(pixels: number): boolean;
+  /** One step of the site's scroll: 1 the next card, -1 the one before. True when the cards used it; false when it
+   *  belongs to the page (back before the first card, on past the last). */
+  input(step: number): boolean;
   root: HTMLElement | null;
 };
 /** old: waits as old film. play: plays on mount. done: already in today's look (a still copy). */
@@ -83,13 +85,11 @@ const QUOTES = [
   },
 ];
 const LAST = QUOTES.length - 1;
+/** The last card: where the section is left for the corridor, and where it is found again coming back. */
+export const FEEDBACK_LAST = LAST;
 
-// The scroll, as Section 1's reel answers it.
-const PER_CARD = 440,
-  NUDGE = 0.12,
-  SETTLE = 0.28,
-  QUIET = 140,
-  GESTURE = 220;
+// The scroll, as Section 1's reel answers it: one step of the site's scroll (scroll-step.ts) is one card, settling softly.
+const SETTLE = 0.28;
 // The arrival, in seconds after the white has lifted (the user's timings, 2026-11-15): old film at 0, clean black and
 // white at 1, faded colour at 1.8, full colour at 3 (ERA_AT, ERA_END); then the depth comes in, 3 to 3.5, with the specks,
 // and the green light rises with it, 3 to 3.5; everything has settled at 3.5.
@@ -250,9 +250,8 @@ type Parts = {
 
 function createController({ root, light, stage, track, cards, shown, card }: Parts): Controller {
   const reduced = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  // One clock for the arrival, the cards and the specks. pos follows goal like a soft spring; while a gesture is held,
-  // goal follows the scroll (at most one card from where it began); once the scroll is quiet, goal is a whole card.
-  // pitch: pixels from one card to the next, which carries the specks with the cards.
+  // One clock for the arrival, the cards and the specks. pos follows goal like a soft spring; each step of the scroll
+  // moves goal one whole card. pitch: pixels from one card to the next, which carries the specks with the cards.
   const c = {
     frame: 0,
     playing: false,
@@ -262,11 +261,6 @@ function createController({ root, light, stage, track, cards, shown, card }: Par
     pos: card,
     vel: 0,
     goal: card,
-    origin: card,
-    drag: 0,
-    held: false,
-    mine: false,
-    last: -1e9,
     time: 0,
     shown: card,
     drawnDepth: NaN,
@@ -389,11 +383,6 @@ function createController({ root, light, stage, track, cards, shown, card }: Par
         paintLight();
       }
     }
-    if (c.held && performance.now() - c.last > QUIET) {
-      c.held = false;
-      const share = c.drag / PER_CARD;
-      c.goal = clamp(Math.abs(share) > NUDGE ? c.origin + Math.sign(share) : c.origin, 0, LAST);
-    }
     if (reduced()) {
       c.pos = Math.round(c.goal);
       c.vel = 0;
@@ -412,7 +401,7 @@ function createController({ root, light, stage, track, cards, shown, card }: Par
       }
     }
     placeCards();
-    if (c.held || c.pos !== c.goal) busy = true;
+    if (c.pos !== c.goal) busy = true;
     // The specks drift in the air and move with the cards by their distance; they come in with the depth.
     if (c.specks) {
       const view = { shift: c.pos * c.pitch, strength: c.depth };
@@ -465,33 +454,21 @@ function createController({ root, light, stage, track, cards, shown, card }: Par
       c.era = 0;
       c.depth = 0;
       c.light = 0;
-      c.pos = c.goal = c.origin = 0;
+      c.pos = c.goal = 0;
       c.vel = 0;
-      c.drag = 0;
-      c.held = false;
-      c.mine = false;
       if (el) el.dataset.era = "old";
       paintEra();
       c.specks?.clear();
       placeCards();
       paintLight();
     },
-    // One scroll event in pixels (down is positive). True when the cards used it; false when it belongs to the page.
-    input(pixels) {
-      const now = performance.now();
-      if (!root.current) return false;
-      const fresh = now - c.last > GESTURE;
-      c.last = now;
-      if (fresh) {
-        c.origin = Math.round(c.goal);
-        c.drag = 0;
-        // Before the first card or after the last, a new gesture goes on to the page (back up, or on to the end).
-        c.mine = !((pixels < 0 && c.origin <= 0) || (pixels > 0 && c.origin >= LAST));
-      }
-      if (!c.mine) return false;
-      c.drag += pixels;
-      c.held = true;
-      c.goal = clamp(c.origin + clamp(c.drag / PER_CARD, -1, 1), 0, LAST);
+    // One step of the site's scroll. Before the first card or after the last, it goes on to the page (back up, or on to
+    // the end).
+    input(step) {
+      if (!root.current || !step) return false;
+      const from = Math.round(c.goal);
+      if ((step < 0 && from <= 0) || (step > 0 && from >= LAST)) return false;
+      c.goal = clamp(from + Math.sign(step), 0, LAST);
       wake();
       return true;
     },

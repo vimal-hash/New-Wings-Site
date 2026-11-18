@@ -3,7 +3,7 @@ import dynamic from "next/dynamic";
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import type { ReelHandle } from "../film-reel/film-reel";
 import { journeyControls } from "./journey-controls";
-import { pageAtBottom, pageReturn } from "./page-exit";
+import { pageAtBottom, pageReturn, WHITE_SECONDS } from "./page-exit";
 import { traceMark } from "./loading-trace";
 import { ropeFlightDevice } from "./effect-quality";
 import SectionFlight, { type FlightControl } from "./section-flight";
@@ -12,7 +12,8 @@ import { WALL } from "./about-film";
 import OwnerCard, { OWNER_WALL, type OwnerHandle } from "./owner-card";
 import SectionWhite, { type WhiteHandle } from "./section-white";
 import { SECTION_LINES, TITLE } from "./title-card";
-import FeedbackScene, { FEEDBACK_WALL, whenCalm, type FeedbackHandle } from "./feedback-scene";
+import FeedbackScene, { FEEDBACK_LAST, FEEDBACK_WALL, whenCalm, type FeedbackHandle } from "./feedback-scene";
+import { listenSteps } from "./scroll-step";
 
 // Section 1's reel can prepare while the page is still covered.
 const FilmReel = dynamic(() => import("../film-reel/film-reel"), { ssr: false });
@@ -23,6 +24,13 @@ const SECTION_COLOURS = ["#ffffff", WALL, OWNER_WALL, FEEDBACK_WALL];
 const TEAM_FILM_AT = 0.9,
   TEAM_OLD_HOLD = 0.26;
 const SECTION_TITLES = ["Products", "About Us", "Team", "Testimonials"];
+// Arriving back from the corridor, Section 4 waits under this white (just short of solid, as a section's held white, so
+// the section is already drawn), then the white lifts in WHITE_SECONDS: the way Section 4 was left, played backwards.
+const BACK_HOLD = 0.998;
+const smoother = (x: number) => {
+  const t = Math.min(1, Math.max(0, x));
+  return t * t * t * (t * (t * 6 - 15) + 10);
+};
 
 /** A departing copy of the fourth section (a still of its HD scene), sampled from the camera's clock: it turns plain
  *  white, then hands over to the white panel in the corridor (end-box.ts) and is gone. */
@@ -56,7 +64,7 @@ export function PageReturnCover() {
         }}
       >
         <div ref={copy} style={{ position: "absolute", inset: 0 }}>
-          <FeedbackScene card={2} />
+          <FeedbackScene card={FEEDBACK_LAST} />
         </div>
       </div>
     </div>
@@ -78,14 +86,20 @@ export default function NormalPage({
   returnToCorridor?: boolean;
   active?: boolean;
 }) {
-  const panel = useRef<HTMLDivElement>(null),
-    lastInput = useRef(0);
+  const panel = useRef<HTMLDivElement>(null);
   const interactive = useRef(active);
   useLayoutEffect(() => {
     interactive.current = active;
   }, [active]);
   const [device] = useState(ropeFlightDevice),
     [initialSection] = useState(firstSection);
+  // Scrolling back from View 2 (the user, 2026-11-18): Section 4 is found on its last card, as it was left, under a white
+  // that lifts by itself; no title line and no replay of its eras.
+  const [cameBack] = useState(() => journeyControls.read().pageBack && initialSection === 4),
+    backWhite = useRef<HTMLDivElement>(null),
+    lifting = useRef(cameBack);
+  // Gone back to the corridor from Section 1: arriving again, the visit starts over at Section 1 like the first time.
+  const wentBack = useRef(false);
   const [flightUnavailable, setFlightUnavailable] = useState(false);
   const flying = device !== "mobile" && !flightUnavailable;
   const control = useRef<FlightControl>({ where: initialSection === 1 && flying ? "flight" : "rest" });
@@ -128,6 +142,16 @@ export default function NormalPage({
       }));
     } else if (!flying && node.scrollTop <= 2) node.scrollTo({ top: node.clientHeight, behavior: "smooth" });
   }, [flying, setFlight]);
+  // A step back on Section 1's first frame has brought the house lights up and the page is all white: the site goes back
+  // the way it came (the page turns back into the liquid sphere, corridor-page.tsx; the camera walks back to the
+  // projector, full-journey.tsx).
+  const leave = useCallback(() => {
+    const journey = journeyControls.read();
+    if (journey.phase !== "page" || journey.leavingPage) return;
+    wentBack.current = true;
+    traceMark("Section 1 back to the corridor");
+    journeyControls.update({ leavingPage: true, pageSection: null, pageAtEnd: false });
+  }, []);
   useLayoutEffect(() => {
     flightIndex.current = flight.index;
   }, [flight.index]);
@@ -172,7 +196,6 @@ export default function NormalPage({
       }
       node.style.overflow = "";
       node.focus({ preventScroll: true });
-      lastInput.current = performance.now();
     },
     [flight.index, holdForCard],
   );
@@ -269,10 +292,10 @@ export default function NormalPage({
   }, [flying, active]);
   useLayoutEffect(() => {
     const node = panel.current;
-    if (node && active) node.scrollTop = (initialSection - 1) * node.clientHeight;
+    if (node && active) node.scrollTop = (wentBack.current ? 0 : initialSection - 1) * node.clientHeight;
   }, [active, initialSection]);
   useEffect(() => {
-    if (!active || !flying) return;
+    if (!active || !flying || wentBack.current) return;
     // Opened straight onto a section (or from the menu), its white carries the title line too.
     if (initialSection === 2) holdForCard();
     if (initialSection === 3) {
@@ -282,19 +305,48 @@ export default function NormalPage({
     }
     if (initialSection === 4) {
       feedback.current?.run(true);
+      if (cameBack) return; // its own white lifts (below), with no title line
       return whenCalm(() => {
         holdForCard();
         whites.current[3]?.reveal(() => feedback.current?.play(), true);
       });
     }
-  }, [active, flying, initialSection, holdForCard]);
+  }, [active, flying, initialSection, holdForCard, cameBack]);
+  // Back from the corridor: once the page runs smoothly, the white lifts off Section 4 in WHITE_SECONDS, then the page
+  // takes the scroll again.
+  useEffect(() => {
+    const white = backWhite.current;
+    if (!cameBack || !active || !white || !lifting.current) return;
+    let frame = 0,
+      start = 0;
+    const lift = (now: number) => {
+      start ||= now;
+      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+        t = reduce ? 1 : Math.min(1, (now - start) / (WHITE_SECONDS * 1000));
+      white.style.opacity = (BACK_HOLD * (1 - smoother(t))).toFixed(4);
+      if (t < 1) {
+        frame = requestAnimationFrame(lift);
+        return;
+      }
+      white.hidden = true;
+      lifting.current = false;
+      traceMark("Section 4 white lifted after the way back");
+      journeyControls.update({ pageBack: false });
+    };
+    const cancel = whenCalm(() => {
+      frame = requestAnimationFrame(lift);
+    });
+    return () => {
+      cancel();
+      cancelAnimationFrame(frame);
+    };
+  }, [cameBack, active]);
   useEffect(() => {
     const node = panel.current;
     if (!node || !active) return;
     if (flying && control.current.where === "flight") node.style.overflow = "hidden";
     const scroller = flying ? node.querySelector<HTMLElement>("[data-rope-scroller]") : null;
     (scroller ?? node).focus({ preventScroll: true });
-    let touchY = 0;
     // True while the visitor is at the very start of Section 1: resting on it, or in the first connection before any of it has been flown.
     const atFilm = () => {
       if (journeyControls.read().phase !== "page") return false;
@@ -305,27 +357,55 @@ export default function NormalPage({
     };
     // The reel takes the scroll first while it is on screen; once it has burnt to white the page carries on to the white portal.
     // Scrolling back up at the start of Section 1 brings the reel back.
-    const toFilm = (distance: number) => {
+    const toFilm = (step: number) => {
       const reel = film.current;
       if (!reel || !atFilm()) return false;
-      if (reel.showing()) return reel.input(distance);
-      return distance < 0 && reel.input(distance);
+      if (reel.showing()) return reel.input(step);
+      return step < 0 && reel.input(step);
     };
-    const advance = (distance: number) => {
-      const now = performance.now(),
-        fresh = now - lastInput.current > 220;
-      lastInput.current = now;
-      if (toFilm(distance)) return true;
-      if (control.current.where === "flight" || journeyControls.read().phase !== "page") return false;
-      if (distance > 0 && now < cardUntil.current) return true;
+    // One step of the site's scroll (one gesture, scroll-step.ts): 1 forward, -1 back. Everything on the page answers it
+    // the same way: one frame, one card, one flight leg or one section per step.
+    const advance = (step: number) => {
+      if (toFilm(step)) return;
+      if (control.current.where === "flight") {
+        control.current.step?.(step);
+        return;
+      }
+      if (step > 0 && performance.now() < cardUntil.current) return; // the title line is still on its white
       const height = node.clientHeight,
         at = Math.round(node.scrollTop / height),
         onBoundary = Math.abs(node.scrollTop - at * height) <= 2;
-      // Section 4's cards take the scroll first, one card per gesture, like Section 1's reel.
-      if (at === 3 && onBoundary && feedback.current?.input(distance)) return true;
-      const next = distance > 0 && at < 3 ? at : distance < 0 && at > 0 && at <= 3 ? at - 1 : -1;
-      if (flying && onBoundary && next >= 0) {
-        if (covering.current) return true;
+      if (!onBoundary) {
+        // Phones: a section is still gliding into place. Computers never glide the page, so it was moved some other way
+        // (its scrollbar dragged, a search in the page): the step settles it on the section edge it points to, and the
+        // next step goes on from there as usual. (The wheel no longer scrolls the page itself, so nothing else would.)
+        if (!flying) return;
+        const landed = (step > 0 ? Math.ceil : Math.floor)(node.scrollTop / height);
+        node.scrollTop = landed * height;
+        // Reached without its flight, the section starts as it does on phones, with no white to lift.
+        if (landed === 1 && about.current?.waiting()) about.current.play();
+        if (landed === 2) {
+          owner.current?.run(true);
+          owner.current?.open();
+        }
+        if (landed === 3) {
+          owner.current?.run(false);
+          feedback.current?.run(true);
+          feedback.current?.play();
+        }
+        return;
+      }
+      // Section 4's cards take the scroll first, one card per step, like Section 1's reel.
+      if (at === 3 && feedback.current?.input(step)) return;
+      const next = step > 0 && at < 3 ? at : step < 0 && at > 0 && at <= 3 ? at - 1 : -1;
+      if (!flying && next >= 0) {
+        // Phones: one step, one section, gliding into place.
+        const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        node.scrollTo({ top: (at + Math.sign(step)) * height, behavior: reduce ? "auto" : "smooth" });
+        return;
+      }
+      if (next >= 0) {
+        if (covering.current) return;
         const fly = () => {
           covering.current = false;
           cardUntil.current = 0;
@@ -336,28 +416,22 @@ export default function NormalPage({
           node.style.overflow = "hidden";
           setFlight((old) => ({
             index: next,
-            startAtEnd: distance < 0,
+            startAtEnd: step < 0,
             autoEnter: true,
             entry: old.entry + 1,
-            entryDistance: distance,
+            entryDistance: Math.sign(step) * 8,
           }));
         };
         // Leaving a section upwards: the white rises over it first, so the flight back starts from the same white portal.
-        const portal = distance < 0 ? (next === 0 ? about.current : whites.current[at]) : null;
-        if (fresh && portal) {
+        const portal = step < 0 ? (next === 0 ? about.current : whites.current[at]) : null;
+        if (portal) {
           covering.current = true;
           node.style.overflow = "hidden";
           portal.cover(fly);
-        } else if (fresh) fly();
-        return true;
+        } else fly();
+        return;
       }
-      if (
-        !returnToCorridor ||
-        distance <= 0 ||
-        !fresh ||
-        !pageAtBottom(node.scrollTop, node.scrollHeight, height)
-      )
-        return false;
+      if (!returnToCorridor || step < 0 || !pageAtBottom(node.scrollTop, node.scrollHeight, height)) return;
       // Leaving Section 4: the page turns white, the white stays behind as a panel in the corridor (pageEndBox) and the
       // camera goes back away from it (the user, 2026-11-16).
       traceMark("Final page section reached");
@@ -368,40 +442,14 @@ export default function NormalPage({
         pageAtEnd: true,
         pageEndBox: true,
       });
+    };
+    // The page moves only by steps: the browser's own scrolling stays off here, so a long swipe or a flick's momentum
+    // can never carry it on. Nothing moves while the page is leaving or the white is still lifting off Section 4.
+    return listenSteps(node, (step) => {
+      const journey = journeyControls.read();
+      if (step && journey.phase === "page" && !journey.leavingPage && !lifting.current) advance(step);
       return true;
-    };
-    const wheel = (event: WheelEvent) => {
-      if (event.ctrlKey || event.metaKey) return;
-      const pixels =
-        event.deltaY * (event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? node.clientHeight : 1);
-      if (advance(pixels)) event.preventDefault();
-    };
-    const start = (event: TouchEvent) => {
-      touchY = event.touches[0]?.clientY ?? 0;
-    };
-    const move = (event: TouchEvent) => {
-      const y = event.touches[0]?.clientY ?? touchY;
-      if (advance(touchY - y)) event.preventDefault();
-      touchY = y;
-    };
-    const key = (event: KeyboardEvent) => {
-      const direction = ["ArrowDown", "PageDown", " "].includes(event.key)
-        ? 100
-        : ["ArrowUp", "PageUp"].includes(event.key)
-          ? -100
-          : 0;
-      if (direction && advance(direction)) event.preventDefault();
-    };
-    node.addEventListener("wheel", wheel, { passive: false });
-    node.addEventListener("touchstart", start, { passive: true });
-    node.addEventListener("touchmove", move, { passive: false });
-    node.addEventListener("keydown", key);
-    return () => {
-      node.removeEventListener("wheel", wheel);
-      node.removeEventListener("touchstart", start);
-      node.removeEventListener("touchmove", move);
-      node.removeEventListener("keydown", key);
-    };
+    });
   }, [active, flying, returnToCorridor]);
   return (
     <div
@@ -441,7 +489,12 @@ export default function NormalPage({
               }
             />
           ) : index === 3 ? (
-            <FeedbackScene ref={feedback} live start={initialSection <= 3 || flying ? "old" : "play"} />
+            <FeedbackScene
+              ref={feedback}
+              live
+              start={cameBack ? "done" : initialSection <= 3 || flying ? "old" : "play"}
+              card={cameBack ? FEEDBACK_LAST : 0}
+            />
           ) : null}
           {flying && index >= 2 ? (
             <SectionWhite
@@ -449,7 +502,7 @@ export default function NormalPage({
                 whites.current[index] = white;
               }}
               line={SECTION_LINES[index]}
-              covered={index >= 2 && index === initialSection - 1}
+              covered={index >= 2 && index === initialSection - 1 && !cameBack}
             />
           ) : null}
         </section>
@@ -479,7 +532,22 @@ export default function NormalPage({
         ended={initialSection > 1}
         line={SECTION_LINES[0]}
         onExit={filmDone}
+        onBack={returnToCorridor ? leave : undefined}
       />
+      {cameBack ? (
+        <div
+          ref={backWhite}
+          aria-hidden="true"
+          style={{
+            position: "fixed",
+            inset: 0,
+            zIndex: 30,
+            background: "#fff",
+            opacity: BACK_HOLD,
+            pointerEvents: "none",
+          }}
+        />
+      ) : null}
     </div>
   );
 }

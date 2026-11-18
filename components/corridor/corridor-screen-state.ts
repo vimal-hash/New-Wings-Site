@@ -93,9 +93,19 @@ const hash = (i: number, side: number) => {
 /** Per-screen power state for both walls. `values` is uploaded as a 2-row float texture. */
 export function createScreenPanels(count: number = SCREEN_COUNT) {
   const values = new Float32Array(count * 2),
-    starts = new Float64Array(count * 2).fill(Infinity);
+    starts = new Float64Array(count * 2).fill(Infinity),
+    // Walking back towards the theatre, each open screen closes as the camera passes back over its trigger: the opening
+    // in reverse, from the value it had (closes[k] is when its closing began, from[k] that value).
+    closes = new Float64Array(count * 2).fill(Infinity),
+    from = new Float32Array(count * 2);
   let clock = 0,
-    dirty = true;
+    dirty = true,
+    // The last frame in the corridor was a walk back.
+    walkedBack = false;
+  const close = (k: number, reduce: boolean) => {
+    closes[k] = clock + (reduce ? -SCREEN_WALL.openSeconds : hash(k % count, k >= count ? 1 : 0) * SCREEN_WALL.stagger);
+    from[k] = values[k];
+  };
   return {
     count,
     values,
@@ -106,8 +116,9 @@ export function createScreenPanels(count: number = SCREEN_COUNT) {
       dirty = false;
     },
     reset() {
-      if (starts.some(Number.isFinite) || values.some((v) => v > 0)) {
+      if (starts.some(Number.isFinite) || closes.some(Number.isFinite) || values.some((v) => v > 0)) {
         starts.fill(Infinity);
+        closes.fill(Infinity);
         values.fill(0);
         dirty = true;
       }
@@ -119,30 +130,55 @@ export function createScreenPanels(count: number = SCREEN_COUNT) {
         dirty = true;
       }
     },
-    /** cameraArc is relative to panel zero. Returns true while any panel is still animating. */
-    advance(phase: string, cameraArc: number, inside: boolean, seconds: number, reduce: boolean) {
+    /** cameraArc is relative to panel zero. `back`: the camera is walking back to the theatre. Returns true while any
+     *  panel is still animating. */
+    advance(
+      phase: string,
+      cameraArc: number,
+      inside: boolean,
+      seconds: number,
+      reduce: boolean,
+      back = false,
+    ) {
+      if (LIVE.has(phase)) walkedBack = back;
       if (!LIVE.has(phase) && phase !== "logoReveal" && phase !== "logoDone") {
-        this.reset();
-        return false;
+        // Out of the corridor the screens are off. Walked back out of it, the ones still open close as they opened.
+        if (walkedBack)
+          for (let k = 0; k < values.length; k++)
+            if (Number.isFinite(starts[k]) && !Number.isFinite(closes[k])) close(k, reduce);
+        if (!walkedBack || !closes.some(Number.isFinite)) {
+          walkedBack = false;
+          this.reset();
+          return false;
+        }
       }
       clock += Math.max(0, Math.min(0.05, seconds));
       if (LIVE.has(phase) && inside) {
         for (let side = 0; side < 2; side++)
-          for (let i = 0; i < count && cameraArc >= screenTrigger(i); i++) {
-            const k = side * count + i;
-            if (Number.isFinite(starts[k])) continue;
-            starts[k] = clock + (reduce ? -SCREEN_WALL.openSeconds : hash(i, side) * SCREEN_WALL.stagger);
+          for (let i = 0; i < count; i++) {
+            const k = side * count + i,
+              passed = cameraArc >= screenTrigger(i);
+            if (back) {
+              if (!passed && Number.isFinite(starts[k]) && !Number.isFinite(closes[k])) close(k, reduce);
+            } else if (passed && !Number.isFinite(starts[k])) {
+              starts[k] = clock + (reduce ? -SCREEN_WALL.openSeconds : hash(i, side) * SCREEN_WALL.stagger);
+              closes[k] = Infinity;
+            }
           }
       }
       let animating = false;
       for (let k = 0; k < values.length; k++) {
         if (!Number.isFinite(starts[k])) continue;
-        const value = Math.max(0, Math.min(1, (clock - starts[k]) / SCREEN_WALL.openSeconds));
+        let value: number;
+        if (Number.isFinite(closes[k])) {
+          value = from[k] * (1 - Math.max(0, Math.min(1, (clock - closes[k]) / SCREEN_WALL.openSeconds)));
+          if (value === 0 && clock >= closes[k]) starts[k] = closes[k] = Infinity; // off: it can open again
+        } else value = Math.max(0, Math.min(1, (clock - starts[k]) / SCREEN_WALL.openSeconds));
         if (value !== values[k]) {
           values[k] = value;
           dirty = true;
         }
-        if (value < 1) animating = true;
+        if (value < 1 && Number.isFinite(starts[k])) animating = true;
       }
       return animating;
     },

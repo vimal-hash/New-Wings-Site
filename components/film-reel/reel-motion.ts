@@ -2,21 +2,21 @@
 //
 // The order of one visit:
 //   1. house lights: the white page dims to black by itself, then the lamp finds frame 1;
-//   2. the reel: each gesture moves the strip right to left by at most one frame, and the strip settles softly on that frame;
-//      a frame lights up only when it rests in the gate, with a short flash, and goes dark again as it leaves;
-//   3. the exit: one more gesture after the last frame burns that frame up into white, ready for the white portal.
-// Scrolling back runs the same way in reverse.
+//   2. the reel: each step (one gesture, scroll-step.ts) moves the strip right to left by one frame, and the strip settles
+//      softly on that frame; a frame lights up only when it rests in the gate, with a short flash, and goes dark again as
+//      it leaves;
+//   3. the exit: one more step after the last frame burns that frame up into white, ready for the white portal.
+// Scrolling back runs the same way in reverse. In the site (`back`), one step back on frame 1 brings the house lights up
+// again, and once the page is all white the site goes back the way it came (the page turns back into the liquid sphere).
 
 export const REEL = {
-  perFrame: 440, // scroll pixels that move the strip one whole frame while a gesture is held
-  nudge: 0.12, // a gesture that moved more than this share of a frame goes on to the next frame when it ends
-  settle: 0.28, // seconds: how softly the strip follows and lands
-  quiet: 0.14, // seconds without input before the strip settles on a whole frame
-  gesture: 0.22, // seconds without input that end one gesture, so the next input starts a new one
-  lightsDown: 2.1, // seconds for the house lights to go down
+  settle: 0.28, // seconds: how softly the strip moves and lands
+  gesture: 0.22, // seconds without input before a burnt-white reel stops drawing
+  lightsDown: 2.1, // seconds for the house lights to go down (and to come up again, going back)
   lightsWait: 0.35, // seconds of white before they start to dim
   exit: 1.2, // seconds for the last flash to grow into white
   flash: 0.22, // seconds: decay of the flash when a frame lands
+  lineOut: 0.35, // seconds: a title line still on the opening white fades before the site goes back
 };
 
 export type ReelShot = {
@@ -26,10 +26,12 @@ export type ReelShot = {
   burn: number; // 0 to 1: the last frame burning up into white
   white: number; // opacity of the white cover over everything
   held: number; // seconds since the opening white began, until the lights are down (its title line runs on this clock)
+  line: number; // 1, falling to 0 once the visitor goes back (the title line belongs to the way in)
   visible: boolean; // false once the reel has handed over to the white portal
   moving: boolean; // anything still changing, so the canvas must draw again
   landed: number; // the frame that has just come to rest this step, or -1
   exited: boolean; // true on the one step the last frame has burnt fully white, so the page can carry the same scroll on
+  raised: boolean; // true on the one step the house lights are up again after a step back on frame 1: the site goes back
 };
 
 const clamp = (value: number, low: number, high: number) => Math.min(high, Math.max(low, value));
@@ -45,25 +47,30 @@ const smoother = (value: number) => {
 export type ReelMotion = ReturnType<typeof createReelMotion>;
 
 // hold: seconds of opening white before the house lights go down (the site holds it while its title line is written).
+// back: a step back on frame 1 brings the house lights up again and reports `raised` (the site, which can go back).
 export function createReelMotion({
   frames,
   calm = false,
   hold = REEL.lightsWait,
+  back = false,
 }: {
   frames: number;
   calm?: boolean;
   hold?: number;
+  back?: boolean;
 }) {
   const last = frames - 1,
     lightsTime = calm ? 0.6 : REEL.lightsDown,
     exitTime = calm ? 0.6 : REEL.exit;
   let lights = 1,
     dimming = false,
+    raising = false, // lights runs back up to 1: a step back on frame 1
+    up = false, // the lights are up again and the site has been told; the visit starts over at the next begin()
+    line = 1,
     wait = hold; // lights runs 1 -> 0 while dimming
   let position = 0,
     velocity = 0,
     target = 0,
-    origin = 0,
     rested = -1;
   let exitRaw = 0,
     exitTarget = 0;
@@ -81,35 +88,55 @@ export function createReelMotion({
     // The white fades out and back in along a soft curve that starts and ends at rest, with no visible edge to the change.
     const white = Math.max(smoother(lights), smoother(exitRaw));
     const quiet = clock - lastInput > REEL.gesture;
-    const settled =
-      Math.abs(position - target) < 1e-4 && Math.abs(velocity) < 1e-4 && Number.isInteger(target);
+    const settled = Math.abs(position - target) < 1e-4 && Math.abs(velocity) < 1e-4;
     const moving =
       (dimming && lights > 0) ||
-      (started && lights > 0 && !dimming) ||
+      (started && !dimming && !raising && !up && wait > 0) || // the opening white, while its title line is written
+      raising ||
       !settled ||
       flash > 1e-3 ||
       kick > 1e-3 ||
       (exitRaw > 0 && exitRaw < 1) ||
       exitRaw !== exitTarget ||
       (exitRaw >= 1 && !quiet);
-    const held = started ? opened : 0;
     return {
       lights: smooth(lights),
       position,
       lamp,
       burn,
       white,
-      held,
+      held: started && !up ? opened : 0,
+      line: smoother(line),
       visible: !(exitRaw >= 1 && exitTarget === 1),
       moving,
       landed: -1,
       exited: false,
+      raised: false,
     };
+  };
+  /** Back to the very start: white, frame 1, nothing running. */
+  const reset = () => {
+    started = false;
+    dimming = false;
+    raising = false;
+    up = false;
+    line = 1;
+    wait = hold;
+    opened = 0;
+    lights = 1;
+    position = target = 0;
+    rested = -1;
+    velocity = 0;
+    exitRaw = exitTarget = 0;
+    flash = kick = 0;
+    out = false;
   };
 
   return {
-    /** The section is on screen and ready: start the house lights going down. */
+    /** The section is on screen and ready: start the house lights going down. Back again after the site went back from
+     *  here, the visit starts over from the white page. */
     begin() {
+      if (up) reset();
       if (!started) {
         started = true;
         wait = hold;
@@ -120,51 +147,39 @@ export function createReelMotion({
     atEnd() {
       started = true;
       dimming = true;
+      raising = false;
+      up = false;
       lights = 0;
-      position = target = origin = rested = last;
+      position = target = rested = last;
       velocity = 0;
       exitRaw = exitTarget = 1;
       flash = kick = 0;
       out = true;
     },
-    /** Back to the very start: white, frame 1, nothing running. */
-    reset() {
-      started = false;
-      dimming = false;
-      wait = hold;
-      opened = 0;
-      lights = 1;
-      position = target = origin = 0;
-      rested = -1;
-      velocity = 0;
-      exitRaw = exitTarget = 0;
-      flash = kick = 0;
-      out = false;
-    },
-    /** True while the reel would take a scroll in this direction instead of letting the page have it. */
-    wants(pixels: number) {
-      if (exitRaw >= 1 && exitTarget === 1 && pixels > 0) return false; // finished: the page carries the scroll on into the white portal
-      return true;
-    },
-    /** One scroll event, in pixels (down is positive). Returns true when the reel used it. */
-    input(pixels: number) {
-      const fresh = clock - lastInput > REEL.gesture;
-      if (exitRaw >= 1 && exitTarget === 1 && pixels > 0) return false; // burnt white: the rest of this scroll belongs to the white portal
+    reset,
+    /** One step of the site's scroll (scroll-step.ts): 1 forward, -1 back, 0 the rest of a gesture. Returns true when the
+     *  reel used it; false hands it to the page (forward from the burnt-white last frame, into the white portal). */
+    input(step: number) {
+      if (exitRaw >= 1 && exitTarget === 1 && step > 0) return false; // burnt white: this step belongs to the white portal
+      if (!step) return true;
       lastInput = clock;
+      if (raising || up) return true; // on the way back: the lights are coming up
       if (!started) started = true;
-      if (lights > 0.35) return true; // the house lights are still going down: hold the strip
-      if (fresh) origin = Math.round(target);
       if (exitTarget === 1 || exitRaw > 0) {
-        if (fresh) exitTarget = pixels > 0 ? 1 : 0;
+        exitTarget = step > 0 ? 1 : 0; // the last frame burns up, or comes back out of the white
         return true;
       }
-      if (pixels > 0 && fresh && origin === last && Math.abs(position - last) < 0.02) {
-        exitTarget = 1;
+      if (step < 0 && (lights > 0.35 || target === 0)) {
+        // Back on frame 1, or while the lights are still going down: in the site the house lights come up again.
+        if (back) {
+          raising = true;
+          dimming = false;
+        }
         return true;
       }
-      target = clamp(target + pixels / REEL.perFrame, Math.max(0, origin - 1), Math.min(last, origin + 1));
-      if (Math.abs(target - origin) > REEL.nudge)
-        target = clamp(origin + Math.sign(target - origin), 0, last); // far enough: go now, do not wait for the scroll to stop
+      if (lights > 0.35) return true; // the house lights are still going down: hold the strip
+      if (step > 0 && target === last) exitTarget = 1; // one more after the last frame: it burns up into white
+      else target = clamp(target + Math.sign(step), 0, last);
       return true;
     },
     /** Advance time. Returns what the reel looks like now. */
@@ -172,15 +187,14 @@ export function createReelMotion({
       const dt = clamp(delta, 0, 0.1);
       clock += dt;
       if (started && lights > 0) opened += dt;
-      if (started && !dimming) {
+      if (started && !dimming && !raising && !up) {
         wait -= dt;
         if (wait <= 0) dimming = true;
       }
       if (dimming && lights > 0) lights = Math.max(0, lights - dt / lightsTime);
-      // When input stops, land on a whole frame: the next one if the gesture moved far enough, otherwise back where it began.
-      if (!Number.isInteger(target) && clock - lastInput > REEL.quiet) {
-        const moved = target - origin;
-        target = clamp(moved > REEL.nudge ? origin + 1 : moved < -REEL.nudge ? origin - 1 : origin, 0, last);
+      if (raising) {
+        lights = Math.min(1, lights + dt / lightsTime);
+        line = calm ? 0 : Math.max(0, line - dt / REEL.lineOut);
       }
       // A critically damped follow: soft, never overshooting the frame.
       const omega = 2 / (calm ? 0.18 : REEL.settle),
@@ -203,18 +217,19 @@ export function createReelMotion({
           exitTarget > exitRaw
             ? Math.min(exitTarget, exitRaw + dt / exitTime)
             : Math.max(exitTarget, exitRaw - dt / exitTime);
+      // The house lights are up and any title line has gone: the page is all white, and the site can go back.
+      const raised = raising && lights >= 1 && line <= 0;
+      if (raised) {
+        raising = false;
+        up = true;
+      }
       const result = shot();
       result.exited = !result.visible && !out;
       out = !result.visible;
+      if (raised) result.raised = true;
       // A frame lands when it is all but still in the gate, with the lamp up. That is when the claw clicks and the lamp flashes.
       const near = Math.round(position);
-      if (
-        lights < 0.4 &&
-        Number.isInteger(target) &&
-        near === target &&
-        Math.abs(position - near) < 0.012 &&
-        near !== rested
-      ) {
+      if (lights < 0.4 && near === target && Math.abs(position - near) < 0.012 && near !== rested) {
         rested = near;
         kick = 1;
         result.landed = near;

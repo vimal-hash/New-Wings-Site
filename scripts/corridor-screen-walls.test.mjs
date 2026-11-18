@@ -94,6 +94,47 @@ test("opening is a finite, monotonic animation and reduced motion is instant", (
   assert.ok(quiet.values.every((v) => v === 1));
 });
 
+test("walking back, each screen closes as the camera passes back over it; out of the corridor the rest close too", () => {
+  const panels = createScreenPanels(),
+    n = SCREEN_COUNT,
+    open = screenTrigger(3) + 0.01,
+    between = (screenTrigger(1) + screenTrigger(2)) / 2;
+  for (let i = 0; i < 60; i++) panels.advance("corridor", open, true, 0.05, false);
+  let last = panels.values[2];
+  for (let i = 0; i < 60; i++) {
+    panels.advance("corridor", between, true, 0.05, false, true);
+    assert.ok(panels.values[2] <= last, "closing only");
+    last = panels.values[2];
+  }
+  for (const side of [0, n])
+    for (let i = 0; i < 4; i++)
+      assert.equal(panels.values[side + i], i <= 1 ? 1 : 0, `panel ${i}: closed once passed back over`);
+  for (let i = 0; i < 60; i++) panels.advance("corridor", open, true, 0.05, false);
+  for (const side of [0, n]) assert.equal(panels.values[side + 3], 1, "and open again walking forward");
+  panels.advance("corridor", between, true, 0.05, false, true);
+  let frames = 0;
+  last = panels.values[0];
+  while (panels.advance("done", 0, false, 0.05, false) && frames++ < 100) {
+    assert.ok(panels.values[0] <= last, "the ones still open close as they opened");
+    last = panels.values[0];
+  }
+  assert.ok(frames > 15 && frames < 30, "about a second, then the walls sleep");
+  assert.ok(panels.values.every((v) => v === 0));
+  assert.equal(panels.advance("done", 0, false, 0.05, false), false);
+});
+
+test("leaving the corridor any other way switches the screens off at once; reduced motion closes at once", () => {
+  const jump = createScreenPanels(4);
+  for (let i = 0; i < 60; i++) jump.advance("corridor", 100, true, 0.05, false);
+  assert.equal(jump.advance("done", 0, false, 0.05, false), false);
+  assert.ok(jump.values.every((v) => v === 0));
+  const quiet = createScreenPanels(4);
+  quiet.advance("corridor", 100, true, 0.05, true);
+  assert.ok(quiet.values.every((v) => v === 1));
+  quiet.advance("corridor", screenTrigger(0) - 0.01, true, 0.05, true, true);
+  assert.ok(quiet.values.every((v) => v === 0));
+});
+
 test("the panels stay open back up to View 1 and close early in the turn; no baked wall texture returns", () => {
   assert.deepEqual(screenTransition("corridor", "slide", 0), { off: 0 });
   for (const progress of [0, 0.2, 0.6, 0.985, 1])

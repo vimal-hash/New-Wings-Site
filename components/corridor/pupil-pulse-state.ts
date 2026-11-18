@@ -87,6 +87,25 @@ export function samplePupilLoop(seconds: number, flashGain: number = PUPIL_PULSE
   return { ...pulse, border, flash, wave, moving: true, cycle, fronts };
 }
 
+/** Back from the final eye the pullback plays in reverse (the user, 2026-11-18: scrolling back works everywhere). The
+ *  light shown at the final eye fades out over the first second of the way back, the second the early trace takes on
+ *  the way in, instead of cutting off: 1 at the final pose, 0 where the trace would begin. */
+export function pupilLeaveFade(progress: number) {
+  const from = 1 - PUPIL_PULSE.traceLead / 4.5;
+  return smooth((clamp(progress) - from) / (1 - from));
+}
+export function fadePupilState<
+  T extends { border: number; flash: number; wave: number; fronts: { strength: number }[] },
+>(state: T, fade: number): T {
+  return {
+    ...state,
+    border: state.border * fade,
+    flash: state.flash * fade,
+    wave: state.wave * fade,
+    fronts: state.fronts.map((front) => ({ ...front, strength: front.strength * fade })),
+  };
+}
+
 /** Existing pullback is 4.5 seconds; use its raw progress without another clock. */
 export function samplePupilPreTrace(stage: string, progress: number) {
   if (stage !== "pullback") return null;

@@ -6,6 +6,8 @@ import {
   samplePupilLoop,
   samplePupilFronts,
   samplePupilPreTrace,
+  pupilLeaveFade,
+  fadePupilState,
   pupilWaveAt,
   PULSE_RELEASE,
   PULSE_END,
@@ -74,6 +76,28 @@ test("natural pullback begins the circle one second before settle and continues 
   assert.ok(emitted, "first release occurs .65 seconds after final settle");
   clock.restart();
   assert.equal(clock.tick(true, now + 1000).trace, 0, "manual replay starts the full trace");
+});
+
+test("a step back from the final eye fades its light out over the first second of the reversed pullback", () => {
+  assert.equal(pupilLeaveFade(1), 1);
+  assert.equal(pupilLeaveFade(1 - PUPIL_PULSE.traceLead / 4.5), 0, "gone where the early trace would begin");
+  assert.equal(pupilLeaveFade(0.2), 0);
+  let last = 1;
+  for (let p = 1; p >= 0.7; p -= 0.01) {
+    const fade = pupilLeaveFade(p);
+    assert.ok(fade <= last + 1e-12, "only fading on the way back");
+    last = fade;
+  }
+  const lit = samplePupilLoop(PULSE_RELEASE + 2.3),
+    half = fadePupilState(lit, 0.5);
+  assert.ok(lit.fronts.length > 1 && lit.wave > 0);
+  assert.equal(half.border, lit.border * 0.5);
+  assert.equal(half.wave, lit.wave * 0.5);
+  half.fronts.forEach((front, i) => {
+    assert.equal(front.strength, lit.fronts[i].strength * 0.5);
+    assert.equal(front.travel, lit.fronts[i].travel, "the rays keep travelling while they fade");
+  });
+  assert.equal(half.trace, lit.trace);
 });
 
 test("emissions repeat every two seconds while older fronts keep their complete travel and tail", () => {

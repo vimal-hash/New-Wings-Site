@@ -102,6 +102,7 @@ export default function CorridorScreenRuntime({ parts }: { parts: { mesh: Mesh; 
       distance < 9 && camera.position.y < 9,
       seconds,
       reduce.current,
+      journeyControls.read().leavingPage, // walking back to the projector: each screen closes as it is passed
     );
     screens.apply(screenTransition(phase, cinemaShot.stage, cinemaShot.progress).off);
     if (panelsMoving) invalidate();

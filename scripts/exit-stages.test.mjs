@@ -23,7 +23,7 @@ test("a long demand-rendering rest cannot be counted as turn or pullback time", 
   assert.ok(shot.progress < 0.1);
   for (let i = 1; i <= 240; i++) shot = c.tick(1 / 60, 32013 + (i * 1000) / 60);
   assert.equal(shot.stage, "turned");
-  c.input(100, 64000, 800);
+  c.input(100, 64000, 800, 1);
   shot = c.tick(30, 64013);
   assert.equal(shot.stage, "pullback");
   assert.ok(shot.progress < 0.01);
@@ -62,7 +62,7 @@ test("one slide gesture flows into the turn without another input; fresh input i
   assert.equal(s.moving, false);
   // There is no extra 150 ms lock after the turn stops.
   now += 1;
-  c.input(100, now, 800);
+  c.input(100, now, 800, 1);
   s = c.tick(1, now + 1000);
   assert.equal(s.stage, "pullback");
   s = c.tick(3.5, now + 4500);
@@ -97,19 +97,20 @@ test("back from the page sections: the top holds one second, then turns to View 
   assert.equal(s.stage, "top");
   assert.equal(s.progress, 1);
   assert.equal(s.moving, true);
-  c.input(10000, now, 800);
-  c.input(100, now + 400, 800);
+  c.input(10000, now, 800, 1);
+  c.input(-100, now + 400, 800, -1);
   for (let i = 0; i < 55; i++) s = c.tick(1 / 60, (now += 16));
   assert.equal(s.stage, "top", "still holding just before one second");
   for (let i = 0; i < 10; i++) s = c.tick(1 / 60, (now += 16));
   assert.equal(s.stage, "turn");
   assert.ok(s.progress > 0 && s.progress < 0.1, "the turn starts where the hold ends");
-  c.input(10000, now + 1000, 800);
+  c.input(10000, now + 1000, 800, 1);
+  c.input(-100, now + 1100, 800, -1);
   for (let i = 0; i < 120 && s.stage !== "turned"; i++) s = c.tick(1 / 60, (now += 16));
   assert.equal(s.stage, "turned");
   assert.equal(s.moving, false);
   assert.equal(c.tick(5, (now += 5000)).stage, "turned", "no pullback without a fresh gesture after View 2");
-  c.input(100, (now += 1000), 800);
+  c.input(100, (now += 1000), 800, 1);
   assert.equal(c.tick(1 / 60, (now += 16)).stage, "pullback");
 });
 test("the View 1 review stop rests at the top until a fresh scroll turns it", () => {
@@ -121,9 +122,66 @@ test("the View 1 review stop rests at the top until a fresh scroll turns it", ()
   assert.equal(s.stage, "top");
   assert.equal(s.progress, 1);
   assert.equal(s.moving, false);
-  c.input(100, (now += 1000), 800);
+  c.input(100, (now += 1000), 800, 1);
   s = c.tick(1 / 60, (now += 16));
   assert.equal(s.stage, "turn");
+});
+test("a step back from the final eye pulls back in to View 2, the pullback played backwards", () => {
+  const c = createExitStages();
+  let now = 0,
+    s;
+  c.preview("done");
+  assert.equal(c.tick(1 / 60, (now += 16)).stage, "done");
+  c.input(0, (now += 1000), 800, 1);
+  assert.equal(c.tick(1 / 60, (now += 16)).stage, "done", "forward from the final eye is the white section's");
+  c.input(-100, (now += 1000), 800, -1);
+  s = c.tick(1, (now += 1000));
+  assert.equal(s.stage, "pullback");
+  assert.equal(c.back, true);
+  assert.ok(s.progress < 0.8 && s.progress > 0.7, "one second of the 4.5 s pullback, backwards");
+  c.input(100, (now += 100), 800, 1);
+  c.input(-100, (now += 100), 800, -1);
+  s = c.tick(3.6, (now += 3600));
+  assert.equal(s.stage, "turned", "steps during the pullback back change nothing");
+  assert.equal(s.progress, 1);
+  assert.equal(s.moving, false);
+  assert.equal(c.back, false);
+  c.input(100, (now += 1000), 800, 1);
+  assert.equal(c.tick(1 / 60, (now += 16)).stage, "pullback", "and forward again from View 2");
+  assert.equal(c.back, false);
+});
+test("a step back from View 2 turns back up to the top of the slide, then starts the way down once", () => {
+  const c = createExitStages();
+  let now = 0,
+    s,
+    downs = 0;
+  c.preview("turned");
+  c.input(-100, (now += 1000), 800, -1);
+  s = c.tick(1 / 60, (now += 16));
+  assert.equal(s.stage, "turn");
+  assert.ok(s.progress < 1 && s.progress > 0.95);
+  for (let i = 0; i < 120; i++) {
+    s = c.tick(1 / 60, (now += 16));
+    if (s.descending) downs++;
+    c.input(100, now, 800, i % 2 ? 1 : -1);
+  }
+  assert.equal(downs, 1, "the way down to Section 4 is started exactly once");
+  assert.equal(s.stage, "top");
+  assert.equal(s.progress, 1);
+  c.input(100, (now += 1000), 800, 1);
+  assert.equal(c.tick(1 / 60, (now += 16)).stage, "top", "nothing turns the camera again on the way down");
+  c.reset();
+  assert.equal(c.tick(1 / 60, (now += 16)).stage, "slide");
+});
+test("reduced motion: each step back lands at once", () => {
+  const c = createExitStages();
+  c.preview("done");
+  c.input(-100, 1000, 800, -1);
+  assert.equal(c.tick(1 / 60, 1016, true).stage, "turned");
+  c.input(-100, 2000, 800, -1);
+  const s = c.tick(1 / 60, 2016, true);
+  assert.equal(s.stage, "top");
+  assert.equal(s.descending, true);
 });
 test("reduced motion still holds at the top, then lands on View 2", () => {
   const c = createExitStages();

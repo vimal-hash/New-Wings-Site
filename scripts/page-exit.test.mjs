@@ -1,7 +1,13 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { pageAtBottom, createPageReturn, WHITE_SECONDS, HANDOVER } from "../components/corridor/page-exit.ts";
+import {
+  pageAtBottom,
+  createPageReturn,
+  createPageDescent,
+  WHITE_SECONDS,
+  HANDOVER,
+} from "../components/corridor/page-exit.ts";
 
 test("the first and second page sections do not trigger a return", () => {
   assert.equal(pageAtBottom(0, 2400, 800), false);
@@ -44,6 +50,27 @@ test("reduced motion goes straight to View 1 with the screen white handed over",
   assert.equal(shot.travel, 1);
   assert.equal(shot.moving, false);
   assert.equal(shot.opacity, 0);
+});
+test("scrolling back from View 2, the way down is the climb played backwards and lands on the panel", () => {
+  const up = createPageReturn(),
+    down = createPageDescent();
+  for (let i = 0; i < 24; i++) up.tick(1 / 60, 0.82); // the climb starts after the screen white's lead
+  let shot = down.tick(0, 0.82),
+    frames = 0;
+  assert.equal(shot.travel, 1, "starts at the top, where the climb ended");
+  while (shot.moving && frames++ < 400) {
+    const climb = up.tick(1 / 60, 0.82).travel;
+    const next = down.tick(1 / 60, 0.82);
+    assert.ok(next.travel <= shot.travel, "only down");
+    assert.ok(Math.abs(next.travel - (1 - climb)) < 1e-9, "the climb's own clock, backwards");
+    shot = next;
+  }
+  assert.equal(shot.travel, 0);
+  assert.equal(shot.moving, false);
+  assert.ok(frames > 200 && frames < 210, "the climb's 3.4 s");
+  down.reset();
+  assert.equal(down.tick(0, 5).travel, 1, "a longer authored climb is kept");
+  assert.equal(down.tick(0, 5, true).travel, 0, "reduced motion lands at once");
 });
 test("fractional mobile scroll rounding at the bottom cannot block return", () => {
   assert.equal(pageAtBottom(1598.8, 2400, 800), true);

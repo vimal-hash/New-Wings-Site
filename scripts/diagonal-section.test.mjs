@@ -46,23 +46,45 @@ test("the approach stays small, reversible, and independent of frame rate", () =
   assert.equal(diagonalEyeZoom(slow.read().progress), 1);
 });
 
-test("wheel distance is reversible and independent of input event frequency; full cover can sleep", () => {
-  const a = createDiagonalSectionState(),
-    b = createDiagonalSectionState();
-  a.move(945, 945);
-  for (let i = 0; i < 9; i++) b.move(105, 945);
-  for (let i = 0; i < 150; i++) {
-    a.tick(1 / 60);
-    b.tick(1 / 60);
+test("one step sweeps the whole section in, one sweeps it out; it lands softly, never overshoots, and can sleep", () => {
+  const a = createDiagonalSectionState();
+  assert.equal(a.step(1), true);
+  let previous = 0,
+    firstMove = 0,
+    settledAt = 0;
+  for (let i = 1; i <= 180; i++) {
+    const shot = a.tick(1 / 60);
+    if (i === 1) firstMove = shot.progress;
+    if (i === 90) assert.ok(shot.progress > 0.98, "all but there after 1.5 s");
+    assert.ok(shot.progress >= previous && shot.progress <= 1, "only forwards, never past the end");
+    previous = shot.progress;
+    if (!settledAt && !shot.moving) settledAt = i / 60;
   }
-  assert.deepEqual(a.read(), b.read());
+  assert.ok(firstMove < 0.01, "it starts softly");
+  assert.ok(settledAt > 1.5 && settledAt < 2.4, `rests after the edge has left the screen (${settledAt})`);
   assert.equal(a.read().covered, true);
   assert.equal(a.tick(1 / 60).moving, false);
-  a.move(-945, 945);
-  for (let i = 0; i < 150; i++) a.tick(1 / 60);
+  assert.equal(a.step(1), true, "more steps forward stay with the covered section");
+  assert.equal(a.step(0), true, "the rest of a gesture too");
+  assert.equal(a.step(-1), true);
+  for (let i = 0; i < 180; i++) a.tick(1 / 60);
   assert.deepEqual(a.read(), { progress: 0, target: 0, covered: false });
-  a.move(2000, 945);
+  assert.equal(a.step(-1), false, "a step back from the bare eye goes on to the journey");
+  a.step(1);
   assert.equal(a.tick(1 / 60, true).progress, 1);
   a.reset();
+  assert.equal(a.read().progress, 0);
+});
+
+test("a step the other way mid-sweep turns it round without a jump", () => {
+  const a = createDiagonalSectionState();
+  a.step(1);
+  for (let i = 0; i < 30; i++) a.tick(1 / 60);
+  const middle = a.read().progress;
+  assert.ok(middle > 0.2 && middle < 0.9);
+  a.step(-1);
+  const next = a.tick(1 / 60).progress;
+  assert.ok(Math.abs(next - middle) < 0.05, "it carries on from where it was");
+  for (let i = 0; i < 200; i++) assert.ok(a.tick(1 / 60).progress >= 0);
   assert.equal(a.read().progress, 0);
 });

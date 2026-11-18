@@ -11,8 +11,9 @@ import { projectorControls } from "./projector-controls";
 import { journeyControls, type JourneyPhase } from "./journey-controls";
 import type { MetricsStore } from "./metrics";
 import { createLogoReveal, LOGO_FOV } from "./logo-reveal";
-import { pageReturn } from "./page-exit";
+import { createPageDescent, pageReturn } from "./page-exit";
 import { createExitStages, type ExitStage } from "./exit-stages";
+import { listenSteps, type Step } from "./scroll-step";
 import logoBounds from "./logo-reveal.json";
 import layout from "./blender-layout.json";
 import { traceMark } from "./loading-trace";
@@ -189,6 +190,9 @@ export default function FullJourney({ metrics, orbit }: { metrics: MetricsStore;
   }, [size.width, size.height]);
   // Section 4's white, fixed in the corridor at the liquid sphere's spot (see end-box.ts).
   const endBox = useMemo(() => createEndBox(), []);
+  // Scrolling back from View 2: the way back down to that white (page-exit.ts), and a stand-in camera that places it
+  // where the camera will land.
+  const descent = useMemo(() => ({ clock: createPageDescent(), lens: new PerspectiveCamera() }), []);
   useEffect(() => {
     scene.add(endBox.group);
     return () => endBox.dispose();
@@ -224,10 +228,7 @@ export default function FullJourney({ metrics, orbit }: { metrics: MetricsStore;
     pendingScreens: false,
     elapsed: 0,
     last: 0,
-    amount: 0,
-    lastInput: 0,
     lockedUntil: 0,
-    touchY: 0,
     reduce: false,
     houseSeconds: 0,
     pendingProjector: false,
@@ -235,7 +236,8 @@ export default function FullJourney({ metrics, orbit }: { metrics: MetricsStore;
     assemblySettled: false,
     lead: 0,
     back: false,
-    backAmount: 0,
+    /** On the way back down from View 2 to Section 4's white. */
+    descending: false,
     from: new Vector3(),
     fromFocus: new Vector3(...reference.screenCentre),
     focus: new Vector3(...reference.screenCentre),
@@ -261,18 +263,59 @@ export default function FullJourney({ metrics, orbit }: { metrics: MetricsStore;
   }, []);
   useEffect(() => {
     const s = state.current;
-    let wasReturning = journeyControls.read().pageReturning;
+    let wasReturning = journeyControls.read().pageReturning,
+      wasLeaving = journeyControls.read().leavingPage,
+      wasPhase = journeyControls.read().phase,
+      hideFrame = 0;
     const unsubscribeJourney = journeyControls.subscribe(() => {
-      const returning = journeyControls.read().pageReturning;
+      const journey = journeyControls.read(),
+        returning = journey.pageReturning;
       if (returning && !wasReturning) {
         s.phase = "logoReveal";
-        s.amount = 0;
         s.last = performance.now();
         s.revealFov = camera instanceof PerspectiveCamera ? camera.fov : LOGO_FOV;
         livingLens.reset();
         invalidate();
       }
       wasReturning = returning;
+      // Back from the start of Section 1: the page turns back into the liquid in front of the camera, which rests at the
+      // corridor's end as it did on the way in, with the projector waiting assembled at the far end.
+      if (journey.leavingPage && !wasLeaving) {
+        endBox.hide();
+        exitStages.current.reset();
+        s.descending = false;
+        s.back = false;
+        s.phase = "panel";
+        restCamera();
+        camera.position.fromArray(PAGE_POSE.position);
+        camera.lookAt(...PAGE_POSE.target);
+        readyProjectorStop();
+        invalidate();
+      }
+      wasLeaving = journey.leavingPage;
+      // The liquid is a sphere again (corridor-page.tsx): walk back through the corridor, each leg in reverse.
+      if (journey.leavingPage && journey.phase === "corridor" && s.phase !== "corridor" && s.phase !== "screens") {
+        s.phase = "corridor";
+        s.back = true;
+        s.elapsed = 0;
+        s.last = performance.now();
+        s.from.copy(points.returned);
+        s.q.setFromRotationMatrix(new Matrix4().lookAt(points.returned, points.centre, new Vector3(0, 1, 0)));
+        s.lead = points.returned.distanceTo(points.screens);
+        invalidate();
+      }
+      // Once the page covers the screen again, the white panel behind it is put away.
+      if (journey.phase === "page" && wasPhase !== "page" && endBox.visible) {
+        cancelAnimationFrame(hideFrame);
+        hideFrame = requestAnimationFrame(() => {
+          hideFrame = requestAnimationFrame(() => {
+            if (journeyControls.read().phase !== "page") return;
+            endBox.hide();
+            invalidate();
+          });
+        });
+      }
+      wasPhase = journey.phase;
     });
 
     const phase = (next: JourneyPhase) => {
@@ -291,7 +334,7 @@ export default function FullJourney({ metrics, orbit }: { metrics: MetricsStore;
       s.resumeCamera = false;
       s.pendingProjector = false;
       s.pendingScreens = false;
-      s.amount = 0;
+      s.descending = false;
       s.elapsed = 0;
       s.last = performance.now();
       s.lockedUntil = 0;
@@ -335,10 +378,12 @@ export default function FullJourney({ metrics, orbit }: { metrics: MetricsStore;
         finalCovered: false,
         panelStage: 0,
         openingMoving: false,
+        pageBack: false,
+        leavingPage: false,
       };
       s.back = false;
+      s.descending = false;
       s.pendingScreens = false;
-      s.amount = s.backAmount = 0;
       s.elapsed = 0;
       s.last = performance.now();
       s.lockedUntil = performance.now() + 300;
@@ -401,15 +446,19 @@ export default function FullJourney({ metrics, orbit }: { metrics: MetricsStore;
       projectorAt();
       journeyControls.update({ ...common, phase: "done", pageSection: null, cinemaStage: "clear" });
     };
-    const projectorAt = () => {
-      s.pendingJump = null;
-      s.pendingProjector = false;
-      metrics.update({ waitingForProjector: false });
-      projectorControls.set("assembled");
+    // The projector stop as it is after the assembly: the projector built, the room as its lights settled, glasses off.
+    function readyProjectorStop() {
+      if (projectorControls.read().ready) projectorControls.set("assembled");
       updateStageLighting(576, true);
       leadStageLighting(1, 1);
       cinemaGlasses.toggle(1, true);
       theatreOpening.screenPower.value = 0;
+    }
+    const projectorAt = () => {
+      s.pendingJump = null;
+      s.pendingProjector = false;
+      metrics.update({ waitingForProjector: false });
+      readyProjectorStop();
       s.focus.copy(points.centre);
       camera.position.copy(points.returned);
       camera.lookAt(s.focus);
@@ -424,10 +473,7 @@ export default function FullJourney({ metrics, orbit }: { metrics: MetricsStore;
     const unsubscribe = projectorControls.subscribe(() => {
       const p = projectorControls.read();
       if (p.ready && s.pendingProjector) invalidate();
-      if (s.phase === "reveal" && p.phase === "exploded") {
-        s.amount = 0;
-        phase("awaitAssembly");
-      }
+      if (s.phase === "reveal" && p.phase === "exploded") phase("awaitAssembly");
       if (s.phase === "awaitAssembly" && p.phase === "assembling") {
         s.assemblySettled = false;
         phase("returnHold");
@@ -439,37 +485,22 @@ export default function FullJourney({ metrics, orbit }: { metrics: MetricsStore;
         invalidate();
       }
     });
-    const advance = (distance: number) => {
-      const now = performance.now(),
-        previous = s.lastInput;
-      s.lastInput = now;
+    // One gesture, one step (scroll-step.ts). `pixels` still drives the review slide, which follows the scroll.
+    const advance = (step: Step, pixels: number) => {
+      const now = performance.now();
       const page = journeyControls.read();
-      if (page.phase === "pageReturnLoading" || page.pageReturning) return;
+      if (page.phase === "pageReturnLoading" || page.pageReturning || page.leavingPage || s.descending) return;
       if (!orbit && (s.phase === "logoReveal" || s.phase === "logoDone")) {
-        if (s.lockedUntil && (now < s.lockedUntil || now - previous < 220)) return;
-        s.lockedUntil = 0;
+        if (now < s.lockedUntil) return;
         if (page.reviewCamera) journeyControls.update({ reviewCamera: false });
-        exitStages.current.input(distance, now, innerHeight);
+        exitStages.current.input(pixels, now, innerHeight, step);
         invalidate();
         return;
       }
-      if (
-        orbit ||
-        distance === 0 ||
-        now < s.lockedUntil ||
-        (previous < s.lockedUntil && now - previous < 180)
-      )
-        return;
-      if (s.phase === "intro") {
-        return;
-      }
-      if (distance < 0) {
+      if (orbit || !step || now < s.lockedUntil || s.phase === "intro") return;
+      if (step < 0) {
         // Scrolling back plays each step in reverse: projector -> parts -> theatre.
         if (!["awaitAssembly", "done"].includes(s.phase)) return;
-        s.amount = 0;
-        s.backAmount += Math.min(-distance, 100);
-        if (s.backAmount < 100) return;
-        s.backAmount = 0;
         s.back = true;
         if (s.phase === "done" && phone) {
           projectorControls.set("hidden");
@@ -491,14 +522,9 @@ export default function FullJourney({ metrics, orbit }: { metrics: MetricsStore;
           s.fromFocus.copy(points.centre);
           phase("approach");
         }
-        s.lockedUntil = Math.max(s.lockedUntil, now + 220);
         return;
       }
-      s.backAmount = 0;
       if (!["idle", "awaitAssembly", "done"].includes(s.phase)) return;
-      s.amount += Math.min(distance, 100);
-      if (s.amount < 100) return;
-      s.amount = 0;
       if (s.phase === "idle") {
         traceMark("Theatre to projector gesture");
         cinemaGlasses.toggle(1, s.reduce);
@@ -518,36 +544,13 @@ export default function FullJourney({ metrics, orbit }: { metrics: MetricsStore;
         s.lead = s.from.distanceTo(points.screens);
         phase("screens");
       }
-      s.lockedUntil = Math.max(s.lockedUntil, now + 220);
     };
-    const tuningInput = (e: Event) =>
-      e.target instanceof Element && !!e.target.closest("[data-cinema-controls]");
-    const wheel = (e: WheelEvent) => {
-      if (tuningInput(e) || orbit || journeyControls.read().phase === "page" || e.ctrlKey || e.metaKey)
-        return;
-      e.preventDefault();
-      advance(e.deltaY * (e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? innerHeight : 1));
-    };
-    const touchStart = (e: TouchEvent) => {
-      if (e.touches.length === 1) s.touchY = e.touches[0].clientY;
-    };
-    const touchMove = (e: TouchEvent) => {
-      if (tuningInput(e) || orbit || journeyControls.read().phase === "page" || e.touches.length !== 1)
-        return;
-      e.preventDefault();
-      const y = e.touches[0].clientY;
-      advance(s.touchY - y);
-      s.touchY = y;
-    };
-    const key = (e: KeyboardEvent) => {
-      if (tuningInput(e) || orbit || journeyControls.read().phase === "page") return;
-      if (e.key === " " && (e.target instanceof HTMLButtonElement || e.target instanceof HTMLAnchorElement))
-        return;
-      if (["ArrowDown", "PageDown", " ", "ArrowUp", "PageUp"].includes(e.key)) {
-        e.preventDefault();
-        advance(e.key === "ArrowUp" || e.key === "PageUp" ? -180 : 180);
-      }
-    };
+    // The page sections hear their own scroll (normal-page.tsx); everywhere else it is the journey's.
+    const stopListening = listenSteps(window, (step, pixels) => {
+      if (orbit || journeyControls.read().phase === "page") return false;
+      advance(step, pixels);
+      return true;
+    });
     const query = matchMedia("(prefers-reduced-motion: reduce)");
     const gaze = theatreLook.current;
     const clearGaze = () => {
@@ -578,10 +581,6 @@ export default function FullJourney({ metrics, orbit }: { metrics: MetricsStore;
       s.last = performance.now();
       if (!document.hidden) invalidate();
     };
-    window.addEventListener("wheel", wheel, { passive: false });
-    window.addEventListener("touchstart", touchStart, { passive: true });
-    window.addEventListener("touchmove", touchMove, { passive: false });
-    window.addEventListener("keydown", key);
     window.addEventListener("pointermove", gazePointer, { passive: true });
     window.addEventListener("blur", clearGaze);
     document.documentElement.addEventListener("pointerleave", clearGaze);
@@ -592,10 +591,8 @@ export default function FullJourney({ metrics, orbit }: { metrics: MetricsStore;
       unsubscribeJourney();
       window.removeEventListener("eye-camera-view", preview);
       window.removeEventListener("journey-jump", jump);
-      window.removeEventListener("wheel", wheel);
-      window.removeEventListener("touchstart", touchStart);
-      window.removeEventListener("touchmove", touchMove);
-      window.removeEventListener("keydown", key);
+      stopListening();
+      cancelAnimationFrame(hideFrame);
       window.removeEventListener("pointermove", gazePointer);
       window.removeEventListener("blur", clearGaze);
       document.documentElement.removeEventListener("pointerleave", clearGaze);
@@ -668,13 +665,29 @@ export default function FullJourney({ metrics, orbit }: { metrics: MetricsStore;
       const leaving = journeyControls.read().pageReturning
         ? pageReturn.tick(dt, reveal.topDistance / CORRIDOR_EXIT_SPEED, s.reduce)
         : null;
-      const shot = leaving
-        ? {
-            stage: "slide" as ExitStage,
-            progress: reveal.progressToTop(settle(leaving.travel)),
-            moving: leaving.moving,
-          }
-        : exitStages.current.tick(dt, now, s.reduce);
+      // Scrolling back from View 2, after the turn back up: the same climb in reverse, down to Section 4's white.
+      const going =
+        !leaving && s.descending
+          ? descent.clock.tick(dt, reveal.topDistance / CORRIDOR_EXIT_SPEED, s.reduce)
+          : null;
+      const staged = leaving || going ? null : exitStages.current.tick(dt, now, s.reduce);
+      const shot = staged ?? {
+        stage: "slide" as ExitStage,
+        progress: reveal.progressToTop(settle((leaving ?? going)!.travel)),
+        moving: (leaving ?? going)!.moving,
+      };
+      if (staged?.descending && camera instanceof PerspectiveCamera) {
+        // The turn back has reached the top of the slide. The white panel stands where the liquid sphere was (it may
+        // still be there from the way up), filling the view the camera will have when it lands in front of it.
+        s.descending = true;
+        descent.clock.reset();
+        descent.lens.copy(camera, false);
+        reveal.sampleSlide(0, descent.lens.position, descent.lens.quaternion);
+        descent.lens.fov = s.revealFov;
+        descent.lens.updateProjectionMatrix();
+        endBox.place(descent.lens);
+        invalidate();
+      }
       cinemaShot.stage = shot.stage;
       cinemaShot.progress = shot.progress;
       logoKey.view = logoKeyAmount(shot.stage, shot.progress);
@@ -731,22 +744,39 @@ export default function FullJourney({ metrics, orbit }: { metrics: MetricsStore;
       // the screen white, which hands over to it just before the camera moves). Plain white, no glow.
       if (leaving && !endBox.visible && journeyControls.read().pageEndBox) endBox.place(camera);
       // The contact bar and menu step aside while the camera travels. The return's last frame counts too: the hold at
-      // the top follows straight on, so View 1's caption never flashes up between them.
-      const moving = !!shot.moving || !!leaving;
+      // the top follows straight on, so View 1's caption never flashes up between them. So does the way back down.
+      const moving = !!shot.moving || !!leaving || s.descending;
       if (journeyControls.read().cameraMoving !== moving)
         queueMicrotask(() => journeyControls.update({ cameraMoving: moving }));
       if (leaving && !leaving.moving) {
         // At the top: hold for a second, then turn to View 2 by itself.
         exitStages.current.arrive();
         invalidate();
-        // Consume the gesture's momentum before allowing the next leg.
-        s.lastInput = now;
-        s.lockedUntil = now + 220;
         queueMicrotask(() => journeyControls.update({ pageReturning: false, revealStage: "top" }));
+      }
+      if (going && !going.moving) {
+        // Landed in front of the white panel, which fills the view: Section 4 opens again under a white that lifts off
+        // it (normal-page.tsx), on its last card, as it was left. The panel is put away once the page covers it.
+        s.descending = false;
+        s.phase = "page";
+        exitStages.current.reset();
+        queueMicrotask(() =>
+          journeyControls.update({
+            phase: "page",
+            pageBack: true,
+            pageAtEnd: true,
+            pageSection: null,
+            revealStage: "slide",
+            cameraMoving: false,
+          }),
+        );
+        return;
       }
       if (shot.stage !== journeyControls.read().revealStage)
         queueMicrotask(() => journeyControls.update({ revealStage: shot.stage }));
       if (shot.stage === "done" && s.phase !== "logoDone") change("logoDone");
+      // Back from the final eye, the pullback plays in reverse: the white section after it is left behind.
+      else if (shot.stage !== "done" && s.phase === "logoDone") change("logoReveal");
       return;
     }
     if (s.phase === "intro") {
@@ -793,7 +823,6 @@ export default function FullJourney({ metrics, orbit }: { metrics: MetricsStore;
       if (openingReview !== undefined && prepared && theatreOpening.geometryReady) return;
       if (shot.done) {
         traceMark("Opening camera settled");
-        s.amount = 0;
         s.lockedUntil = now + 240;
         change("idle");
       } else invalidate();
@@ -906,35 +935,44 @@ export default function FullJourney({ metrics, orbit }: { metrics: MetricsStore;
       s.to.copy(points.returned);
       change("return");
     }
-    // No stop at the join: the first leg's leftover time carries straight into the second in the same frame.
+    // The second corridor leg starts at the first leg's end speed (2·distance/duration for both easings).
+    const leave = (CORRIDOR_MOVE.arrive * (PASSAGE_LENGTH - STOP_ARC)) / Math.max(1, s.lead + STOP_ARC);
+    // No stop at the join: the first leg's leftover time carries straight into the second in the same frame. Walking
+    // back (from the liquid to the projector) the legs come in the other order, each played exactly backwards.
     if (s.phase === "screens" && !s.back && !s.reduce && s.elapsed >= CORRIDOR_MOVE.arrive) {
       const over = s.elapsed - CORRIDOR_MOVE.arrive;
       change("corridor");
       s.elapsed = over;
+    } else if (s.phase === "corridor" && s.back && !s.reduce && s.elapsed >= leave) {
+      const over = s.elapsed - leave;
+      change("screens");
+      s.elapsed = over;
     }
-    // The second corridor leg starts at the first leg's end speed (2·distance/duration for both easings).
-    const leave = (CORRIDOR_MOVE.arrive * (PASSAGE_LENGTH - STOP_ARC)) / Math.max(1, s.lead + STOP_ARC);
-    const duration = s.back
-      ? BACK_SECONDS[s.phase as keyof typeof BACK_SECONDS] ?? 1
-      : s.phase === "approach"
-        ? 1.4
-        : s.phase === "corridor"
-          ? leave
-          : s.phase === "screens"
-            ? CORRIDOR_MOVE.arrive
-            : s.phase === "return"
-              ? 0.9
-              : s.phase === "pullback"
-                ? projectorTravel
-                : 0.5;
-    const t = s.reduce ? 1 : Math.min(1, s.elapsed / duration),
-      eased = s.back
-        ? 1 - smooth(t)
+    const walk = s.phase === "screens" || s.phase === "corridor";
+    const duration =
+      s.phase === "corridor"
+        ? leave
         : s.phase === "screens"
-          ? t * t
-          : s.phase === "corridor"
-            ? 1 - (1 - t) * (1 - t)
-            : settle(t); // corridor: one unbroken walk, speeding up then easing out
+          ? CORRIDOR_MOVE.arrive
+          : s.back
+            ? BACK_SECONDS[s.phase as keyof typeof BACK_SECONDS] ?? 1
+            : s.phase === "approach"
+              ? 1.4
+              : s.phase === "return"
+                ? 0.9
+                : s.phase === "pullback"
+                  ? projectorTravel
+                  : 0.5;
+    const t = s.reduce ? 1 : Math.min(1, s.elapsed / duration),
+      // The corridor walk backwards is the same walk in reverse time, so it speeds up and eases out the other way round.
+      along = s.back ? 1 - t : t,
+      eased = walk
+        ? s.phase === "screens"
+          ? along * along
+          : 1 - (1 - along) * (1 - along) // corridor: one unbroken walk, speeding up then easing out
+        : s.back
+          ? 1 - smooth(t)
+          : settle(t);
     if (s.back && (s.phase === "approach" || s.phase === "pullback"))
       restoreStageLighting(s.phase === "approach" ? 0.35 * t : 0.35 + 0.65 * t);
     else if (!s.back && s.phase === "pullback") leadStageLighting(theatrePullbackDim(t), 0);
@@ -966,7 +1004,20 @@ export default function FullJourney({ metrics, orbit }: { metrics: MetricsStore;
     }
     invalidate();
     if (t === 1 && s.back) {
-      if (s.phase === "return") {
+      if (s.phase === "corridor") change("screens");
+      else if (s.phase === "screens") {
+        // Back at the projector, as after its assembly.
+        s.back = false;
+        s.focus.copy(points.centre);
+        if (!projectorControls.read().ready) {
+          // Opened from the menu before it was ever prepared: it is built here as soon as it is ready.
+          s.pendingJump = "projector";
+          s.pendingProjector = true;
+          metrics.update({ waitingForProjector: true });
+        }
+        change("done");
+        queueMicrotask(() => journeyControls.update({ leavingPage: false, panelStage: 0 }));
+      } else if (s.phase === "return") {
         s.back = false;
         change("awaitAssembly");
       } else if (s.phase === "approach") {
@@ -979,7 +1030,6 @@ export default function FullJourney({ metrics, orbit }: { metrics: MetricsStore;
         s.focus.copy(points.seatFocus);
         restoreStageLighting(1);
         cinemaGlasses.toggle(0, s.reduce);
-        s.amount = 0;
         s.lockedUntil = now + 240;
         change("idle");
         queueMicrotask(() => journeyControls.update({ cinemaStage: "wearing" }));

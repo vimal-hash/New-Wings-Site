@@ -35,6 +35,12 @@ type Snapshot = {
   revealStage: import("./exit-stages").ExitStage;
   reviewCamera: boolean;
   finalCovered: boolean;
+  /** Scrolling back from View 2: the camera has come back down to the white panel and Section 4 opens again at its last
+   *  card, as it was left, under a white that lifts off it (normal-page.tsx clears this once it has). */
+  pageBack: boolean;
+  /** Scrolling back from the start of Section 1: the page turns back into the liquid sphere and the camera walks back
+   *  through the corridor to the projector (true from the lights coming up until the camera is back there). */
+  leavingPage: boolean;
 };
 let snapshot: Snapshot = {
   phase: "intro",
@@ -53,6 +59,8 @@ let snapshot: Snapshot = {
   revealStage: "slide",
   reviewCamera: false,
   finalCovered: false,
+  pageBack: false,
+  leavingPage: false,
 };
 const listeners = new Set<() => void>();
 export const journeyControls = {

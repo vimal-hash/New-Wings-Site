@@ -16,6 +16,7 @@ import { FILM_PRODUCTS, FILM_VOID, FRAME_PITCH } from "./film-data";
 import { FilmStrip, type FilmLooks } from "./film-strip";
 import { reelClick } from "./reel-click";
 import { createReelMotion, type ReelMotion, type ReelShot } from "./reel-motion";
+import { listenSteps } from "../corridor/scroll-step";
 import { sceneMotion } from "../corridor/scene-idle";
 import { uploadTexturesGradually } from "../corridor/hidden-gpu-preparation";
 import { traceMark, traceSpan } from "../corridor/loading-trace";
@@ -41,8 +42,9 @@ const weaveAt = (n: number) => [
 
 /** What the page around the reel may ask of it. */
 export type ReelHandle = {
-  /** One scroll in pixels, down positive. True when the reel used it; false means the page may have it. */
-  input(pixels: number): boolean;
+  /** One step of the site's scroll (scroll-step.ts): 1 forward, -1 back, 0 the rest of a gesture. True when the reel
+   *  used it; false means the page may have it. */
+  input(step: number): boolean;
   /** Coming back from the next section: be the burnt-white last frame, ready to run backwards. */
   atEnd(): void;
   /** True while the reel covers the screen. */
@@ -190,7 +192,8 @@ const live = (shot: ReelShot) => {
 /**
  * Section 1, the film reel, as one full-screen layer: the canvas, the white of the house lights and the last flash, and a spoken line for screen readers.
  * `running` starts the house lights once the strip is ready. With `listen`, the layer reads the wheel, touch and keys itself (the review page);
- * in the site the page routes the scroll through `handle` instead.
+ * in the site the page routes the scroll through `handle` instead. `onBack`: a step back on frame 1 brings the house
+ * lights up again, and once the page is all white the site goes back the way it came.
  */
 export default function FilmReel({
   handle,
@@ -200,6 +203,7 @@ export default function FilmReel({
   line,
   onIdle,
   onExit,
+  onBack,
 }: {
   handle?: Ref<ReelHandle>;
   running?: boolean;
@@ -208,6 +212,7 @@ export default function FilmReel({
   line?: string;
   onIdle?: (showing: boolean) => void;
   onExit?: () => void;
+  onBack?: () => void;
 }) {
   const [calm] = useState(
     () => typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches,
@@ -216,7 +221,12 @@ export default function FilmReel({
   // With a title line, the opening white is held while it is written, read and half faded (as every section's white);
   // then the house lights go down as before.
   const [motion] = useState(() => {
-    const made = createReelMotion({ frames: FILM_PRODUCTS.length, calm, hold: line ? CARD_WAIT : undefined });
+    const made = createReelMotion({
+      frames: FILM_PRODUCTS.length,
+      calm,
+      hold: line ? CARD_WAIT : undefined,
+      back: !!onBack,
+    });
     if (ended) made.atEnd();
     return made;
   });
@@ -243,10 +253,11 @@ export default function FilmReel({
     (shot: ReelShot) => {
       if (white.current) white.current.style.opacity = shot.white.toFixed(4);
       if (title.current) {
-        showTitle(title.current, shot.burn === 0 && shot.held > 0 ? cardStrength(shot.held) : 0);
+        showTitle(title.current, shot.burn === 0 && shot.held > 0 ? cardStrength(shot.held) * shot.line : 0);
         writeTitle(title.current, calm ? Infinity : shot.held);
       }
       if (shot.exited) onExit?.();
+      if (shot.raised) onBack?.();
       if (layer.current && shot.visible !== showing.current) {
         showing.current = shot.visible;
         layer.current.style.visibility = shot.visible ? "visible" : "hidden";
@@ -254,12 +265,12 @@ export default function FilmReel({
       }
       if (shot.landed >= 0 && voice.current) voice.current.textContent = live(shot);
     },
-    [onIdle, onExit, calm],
+    [onIdle, onExit, onBack, calm],
   );
 
   const take = useCallback(
-    (pixels: number) => {
-      const used = motion.input(pixels);
+    (step: number) => {
+      const used = motion.input(step);
       if (used && !showing.current && layer.current) {
         showing.current = true;
         layer.current.style.visibility = "visible";
@@ -291,14 +302,14 @@ export default function FilmReel({
   useEffect(() => {
     if (!new URLSearchParams(location.search).has("drive")) return;
     const review = window as Window & {
-      __reel?: { go(seconds: number, pixels?: number, events?: number): string };
+      __reel?: { go(seconds: number, step?: number): string };
     };
     driven = performance.now();
     review.__reel = {
-      go(seconds, pixels = 0, events = 1) {
-        const steps = Math.max(1, Math.round(seconds * 60));
-        for (let index = 0; index < steps; index++) {
-          if (index < events && pixels) take(pixels / events);
+      go(seconds, step = 0) {
+        const frames = Math.max(1, Math.round(seconds * 60));
+        for (let index = 0; index < frames; index++) {
+          if (index === 0 && step) take(step);
           driven! += 1000 / 60;
           advance(driven!);
         }
@@ -318,42 +329,10 @@ export default function FilmReel({
     };
   }, [take, motion]);
 
+  // The review page: the reel hears the site's one scroll rule itself (one gesture, one frame).
   useEffect(() => {
-    const node = layer.current;
-    if (!listen || !node) return;
-    let touchY = 0;
-    const wheel = (event: WheelEvent) => {
-      if (event.ctrlKey) return;
-      const pixels =
-        event.deltaY * (event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? window.innerHeight : 1);
-      if (take(pixels)) event.preventDefault();
-    };
-    const start = (event: TouchEvent) => {
-      touchY = event.touches[0]?.clientY ?? 0;
-    };
-    const move = (event: TouchEvent) => {
-      const y = event.touches[0]?.clientY ?? touchY;
-      if (take((touchY - y) * 1.6)) event.preventDefault();
-      touchY = y;
-    };
-    const key = (event: KeyboardEvent) => {
-      const step = ["ArrowDown", "PageDown", " "].includes(event.key)
-        ? 120
-        : ["ArrowUp", "PageUp"].includes(event.key)
-          ? -120
-          : 0;
-      if (step && take(step)) event.preventDefault();
-    };
-    window.addEventListener("wheel", wheel, { passive: false });
-    node.addEventListener("touchstart", start, { passive: true });
-    node.addEventListener("touchmove", move, { passive: false });
-    window.addEventListener("keydown", key);
-    return () => {
-      window.removeEventListener("wheel", wheel);
-      node.removeEventListener("touchstart", start);
-      node.removeEventListener("touchmove", move);
-      window.removeEventListener("keydown", key);
-    };
+    if (!listen) return;
+    return listenSteps(window, (step) => take(step));
   }, [listen, take]);
 
   return (

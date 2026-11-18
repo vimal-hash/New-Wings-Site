@@ -227,8 +227,14 @@ export function flightGlideTime(screens: number, profile: FlightProfile = FLIGHT
   );
 }
 
-/** units: world units the camera has flown at this scroll share (the page's own mapping). */
-export type FlightGlide = { lead: number; leadShare: number; units: (share: number) => number };
+/** units: world units the camera has flown at this scroll share (the page's own mapping). take: filled in by the glide
+ *  while it runs, for the page to pass on the site's scroll steps (1 forward, -1 back, 0 the rest of a gesture). */
+export type FlightGlide = {
+  lead: number;
+  leadShare: number;
+  units: (share: number) => number;
+  take?: ((step: number) => boolean) | null;
+};
 
 /** A leg's shape over its time, from its speed: 0 at the start, 1 at the end. */
 const legShape = (speed: (u: number) => number) => {
@@ -250,37 +256,22 @@ const legSeconds = (units: number, stopping: boolean) =>
   stopping ? 3.4 + 0.03 * units : 2.2 + 0.025 * units;
 
 /**
- * The page's flight: any gesture sets off one unbroken leg to the next resting place (the section, or the stop in the
- * tunnel's colour). It cannot halt half way: the scroll is locked while it flies and until the gesture has ended, so
- * trailing momentum cannot start the next leg. Only a gesture the opposite way turns it round. lead holds a leg at the
- * section's white for that many seconds first, while the white rises.
+ * The page's flight: each step of the site's scroll (one gesture, scroll-step.ts; the page passes it on through
+ * `glide.take`) sets off one unbroken leg to the next resting place (the section, or the stop in the tunnel's colour).
+ * It cannot halt half way: a step the same way while it flies is spent, and only a step the opposite way turns it round.
+ * The layer never scrolls by itself (the page keeps the browser's own scrolling off); a scroll the page makes itself
+ * (its entry into the connection) sets off the first leg. lead holds a leg at the section's white for that many seconds
+ * first, while the white rises.
  */
-export function createFlightGlide(
-  element: HTMLElement,
-  profile: FlightProfile,
-  { lead, leadShare, units }: FlightGlide,
-) {
+export function createFlightGlide(element: HTMLElement, profile: FlightProfile, glide: FlightGlide) {
+  const { lead, leadShare, units } = glide;
   let last = element.scrollTop,
     direction = 0,
     frame = 0,
-    gliding = false,
-    locked = false,
-    lastWheel = -1e9,
-    unlockTimer = 0;
+    gliding = false;
   const room = () => element.scrollHeight - element.clientHeight;
-  const unlock = () => {
-    const wait = IDLE - (performance.now() - lastWheel);
-    if (wait > 0) {
-      unlockTimer = window.setTimeout(unlock, wait);
-      return;
-    }
-    locked = false;
-    element.style.overflowY = "auto";
-  };
   const launch = (way: number) => {
     cancelAnimationFrame(frame);
-    window.clearTimeout(unlockTimer);
-    locked = true;
     element.style.overflowY = "hidden";
     const total = room(),
       from = profile.holdFrom * total,
@@ -317,7 +308,6 @@ export function createFlightGlide(
       }
       gliding = false;
       direction = 0;
-      unlock();
     };
     frame = requestAnimationFrame(step);
   };
@@ -326,20 +316,29 @@ export function createFlightGlide(
     const top = element.scrollTop,
       way = Math.sign(top - last);
     last = top;
-    if (!way || locked || top <= 1 || top >= room() - 1) return;
+    if (!way || top <= 1 || top >= room() - 1) return;
     launch(way);
   };
-  const wheel = (event: WheelEvent) => {
-    lastWheel = performance.now();
-    if (gliding && Math.abs(event.deltaY) >= 4 && Math.sign(event.deltaY) === -direction) launch(-direction);
+  // One step: a leg, or the leg in flight turned round. At either end the step belongs to the page.
+  const take = (step: number) => {
+    const way = Math.sign(step);
+    if (!way) return true;
+    if (gliding) {
+      if (way === -direction) launch(way);
+      return true;
+    }
+    const top = element.scrollTop;
+    if ((way < 0 && top <= 1) || (way > 0 && top >= room() - 1)) return false;
+    launch(way);
+    return true;
   };
+  glide.take = take;
+  element.style.overflowY = "hidden";
   element.addEventListener("scroll", scrolled, { passive: true });
-  element.addEventListener("wheel", wheel, { passive: true });
   return () => {
     cancelAnimationFrame(frame);
-    window.clearTimeout(unlockTimer);
     element.removeEventListener("scroll", scrolled);
-    element.removeEventListener("wheel", wheel);
+    if (glide.take === take) glide.take = null;
   };
 }
 

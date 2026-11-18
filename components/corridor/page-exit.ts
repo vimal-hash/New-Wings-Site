@@ -53,3 +53,22 @@ export function createPageReturn() {
   };
 }
 export const pageReturn = createPageReturn();
+
+/** Scrolling back from View 2 (the user, 2026-11-18): the return in reverse. After the turn back to the top of the slide
+ *  the camera goes back down to the white panel with the climb's own duration and curve played backwards (travel 1 -> 0),
+ *  so the panel fills the view again as it lands; then the screen white takes over and lifts off Section 4 in
+ *  WHITE_SECONDS. */
+export function createPageDescent() {
+  let elapsed = 0;
+  return {
+    reset() {
+      elapsed = 0;
+    },
+    tick(delta: number, authored: number, reduced = false) {
+      const travelSeconds = Math.max(RETURN_TRAVEL_MIN, authored);
+      elapsed = reduced ? travelSeconds : Math.min(travelSeconds, elapsed + Math.min(0.05, Math.max(0, delta)));
+      const travel = elapsed >= travelSeconds ? 0 : 1 - elapsed / travelSeconds;
+      return { travel, moving: travel > 0 };
+    },
+  };
+}

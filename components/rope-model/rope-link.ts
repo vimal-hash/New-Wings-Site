@@ -19,6 +19,12 @@ export type RopeLink = {
   /** A load or GPU preparation error should release the section scroll. */
   failed(): void;
   /** The page's unbroken legs: seconds to hold at the section's white first, where that white ends, and the camera's
-   * world units flown at a scroll share. */
-  glide: { lead: number; leadShare: number; units: (share: number) => number };
+   * world units flown at a scroll share. `take` is filled in by the glide while it runs: the page passes it the site's
+   * scroll steps (scroll-step.ts). */
+  glide: {
+    lead: number;
+    leadShare: number;
+    units: (share: number) => number;
+    take?: ((step: number) => boolean) | null;
+  };
 };

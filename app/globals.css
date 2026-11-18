@@ -1181,6 +1181,121 @@ dd {
   touch-action: none;
   overscroll-behavior: none;
 }
+/* The end page's last line and button, under the colour logo (above it on phones, where the stacked words fill the space
+   below). They come up a moment after the artwork's entrance starts and go with it when the white sweeps back out.
+   Flat: no glow, no blur. */
+.end-call {
+  position: absolute;
+  left: 50%;
+  top: calc(50% + var(--brand-logo-width, 29vmin) * 0.45513 + clamp(18px, 3.8vh, 44px));
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(12px, 1.9vh, 20px);
+  width: max-content;
+  max-width: calc(100vw - 32px);
+  transform: translateX(-50%);
+  text-align: center;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.5s ease,
+    visibility 0s linear 0.5s;
+}
+.brand-artwork[data-revealed="true"] ~ .end-call {
+  opacity: 1;
+  visibility: inherit;
+  transition:
+    opacity 1s cubic-bezier(0.22, 0.7, 0.24, 1) 1.2s,
+    visibility 0s linear 1.2s;
+}
+.end-call__line {
+  margin: 0;
+  padding-left: 0.36em;
+  font-size: clamp(13px, 1.1vw, 24px);
+  line-height: 1.5;
+  letter-spacing: 0.36em;
+  color: #121212;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+.end-call__button {
+  min-height: 46px;
+  padding: 0 26px;
+  border: 0;
+  border-radius: 999px;
+  background: #11151a;
+  color: #f8f7f3;
+  font:
+    500 15px/1 var(--font-geist-sans),
+    sans-serif;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  pointer-events: auto;
+  transition:
+    transform 0.2s,
+    background 0.2s;
+}
+.end-call__button:hover {
+  background: #000;
+  transform: translateY(-1px);
+}
+.end-call__button:focus-visible {
+  outline: 2px solid #11151a;
+  outline-offset: 3px;
+}
+@media (max-width: 699px) {
+  /* Below the logo, the two stacked words and the small drawings under them (brand-artwork.tsx) fill the screen down to
+     the contact bar, so on phones the line and button sit in the white above the logo, the line on two rows. */
+  .end-call {
+    top: auto;
+    bottom: calc(50% + var(--brand-logo-width, 29vmin) * 0.45513 + 26px);
+    gap: 12px;
+  }
+  .end-call__line span {
+    display: block;
+  }
+}
+@media (min-width: 700px) and (max-height: 820px) {
+  /* Short laptop screens: the drawings under the words come up close under the button, so the stack sits a little
+     tighter (1280x720: 6 px clear of the screen drawing before, 23 px after). */
+  .end-call {
+    top: calc(50% + var(--brand-logo-width, 29vmin) * 0.45513 + 18px);
+    gap: 10px;
+  }
+  .end-call__button {
+    min-height: 42px;
+  }
+}
+@media (orientation: landscape) and (max-height: 500px) {
+  /* Landscape phones: two rows fit neither above nor below the logo (the button went under the contact bar), so the
+     line and the button sit side by side, centred in the white between the logo and the contact bar. */
+  .end-call {
+    --end-call-row: 38px;
+    top: auto;
+    bottom: calc(
+      (var(--contact-bottom) + var(--contact-icon-height) + 2 * var(--contact-padding) + 50% -
+          var(--brand-logo-width, 29vmin) * 0.45513 - var(--end-call-row)) / 2
+    );
+    flex-direction: row;
+    gap: 18px;
+  }
+  .end-call__line span {
+    display: inline;
+  }
+  .end-call__button {
+    min-height: var(--end-call-row);
+    padding: 0 20px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .end-call,
+  .brand-artwork[data-revealed="true"] ~ .end-call {
+    transition: none;
+  }
+}
 .corridor-study[data-finale-covered="true"]
   > :not(.diagonal-next-section):not(.scene-fixed):not(.cinema-panel[data-open="true"]):not(.site-menu):not(
     .contact-bar

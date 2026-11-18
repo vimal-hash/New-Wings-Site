@@ -91,6 +91,10 @@ const STOP_ARC =
 /** One unbroken walk through the corridor (no stop): it speeds up over the first leg and eases out
  *  over the second, which starts at the first leg's end speed. `leave` also sets the page-return pace. */
 const CORRIDOR_MOVE = { arrive: 2.6, leave: 2.4 } as const;
+/** How far through the walk's second leg (eased, 0-1) the drawings are behind and the liquid sphere comes into view:
+ *  the corner caption turns from the wall drawings to the lamp there (story-caption.tsx). Measured 2026-11-18: a wall
+ *  fills the view for a moment at ~.87 (4.2 s after the step), the sphere shows at ~4.5 s. */
+const LIQUID_IN_VIEW = 0.87;
 const CORRIDOR_EXIT_SPEED = (PASSAGE_LENGTH - STOP_ARC) / CORRIDOR_MOVE.leave;
 /** Passage pose at an arc from its start. */
 function corridorPose(arc: number, position: Vector3, rotation: Quaternion) {
@@ -1001,6 +1005,11 @@ export default function FullJourney({ metrics, orbit }: { metrics: MetricsStore;
       }
       s.focus.lerpVectors(s.fromFocus, points.centre, eased);
       camera.lookAt(s.focus);
+    }
+    if (walk) {
+      const liquidInView = s.phase === "corridor" && eased >= LIQUID_IN_VIEW;
+      if (journeyControls.read().liquidInView !== liquidInView)
+        queueMicrotask(() => journeyControls.update({ liquidInView }));
     }
     invalidate();
     if (t === 1 && s.back) {

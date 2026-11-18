@@ -14,6 +14,11 @@ import { brandRevealPoint } from "./brand-reveal";
 import { createBrandMotion } from "./brand-motion";
 import { createBrandCamera } from "./brand-camera";
 import { listenSteps, ownInput } from "./scroll-step";
+import { cinzel } from "./title-card";
+import { openEnquiry } from "./enquiry";
+
+/** What the end page's button asks about: the enquiry form lists it as the product. */
+const WHOLE_THEATRE = "A complete theatre";
 
 /** One shared feather reveals white and the colour mark across the silver pupil. */
 export default function DiagonalSection() {
@@ -181,6 +186,21 @@ export default function DiagonalSection() {
         >
           <image href="/images/new-wings-logo-layer-2048x1152.png" width="2048" height="1152" />
         </svg>
+      </div>
+      {/* The film is over and the white is the house lights coming up: the story's last line ("Lights down" opened
+          it) and the one next step. Comes up after the artwork (globals.css .end-call); never moves with the mouse. */}
+      <div className="end-call">
+        <p className={`end-call__line ${cinzel.className}`}>
+          <span>Lights up.</span> <span>Your theatre is next.</span>
+        </p>
+        <button
+          type="button"
+          className="end-call__button"
+          data-cinema-controls
+          onClick={() => openEnquiry(WHOLE_THEATRE)}
+        >
+          Plan your theatre
+        </button>
       </div>
     </section>
   );

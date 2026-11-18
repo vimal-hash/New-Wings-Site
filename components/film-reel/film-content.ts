@@ -8,9 +8,11 @@ export async function filmFonts(): Promise<FilmFonts> {
   const style = getComputedStyle(document.documentElement);
   const sans = style.getPropertyValue("--font-geist-sans").trim() || "sans-serif",
     mono = style.getPropertyValue("--font-geist-mono").trim() || "monospace";
-  await Promise.all([document.fonts.load(`600 80px ${sans}`), document.fonts.load(`400 30px ${mono}`)]).catch(
-    () => undefined,
-  );
+  await Promise.all([
+    document.fonts.load(`600 80px ${sans}`),
+    document.fonts.load(`400 40px ${sans}`),
+    document.fonts.load(`400 30px ${mono}`),
+  ]).catch(() => undefined);
   return { sans, mono };
 }
 
@@ -18,7 +20,10 @@ const spaced = (context: CanvasRenderingContext2D, pixels: number) => {
   if ("letterSpacing" in context) context.letterSpacing = `${pixels}px`;
 };
 
-/** The text strip under a picture: frame number, product name and brand name. */
+/** Baselines (canvas pixels, top down): the number/brand row, the name, the rule under it, and the product's line. */
+const ROWS = { meta: 70, name: 184, rule: 214, line: 274 };
+
+/** The text strip under a picture: frame number, brand name, product name and its one short line. */
 export function contentTexture(
   product: FilmProduct,
   index: number,
@@ -42,9 +47,9 @@ export function contentTexture(
   context.font = `400 26px ${fonts.mono}`;
   spaced(context, 6);
   context.textAlign = "left";
-  context.fillText(`${number} / ${count}`, edge, 86);
+  context.fillText(`${number} / ${count}`, edge, ROWS.meta);
   context.textAlign = "right";
-  context.fillText(product.brand.toUpperCase(), width - edge, 86);
+  context.fillText(product.brand.toUpperCase(), width - edge, ROWS.meta);
 
   // The name is large when it is short, and shrinks to fit when it is long.
   let size = 108;
@@ -55,10 +60,15 @@ export function contentTexture(
     context.font = `600 ${size}px ${fonts.sans}`;
   } while (context.measureText(product.name).width > width - edge * 2 && size > 40);
   context.fillStyle = "#ecebe6";
-  context.fillText(product.name, edge - 4, 214);
+  context.fillText(product.name, edge - 4, ROWS.name);
 
   context.fillStyle = "#3a3936";
-  context.fillRect(edge, 252, width - edge * 2, 2);
+  context.fillRect(edge, ROWS.rule, width - edge * 2, 2);
+
+  context.fillStyle = "#aeaca6";
+  context.font = `400 40px ${fonts.sans}`;
+  spaced(context, 0);
+  context.fillText(product.line, edge - 2, ROWS.line);
 
   const texture = new CanvasTexture(canvas);
   texture.colorSpace = SRGBColorSpace;

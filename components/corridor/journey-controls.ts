@@ -41,6 +41,9 @@ type Snapshot = {
   /** Scrolling back from the start of Section 1: the page turns back into the liquid sphere and the camera walks back
    *  through the corridor to the projector (true from the lights coming up until the camera is back there). */
   leavingPage: boolean;
+  /** On the corridor walk's second leg, the liquid sphere has come into view: the corner caption turns from the wall
+   *  drawings to the lamp (story-caption.tsx). Set by full-journey.tsx from the walk's own progress. */
+  liquidInView: boolean;
 };
 let snapshot: Snapshot = {
   phase: "intro",
@@ -61,6 +64,7 @@ let snapshot: Snapshot = {
   finalCovered: false,
   pageBack: false,
   leavingPage: false,
+  liquidInView: false,
 };
 const listeners = new Set<() => void>();
 export const journeyControls = {

@@ -6,8 +6,12 @@ The user asked for one line of black, widely spaced capitals before each of the 
 | --- | --- | --- | --- |
 | 1 Products | grainy black and white | THE TOOLS AND THEIR LIGHT | the white after the liquid sphere (the reel's opening white) |
 | 2 About Us | clean black and white | WE MAKE IT CLEARER | About Us's white, after the green-red wormhole |
-| 3 Team | vintage colour | COLOUR NEEDS HANDS | Section 3's white, after the blue wormhole |
+| 3 Team | vintage colour | PEOPLE BRING THE COLOUR (was COLOUR NEEDS HANDS until 18 November) | Section 3's white, after the blue wormhole |
 | 4 Testimonials | HD | TODAY, THEATRES TRUST US | Section 4's white, after the yellow wormhole |
+
+## Reel words (18 November)
+
+From the story review (`docs/story-lines/README.md`): each line now has a small "REEL ONE" … "REEL FOUR" above it, so the four sections read as the reels of one film, and line III became PEOPLE BRING THE COLOUR. The reel word is the same Cinzel, `clamp(10px, .8vw, 18px)`, `.6em` tracking, ink `#121212b8`, centred over the line (it does not change the line's own centring). It comes up with the first letter over `TITLE.ink` (.75 s) and fades out with the line. Edit the words in `SECTION_REELS` (`title-card.tsx`), one per line in `SECTION_LINES`; `scripts/story-lines.test.mjs` keeps the two lists in step.
 
 ## History (all 15 November)
 

@@ -16,8 +16,7 @@ export const OPENING_ECHO = { longE: 2 * BAR, first: 2 * BAR + 3 * S16, every: 3
 
 /**
  * Bar lines inside the drop cue (theme-drop.mp3, cut from the song at 7.535 s): the whoomp's bar, round 1, round 2,
- * round 2's last bar and the last chord. The journey plays it in three parts, one per camera move, each ending on a
- * bar line as the camera reaches its stop; the last chord lands as the camera stops at the liquid sphere.
+ * round 2's last bar and the last chord. Playback loops from round 2 to the last chord.
  */
 const WHOOMP = 3 * BAR + 1 - 7.535;
 export const DROP_BARS = {

@@ -18,7 +18,7 @@ test("the room tour lands on the five repeats of the opening's echo", () => {
   assert.doesNotMatch(hover, /showSeatCue/);
 });
 
-test("the drop's parts are cut on its bar lines and the corridor legs are whole bars", () => {
+test("the drop has four whole bars from round two to the last chord and the corridor keeps its timing", () => {
   assert.ok(Math.abs(DROP_BARS.whoomp - (3 * BAR + 1 - 7.535)) < 1e-12);
   for (const [a, b, bars] of [
     ["whoomp", "roundOne", 1],
@@ -30,9 +30,5 @@ test("the drop's parts are cut on its bar lines and the corridor legs are whole 
   const journey = fs.readFileSync("components/corridor/full-journey.tsx", "utf8");
   // The build (2 s) and its 0.9 s move plus the first leg make three bars; the last leg is one bar.
   assert.match(journey, /const CORRIDOR_MOVE = \{ arrive: 3 \* BAR - 2\.9, leave: BAR \} as const;/);
-  const sound = fs.readFileSync("components/corridor/theme-sound.ts", "utf8");
-  assert.match(sound, /projector: \{ from: 0, to: DROP_BARS\.roundTwo \}/);
-  assert.match(sound, /drawings: \{ from: DROP_BARS\.roundTwo, to: DROP_BARS\.lastBar \}/);
-  assert.match(sound, /sphere: \{ from: DROP_BARS\.lastBar, to: Infinity \}/);
-  assert.match(sound, /const LOOP = \{ start: DROP_BARS\.roundOne, end: DROP_BARS\.lastChord \};/);
+  assert.ok(Math.abs(DROP_BARS.lastChord - DROP_BARS.roundTwo - 4 * BAR) < 1e-9);
 });

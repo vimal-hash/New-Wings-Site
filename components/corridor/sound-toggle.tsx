@@ -1,6 +1,6 @@
 "use client";
 
-import { useSyncExternalStore } from "react";
+import { useEffect, useSyncExternalStore } from "react";
 import { themeSound } from "./theme-sound";
 
 /**
@@ -10,12 +10,15 @@ import { themeSound } from "./theme-sound";
  */
 export default function SoundToggle() {
   const sound = useSyncExternalStore(themeSound.subscribe, themeSound.read, themeSound.read);
+  // Any click, tap or key press on the page turns the music on (theme-sound.ts), unless this tab turned it off.
+  useEffect(() => themeSound.arm(), []);
   return (
     <button
       type="button"
       className="sound-toggle"
       data-on={sound.enabled ? "" : undefined}
       data-cinema-controls
+      data-sound-toggle
       aria-pressed={sound.enabled}
       aria-label={sound.enabled ? "Turn sound off" : "Turn sound on"}
       onClick={() => themeSound.toggle()}

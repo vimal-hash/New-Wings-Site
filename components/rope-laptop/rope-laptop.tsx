@@ -778,7 +778,7 @@ export default function RopeLaptop({
       >
         <div style={{ height: `${(flight ? profile.scrollScreens : SCROLL_SCREENS) * 100}dvh` }} />
       </div>
-      {flight ? <RopeCard card={card} tint={profile.cardTint} /> : null}
+      {flight && !profile.through ? <RopeCard card={card} tint={profile.cardTint} /> : null}
       <RopeReportPanel />
     </div>
   );

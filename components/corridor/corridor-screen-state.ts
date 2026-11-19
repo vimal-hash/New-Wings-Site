@@ -32,7 +32,7 @@ export const screenTrigger = (k: number) =>
 /** Where the corridor walk's two legs meet (no stop), by route arc from the theatre stop. */
 export const CORRIDOR_STOP = { arc: 132 } as const;
 /** Phases where the camera is in the corridor and may switch panels on. */
-const LIVE = new Set(["screens", "corridor", "panel", "page", "pageReturnLoading"]);
+const LIVE = new Set(["screens", "drawings", "corridor", "panel", "page", "pageReturnLoading"]);
 
 /** Arc length of the nearest point on an xz polyline; extends linearly past both ends. */
 export function createArcProjector(points: readonly (readonly [number, number])[]) {

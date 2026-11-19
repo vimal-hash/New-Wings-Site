@@ -61,6 +61,7 @@ const sectionNames: Record<JourneyPhase, string> = {
   return: "Projector",
   done: "Projector",
   screens: "Corridor",
+  drawings: "Corridor drawings stop",
   corridor: "Corridor",
   panel: "Liquid sphere",
   page: "Sections",

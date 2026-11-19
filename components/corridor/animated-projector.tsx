@@ -477,9 +477,9 @@ if(uFormation<.9999){float reveal=surfaceFormation(vFxPoint,vFxTiming,vFxSweep,v
                         quality !== "desktop" ? "diffuseColor.a*=mix(1.,.375+1.5625*lensEdge,vLens);" : ""
                       }
 vec3 glassView=normalize(vViewPosition);float glassFresnel=.18+.82*pow(1.-clamp(abs(dot(normal,glassView)),0.,1.),5.);
-float window=softbox(normal,glassView)*glassFresnel;
+float window=.16+.3*glassFresnel;
 float glint=0.;if(uGlint>=0.&&vFront>.5){vec3 d=-vViewPosition-vLensCentre;float s=dot(d.xy,normalize(vec2(1.,.55)))/uLensRadius;glint=exp(-pow((s-mix(-1.4,1.4,uGlint))*2.4,2.))*sin(3.14159*uGlint);}
-outgoingLight+=vec3(1.,.985,.96)*(window*1.6+glint*4.);diffuseColor.a=max(diffuseColor.a,clamp(window*.9+glint,0.,1.));
+outgoingLight+=vec3(1.,.74,.36)*window+vec3(1.,.985,.96)*glint*4.;diffuseColor.a=max(diffuseColor.a,clamp(window*.9+glint,0.,1.));
 #include <opaque_fragment>`
                     : `float rimFacing=1.-clamp(dot(normal,normalize(vViewPosition)),0.,1.);
 // A cool back light from above, seen only on the edges: separates the dark panels from the dark room.
@@ -828,7 +828,7 @@ outgoingLight+=uRim*vec3(.70,.78,.92)*pow(rimFacing,3.)*max(dot(normal,normalize
     }
     if (state.phase !== "particles" && state.phase !== "assembling") {
       updateStageLighting(frame.current, state.phase === "exploded");
-      // One light glint across the front lens as the build completes.
+      // (No glint after the build any more: the camera leaves as the build ends. The glass holds a steady warm glow.)
       if (state.glint && !document.hidden) {
         const g = (performance.now() - state.glint) / 1000 / GLINT_SECONDS;
         rig.uniforms.uGlint.value = g < 1 ? g : -1;
@@ -862,7 +862,6 @@ outgoingLight+=uRim*vec3(.70,.78,.92)*pow(rimFacing,3.)*max(dot(normal,normalize
       if (phase === "assembled") {
         rig.uniforms.uAssemblyTime.value = -1;
         rig.uniforms.uPoseFrame.value = metadata.frames - 1;
-        state.glint = performance.now();
         invalidate();
       }
       state.phase = phase;

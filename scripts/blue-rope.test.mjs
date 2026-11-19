@@ -97,15 +97,17 @@ test("blue portal has the first portal perspective and closing curve in its own 
   }
 });
 
-test("blue backs through one tunnel and holds at its middle in both directions", () => {
+test("blue flies through its one tunnel without stopping in the middle, in both directions", () => {
+  // User 2026-11-19: "the blue tunnel stays but it wont stop in middle and no cards".
+  assert.equal(BLUE_FLIGHT.through, true);
   assert.equal(flightZ(0, BLUE_FLIGHT), BLUE_START);
   assert.equal(flightZ(1, BLUE_FLIGHT), 0);
-  for (const at of [0.48, 0.49, 0.5, 0.51, 0.52]) {
-    assert.equal(flightZ(at, BLUE_FLIGHT), -12);
-    assert.equal(flightAtStop(at, -12, BLUE_FLIGHT), true);
+  for (const at of [0.3, 0.45, 0.5, 0.55, 0.7, 0.9]) {
+    assert.equal(flightAtStop(at, flightZ(at, BLUE_FLIGHT), BLUE_FLIGHT), false);
+    assert.equal(flightAtStop(at, -12, BLUE_FLIGHT), false);
+    // No plateau anywhere: the camera keeps moving through the old stop.
+    assert.ok(flightZ(Math.min(1, at + 0.02), BLUE_FLIGHT) - flightZ(at, BLUE_FLIGHT) > 0.05);
   }
-  assert.equal(flightAtStop(0.5, -11.98, BLUE_FLIGHT), false);
-  assert.equal(flightAtStop(0.6, -12, BLUE_FLIGHT), false);
   let last = -Infinity;
   for (let i = 0; i <= 10000; i++) {
     const z = flightZ(i / 10000, BLUE_FLIGHT);

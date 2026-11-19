@@ -13,6 +13,7 @@ export const FLIGHT = {
   holdFrom: 0.832,
   holdTo: 0.852, // share of the scroll. Even speed on both sides of the stop
   cardTint: "232,52,58", // the glass card's edge at this flight's stop, in the tunnel's own colour
+  through: false, // true: no stop and no card, one flight from end to end (the blue tunnel)
 };
 export type FlightProfile = typeof FLIGHT;
 /** The original two-tunnel flight, with yellow at the far end and green at the near stop. */
@@ -53,9 +54,12 @@ export const BLUE_FLIGHT: FlightProfile = {
   scrollScreens: 16,
   travel: -BLUE_START,
   stopAt: -12 - BLUE_START,
-  holdFrom: 0.48,
-  holdTo: 0.52,
+  // No stop in the middle and no card (user 2026-11-19: "it wont stop in middle and no cards"). The stop's share is
+  // its own place on the line, so the camera keeps one even speed through it.
+  holdFrom: (-12 - BLUE_START) / -BLUE_START,
+  holdTo: (-12 - BLUE_START) / -BLUE_START,
   cardTint: "58,112,232",
+  through: true,
 };
 /** The same rigid orientation as green, without its size or placement beyond red. */
 export const blueMatrix = () => new Matrix4().makeRotationZ(GREEN.turn);
@@ -167,6 +171,7 @@ export const flightZ = (share: number, profile: FlightProfile = FLIGHT) =>
 
 /** The scroll is held at the stop and the camera has come to rest there. While it is still settling, the rope under a still mouse can change. Measured from the stop itself, not from the scroll: the scroll rests on whole pixels, a pixel is worth about .003 of camera travel, and that step must not count as leaving. */
 export const flightAtStop = (share: number, z: number, profile: FlightProfile = FLIGHT) =>
+  !profile.through &&
   share >= profile.holdFrom - 0.002 &&
   share <= profile.holdTo + 0.002 &&
   Math.abs(z - flightZ(profile.holdFrom, profile)) < 0.01;
@@ -278,9 +283,23 @@ export function createFlightGlide(element: HTMLElement, profile: FlightProfile, 
       to = profile.holdTo * total;
     let top = element.scrollTop,
       wait = 0;
-    const atStop = top >= from - 2 && top <= to + 2;
+    const atStop = !profile.through && top >= from - 2 && top <= to + 2;
     if (atStop) top = way > 0 ? to : from; // the held stretch shows no change, so leave from its far side at once
-    const target = atStop ? (way > 0 ? total : 0) : top < from ? (way > 0 ? from : 0) : way > 0 ? total : to;
+    const target = profile.through
+      ? way > 0
+        ? total
+        : 0
+      : atStop
+        ? way > 0
+          ? total
+          : 0
+        : top < from
+          ? way > 0
+            ? from
+            : 0
+          : way > 0
+            ? total
+            : to;
     // Leaving a section, the leg starts where its white is whole: the camera is already at the white opening.
     if (way > 0 && top < leadShare * total) {
       top = leadShare * total;
@@ -289,9 +308,13 @@ export function createFlightGlide(element: HTMLElement, profile: FlightProfile, 
     element.scrollTop = top;
     last = element.scrollTop;
     // A whole leg's time comes from its length on this side of the stop; a leg turned round part way takes less.
-    const stopping = target === from || target === to,
+    const stopping = !profile.through && (target === from || target === to),
       below = target <= from && top <= from;
-    const side = below ? units(profile.holdFrom) - units(leadShare) : units(1) - units(profile.holdTo),
+    const side = profile.through
+        ? units(1) - units(leadShare)
+        : below
+          ? units(profile.holdFrom) - units(leadShare)
+          : units(1) - units(profile.holdTo),
       span = Math.abs(units(target / total) - units(top / total));
     const begin = performance.now() + wait,
       time = legSeconds(side, stopping) * Math.sqrt(Math.min(span / Math.max(side, 1e-3), 1)) * 1000 + 1,
@@ -368,13 +391,17 @@ export function createFlightScroll(element: HTMLElement, profile: FlightProfile 
       to = profile.holdTo * total;
     if (total <= 0 || top <= 1 || top >= total - 1 || direction === 0) return;
     // At the stop: a gesture that arrived here stays. One that began here is leaving, however small it was.
-    const atStop = top >= from - 2 && top <= to + 2,
-      beganAtStop = startedAt >= from - 2 && startedAt <= to + 2;
+    const atStop = !profile.through && top >= from - 2 && top <= to + 2,
+      beganAtStop = !profile.through && startedAt >= from - 2 && startedAt <= to + 2;
     if (atStop && !beganAtStop) {
       direction = 0;
       return;
     }
-    const target = atStop
+    const target = profile.through
+        ? direction > 0
+          ? total
+          : 0
+        : atStop
         ? direction > 0
           ? total
           : 0
@@ -412,8 +439,8 @@ export function createFlightScroll(element: HTMLElement, profile: FlightProfile 
     lastInput = now;
     let top = element.scrollTop;
     // One gesture stops at the stop, whichever way it comes.
-    if (startedAt < from && top > to) top = to;
-    else if (startedAt > to && top < from) top = from;
+    if (!profile.through && startedAt < from && top > to) top = to;
+    else if (!profile.through && startedAt > to && top < from) top = from;
     if (top !== element.scrollTop) element.scrollTop = top;
     if (top !== last) direction = Math.sign(top - last);
     last = top;

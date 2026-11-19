@@ -275,7 +275,21 @@ export default function SectionFlight({
           to = profile.holdTo * total;
         if ((way < 0 && top <= 1) || (way > 0 && top >= total - 1)) return false;
         const atStop = top >= from - 2 && top <= to + 2;
-        element.scrollTop = atStop ? (way > 0 ? total : 0) : top < from ? (way > 0 ? from : 0) : way > 0 ? total : to;
+        element.scrollTop = profile.through
+          ? way > 0
+            ? total
+            : 0
+          : atStop
+            ? way > 0
+              ? total
+              : 0
+            : top < from
+              ? way > 0
+                ? from
+                : 0
+              : way > 0
+                ? total
+                : to;
         return true;
       },
       dispose() {

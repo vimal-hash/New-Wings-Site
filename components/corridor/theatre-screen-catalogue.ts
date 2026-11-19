@@ -3,6 +3,8 @@ import { CanvasTexture, SRGBColorSpace } from "three";
 // Shared by the screen material, its lens render, and the existing hover picker.
 export const theatreScreenCatalogue = {
   name: null as string | null,
+  /** The room tour: names come and go on the echo, faster than a hover's. */
+  quick: false,
   cover: { value: 0 },
   text: { value: 0 },
 };

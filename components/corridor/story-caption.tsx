@@ -55,6 +55,9 @@ function chapterFor(j: Snapshot): Chapter | null {
     // Forward only: walking back from Section 1 to the projector stays plain.
     case "screens":
       return j.leavingPage ? null : pick("corridor");
+    // Resting at the drawings: the same card, now with the hint to go on.
+    case "drawings":
+      return { ...pick("corridor"), hint: "Scroll on" };
     case "corridor":
       return j.leavingPage ? null : pick(j.liquidInView ? "lamp" : "corridor");
     case "panel":

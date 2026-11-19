@@ -42,11 +42,13 @@ import lighting from "./lighting.json";
 import { createDepthField, createDepthLayout, depthLayerVisibility } from "./depth-field";
 import { HERO_WAVE_GLSL, pupilPulseUniforms } from "../pupil-pulse-state";
 import { GRAIN_REACTION, GRAIN_REACTION_GLSL, GRAIN_OPTICS_GLSL } from "../pupil-grain-reaction";
+import { createWake, WAKE_GLSL } from "./wake";
 
 // The corridor has no stop: the eye mounts at the projector stop; its heavy work waits for resting stops (scene idle).
 const preparationPhases = new Set<JourneyPhase>([
   "done",
   "screens",
+  "drawings",
   "corridor",
   "panel",
   "page",
@@ -90,6 +92,7 @@ out vec2 vHeroLocal;
 out vec3 vHeroDirection;
 ${HERO_WAVE_GLSL}
 ${GRAIN_REACTION_GLSL}
+${WAKE_GLSL}
 void main(){
   vec3 centre=uMin+authoredPosition*uExtent;
   vec2 lightCoord=clamp((vec2(centre.x/12.760252,-centre.y/7.177642)*.5+.5)*4.-.5,0.,3.);
@@ -112,6 +115,12 @@ void main(){
     vHeroWave=reaction.x*character;vHeroSpark=reaction.y*character;vHeroWake=reaction.z*character;
   }
   vec4 view=modelViewMatrix*vec4(centre,1.);
+  if(uWakeOn>.0001&&view.z<-.1){
+    // The mouse's wake (wake.ts): the grain slides aside on screen and flows back, at its own depth.
+    vec4 clip=projectionMatrix*view;
+    vec2 push=wakePush(clip.xy/clip.w*.5*uWakeView,seed);
+    view.xy+=push*2.*(-view.z)/(uWakeView*vec2(projectionMatrix[0][0],projectionMatrix[1][1]));
+  }
   if(uCloseLook>.0001){
     // A stable mix of darker and brighter steel, a sparse set of facets catching the light (they change
     // only with the camera, never with time), a darker out-of-focus foreground and a cool falloff with
@@ -303,6 +312,7 @@ export function AuthoredEyeField({
     geometry.setAttribute("corner", new BufferAttribute(new Float32Array([-1, -1, 1, -1, 1, 1, -1, 1]), 2));
     geometry.setIndex([0, 1, 2, 0, 2, 3]);
     geometry.instanceCount = 0;
+    const wake = createWake();
     const material = new ShaderMaterial({
       glslVersion: GLSL3,
       vertexShader,
@@ -313,6 +323,7 @@ export function AuthoredEyeField({
       toneMapped: false,
       uniforms: {
         ...pupilPulseUniforms,
+        ...wake.uniforms,
         uHeroReactionGain: { value: GRAIN_REACTION.brightness },
         uTime: { value: 0 },
         uMin: { value: new Vector3() },
@@ -403,6 +414,7 @@ export function AuthoredEyeField({
       group,
       root,
       depth,
+      wake,
       stop,
       travelDistance: reveal.finalPosition.distanceTo(stop),
     };
@@ -420,6 +432,33 @@ export function AuthoredEyeField({
       invalidate();
     }
   }, [review, resources, invalidate]);
+  useEffect(() => {
+    // The mouse through the grains (wake.ts): computers only, View 1, View 2 and the final eye, not under reduced motion.
+    const move = (event: PointerEvent) => {
+      const journey = journeyControls.read();
+      if (
+        event.pointerType !== "mouse" ||
+        state.current.reduce ||
+        !state.current.ready ||
+        journey.finalCovered ||
+        (journey.phase !== "logoReveal" && journey.phase !== "logoDone")
+      )
+        return;
+      const rect = gl.domElement.getBoundingClientRect();
+      const x = event.clientX - rect.left - rect.width / 2,
+        y = rect.top + rect.height / 2 - event.clientY;
+      if (resources.wake.add(x, y, performance.now())) invalidate();
+    };
+    window.addEventListener("pointermove", move, { passive: true });
+    // Local review only (?diagnostics=1): the wake's live strength.
+    const hook = window as unknown as Record<string, unknown>;
+    if (/^(localhost|127\.)/.test(location.hostname) && new URLSearchParams(location.search).has("diagnostics"))
+      hook.__eyeWake = () => resources.wake.uniforms.uWakeOn.value;
+    return () => {
+      window.removeEventListener("pointermove", move);
+      delete hook.__eyeWake;
+    };
+  }, [gl, resources, invalidate]);
   /* eslint-disable react-hooks/immutability -- The loader fills the mount-owned mesh, attributes and uniforms. */
   useEffect(() => {
     const motion = state.current,
@@ -591,7 +630,12 @@ export function AuthoredEyeField({
     const motion = state.current,
       visible = (active || coveredReturn || warming) && motion.ready;
     resources.root.visible = resources.group.visible = visible;
-    if (!visible || document.hidden || journey.finalCovered) return;
+    if (!visible || document.hidden || journey.finalCovered) {
+      resources.wake.reset();
+      return;
+    }
+    // The mouse's wake keeps the frames coming until the grains are back in place.
+    if (resources.wake.update(performance.now(), size.width, size.height)) invalidate();
     const step = Math.min(delta, 0.05),
       animate = moving && !motion.reduce;
     // Keep the same grain positions when the phone camera settles. A resting

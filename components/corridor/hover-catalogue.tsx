@@ -33,6 +33,7 @@ import { theatreScreenCatalogue } from "./theatre-screen-catalogue";
 import { openEnquiry } from "./enquiry";
 import { scheduleSceneIdle } from "./scene-idle";
 import { compileByDryRun } from "./hidden-gpu-preparation";
+import { OPENING_ECHO } from "./story-beat";
 import {
   ASSEMBLED_ENTRY,
   formatNumber,
@@ -121,6 +122,8 @@ void main(){
 }`;
 /** Seconds for the outline to come in or go out. */
 const OUTLINE_FADE = 0.18;
+/** The room tour's stops, in order: chairs, the interior, the screen, the sound, the floor and step lights. */
+const TOUR_STOPS = [["seats"], ["interior", "ceiling", "lights"], ["screen"], ["speakers"], ["floor", "steps"]];
 /** Line width and the radius of the disc that finds the silhouette, in CSS pixels. */
 const OUTLINE_WIDTH = 1.5,
   OUTLINE_RADIUS = 2;
@@ -144,6 +147,10 @@ export default function HoverCatalogue() {
     retry: 0,
     fade: 0,
     ticket: 0,
+    /** The room tour: 0 waiting, 1 running, 2 over (it plays once). */
+    tour: 0,
+    tourAt: 0,
+    tourStop: -1,
   });
   const dropSelection = useRef(() => {});
   const repick = useRef(() => {});
@@ -205,7 +212,12 @@ export default function HoverCatalogue() {
       const theatre = currentMode() === "theatre";
       // Leaving keeps the last group lit while its outline fades out (cleared in the frame loop).
       s.selected = target;
-      if (target) tools.highlight(target.group);
+      if (target) {
+        // The mouse has found something: the tour is over.
+        if (s.tour === 1) theatreScreenCatalogue.quick = false;
+        s.tour = 2;
+        tools.highlight(target.group);
+      }
       theatreScreenCatalogue.name = theatre ? target?.entry.name ?? null : null;
       plate.show(theatre ? null : target?.entry ?? null);
       gl.domElement.style.cursor = target ? "pointer" : "";
@@ -314,7 +326,41 @@ export default function HoverCatalogue() {
       signature = s.still,
       next = stillSignature(camera, scene),
       mode = currentMode();
-    const seatCue = mode === "theatre" && theatreOpening.house.value >= 1 && !s.selected;
+    // The room tour (user 2026-11-19), once: as the house lights come up, each object lights on one repeat of the
+    // opening cue's echo (story-beat.ts), with its name on the screen; then nothing lights until the mouse finds it.
+    let tourStop = -1;
+    if (s.tour < 2) {
+      const movedAt = journeyControls.read().openingMovedAt;
+      if (movedAt > 0 && mode === "theatre") {
+        const now = performance.now();
+        // Picture behind the music (a slow first frame): the tour still plays once, starting now.
+        if (s.tour === 0 && !s.tourAt)
+          s.tourAt = now - movedAt > (OPENING_ECHO.first + OPENING_ECHO.every) * 1000 ? now + 300 - OPENING_ECHO.first * 1000 : movedAt;
+        const step = Math.floor(((now - s.tourAt) / 1000 - OPENING_ECHO.first) / OPENING_ECHO.every);
+        if (step >= OPENING_ECHO.count) {
+          s.tour = 2;
+          theatreScreenCatalogue.quick = false;
+        } else {
+          if (step >= 0) tourStop = step;
+          invalidate();
+        }
+      } else if (s.tour === 1) {
+        s.tour = 2;
+        theatreScreenCatalogue.quick = false;
+      }
+    }
+    if (tourStop !== s.tourStop) {
+      s.tourStop = tourStop;
+      if (tourStop >= 0 && !s.selected) {
+        s.tour = 1;
+        tools.sync(gl, scene, camera, "theatre");
+        const stop = tools.tourStop(tourStop);
+        tools.highlight(stop.group);
+        theatreScreenCatalogue.quick = true;
+        theatreScreenCatalogue.name = stop.name;
+      } else if (!s.selected) theatreScreenCatalogue.name = null;
+    }
+    const touring = tourStop >= 0 && !s.selected;
     let changed = false;
     for (let i = 0; i < next.length; i++)
       if (Math.abs(next[i] - signature[i]) > 1e-6) {
@@ -324,7 +370,7 @@ export default function HoverCatalogue() {
     if (changed) {
       s.lastMove = performance.now();
       if (mode === "theatre") {
-        if (seatCue || s.selected || s.fade > 0) tools.followTheatre(camera);
+        if (touring || s.selected || s.fade > 0) tools.followTheatre(camera);
         else tools.stale();
         repick.current();
       } else {
@@ -332,8 +378,8 @@ export default function HoverCatalogue() {
         dropSelection.current();
       }
     }
-    const goal = s.selected ? 1 : seatCue ? 0.65 : 0;
-    if (seatCue) tools.showSeatCue(gl, scene, camera);
+    const goal = s.selected || touring ? 1 : 0;
+    if (touring) tools.sync(gl, scene, camera, "theatre");
     if (s.fade !== goal) {
       const step = Math.min(delta, 0.05) / OUTLINE_FADE;
       s.fade = goal > s.fade ? Math.min(goal, s.fade + step) : Math.max(goal, s.fade - step);
@@ -503,7 +549,6 @@ function createTools() {
     pose = 0,
     idsPose = -1,
     maskPose = -1,
-    cueCount = -1,
     sizeKey = "";
   const drawingSize = new Vector2(),
     clearColour = new Color();
@@ -695,7 +740,6 @@ function createTools() {
       return item ? { id, entry: item.entry, group: [id] } : null;
     },
     highlight(group: number[]) {
-      cueCount = -1;
       maskPose = -1;
       const data = selected.image.data as Uint8Array;
       data.fill(0);
@@ -707,11 +751,17 @@ function createTools() {
       if (collected === "theatre" && current) setPose(camera);
       else current = false;
     },
-    showSeatCue(gl: WebGLRenderer, scene: Scene, camera: Camera) {
-      tools.sync(gl, scene, camera, "theatre");
-      if (cueCount === seatCount.value) return;
-      tools.highlight(Array.from({ length: seatCount.value }, (_, i) => HOVER_ID.seats + i));
-      cueCount = seatCount.value;
+    /** One stop of the room tour: its objects' IDs and the name for the screen. */
+    tourStop(index: number) {
+      const keys = TOUR_STOPS[index];
+      return {
+        group: keys.flatMap((key) =>
+          key === "seats"
+            ? Array.from({ length: seatCount.value }, (_, i) => HOVER_ID.seats + i)
+            : [theatreEntries.get(key)!.id],
+        ),
+        name: theatreEntries.get(keys[0])!.entry.name,
+      };
     },
     /** Assembled projector only. */
     drawFocus(gl: WebGLRenderer, strength: number) {

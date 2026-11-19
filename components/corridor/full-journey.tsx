@@ -8,6 +8,7 @@ import route from "./scene-route.json";
 import projector from "./projector-assets.json";
 import { createJourneySampler } from "./journey";
 import { projectorControls } from "./projector-controls";
+import { BAR } from "./story-beat";
 import { journeyControls, type JourneyPhase } from "./journey-controls";
 import type { MetricsStore } from "./metrics";
 import { createLogoReveal, LOGO_FOV } from "./logo-reveal";
@@ -47,7 +48,7 @@ import { createEndBox } from "./end-box";
 
 /** One fresh scroll in the lit theatre: the glasses lift, the screen powers down once
  *  they are nearly clear, then the camera leaves for the projector. */
-const GLASSES_EXIT = { liftedAt: 0.8, screenOff: 0.58, hold: 0.1 } as const;
+const GLASSES_EXIT = { liftedAt: 0.8, hold: 0.1 } as const;
 
 const smooth = (t: number) => t * t * t * (t * (t * 6 - 15) + 10);
 /** Rest outside the theatre before turning to the particles (was .5 s). */
@@ -88,14 +89,17 @@ const STOP_ARC =
           : 0,
       0,
     );
-/** One unbroken walk through the corridor (no stop): it speeds up over the first leg and eases out
- *  over the second, which starts at the first leg's end speed. `leave` also sets the page-return pace. */
-const CORRIDOR_MOVE = { arrive: 2.6, leave: 2.4 } as const;
-/** How far through the walk's second leg (eased, 0-1) the drawings are behind and the liquid sphere comes into view:
- *  the corner caption turns from the wall drawings to the lamp there (story-caption.tsx). Measured 2026-11-18: a wall
- *  fills the view for a moment at ~.87 (4.2 s after the step), the sphere shows at ~4.5 s. */
-const LIQUID_IN_VIEW = 0.87;
-const CORRIDOR_EXIT_SPEED = (PASSAGE_LENGTH - STOP_ARC) / CORRIDOR_MOVE.leave;
+/** The corridor walk in two legs with one stop between (user 2026-11-19: "one camera stop ... to see the blue print
+ *  ... just before the liquid sphere comes into view", at the end of the drawings): from the projector along the
+ *  drawings to DRAWINGS_AT of the passage (phase "drawings"), then on to the sphere. Each leg starts and ends at rest. */
+// The legs are timed to the theme's bars (story-beat.ts): the build (2 s) and its 0.9 s move plus the first leg make
+// three bars, so the music's part ends as the camera reaches the drawings; the second leg is one bar, so the last
+// chord lands as the camera stops at the liquid sphere.
+const CORRIDOR_MOVE = { arrive: 3 * BAR - 2.9, leave: BAR } as const;
+const DRAWINGS_AT = 0.955;
+const DRAWINGS_ARC = PASSAGE_LENGTH * DRAWINGS_AT;
+/** The page-return pace, kept from the old unbroken walk (the passage's second half in 2.4 s). */
+const CORRIDOR_EXIT_SPEED = (PASSAGE_LENGTH - STOP_ARC) / 2.4;
 /** Passage pose at an arc from its start. */
 function corridorPose(arc: number, position: Vector3, rotation: Quaternion) {
   let i = 1;
@@ -352,6 +356,7 @@ export default function FullJourney({ metrics, orbit }: { metrics: MetricsStore;
         pageReturning: false,
         reviewCamera: true,
         openingMoving: false,
+        openingMovedAt: 0,
         cinemaStage: "clear",
       });
       invalidate();
@@ -382,6 +387,7 @@ export default function FullJourney({ metrics, orbit }: { metrics: MetricsStore;
         finalCovered: false,
         panelStage: 0,
         openingMoving: false,
+        openingMovedAt: 0,
         pageBack: false,
         leavingPage: false,
       };
@@ -504,8 +510,16 @@ export default function FullJourney({ metrics, orbit }: { metrics: MetricsStore;
       if (orbit || !step || now < s.lockedUntil || s.phase === "intro") return;
       if (step < 0) {
         // Scrolling back plays each step in reverse: projector -> parts -> theatre.
-        if (!["awaitAssembly", "done"].includes(s.phase)) return;
+        if (!["awaitAssembly", "done", "drawings"].includes(s.phase)) return;
         s.back = true;
+        if (s.phase === "drawings") {
+          // From the drawings back along the corridor to the projector: the first leg played backwards.
+          s.from.copy(points.returned);
+          s.q.setFromRotationMatrix(new Matrix4().lookAt(points.returned, points.centre, new Vector3(0, 1, 0)));
+          s.lead = points.returned.distanceTo(points.screens);
+          phase("screens");
+          return;
+        }
         if (s.phase === "done" && phone) {
           projectorControls.set("hidden");
           s.from.copy(points.seat);
@@ -528,7 +542,7 @@ export default function FullJourney({ metrics, orbit }: { metrics: MetricsStore;
         }
         return;
       }
-      if (!["idle", "awaitAssembly", "done"].includes(s.phase)) return;
+      if (!["idle", "awaitAssembly", "done", "drawings"].includes(s.phase)) return;
       if (s.phase === "idle") {
         traceMark("Theatre to projector gesture");
         cinemaGlasses.toggle(1, s.reduce);
@@ -547,6 +561,9 @@ export default function FullJourney({ metrics, orbit }: { metrics: MetricsStore;
         s.q.copy(camera.quaternion);
         s.lead = s.from.distanceTo(points.screens);
         phase("screens");
+      } else if (s.phase === "drawings") {
+        s.back = false;
+        phase("corridor");
       }
     };
     // The page sections hear their own scroll (normal-page.tsx); everywhere else it is the journey's.
@@ -815,7 +832,8 @@ export default function FullJourney({ metrics, orbit }: { metrics: MetricsStore;
         queueMicrotask(() => journeyControls.update({ openingStage: shot.stage }));
       if (shot.progress > 0 && !journeyControls.read().openingMoving) {
         traceMark("Opening motion started");
-        queueMicrotask(() => journeyControls.update({ openingMoving: true }));
+        const movedAt = performance.now();
+        queueMicrotask(() => journeyControls.update({ openingMoving: true, openingMovedAt: movedAt }));
       }
       camera.position.fromArray(OPENING_CAMERA_START).lerp(openingEnd, shot.position);
       s.focus.set(
@@ -877,7 +895,7 @@ export default function FullJourney({ metrics, orbit }: { metrics: MetricsStore;
         sceneMotion.at = performance.now();
       }
     }
-    if (["idle", "reveal", "awaitAssembly", "done", "panel", "page"].includes(s.phase)) return;
+    if (["idle", "reveal", "awaitAssembly", "done", "drawings", "panel", "page"].includes(s.phase)) return;
     s.elapsed += dt;
     if (s.phase === "glassesExit") {
       // Follow the glasses' own motion, so a slow frame cannot cut the lift short.
@@ -886,10 +904,9 @@ export default function FullJourney({ metrics, orbit }: { metrics: MetricsStore;
         invalidate();
         return;
       }
-      theatreOpening.screenPower.value = s.reduce
-        ? 0
-        : 1 - smooth(Math.min(1, s.elapsed / GLASSES_EXIT.screenOff));
-      if (!s.reduce && s.elapsed < GLASSES_EXIT.screenOff + GLASSES_EXIT.hold) {
+      // The screen goes down with the house lights over the pullback (below), not in half a second before it.
+      if (s.reduce) theatreOpening.screenPower.value = 0;
+      if (!s.reduce && s.elapsed < GLASSES_EXIT.hold) {
         invalidate();
         return;
       }
@@ -929,7 +946,7 @@ export default function FullJourney({ metrics, orbit }: { metrics: MetricsStore;
       if (
         s.reduce
           ? s.elapsed < 1
-          : (!s.assemblySettled && s.elapsed < 6) || (s.assemblySettled && s.elapsed < 0.45)
+          : !s.assemblySettled && s.elapsed < 6 // the camera leaves as soon as the last part has settled
       ) {
         invalidate();
         return;
@@ -939,19 +956,8 @@ export default function FullJourney({ metrics, orbit }: { metrics: MetricsStore;
       s.to.copy(points.returned);
       change("return");
     }
-    // The second corridor leg starts at the first leg's end speed (2·distance/duration for both easings).
-    const leave = (CORRIDOR_MOVE.arrive * (PASSAGE_LENGTH - STOP_ARC)) / Math.max(1, s.lead + STOP_ARC);
-    // No stop at the join: the first leg's leftover time carries straight into the second in the same frame. Walking
-    // back (from the liquid to the projector) the legs come in the other order, each played exactly backwards.
-    if (s.phase === "screens" && !s.back && !s.reduce && s.elapsed >= CORRIDOR_MOVE.arrive) {
-      const over = s.elapsed - CORRIDOR_MOVE.arrive;
-      change("corridor");
-      s.elapsed = over;
-    } else if (s.phase === "corridor" && s.back && !s.reduce && s.elapsed >= leave) {
-      const over = s.elapsed - leave;
-      change("screens");
-      s.elapsed = over;
-    }
+    // Both corridor legs rest at the drawings ("drawings"), forward and back; each is played exactly backwards.
+    const leave = CORRIDOR_MOVE.leave;
     const walk = s.phase === "screens" || s.phase === "corridor";
     const duration =
       s.phase === "corridor"
@@ -971,32 +977,36 @@ export default function FullJourney({ metrics, orbit }: { metrics: MetricsStore;
       // The corridor walk backwards is the same walk in reverse time, so it speeds up and eases out the other way round.
       along = s.back ? 1 - t : t,
       eased = walk
-        ? s.phase === "screens"
-          ? along * along
-          : 1 - (1 - along) * (1 - along) // corridor: one unbroken walk, speeding up then easing out
+        ? smooth(along) // each corridor leg starts and ends at rest
         : s.back
           ? 1 - smooth(t)
           : settle(t);
     if (s.back && (s.phase === "approach" || s.phase === "pullback"))
       restoreStageLighting(s.phase === "approach" ? 0.35 * t : 0.35 + 0.65 * t);
-    else if (!s.back && s.phase === "pullback") leadStageLighting(theatrePullbackDim(t), 0);
+    else if (!s.back && s.phase === "pullback") {
+      // House lights and screen go down together: one slow, even fade across the whole move (user 2026-11-19: "it
+      // should off slowly and properly"; it used to read as a switch).
+      const dim = theatrePullbackDim(t);
+      leadStageLighting(dim, 0);
+      theatreOpening.screenPower.value = Math.min(theatreOpening.screenPower.value, 1 - dim);
+    }
     else if (!s.back && s.phase === "approach") leadStageLighting(1, smooth(t));
     if (s.phase === "screens") {
-      // First leg from the projector: into the passage and along it to the middle.
-      const total = s.lead + STOP_ARC,
+      // First leg from the projector: into the passage and along it to where the drawings end.
+      const total = s.lead + DRAWINGS_ARC,
         u = eased * total;
       corridorPose(Math.max(0, u - s.lead), points.position, points.rotation);
       if (u < s.lead) points.position.lerpVectors(s.from, points.screens, u / s.lead);
       camera.position.copy(points.position).setY(points.returned.y);
       camera.quaternion.copy(s.q).slerp(points.rotation, smooth(Math.min(1, u / (s.lead + 12))));
-      metrics.update({ progress: (eased * STOP_ARC) / PASSAGE_LENGTH });
+      metrics.update({ progress: Math.max(0, u - s.lead) / PASSAGE_LENGTH });
     } else if (s.phase === "corridor") {
-      // Second leg, without stopping: on to the liquid.
-      const u = eased * (PASSAGE_LENGTH - STOP_ARC);
-      corridorPose(STOP_ARC + u, points.position, points.rotation);
+      // Second leg: from the drawings on to the liquid.
+      const u = eased * (PASSAGE_LENGTH - DRAWINGS_ARC);
+      corridorPose(DRAWINGS_ARC + u, points.position, points.rotation);
       camera.position.copy(points.position).setY(points.returned.y);
       camera.quaternion.copy(points.rotation);
-      metrics.update({ progress: (STOP_ARC + u) / PASSAGE_LENGTH });
+      metrics.update({ progress: (DRAWINGS_ARC + u) / PASSAGE_LENGTH });
     } else {
       camera.position.lerpVectors(s.from, s.to, eased);
       if (s.phase === "pullback") {
@@ -1007,14 +1017,18 @@ export default function FullJourney({ metrics, orbit }: { metrics: MetricsStore;
       camera.lookAt(s.focus);
     }
     if (walk) {
-      const liquidInView = s.phase === "corridor" && eased >= LIQUID_IN_VIEW;
+      const liquidInView = s.phase === "corridor"; // the sphere comes into view as the last leg begins
       if (journeyControls.read().liquidInView !== liquidInView)
         queueMicrotask(() => journeyControls.update({ liquidInView }));
     }
     invalidate();
     if (t === 1 && s.back) {
-      if (s.phase === "corridor") change("screens");
-      else if (s.phase === "screens") {
+      if (s.phase === "corridor") {
+        // Back from the liquid: the camera rests at the drawings, as on the way in.
+        s.back = false;
+        change("drawings");
+        queueMicrotask(() => journeyControls.update({ leavingPage: false, panelStage: 0 }));
+      } else if (s.phase === "screens") {
         // Back at the projector, as after its assembly.
         s.back = false;
         s.focus.copy(points.centre);
@@ -1057,9 +1071,23 @@ export default function FullJourney({ metrics, orbit }: { metrics: MetricsStore;
       } else if (s.phase === "approach") {
         change("reveal");
         queueMicrotask(() => projectorControls.play("particles"));
-      } else if (s.phase === "return") change("done");
-      // No stop in the corridor: the walk carries straight on toward the liquid.
-      else if (s.phase === "screens") change("corridor");
+      } else if (s.phase === "return") {
+        change("done");
+        // After the build the camera carries straight on into the corridor, without a scroll (phones, which have no
+        // build, still rest at the projector). If the corridor is not ready yet it starts when it is (pendingScreens).
+        if (metrics.read().corridorReady) {
+          s.from.copy(camera.position);
+          s.q.copy(camera.quaternion);
+          s.lead = s.from.distanceTo(points.screens);
+          change("screens");
+        } else {
+          s.pendingScreens = true;
+          sceneIdleUrgent.value = true;
+          metrics.update({ waitingForCorridor: true });
+        }
+      }
+      // The walk rests where the drawings end; the next step goes on to the liquid.
+      else if (s.phase === "screens") change("drawings");
       else if (s.phase === "corridor") {
         change("panel");
         queueMicrotask(() => journeyControls.update({ panelStage: 1 }));

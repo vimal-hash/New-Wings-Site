@@ -2,18 +2,19 @@
  *  Blender already builds in order: light path, lasers and cooling, lens, then the outer shell and covers. There every
  *  part moves in about three poses and all motion ends by pose 38, so on a fixed 2 s clock the parts snapped into place
  *  and the covers were still closing when the camera left. Here each part keeps its exact Blender path and its place in
- *  that order, but gets its own delay and a longer travel time, eased so it settles into place. */
+ *  that order, but gets its own delay and a longer travel time, eased so it settles into place. The whole build
+ *  fits a 2 s clock (user 2026-11-19: "in 2s it should assemble"); the camera leaves as it ends. */
 const ASSEMBLY = {
   /** Seconds before the first part moves. */
-  lead: 0.1,
+  lead: 0.06,
   /** Seconds across which the Blender start order is spread. */
-  spread: 2.4,
+  spread: 1.4,
   /** Shortest travel time of one part, in seconds. */
-  travel: 0.5,
+  travel: 0.32,
   /** Extra travel for parts that moved over more poses in Blender (share of the spread). */
   stretch: 0.6,
   /** Small per-part offset so a group of parts does not land on the same frame. */
-  jitter: 0.08,
+  jitter: 0.05,
 } as const;
 
 const SAME = 1e-6;

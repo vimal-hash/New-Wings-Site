@@ -23,7 +23,7 @@
   "dataUrl": "/models/projector/projector-poses.bin.gz",
   "fallbackUrl": "/models/projector/projector-poses.bin",
   "particleSeconds": 4,
-  "assemblySeconds": 3,
+  "assemblySeconds": 2,
   "source": "D:\\CodexOutputs\\Theatre_Optimization_20261017\\Theatre_Moon_Projector_optimized.blend",
   "sourceFrames": [
     96,

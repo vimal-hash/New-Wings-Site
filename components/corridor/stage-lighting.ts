@@ -41,7 +41,7 @@ export function updateStageLighting(frame: number, active: boolean) {
 }
 
 /** Spread the theatre fade across the camera move, with soft ends at both stops. */
-export const theatrePullbackDim = (progress: number) => smooth(0.06, 1, progress);
+export const theatrePullbackDim = (progress: number) => smooth(0, 1, progress);
 
 /** Forward: the room dims during the pullback (`dim` 0..1), then the
  *  projector key comes up as the camera turns toward it (`key` 0..1). One-way, like the build. */
@@ -60,8 +60,8 @@ export function restoreStageLighting(amount: number) {
   stageLighting.key.value = Math.min(stageLighting.key.value, 1 - a);
 }
 
-/** Attenuate baked illumination, never transparency. Bright sources extinguish
- * before the reflected fill, so the room does not read as one fading image. */
+/** Attenuate baked illumination, never transparency. Lamps and the light they throw go down together on one even
+ * curve, like real house lights (2026-11-19; the lamps used to go out first and read as a switch). */
 export function stageBakedMaterial(material: Material, floor = false, emitter = false) {
   const compile = material.onBeforeCompile,
     key = material.customProgramCacheKey();
@@ -76,7 +76,7 @@ float bakedLuma=dot(outgoingLight,vec3(.2126,.7152,.0722));
 float directShare=smoothstep(.025,.45,bakedLuma);
 float nightFill=${floor ? ".25" : "mix(.145,.055,directShare)"};
 ${emitter ? "nightFill=mix(nightFill,.006,smoothstep(.25,.70,bakedLuma));" : ""}
-float roomFill=mix(1.,nightFill,${emitter ? "dimAmount" : "smoothstep(.08,1.,dimAmount)"});
+float roomFill=mix(1.,nightFill,dimAmount);
 outgoingLight*=roomFill;\n#include <opaque_fragment>`,
     );
   };

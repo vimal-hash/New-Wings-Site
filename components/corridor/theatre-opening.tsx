@@ -33,7 +33,7 @@ import { extractSurface, type SurfaceId } from "./baked-surface-geometry";
 import { applyTheatreScreenArtwork, THEATRE_SCREEN_ARTWORK } from "./theatre-screen-artwork";
 import { createTheatreCatalogueTexture, theatreScreenCatalogue } from "./theatre-screen-catalogue";
 import { stageBakedMaterial } from "./stage-lighting";
-import { SCREEN_COVER, SCREEN_GLOW, theatreOpening } from "./theatre-opening-state";
+import { SCREEN_COVER, SCREEN_COVER_TOUR, SCREEN_GLOW, theatreOpening } from "./theatre-opening-state";
 import type { MetricsStore } from "./metrics";
 import { traceGLTF, traceMark } from "./loading-trace";
 import { scheduleSceneIdle } from "./scene-idle";
@@ -135,10 +135,11 @@ export function TheatreOpeningScreen({ metrics }: { metrics: MetricsStore }) {
   }, [screen, metrics, invalidate]);
   useFrame((_, delta) => {
     const name = journeyControls.read().phase === "idle" ? theatreScreenCatalogue.name : null;
-    const dt = reduced.current ? 1 : Math.min(0.05, delta);
+    const dt = reduced.current ? 1 : Math.min(0.05, delta),
+      timing = theatreScreenCatalogue.quick ? SCREEN_COVER_TOUR : SCREEN_COVER;
     // Moving to another object: the old words fade out first, then the new ones come in.
     if (name && name !== screen.name) {
-      if (screen.name && screen.text > 0) screen.text = Math.max(0, screen.text - dt / SCREEN_COVER.swap);
+      if (screen.name && screen.text > 0) screen.text = Math.max(0, screen.text - dt / timing.swap);
       else {
         screen.catalogue.show(name);
         screen.name = name;
@@ -149,10 +150,10 @@ export function TheatreOpeningScreen({ metrics }: { metrics: MetricsStore }) {
     // Slow, eased in and out: the black screen settles over the image instead of snapping on.
     screen.cover = Math.max(
       0,
-      Math.min(1, screen.cover + (name ? dt / SCREEN_COVER.in : -dt / SCREEN_COVER.out)),
+      Math.min(1, screen.cover + (name ? dt / timing.in : -dt / timing.out)),
     );
     // The words follow once the screen is mostly dark.
-    if (settled && screen.cover > 0.45) screen.text = Math.min(1, screen.text + dt / SCREEN_COVER.text);
+    if (settled && screen.cover > 0.45) screen.text = Math.min(1, screen.text + dt / timing.text);
     // Fully gone: the next hover starts with its words hidden.
     if (!name && screen.cover === 0) screen.text = 0;
     const c = screen.cover;

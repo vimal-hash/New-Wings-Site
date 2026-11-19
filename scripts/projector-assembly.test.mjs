@@ -34,8 +34,9 @@ test("every part keeps its exact Blender start and end pose, its build order, an
       const si = clips[i * 4],
         sj = clips[j * 4];
       if (si === clips[i * 4 + 1] || sj === clips[j * 4 + 1] || si >= sj) continue;
-      assert.ok(clips[i * 4 + 2] <= clips[j * 4 + 2] + 0.08 + 1e-6, `part ${j} would start before ${i}`);
+      assert.ok(clips[i * 4 + 2] <= clips[j * 4 + 2] + 0.05 + 1e-6, `part ${j} would start before ${i}`);
     }
   const end = assemblyEnd(clips);
-  assert.ok(end > 2 && end <= meta.assemblySeconds - 0.2, "last part settles at " + end + "s");
+  assert.ok(end > 1.3 && end <= meta.assemblySeconds - 0.1, "last part settles at " + end + "s");
+  assert.equal(meta.assemblySeconds, 2);
 });

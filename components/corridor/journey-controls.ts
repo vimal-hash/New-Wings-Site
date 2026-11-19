@@ -12,6 +12,7 @@ export type JourneyPhase =
   | "done"
   | "screens"
   | "corridor"
+  | "drawings"
   | "panel"
   | "page"
   | "pageReturnLoading"
@@ -22,6 +23,8 @@ type Snapshot = {
   cinemaStage: "wearing" | "removing" | "clear";
   openingStage: string;
   openingMoving: boolean;
+  /** performance.now() when the opening camera started to move (the opening cue and the room tour count from it). */
+  openingMovedAt: number;
   openingPrepared: boolean;
   loaderDone: boolean;
   pageSection: number | null;
@@ -50,6 +53,7 @@ let snapshot: Snapshot = {
   cinemaStage: "wearing",
   openingStage: "screen",
   openingMoving: false,
+  openingMovedAt: 0,
   openingPrepared: false,
   loaderDone: false,
   pageSection: null,

@@ -2,7 +2,21 @@
 
 The user approved draft 1.4 of the New Wings theme ("This is nice") and chose to have it follow the story ("Follow the story") rather than play once. This closes the "sound with mute" item from the 2026-11-16 three-lens review.
 
-## What the visitor gets
+> **Final tune (2026-11-19, later the same day) supersedes the cue table below.** Sound now comes on with the visitor's first click, tap or key press anywhere (browsers allow nothing earlier; a scroll never counts). Turned off with the tab, it stays off.
+>
+> | Moment | Sound now |
+> | --- | --- |
+> | Opening camera starts to move | `theme-opening.mp3` from that moment, so its echo lands on the room tour |
+> | First scroll | Drop part 1, 0 → 10.92 s (whoomp and round one), holding softly at the exploded projector |
+> | Build scroll | Drop part 2, 10.92 → 17.47 s (round two), ending as the walk stops at the drawings |
+> | Next scroll | Drop part 3, the last bar and chord, landing as the camera stops at the sphere |
+> | End of part 1 | The hum comes in under the rest of the journey |
+> | Reel One title writes in | The opening's long E and echo (2.25 s), then the drop looping bars 2–10 with no stop |
+> | Last white page | Unchanged: the end cue, with everything else fading |
+>
+> Walking back stops the current part. See `docs/final-tune/README.md` (item 8) and `components/corridor/story-beat.ts` for the bar lines.
+
+## What the visitor gets (first version)
 
 - A **Sound** tab on the bottom-right edge, the menu tab's mirror (`sound-toggle.tsx`, `.sound-toggle` in `globals.css`). Off by default. It shows from the white loader on, so sound turned on there meets the theatre opening. Four small bars move while sound is on (they stay still under reduced motion) and lie flat while it is off. On phones it shows only the bars. It stays usable on the last white page (added to the `data-finale-covered` exception list).
 - Nothing is downloaded until the visitor turns sound on. Then the four files (about 1.5 MB in all) are fetched through `assetURL` with content versions.

@@ -243,7 +243,7 @@ export default function CorridorExperience() {
     // liquid handoff only has to reveal them.
     return scheduleSceneIdle(() => setPrepareFlight(true), device === "mobile" ? 12 : 20);
   }, [journey.phase, prepareFlight]);
-  const hiddenFlight = prepareFlight && ["done", "screens", "corridor", "panel"].includes(journey.phase);
+  const hiddenFlight = prepareFlight && ["done", "screens", "drawings", "corridor", "panel"].includes(journey.phase);
 
   useEffect(() => {
     const timer = window.setInterval(() => {

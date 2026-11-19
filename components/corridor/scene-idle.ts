@@ -16,7 +16,7 @@ const input = (event: Event) => {
 };
 // The HTML page still covers the scene during pageReturnLoading. Critical mounts
 // must run here: its transition waits for projector readiness before moving.
-const settled = new Set(["idle", "done", "awaitAssembly", "panel", "logoDone", "pageReturnLoading"]);
+const settled = new Set(["idle", "done", "awaitAssembly", "drawings", "panel", "logoDone", "pageReturnLoading"]);
 // The HTML sections cover the scene. Return preparation can use quiet frames
 // there on every tier while the visitor reads.
 let phone: boolean | undefined;
@@ -64,7 +64,8 @@ function tick() {
           (!(projectorJustRevealed || phoneMorph) || job.priority < 15) &&
           (job.priority < 20 ||
             reviewing ||
-            ["done", "panel", "logoDone", "page", "pageReturnLoading"].includes(shot.phase)),
+            // "drawings": the rest that took over from the projector stop (computers walk on right after the build).
+            ["done", "drawings", "panel", "logoDone", "page", "pageReturnLoading"].includes(shot.phase)),
       )
       .sort((a, b) => a[1].priority - b[1].priority)[0];
     if (next) {

@@ -29,12 +29,18 @@ test("the hum's copies overlap by whole turns of the 24 Hz motor and fit inside 
   for (const seconds of [length, length - overlap]) assert.ok(Math.abs(seconds * 24 - Math.round(seconds * 24)) < 1e-9);
 });
 
-test("sound waits for the visitor: nothing is fetched or started before the button", () => {
-  // The audio context and the downloads begin in start(), and only the button's toggle calls it.
+test("sound waits for the visitor: nothing is fetched or started before a click, tap or key press", () => {
+  // The audio context and the downloads begin in start(); only turnOn() calls it, from the Sound tab or from the
+  // visitor's first click, tap or key press anywhere (one the browser counts), never from a scroll or by itself.
   const [before, after] = source.split("export const themeSound");
-  assert.equal(before.match(/\bstart\(\)/g).length, 1); // its own definition
+  assert.equal(before.match(/\bstart\(\)/g).length, 2); // its own definition and turnOn()
   assert.match(before, /function start\(\) \{\n\s+if \(!context\) \{[\s\S]*?new Audio\(\)[\s\S]*?Promise\.all\(/);
-  assert.match(after, /toggle\(\) \{[\s\S]*if \(!start\(\)\) return;/);
+  assert.match(before, /function turnOn\(\) \{\n\s+if \(!start\(\)\) return;/);
+  assert.match(after, /toggle\(\) \{[\s\S]*turnOn\(\);/);
+  assert.match(after, /arm\(\) \{[\s\S]*userActivation[\s\S]*turnOn\(\);/);
+  assert.doesNotMatch(after, /"wheel"|"scroll"|"touchmove"/);
+  // Turned off with the tab, it stays off.
+  assert.match(after, /chosenOff = true;/);
   assert.equal(source.match(/new Audio\(\)/g).length, 1);
   const reel = fs.readFileSync("components/film-reel/reel-click.ts", "utf8");
   assert.match(reel, /themeSound\.read\(\)\.enabled/);

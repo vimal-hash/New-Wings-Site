@@ -93,6 +93,11 @@ export default TitleLine;
  */
 export function writeTitle(line: HTMLElement | null, seconds: number) {
   if (!line) return;
+  // Each time a line starts to write, the theme hears of it (theme-sound.ts: the sections' music starts here).
+  if (seconds > 0 && line.dataset.cued !== "1") {
+    line.dataset.cued = "1";
+    window.dispatchEvent(new Event("nw:title"));
+  } else if (seconds <= 0 && line.dataset.cued) delete line.dataset.cued;
   const letters = line.querySelectorAll<HTMLElement>("[data-letter]"),
     gap = (TITLE.write - TITLE.ink) / Math.max(letters.length - 1, 1);
   letters.forEach((letter, index) => {

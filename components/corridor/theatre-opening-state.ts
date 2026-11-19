@@ -3,6 +3,8 @@
 export const SCREEN_GLOW = 1.5;
 /** Seconds for the black hover screen to come in and go out. */
 export const SCREEN_COVER = { in: 0.55, out: 0.4, text: 0.5, swap: 0.2 };
+/** The same during the room tour, where each name has one echo repeat (0.41 s). */
+export const SCREEN_COVER_TOUR = { in: 0.2, out: 0.4, text: 0.1, swap: 0.06 };
 export const THEATRE_OPENING = {
   screen: 1,
   blueEnd: 2.8,

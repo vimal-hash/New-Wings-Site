@@ -11,8 +11,10 @@ type Chapter = { key: string; line: string; hint?: string };
  * The corridor walk and the liquid sphere have no stop: their lines show while the camera walks, with no hint.
  */
 const CHAPTERS: Record<string, Omit<Chapter, "key">> = {
+  // The house lights come up as this stop begins (houseLightLevel, 3.2 s) and stay up when scrolling back to it, so the
+  // line speaks to a lit room: seated, before the film. "Lights up" belongs to the end page.
   theatre: {
-    line: "Lights down. The room goes quiet. This is the moment we build for.",
+    line: "Take your seat. Everything in this room is our work.",
     hint: "Hover the room · Scroll to step back",
   },
   parts: {

@@ -24,3 +24,11 @@ test("each section title line has its REEL word above it", () => {
   assert.equal(lines.length, reels.length);
   assert.equal(lines[2], "PEOPLE BRING THE COLOUR");
 });
+
+test("the theatre caption fits the lit room it is shown in", () => {
+  const source = fs.readFileSync(new URL("../components/corridor/story-caption.tsx", import.meta.url), "utf8");
+  // The house lights are up at the theatre stop (they rise as it begins), so it never says "Lights down".
+  const theatre = source.match(/theatre: \{\s*line: "([^"]+)"/)?.[1];
+  assert.equal(theatre, "Take your seat. Everything in this room is our work.");
+  assert.doesNotMatch(source, /Lights down/);
+});

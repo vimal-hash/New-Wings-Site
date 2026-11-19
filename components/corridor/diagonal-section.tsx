@@ -187,7 +187,7 @@ export default function DiagonalSection() {
           <image href="/images/new-wings-logo-layer-2048x1152.png" width="2048" height="1152" />
         </svg>
       </div>
-      {/* The film is over and the white is the house lights coming up: the story's last line ("Lights down" opened
+      {/* The film is over and the white is the house lights coming up: the story's last line ("Take your seat" opened
           it) and the one next step. Comes up after the artwork (globals.css .end-call); never moves with the mouse. */}
       <div className="end-call">
         <p className={`end-call__line ${cinzel.className}`}>

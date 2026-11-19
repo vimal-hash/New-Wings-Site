@@ -1125,6 +1125,11 @@ dd {
   background: #fff;
   color: #171717;
   touch-action: pan-y pinch-zoom;
+  /* Steps move the page, so its scrollbar is only clutter on the right edge. Still scrollable. */
+  scrollbar-width: none;
+}
+.normal-page::-webkit-scrollbar {
+  display: none;
 }
 .normal-page section {
   position: relative;

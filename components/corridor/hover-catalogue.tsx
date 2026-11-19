@@ -14,6 +14,7 @@ import {
   InstancedMesh,
   Mesh,
   NearestFilter,
+  RedFormat,
   Object3D,
   OrthographicCamera,
   RGBAFormat,
@@ -49,44 +50,54 @@ const STILL_MS = 220;
 const THEATRE_STILL_MS = 120;
 
 const idFragment = `flat varying float vId;void main(){float id=floor(vId+.5);gl_FragColor=vec4(mod(id,256.)/255.,floor(id/256.)/255.,0.,1.);}`;
+/** Outline mask builds (MASK): unselected IDs are moved outside the view, so only the selected object is drawn. */
+const maskCull = `
+#ifdef MASK
+if(textureLod(uSelected,vec2((floor(vId+.5)+.5)/${HOVER_ID.limit}.,.5),0.).r<.5)gl_Position=vec4(2.,2.,2.,1.);
+#endif
+`;
+const maskUniform = `
+#ifdef MASK
+uniform sampler2D uSelected;
+#endif
+`;
 /** Static (and instanced) surfaces: one ID per mesh, or per sofa instance. */
-const staticVertex = `uniform float uId;flat varying float vId;void main(){vec4 p=vec4(position,1.);
+const staticVertex = `uniform float uId;flat varying float vId;${maskUniform}void main(){vec4 p=vec4(position,1.);
 #ifdef USE_INSTANCING
 p=instanceMatrix*p;vId=uId+float(gl_InstanceID);
 #else
 vId=uId;
 #endif
-gl_Position=projectionMatrix*modelViewMatrix*p;}`;
+gl_Position=projectionMatrix*modelViewMatrix*p;${maskCull}}`;
 /** Projector: the same pose texture as the visible rig, so exploded parts pick and outline where they are drawn. */
-const projectorVertex = (poseGLSL: string) => `${poseGLSL}flat varying float vId;varying float vHide;
+const projectorVertex = (poseGLSL: string) => `${poseGLSL}flat varying float vId;varying float vHide;${maskUniform}
 void main(){readPart();vec3 p=rotatePart(partRotation,position*partScale)+partPosition;vId=${HOVER_ID.projector}.+floor(aPart+.5);
-vHide=1.-step(.5,vPartVisible);gl_Position=projectionMatrix*modelViewMatrix*vec4(p,1.);}`;
+vHide=1.-step(.5,vPartVisible);gl_Position=projectionMatrix*modelViewMatrix*vec4(p,1.);${maskCull}}`;
 const projectorFragment = `flat varying float vId;varying float vHide;void main(){if(vHide>.5)discard;float id=floor(vId+.5);gl_FragColor=vec4(mod(id,256.)/255.,floor(id/256.)/255.,0.,1.);}`;
+const maskFragment = `void main(){gl_FragColor=vec4(1.);}`;
+const projectorMaskFragment = `varying float vHide;void main(){if(vHide>.5)discard;gl_FragColor=vec4(1.);}`;
 
 /**
- * Outline drawn over the finished frame: a thin anti-aliased white line on the selected IDs' edge, plus a faint fill.
- * The ID buffer is one hard sample per pixel, so the edge is found from the share of a small disc that is selected:
- * a half-covered disc is exactly on the edge. That turns the pixel steps into a smooth line.
+ * Outline drawn over the finished frame: one thin white line round the selected object's own silhouette, the way a
+ * selection outline works (pmndrs "shopping" example), not round the part of it that happens to be in view.
+ * The mask holds the selected object alone, drawn whole (nothing else in it, so whatever stands in front of it cannot
+ * cut it), with smooth MSAA edges. The share of a small disc that lies inside the mask gives each pixel's distance to
+ * the silhouette (a half-covered disc is on it); the line is a fixed width round that, anti-aliased by one pixel.
+ * No fill, no glow.
  */
 const outlineVertex = `varying vec2 vUv;void main(){vUv=position.xy*.5+.5;gl_Position=vec4(position.xy,0.,1.);}`;
-const outlineFragment = `uniform sampler2D uIds,uSelected;uniform vec2 uTexel;uniform float uRadius,uStrength,uLine,uGlow,uFill;uniform vec3 uTint;varying vec2 vUv;
-float sel(vec2 uv){vec4 c=textureLod(uIds,uv,0.);float id=floor(c.r*255.+.5)+floor(c.g*255.+.5)*256.;return textureLod(uSelected,vec2((id+.5)/${HOVER_ID.limit}.,.5),0.).r;}
-void main(){vec2 r=uTexel*uRadius;float ring=0.,centre=sel(vUv);
-// Most of the screen is far from the selection: eight taps settle it.
-for(int i=0;i<8;i++){float a=float(i)*.7854;ring+=sel(vUv+vec2(cos(a),sin(a))*r);}
-if(ring+centre<.5){
-  if(uGlow<=0.)discard;
-  float halo=0.;
-  for(int i=0;i<8;i++){float a=float(i)*.7854;vec2 d=vec2(cos(a),sin(a))*r;halo+=sel(vUv+d*2.)*.65+sel(vUv+d*3.5)*.35;}
-  if(halo==0.)discard;
-  gl_FragColor=vec4(uTint,halo*.125*uGlow*uStrength);return;
-}
-if(ring+centre>8.5){gl_FragColor=vec4(uTint,uFill*uStrength);return;}
+const outlineFragment = `uniform sampler2D uMask;uniform vec2 uTexel;uniform float uRadius,uWidth,uStrength;uniform vec3 uTint;varying vec2 vUv;
+float inside(vec2 uv){return textureLod(uMask,uv,0.).r;}
+void main(){vec2 r=uTexel*uRadius;float ring=inside(vUv);
+// Most of the screen is far from the silhouette: nine taps that all agree settle it.
+for(int i=0;i<8;i++){float a=float(i)*.7854;ring+=inside(vUv+vec2(cos(a),sin(a))*r);}
+if(ring<.02||ring>8.98)discard;
 float covered=0.;
-for(int i=0;i<24;i++){float k=float(i)+.5,a=k*2.39996;covered+=sel(vUv+vec2(cos(a),sin(a))*r*sqrt(k/24.));}
-covered/=24.;
-float line=smoothstep(0.,1.,1.-abs(covered*2.-1.)),fill=smoothstep(.5,1.,covered);
-gl_FragColor=vec4(uTint,(line*uLine+fill*uFill)*uStrength);}`;
+for(int i=0;i<24;i++){float k=float(i)+.5,a=k*2.39996;covered+=inside(vUv+vec2(cos(a),sin(a))*r*sqrt(k/24.));}
+// Straight-edge relation near the silhouette: covered = .5 + 2d/(pi r).
+float d=abs(covered/24.-.5)*1.5708*uRadius,line=clamp(uWidth*.5+.5-d,0.,1.);
+if(line<=0.)discard;
+gl_FragColor=vec4(uTint,line*uStrength);}`;
 /**
  * Assembled projector: the hovered unit stays sharp and lifts a little, with a soft cool glow around it,
  * while everything else is blurred and dimmed. One frame copy and one full-screen pass, only while a part is lit.
@@ -110,6 +121,9 @@ void main(){
 }`;
 /** Seconds for the outline to come in or go out. */
 const OUTLINE_FADE = 0.18;
+/** Line width and the radius of the disc that finds the silhouette, in CSS pixels. */
+const OUTLINE_WIDTH = 1.5,
+  OUTLINE_RADIUS = 2;
 
 type Target = { id: number; entry: CatalogueEntry; group: number[] };
 
@@ -294,7 +308,8 @@ export default function HoverCatalogue() {
 
   useFrame((_, delta) => {
     // Projector stops: any camera or pose change hides the inspection and restarts the settle timer.
-    // Theatre: the camera glides after the mouse, so a lit outline redraws its IDs with this frame's camera and moves with the room.
+    // Theatre: the camera glides after the mouse, so a lit outline redraws its mask with this frame's camera and moves
+    // with the room (the ID buffer waits for the next pick).
     const s = state.current,
       signature = s.still,
       next = stillSignature(camera, scene),
@@ -309,7 +324,7 @@ export default function HoverCatalogue() {
     if (changed) {
       s.lastMove = performance.now();
       if (mode === "theatre") {
-        if (seatCue || s.selected || s.fade > 0) tools.followTheatre(gl, camera);
+        if (seatCue || s.selected || s.fade > 0) tools.followTheatre(camera);
         else tools.stale();
         repick.current();
       } else {
@@ -326,9 +341,9 @@ export default function HoverCatalogue() {
       invalidate();
     }
     if (s.fade > 0 && mode) {
-      if (mode === "theatre" && s.selected) tools.ensureIds(gl, scene, camera, mode);
+      if (mode === "theatre" && s.selected) tools.sync(gl, scene, camera, mode);
       if (mode === "assembled") tools.drawFocus(gl, s.fade);
-      tools.drawOutline(gl, s.fade, seatCue);
+      tools.drawOutline(gl, s.fade);
     }
   }, 3);
   return null;
@@ -360,6 +375,15 @@ function createTools() {
     depthBuffer: true,
     generateMipmaps: false,
   });
+  // The selected object alone, drawn whole: one channel, CSS-pixel size, 4x MSAA for smooth edges at a small cost.
+  const mask = new WebGLRenderTarget(1, 1, {
+    format: RedFormat,
+    samples: 4,
+    depthBuffer: false,
+    minFilter: LinearFilter,
+    magFilter: LinearFilter,
+    generateMipmaps: false,
+  });
   const selected = new DataTexture(
     new Uint8Array(HOVER_ID.limit * 4),
     HOVER_ID.limit,
@@ -377,14 +401,11 @@ function createTools() {
     depthWrite: false,
     toneMapped: false,
     uniforms: {
-      uIds: { value: ids.texture },
-      uSelected: { value: selected },
+      uMask: { value: mask.texture },
       uTexel: { value: new Vector2() },
-      uRadius: { value: 1.6 },
+      uRadius: { value: 2 },
+      uWidth: { value: OUTLINE_WIDTH },
       uStrength: { value: 1 },
-      uLine: { value: 0.92 },
-      uGlow: { value: 0 },
-      uFill: { value: 0.045 },
       uTint: { value: new Color(1, 1, 1) },
     },
   });
@@ -415,27 +436,54 @@ function createTools() {
   const focusScene = new Scene();
   focusScene.add(focusQuad);
   const ortho = new OrthographicCamera(-1, 1, 1, -1, 0, 1);
+  // The same proxies twice: the ID scene (with occluders, for picking) and the mask scene (catalogue items only).
   const idScene = new Scene(),
+    maskScene = new Scene(),
     pickCamera = new Camera();
   pickCamera.matrixAutoUpdate = false;
   pickCamera.matrixWorldAutoUpdate = false;
-  const materials = new Map<number, Material>();
-  const material = (id: number) => {
-    let m = materials.get(id);
+  const idMaterials = new Map<number, Material>(),
+    maskMaterials = new Map<number, Material>();
+  const material = (id: number, forMask = false) => {
+    const cache = forMask ? maskMaterials : idMaterials;
+    let m = cache.get(id);
     if (!m) {
       m = new ShaderMaterial({
         vertexShader: staticVertex,
-        fragmentShader: idFragment,
+        fragmentShader: forMask ? maskFragment : idFragment,
         side: DoubleSide,
-        uniforms: { uId: { value: id } },
+        defines: forMask ? { MASK: "" } : {},
+        uniforms: forMask ? { uId: { value: id }, uSelected: { value: selected } } : { uId: { value: id } },
       });
-      materials.set(id, m);
+      cache.set(id, m);
     }
     return m;
   };
   const materialName = (mesh: Mesh) =>
     (Array.isArray(mesh.material) ? mesh.material[0] : mesh.material)?.name ?? "";
-  let projectorMaterial: ShaderMaterial | undefined;
+  type ProjectorHover = {
+    poseGLSL: string;
+    uniforms: Record<string, { value: unknown }>;
+    opticalGeometry: BufferGeometry;
+    partNames: string[];
+  };
+  let projectorMaterials: { id: ShaderMaterial; mask: ShaderMaterial } | undefined;
+  const projectorShaders = (hover: ProjectorHover) =>
+    (projectorMaterials ??= {
+      id: new ShaderMaterial({
+        vertexShader: projectorVertex(hover.poseGLSL),
+        fragmentShader: projectorFragment,
+        side: DoubleSide,
+        uniforms: hover.uniforms,
+      }),
+      mask: new ShaderMaterial({
+        vertexShader: projectorVertex(hover.poseGLSL),
+        fragmentShader: projectorMaskFragment,
+        side: DoubleSide,
+        defines: { MASK: "" },
+        uniforms: { ...hover.uniforms, uSelected: { value: selected } },
+      }),
+    });
   // Part names arrive with the lazily loaded projector (keeps its formation data out of the opening bundle).
   const partGroup = new Map<number, { parts: number[]; entry: CatalogueEntry }>(),
     allParts: number[] = [];
@@ -447,32 +495,51 @@ function createTools() {
     });
     parts.forEach((_, i) => allParts.push(HOVER_ID.projector + i));
   };
-  let fresh = false,
-    collected: HoverMode | null = null,
-    cueCount = -1;
+  // `current`: the proxies match the scene as it is now. `pose` counts camera poses copied into pickCamera; each
+  // target remembers the pose (and, for the mask, the selection) it was last drawn with, so it is drawn only when asked
+  // for and out of date: the ID buffer by a pick or the projector focus, the mask by a lit outline.
+  let collected: HoverMode | null = null,
+    current = false,
+    pose = 0,
+    idsPose = -1,
+    maskPose = -1,
+    cueCount = -1,
+    sizeKey = "";
   const drawingSize = new Vector2(),
     clearColour = new Color();
-  function renderIds(gl: WebGLRenderer, camera: Camera) {
+  function setPose(camera: Camera) {
     pickCamera.matrixWorld.copy(camera.matrixWorld);
     pickCamera.matrixWorldInverse.copy(camera.matrixWorldInverse);
     pickCamera.projectionMatrix.copy(camera.projectionMatrix);
     pickCamera.projectionMatrixInverse.copy(camera.projectionMatrixInverse);
-    const target = gl.getRenderTarget(),
+    pose++;
+  }
+  function draw(gl: WebGLRenderer, target: WebGLRenderTarget, source: Scene) {
+    const previous = gl.getRenderTarget(),
       auto = gl.autoClear,
       colour = gl.getClearColor(clearColour),
       alpha = gl.getClearAlpha();
     try {
-      gl.setRenderTarget(ids);
+      gl.setRenderTarget(target);
       gl.setClearColor(0x000000, 1);
       gl.autoClear = true;
-      gl.render(idScene, pickCamera);
+      gl.render(source, pickCamera);
     } finally {
-      gl.setRenderTarget(target);
+      gl.setRenderTarget(previous);
       gl.autoClear = auto;
       gl.setClearColor(colour, alpha);
     }
-    fresh = true;
   }
+  const idsAtPose = (gl: WebGLRenderer) => {
+    if (idsPose === pose) return;
+    draw(gl, ids, idScene);
+    idsPose = pose;
+  };
+  const maskAtPose = (gl: WebGLRenderer) => {
+    if (maskPose === pose) return;
+    draw(gl, mask, maskScene);
+    maskPose = pose;
+  };
   const theatreEntries = new Map(
     THEATRE_CATALOGUE.map((item, i) => [
       item.key,
@@ -482,20 +549,22 @@ function createTools() {
   const theatreIds = new Map([...theatreEntries.values()].map((value) => [value.id, value]));
   const seatCount = { value: 0 };
 
-  /** Rebuild the ID scene from the live scene graph: catalogue items get their IDs, other visible theatre meshes occlude with 0. */
+  /** Rebuild both proxy scenes from the live scene graph: catalogue items get their IDs (and a mask twin), other
+   * visible theatre meshes only occlude in the ID scene, with 0. */
   function collect(scene: Scene, mode: HoverMode) {
     idScene.clear();
-    const add = (source: Mesh, mat: Material) => {
-      const proxy =
-        source instanceof InstancedMesh
-          ? new InstancedMesh(source.geometry, mat, source.count)
-          : new Mesh(source.geometry, mat);
-      if (proxy instanceof InstancedMesh && source instanceof InstancedMesh)
-        proxy.instanceMatrix = source.instanceMatrix;
-      proxy.matrixAutoUpdate = false;
-      proxy.matrix.copy(source.matrixWorld);
-      proxy.frustumCulled = false;
-      idScene.add(proxy);
+    maskScene.clear();
+    const proxy = (source: Mesh, mat: Material, geometry = source.geometry) => {
+      const copy =
+        source instanceof InstancedMesh && geometry === source.geometry
+          ? new InstancedMesh(geometry, mat, source.count)
+          : new Mesh(geometry, mat);
+      if (copy instanceof InstancedMesh && source instanceof InstancedMesh)
+        copy.instanceMatrix = source.instanceMatrix;
+      copy.matrixAutoUpdate = false;
+      copy.matrix.copy(source.matrixWorld);
+      copy.frustumCulled = false;
+      return copy;
     };
     if (mode === "theatre") {
       const occluders = new Set<Object3D>();
@@ -503,18 +572,17 @@ function createTools() {
         if (!(object instanceof Mesh)) return;
         const key = theatreKey(object.name, materialName(object));
         if (key) {
-          const item = theatreEntries.get(key)!;
-          if (key === "seats") {
-            seatCount.value = (object as InstancedMesh).count;
-            add(object, material(HOVER_ID.seats));
-          } else add(object, material(item.id));
+          const id = key === "seats" ? HOVER_ID.seats : theatreEntries.get(key)!.id;
+          if (key === "seats") seatCount.value = (object as InstancedMesh).count;
+          idScene.add(proxy(object, material(id)));
+          maskScene.add(proxy(object, material(id, true)));
           // The theatre's own top-level group (not the whole scene: the sofas sit directly under it).
           let root: Object3D = object;
           while (root.parent && root.parent !== scene) root = root.parent;
           if (root !== object) occluders.add(root);
         }
       });
-      // Remaining opaque meshes in the theatre's own groups only hide what is behind them.
+      // Remaining opaque meshes in the theatre's own groups only hide what is behind them (picking, not the outline).
       occluders.forEach((root) =>
         root.traverseVisible((object) => {
           if (
@@ -525,61 +593,67 @@ function createTools() {
             return;
           const first = Array.isArray(object.material) ? object.material[0] : object.material;
           if (first && !first.transparent && object.geometry.getAttribute("position"))
-            add(object, material(0));
+            idScene.add(proxy(object, material(0)));
         }),
       );
     } else {
       const projector = scene.getObjectByName("Projector | Opaque original materials") as Mesh | undefined;
-      const hover = projector?.userData.projectorHover;
+      const hover = projector?.userData.projectorHover as ProjectorHover | undefined;
       if (!projector || !hover) return;
       indexParts(hover.partNames);
-      projectorMaterial ??= new ShaderMaterial({
-        vertexShader: projectorVertex(hover.poseGLSL),
-        fragmentShader: projectorFragment,
-        side: DoubleSide,
-        uniforms: hover.uniforms,
-      });
-      add(projector, projectorMaterial);
-      const optical = new Mesh(hover.opticalGeometry, projectorMaterial);
-      optical.matrixAutoUpdate = false;
-      optical.matrix.copy(projector.matrixWorld);
-      optical.frustumCulled = false;
-      idScene.add(optical);
+      const shaders = projectorShaders(hover);
+      idScene.add(proxy(projector, shaders.id), proxy(projector, shaders.id, hover.opticalGeometry));
+      maskScene.add(proxy(projector, shaders.mask), proxy(projector, shaders.mask, hover.opticalGeometry));
     }
   }
 
   const tools = {
+    /** The scene may have changed: collect the proxies again before the next use. */
     stale() {
-      fresh = false;
+      current = false;
     },
-    ensureIds(gl: WebGLRenderer, scene: Scene, camera: Camera, mode: HoverMode) {
-      const size = gl.getDrawingBufferSize(drawingSize);
-      if (!fresh || collected !== mode || ids.width !== size.x || ids.height !== size.y) {
+    /** Proxies collected for this mode and the targets sized to the drawing buffer. */
+    sync(gl: WebGLRenderer, scene: Scene, camera: Camera, mode: HoverMode) {
+      const size = gl.getDrawingBufferSize(drawingSize),
+        ratio = gl.getPixelRatio(),
+        key = `${size.x}x${size.y}@${ratio}`;
+      if (key !== sizeKey) {
+        sizeKey = key;
         ids.setSize(size.x, size.y);
+        const css = Math.max(1, ratio);
+        mask.setSize(Math.max(1, Math.round(size.x / css)), Math.max(1, Math.round(size.y / css)));
+        outline.uniforms.uTexel.value.set(1 / size.x, 1 / size.y);
+        outline.uniforms.uRadius.value = OUTLINE_RADIUS * ratio;
+        outline.uniforms.uWidth.value = OUTLINE_WIDTH * ratio;
+        current = false;
+      }
+      if (!current || collected !== mode) {
         collect(scene, mode);
         collected = mode;
-        renderIds(gl, camera);
-        outline.uniforms.uTexel.value.set(1 / size.x, 1 / size.y);
-        outline.uniforms.uRadius.value = 2 * gl.getPixelRatio();
+        current = true;
+        setPose(camera);
       }
     },
-    /** Render the ID buffer once per resting pose, then read one pixel. */
+    /** Draw the ID buffer for the resting pose if it is out of date, then read one pixel back. */
     pick(gl: WebGLRenderer, scene: Scene, camera: Camera, mode: HoverMode, x: number, y: number) {
-      tools.ensureIds(gl, scene, camera, mode);
+      tools.sync(gl, scene, camera, mode);
+      idsAtPose(gl);
       const px = Math.min(ids.width - 1, Math.max(0, Math.floor(x * ids.width))),
         py = Math.min(ids.height - 1, Math.max(0, Math.floor((1 - y) * ids.height)));
       return gl
         .readRenderTargetPixelsAsync(ids, px, py, 1, 1, new Uint8Array(4))
         .then((pixel) => pixel[0] + pixel[1] * 256);
     },
-    /** Compile the theatre ID and outline shaders off-thread, through the real collect/draw path (dry run),
+    /** Compile the theatre ID, mask and outline shaders off-thread, through the real collect/draw path (dry run),
      * so the first hover does not compile them on the spot. */
     prepare(gl: WebGLRenderer, scene: Scene, camera: Camera) {
       return compileByDryRun(gl, () => {
         collect(scene, "theatre");
         collected = "theatre";
-        renderIds(gl, camera);
-        fresh = false;
+        setPose(camera);
+        draw(gl, ids, idScene);
+        draw(gl, mask, maskScene);
+        current = false;
         const target = gl.getRenderTarget();
         try {
           gl.setRenderTarget(null);
@@ -589,22 +663,18 @@ function createTools() {
         }
       });
     },
-    /** The projector's ID shader, once the projector exists (its stops are the only users). */
+    /** The projector's ID and mask shaders, once the projector exists (its stops are the only users). */
     prepareProjector(gl: WebGLRenderer, scene: Scene) {
       const projector = scene.getObjectByName("Projector | Opaque original materials") as Mesh | undefined,
-        hover = projector?.userData.projectorHover;
-      if (!projector || !hover || projectorMaterial) return Promise.resolve();
-      projectorMaterial = new ShaderMaterial({
-        vertexShader: projectorVertex(hover.poseGLSL),
-        fragmentShader: projectorFragment,
-        side: DoubleSide,
-        uniforms: hover.uniforms,
-      });
+        hover = projector?.userData.projectorHover as ProjectorHover | undefined;
+      if (!projector || !hover || projectorMaterials) return Promise.resolve();
+      projectorShaders(hover);
       return compileByDryRun(gl, () => {
         collect(scene, "exploded");
         collected = "exploded";
-        renderIds(gl, pickCamera);
-        fresh = false;
+        draw(gl, ids, idScene);
+        draw(gl, mask, maskScene);
+        current = false;
       });
     },
     target(id: number, mode: HoverMode): Target | null {
@@ -626,26 +696,27 @@ function createTools() {
     },
     highlight(group: number[]) {
       cueCount = -1;
+      maskPose = -1;
       const data = selected.image.data as Uint8Array;
       data.fill(0);
       for (const id of group) if (id < HOVER_ID.limit) data[id * 4] = 255;
       selected.needsUpdate = true;
     },
-    followTheatre(gl: WebGLRenderer, camera: Camera) {
-      const size = gl.getDrawingBufferSize(drawingSize);
-      if (collected === "theatre" && fresh && ids.width === size.x && ids.height === size.y)
-        renderIds(gl, camera);
-      else fresh = false;
+    /** Theatre glide: the next outline and pick use this camera (proxies kept; the room does not move). */
+    followTheatre(camera: Camera) {
+      if (collected === "theatre" && current) setPose(camera);
+      else current = false;
     },
     showSeatCue(gl: WebGLRenderer, scene: Scene, camera: Camera) {
-      tools.ensureIds(gl, scene, camera, "theatre");
+      tools.sync(gl, scene, camera, "theatre");
       if (cueCount === seatCount.value) return;
       tools.highlight(Array.from({ length: seatCount.value }, (_, i) => HOVER_ID.seats + i));
       cueCount = seatCount.value;
     },
     /** Assembled projector only. */
     drawFocus(gl: WebGLRenderer, strength: number) {
-      if (!fresh || collected === "theatre") return;
+      if (!current || collected === "theatre") return;
+      idsAtPose(gl);
       const size = gl.getDrawingBufferSize(drawingSize);
       if (frame.image.width !== size.x || frame.image.height !== size.y) {
         frame.dispose();
@@ -668,15 +739,13 @@ function createTools() {
         gl.autoClear = auto;
       }
     },
-    drawOutline(gl: WebGLRenderer, strength: number, seatCue: boolean) {
-      if (!fresh) return;
-      outline.uniforms.uStrength.value = strength * strength * (3 - 2 * strength);
+    drawOutline(gl: WebGLRenderer, strength: number) {
+      if (!current) return;
+      maskAtPose(gl);
       const assembled = collected === "assembled",
-        exploded = collected === "exploded";
-      outline.uniforms.uLine.value = assembled ? 0.22 : exploded ? 0.78 : 0.92;
+        line = assembled ? 0.22 : collected === "exploded" ? 0.78 : 0.92;
+      outline.uniforms.uStrength.value = line * strength * strength * (3 - 2 * strength);
       outline.uniforms.uTint.value.setRGB(assembled ? 0.84 : 1, assembled ? 0.92 : 1, 1);
-      outline.uniforms.uGlow.value = exploded ? 0.3 : 0;
-      outline.uniforms.uFill.value = seatCue ? 0 : exploded ? 0.065 : 0.045;
       const target = gl.getRenderTarget(),
         auto = gl.autoClear;
       try {
@@ -690,15 +759,20 @@ function createTools() {
     },
     dispose() {
       ids.dispose();
+      mask.dispose();
       selected.dispose();
       outline.dispose();
       focus.dispose();
       frame.dispose();
       quad.dispose();
-      materials.forEach((m) => m.dispose());
-      materials.clear();
-      projectorMaterial?.dispose();
+      for (const cache of [idMaterials, maskMaterials]) {
+        cache.forEach((m) => m.dispose());
+        cache.clear();
+      }
+      projectorMaterials?.id.dispose();
+      projectorMaterials?.mask.dispose();
       idScene.clear();
+      maskScene.clear();
     },
   };
   return tools;

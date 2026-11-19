@@ -74,11 +74,11 @@ const STYLE = `
 .rope-card[data-open="true"]{opacity:1;visibility:visible;transform:translate(-50%,-50%) perspective(1800px) rotateX(2.5deg) rotateY(-5deg) scale(1);
   transition:opacity .45s ease,transform .7s cubic-bezier(.16,.8,.24,1),visibility 0s}
 .rope-card__image{position:absolute;inset:0;display:grid;place-items:center}
-.rope-card__number{font:200 clamp(64px,10vw,170px)/1 var(--font-geist-sans),system-ui,sans-serif;color:#fff;text-shadow:0 0 6px rgba(255,255,255,.55),0 0 44px rgba(var(--rope-card-tint),.95)}
+.rope-card__number{font:200 clamp(64px,10vw,170px)/1 var(--font-read),system-ui,sans-serif;color:#fff;text-shadow:0 0 6px rgba(255,255,255,.55),0 0 44px rgba(var(--rope-card-tint),.95)}
 .rope-card__close{position:absolute;top:clamp(8px,.8vw,14px);right:clamp(8px,.8vw,14px);width:32px;height:32px;padding:0;display:grid;place-items:center;border:0;border-radius:50%;background:rgba(0,0,0,.42);color:#fff;cursor:pointer;pointer-events:auto;transition:background .2s ease}
 .rope-card__close:hover{background:rgba(var(--rope-card-tint),.7)}
 .rope-card__close:focus-visible,.rope-card-on:focus-visible{outline:2px solid #fff;outline-offset:2px}
-.rope-card-on{position:absolute;right:24px;bottom:24px;height:36px;padding:0 16px;border:0;border-radius:18px;background:rgba(10,3,5,.72);color:#fff;font:500 13px/1 var(--font-geist-sans),system-ui,sans-serif;cursor:pointer;opacity:0;visibility:hidden;
+.rope-card-on{position:absolute;right:24px;bottom:24px;height:36px;padding:0 16px;border:0;border-radius:18px;background:rgba(10,3,5,.72);color:#fff;font:500 13px/1 var(--font-read),system-ui,sans-serif;cursor:pointer;opacity:0;visibility:hidden;
   -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);box-shadow:0 0 28px rgba(var(--rope-card-tint),.32);transition:opacity .3s ease,background .2s ease,visibility 0s linear .3s}
 .rope-card-on[data-shown="true"]{opacity:1;visibility:visible;transition:opacity .3s ease .25s,background .2s ease,visibility 0s}
 .rope-card-on:hover{background:rgba(var(--rope-card-tint),.7)}

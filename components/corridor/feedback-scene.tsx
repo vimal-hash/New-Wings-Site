@@ -193,7 +193,7 @@ const CSS = `
 .nw-fb-face{position:absolute;inset:0;box-sizing:border-box;margin:0;padding:clamp(12px,calc(var(--w)*.05),72px);display:grid;grid-template-rows:auto 1fr auto}
 .nw-fb-top,.nw-fb-who{display:flex;justify-content:space-between;align-items:baseline;gap:16px;font:500 clamp(9px,calc(var(--w)*.015),15px)/1.3 var(--font-geist-mono),monospace;letter-spacing:.16em;text-transform:uppercase}
 .nw-fb-text{align-self:center;max-width:22ch;margin:0;font-size:clamp(13px,calc(var(--w)*.046),68px);font-weight:500;line-height:1.08;letter-spacing:-.03em}
-.nw-fb-name{font:500 clamp(12px,calc(var(--w)*.024),30px)/1.2 var(--font-geist-sans),system-ui,sans-serif;letter-spacing:-.01em;text-transform:none}
+.nw-fb-name{font:500 clamp(12px,calc(var(--w)*.024),30px)/1.2 var(--font-read),system-ui,sans-serif;letter-spacing:-.01em;text-transform:none}
 /* The films of the older eras, over the whole picture. Each fades as a whole; its parts animate inside it. */
 .nw-fb-film,.nw-fb-scratches{position:absolute;inset:0;overflow:hidden;pointer-events:none}
 /* Their strength is written straight onto each layer (no custom properties: those would restyle every layer inside,

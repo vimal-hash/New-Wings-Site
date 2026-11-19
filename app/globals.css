@@ -7,7 +7,7 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-read);
   --font-mono: var(--font-geist-mono);
 }
 * {
@@ -21,7 +21,7 @@ body {
   margin: 0;
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-read), sans-serif;
   overflow-x: clip;
   touch-action: pan-y pinch-zoom;
 }
@@ -259,7 +259,7 @@ dd {
   gap: 16px;
   margin-top: 7px !important;
   font:
-    400 17px/1.3 var(--font-geist-sans),
+    400 17px/1.3 var(--font-read),
     sans-serif;
   letter-spacing: -0.005em;
 }
@@ -326,7 +326,7 @@ dd {
   z-index: 35;
   display: flex;
   align-items: flex-start;
-  font-family: var(--font-geist-sans), sans-serif;
+  font-family: var(--font-read), sans-serif;
   animation: chrome-in 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
 }
 .site-menu__tab {
@@ -447,7 +447,7 @@ dd {
   background: transparent;
   color: inherit;
   font:
-    400 16px/1.25 var(--font-geist-sans),
+    400 16px/1.25 var(--font-read),
     sans-serif;
   letter-spacing: -0.005em;
   text-align: left;
@@ -564,7 +564,7 @@ dd {
     0 8px 24px #0003;
   pointer-events: none;
   color: #f3f1ec;
-  font-family: var(--font-geist-sans), sans-serif;
+  font-family: var(--font-read), sans-serif;
   text-shadow: 0 1px 4px #000b;
   animation:
     story-enter 0.4s cubic-bezier(0.22, 0.68, 0.24, 1) backwards,
@@ -665,7 +665,7 @@ dd {
   background: #f8f7f3;
   color: #11151a;
   box-shadow: 0 40px 120px #0008;
-  font-family: var(--font-geist-sans), sans-serif;
+  font-family: var(--font-read), sans-serif;
   transform: translateY(18px) scale(0.985);
   transition: transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1);
 }
@@ -713,7 +713,7 @@ dd {
 .enquiry__title {
   margin: 0 0 20px;
   font:
-    400 clamp(24px, 4vw, 30px) / 1.15 var(--font-geist-sans),
+    400 clamp(24px, 4vw, 30px) / 1.15 var(--font-read),
     sans-serif;
   letter-spacing: -0.02em;
 }
@@ -756,7 +756,7 @@ dd {
   background: #fff;
   color: #11151a;
   font:
-    400 15px/1.35 var(--font-geist-sans),
+    400 15px/1.35 var(--font-read),
     sans-serif;
   transition:
     border-color 0.2s,
@@ -804,7 +804,7 @@ dd {
   background: #11151a;
   color: #f8f7f3;
   font:
-    500 15px/1 var(--font-geist-sans),
+    500 15px/1 var(--font-read),
     sans-serif;
   letter-spacing: 0.01em;
   cursor: pointer;
@@ -967,7 +967,7 @@ dd {
 .site-loader__value {
   margin: 0;
   font:
-    300 clamp(56px, 9vw, 96px) / 1 var(--font-geist-sans),
+    300 clamp(56px, 9vw, 96px) / 1 var(--font-read),
     sans-serif;
   letter-spacing: -0.04em;
   font-variant-numeric: tabular-nums;
@@ -1229,7 +1229,7 @@ dd {
   background: #11151a;
   color: #f8f7f3;
   font:
-    500 15px/1 var(--font-geist-sans),
+    500 15px/1 var(--font-read),
     sans-serif;
   letter-spacing: 0.01em;
   cursor: pointer;
@@ -1349,7 +1349,7 @@ dd {
   background: #0b1019;
   color: #fff;
   font:
-    600 12px/1.3 var(--font-geist-sans),
+    600 12px/1.3 var(--font-read),
     sans-serif;
   cursor: pointer;
   touch-action: manipulation;

@@ -6,7 +6,7 @@ type FilmFonts = { sans: string; mono: string };
 /** The site's own fonts, ready for drawing on a canvas. */
 export async function filmFonts(): Promise<FilmFonts> {
   const style = getComputedStyle(document.documentElement);
-  const sans = style.getPropertyValue("--font-geist-sans").trim() || "sans-serif",
+  const sans = style.getPropertyValue("--font-read").trim() || "sans-serif",
     mono = style.getPropertyValue("--font-geist-mono").trim() || "monospace";
   await Promise.all([
     document.fonts.load(`600 80px ${sans}`),

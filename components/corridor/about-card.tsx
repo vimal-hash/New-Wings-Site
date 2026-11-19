@@ -46,7 +46,7 @@ const CSS = `
 .nw-about-frame{position:relative;display:grid;grid-template-rows:auto 1fr;gap:clamp(18px,3vh,32px);box-sizing:border-box;width:min(76vw,100%,(100dvh - 96px)*1.85);aspect-ratio:1.85/1;padding:clamp(60px,8.6vw,160px);color:#0e0e0e;
   background:radial-gradient(120% 95% at 50% 42%,#f6f6f4 0%,#ececea 46%,#d6d6d3 82%,#c9c9c6 100%)}
 .nw-about-label{font:500 11px/1.4 var(--font-geist-mono),monospace;letter-spacing:.18em;text-transform:uppercase;color:#4a4a48}
-.nw-about-line{align-self:end;max-width:22ch;margin:0;font-size:clamp(1.55rem,3.4vw,3.6rem);font-weight:500;line-height:1.06;letter-spacing:-.035em}
+.nw-about-line{align-self:end;max-width:22ch;margin:0;font:400 clamp(1.55rem,3.4vw,3.6rem)/1.06 var(--font-brand),sans-serif;letter-spacing:-.015em}
 @media (max-aspect-ratio:1/1){.nw-about-frame{width:100%;aspect-ratio:auto;min-height:min(68vh,620px)}}
 /* Afterwards the whole frame drifts a couple of pixels, slowly, so it is never frozen. */
 .nw-about-stage[data-drift="on"]{animation:nw-about-drift 18s ease-in-out infinite}

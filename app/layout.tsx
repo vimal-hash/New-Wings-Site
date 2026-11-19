@@ -1,10 +1,21 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist_Mono, Jost, Righteous } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+// Reading text, buttons and the menu: Jost, a calm geometric sans.
+const jost = Jost({
+  variable: "--font-read",
   subsets: ["latin"],
+});
+
+// The big lines in the sections: Righteous, the lettering of the New Wings Solutions logo (one weight, 400).
+// Not preloaded: the first big line comes long after the opening. "block": never a stand-in font in its place.
+const righteous = Righteous({
+  variable: "--font-brand",
+  weight: "400",
+  subsets: ["latin"],
+  display: "block",
+  preload: false,
 });
 
 const geistMono = Geist_Mono({
@@ -32,7 +43,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
+    <html lang="en" className={`${jost.variable} ${righteous.variable} ${geistMono.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col">{children}</body>
     </html>
   );

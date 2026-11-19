@@ -65,7 +65,7 @@ const CSS = `
 .nw-owner-name{color:#231a10}
 .nw-owner-note{color:#f1e6cf;justify-content:flex-end;padding-left:calc(var(--h)*.27)}
 .nw-owner-label{font:500 11px/1.4 var(--font-geist-mono),monospace;letter-spacing:.18em;text-transform:uppercase}
-.nw-owner-title{margin:0;font-size:calc(var(--h)*.125);font-weight:500;line-height:1;letter-spacing:-.035em}
+.nw-owner-title{margin:0;font:400 calc(var(--h)*.125)/1 var(--font-brand),sans-serif;letter-spacing:-.015em}
 .nw-owner-text{margin:0;font-size:max(15px,calc(var(--h)*.036));line-height:1.3}
 /* Each film is one blended layer that fades as a whole; its parts animate inside it. */
 .nw-owner-film,.nw-owner-scratches{position:absolute;inset:0;overflow:hidden;pointer-events:none}

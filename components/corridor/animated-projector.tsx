@@ -58,6 +58,7 @@ import { effectQuality, type EffectQuality } from "./effect-quality";
 import { loadCompressedBuffer } from "./compressed-buffer";
 import { particleProfiles } from "./projector-particle-profiles";
 import { createClipClock } from "./clip-clock";
+import { yieldDuringLoading } from "./loading-step";
 import { OPENING_PROJECTOR_PRIORITY, scheduleSceneIdle } from "./scene-idle";
 import { compileHiddenGPUGradually, prepareHiddenGPU, prepareMobileMeshes } from "./hidden-gpu-preparation";
 import { journeyControls } from "./journey-controls";
@@ -645,6 +646,7 @@ outgoingLight+=uRim*vec3(.70,.78,.92)*pow(rimFacing,3.)*max(dot(normal,normalize
           cancelWarm.current = schedule(queue);
           return;
         }
+        const yieldStep = journeyControls.read().loaderDone ? undefined : yieldDuringLoading;
         const returning = journeyControls.read().phase === "pageReturnLoading";
         const state = get();
         const corridor = state.scene.getObjectByName("Corridor room");
@@ -687,7 +689,7 @@ outgoingLight+=uRim*vec3(.70,.78,.92)*pow(rimFacing,3.)*max(dot(normal,normalize
               // Use the selected draws to upload the textures they actually sample.
               // A separate material-wide initTexture sweep blocked the phone even
               // before the first hidden draw, and uploaded unused uniforms as well.
-              await prepareMobileMeshes(gl, scene, camera, meshes, alive, undefined, shadow);
+              await prepareMobileMeshes(gl, scene, camera, meshes, alive, yieldStep, shadow);
               if (alive() && shadow?.map) preparedPhoneProjectorShadows.add(shadow);
             } else {
               uploadParticles();
@@ -712,11 +714,11 @@ outgoingLight+=uRim*vec3(.70,.78,.92)*pow(rimFacing,3.)*max(dot(normal,normalize
         const alive = () => !controller.signal.aborted;
         const compile = async () => {
           if (quality !== "mobile") {
-            await compileHiddenGPUGradually(gl, state.scene, state.camera, alive);
+            await compileHiddenGPUGradually(gl, state.scene, state.camera, alive, state.scene, false, yieldStep);
             return;
           }
           for (const root of [rig.mesh, rig.opticalMesh, corridor]) {
-            if (root && alive()) await compileHiddenGPUGradually(gl, state.scene, state.camera, alive, root);
+            if (root && alive()) await compileHiddenGPUGradually(gl, state.scene, state.camera, alive, root, false, yieldStep);
           }
         };
         void Promise.all([particles, prepareShadow(), compile()])

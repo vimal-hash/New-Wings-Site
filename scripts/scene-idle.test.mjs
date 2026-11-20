@@ -93,8 +93,8 @@ test("opening preflight runs in the hold while projector and detail preparation 
   assert.deepEqual(order, ["opening", "projector", "detail"]);
 });
 
-for (const mobile of [false, true])
-  test(`projector prepares under the opening loader (${mobile ? "phone" : "computer"})`, () => {
+for (const [mobile, hidden] of [[false, false], [true, false], [false, true], [true, true]])
+  test(`projector prepares under the opening loader (${mobile ? "phone" : "computer"}, ${hidden ? "hidden" : "visible"})`, () => {
     let prepared = false,
       moving = false,
       tick;
@@ -108,7 +108,7 @@ for (const mobile of [false, true])
     vm.runInNewContext(code, {
       module: fixture,
       exports: fixture.exports,
-      document: { hidden: false },
+      document: { hidden },
       window: { addEventListener() {} },
       performance: { now: () => 1000 },
       setTimeout: (callback) => {

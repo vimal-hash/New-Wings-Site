@@ -67,6 +67,7 @@ import ProjectorStage from "./projector-stage";
 import { slideMaterial } from "./slide-material";
 import { isMobileDevice, textureForDevice } from "./texture-quality";
 import ceilingAssets from "./theatre-ceiling-assets.json";
+import { scheduleLoadingStep, yieldDuringLoading } from "./loading-step";
 import { OPENING_PROJECTOR_PRIORITY, scheduleSceneIdle } from "./scene-idle";
 import { createFrameStatistics } from "./frame-statistics";
 import { createResolutionGovernor, mobileEyeDpr, RESOLUTION, targetDpr } from "./render-resolution";
@@ -220,6 +221,12 @@ function Theatre({ metrics }: { metrics: MetricsStore }) {
   );
 }
 
+// A hidden tab may never present a first frame. Once the theatre is mounted its dependencies can load.
+function canLoadAfterTheatre(metrics: MetricsStore) {
+  const { firstFrame, loaded } = metrics.read();
+  return firstFrame || (document.hidden && loaded);
+}
+
 /** The platform is behind the opening camera; it must not delay the first theatre frame. */
 function DeferredPlatform({
   metrics,
@@ -235,7 +242,7 @@ function DeferredPlatform({
   useEffect(() => {
     let cancel = () => {};
     const timer = setInterval(() => {
-      if (!metrics.read().firstFrame) return;
+      if (!canLoadAfterTheatre(metrics)) return;
       clearInterval(timer);
       preloadBakedSurfaces("projector-floor", gl);
       cancel = scheduleSceneIdle(() => setStarted(true), -100);
@@ -409,7 +416,7 @@ function DeferredCorridor({ metrics }: { metrics: MetricsStore }) {
   useEffect(() => {
     let cancel = () => {};
     const timer = window.setInterval(() => {
-      if (metrics.read().firstFrame || journeyControls.read().pageAtEnd) {
+      if (canLoadAfterTheatre(metrics) || journeyControls.read().pageAtEnd) {
         window.clearInterval(timer);
         traceMark("Corridor background loading started");
         useGLTF.preload(MODEL, "/draco/", false, traceGLTF);
@@ -437,7 +444,7 @@ function DeferredProjector({ metrics }: { metrics: MetricsStore }) {
     let cancel = () => {},
       active = true;
     const timer = setInterval(() => {
-      if (!metrics.read().firstFrame) return;
+      if (!canLoadAfterTheatre(metrics)) return;
       clearInterval(timer);
       traceMark("Projector deferred loading started");
       // Overlap fetching and worker decode with the theatre's opening setup.
@@ -561,7 +568,7 @@ function OpeningReady() {
   useEffect(() => {
     if (journeyControls.read().phase !== "intro") return;
     let active = true,
-      frame = 0,
+      cancelStep = () => {},
       cancel = () => {};
     const prepare = () => {
       if (!active) return;
@@ -569,7 +576,7 @@ function OpeningReady() {
       // The late theatre screen adds a RectAreaLight. Linking before it mounts
       // misses the lit room variants in both the main draw and the reflections.
       if (!scene.getObjectByName("Cinema screen | Broad soft seating illumination")) {
-        frame = requestAnimationFrame(prepare);
+        cancelStep = scheduleLoadingStep(prepare);
         return;
       }
       prepareLegacyResponse(scene);
@@ -581,7 +588,7 @@ function OpeningReady() {
           console.error("Opening GPU preparation failed", error);
         }
       };
-      void compileHiddenGPUGradually(gl, scene, camera, () => active, scene, true)
+      void compileHiddenGPUGradually(gl, scene, camera, () => active, scene, true, yieldDuringLoading)
         .then(() => {
           if (!active) return;
           cancel = scheduleSceneIdle(() => {
@@ -603,12 +610,12 @@ function OpeningReady() {
         })
         .catch(fail);
     };
-    frame = requestAnimationFrame(() => {
-      frame = requestAnimationFrame(prepare);
+    cancelStep = scheduleLoadingStep(() => {
+      cancelStep = scheduleLoadingStep(prepare);
     });
     return () => {
       active = false;
-      cancelAnimationFrame(frame);
+      cancelStep();
       cancel();
     };
   }, [gl, get, invalidate]);
@@ -709,6 +716,17 @@ const readPhase = () => journeyControls.read().phase;
 function CorridorScene({ metrics, orbit = false }: { metrics: MetricsStore; orbit?: boolean }) {
   // Only the phase: any other journey update would re-render the whole 3D tree for nothing.
   const phase = useSyncExternalStore(journeyControls.subscribe, readPhase, readPhase);
+  useEffect(() => {
+    if (phase !== "intro") return;
+    // Canvas waits for its first measured size. A background tab can defer its ResizeObserver until
+    // it paints again. Its window resize listener can measure the same container immediately.
+    const measureHiddenCanvas = () => {
+      if (document.hidden && !metrics.read().picture) window.dispatchEvent(new Event("resize"));
+    };
+    document.addEventListener("visibilitychange", measureHiddenCanvas);
+    measureHiddenCanvas();
+    return () => document.removeEventListener("visibilitychange", measureHiddenCanvas);
+  }, [metrics, phase]);
   // A fixed number, not a range: R3F resets a range on every re-render of this component, undoing the adaptive value.
   const [dpr, setDpr] = useState(() =>
     typeof window === "undefined"

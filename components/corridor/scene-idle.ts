@@ -41,7 +41,7 @@ function tick() {
   const waitingForProjector = shot.phase === "glassesExit" && sceneIdleUrgent.value;
   const resting = settled.has(shot.phase) || shot.phase === "page";
   if (
-    !document.hidden &&
+    (!document.hidden || (holding && !shot.loaderDone)) &&
     (resting || holding || reviewing || waitingForProjector) &&
     fx !== "particles" &&
     fx !== "assembling" &&

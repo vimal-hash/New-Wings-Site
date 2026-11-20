@@ -10,6 +10,7 @@ import {
   type WebGLRenderer,
 } from "three";
 import { traceSpan } from "./loading-trace";
+import { yieldDuringLoading } from "./loading-step";
 
 /** Compile both output variants asynchronously before a private resource draw.
  * `object` limits the work to one subtree that is already inside `scene` (its lights still apply). */
@@ -68,6 +69,7 @@ export async function compileHiddenGPUGradually(
   if (visibleOnly) root.traverseVisible(collect);
   else root.traverse(collect);
   const target = new WebGLRenderTarget(1, 1);
+  const linking: Promise<unknown>[] = [];
   try {
     let slice = performance.now();
     for (const object of objects)
@@ -83,15 +85,18 @@ export async function compileHiddenGPUGradually(
         } finally {
           renderer.setRenderTarget(previous);
         }
-        if ((renderer.info.programs?.length ?? 0) !== before) {
-          await ready;
-          await frame();
-          slice = performance.now();
-        } else if (performance.now() - slice > 8) {
+        if ((renderer.info.programs?.length ?? 0) !== before) linking.push(ready);
+        // In the background the browser can throttle every link check. Let a few opening programs
+        // link together. A visible loader still presents a frame after every new program.
+        const batchSize = frame === yieldDuringLoading && document.hidden ? 8 : 1;
+        if (linking.length >= batchSize || performance.now() - slice > 8) {
+          await Promise.all(linking);
+          linking.length = 0;
           await frame();
           slice = performance.now();
         }
       }
+    await Promise.all(linking);
   } finally {
     target.dispose();
   }

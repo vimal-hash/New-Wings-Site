@@ -548,34 +548,21 @@ dd {
   opacity: 1;
 }
 .story-caption {
-  --story-blur: 16px;
   position: fixed;
   left: 0;
   bottom: var(--contact-bottom);
   z-index: 34;
-  width: min(400px, 34vw);
-  padding: 16px 20px 16px max(20px, env(safe-area-inset-left));
-  border: 1px solid #ffffff40;
-  border-left: 0;
+  width: min(480px, 37vw);
+  padding: 20px 24px 20px max(24px, env(safe-area-inset-left));
+  border: 1px solid #000;
   border-radius: 0 16px 16px 0;
-  background: #18202bdd;
-  box-shadow:
-    inset 0 1px 0 #ffffff18,
-    0 8px 24px #0003;
+  background: #fff;
   pointer-events: none;
-  color: #f3f1ec;
+  color: #000;
   font-family: var(--font-read), sans-serif;
-  text-shadow: 0 1px 4px #000b;
   animation:
     story-enter 0.4s cubic-bezier(0.22, 0.68, 0.24, 1) backwards,
     story-out 1s 10s ease forwards;
-}
-@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-  .story-caption {
-    background: linear-gradient(135deg, #333e4c8c, #101720aa);
-    -webkit-backdrop-filter: blur(var(--story-blur)) saturate(1.25);
-    backdrop-filter: blur(var(--story-blur)) saturate(1.25);
-  }
 }
 @keyframes story-enter {
   from {
@@ -593,7 +580,7 @@ dd {
 }
 .story-caption__line {
   margin: 0;
-  font-size: clamp(17px, 1.45vw, 23px);
+  font-size: clamp(20px, 1.65vw, 28px);
   line-height: 1.34;
   font-weight: 400;
   letter-spacing: -0.012em;
@@ -605,20 +592,19 @@ dd {
   font-size: 10px;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: #f3f1ecc7;
+  color: inherit;
 }
 .corridor-study[data-page="true"] .story-caption {
   display: none;
 }
 @media (max-width: 899px) {
   .story-caption {
-    --story-blur: 10px;
     bottom: calc(var(--contact-bottom) + var(--contact-icon-height) + 2 * var(--contact-padding) + 12px);
-    width: min(420px, calc(100% - 16px));
-    padding: 13px 15px 13px max(15px, env(safe-area-inset-left));
+    width: min(460px, calc(100% - 16px));
+    padding: 16px 18px 16px max(18px, env(safe-area-inset-left));
   }
   .story-caption__line {
-    font-size: 16px;
+    font-size: 18px;
   }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -1616,13 +1602,11 @@ dd {
     monospace;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  border: 1px solid #ffffff1f;
+  border: 1px solid #000;
   border-right: 0;
   border-radius: 14px 0 0 14px;
-  background: #0d1116b8;
-  backdrop-filter: blur(14px) saturate(1.2);
-  -webkit-backdrop-filter: blur(14px) saturate(1.2);
-  color: #fff;
+  background: #fff;
+  color: #000;
   cursor: pointer;
   animation: chrome-in 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
   transition:
@@ -1631,54 +1615,12 @@ dd {
 }
 .sound-toggle:hover {
   padding-right: calc(20px + env(safe-area-inset-right));
-  background: #0d1116e0;
+  background: #f4f4f4;
 }
 .sound-toggle:focus-visible {
-  outline: 2px solid #fff;
+  outline: 2px solid currentColor;
+  box-shadow: 0 0 0 4px #fff;
   outline-offset: 2px;
-}
-.sound-toggle__bars {
-  display: flex;
-  align-items: flex-end;
-  gap: 2px;
-  height: 12px;
-}
-.sound-toggle__bars i {
-  width: 2px;
-  height: 100%;
-  background: currentColor;
-  transform: scaleY(0.17);
-  transform-origin: bottom;
-  transition: transform 0.4s ease;
-}
-.sound-toggle[data-on] .sound-toggle__bars i {
-  animation: sound-bar 0.9s ease-in-out infinite alternate;
-}
-.sound-toggle[data-on] .sound-toggle__bars i:nth-child(2) {
-  animation-duration: 0.62s;
-  animation-delay: -0.3s;
-}
-.sound-toggle[data-on] .sound-toggle__bars i:nth-child(3) {
-  animation-duration: 1.1s;
-  animation-delay: -0.7s;
-}
-.sound-toggle[data-on] .sound-toggle__bars i:nth-child(4) {
-  animation-duration: 0.75s;
-  animation-delay: -0.15s;
-}
-@keyframes sound-bar {
-  from {
-    transform: scaleY(0.25);
-  }
-  to {
-    transform: scaleY(1);
-  }
-}
-@media (prefers-reduced-motion: reduce) {
-  .sound-toggle[data-on] .sound-toggle__bars i {
-    animation: none;
-    transform: scaleY(0.7);
-  }
 }
 @media (max-width: 600px) {
   .sound-toggle {

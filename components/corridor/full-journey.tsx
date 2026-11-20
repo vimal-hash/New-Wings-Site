@@ -89,15 +89,14 @@ const STOP_ARC =
           : 0,
       0,
     );
-/** The corridor walk in two legs with one stop between (user 2026-11-19: "one camera stop ... to see the blue print
- *  ... just before the liquid sphere comes into view", at the end of the drawings): from the projector along the
- *  drawings to DRAWINGS_AT of the passage (phase "drawings"), then on to the sphere. Each leg starts and ends at rest. */
+/** The corridor walk rests beside the left projector drawing, then continues to the sphere. */
 // The legs are timed to the theme's bars (story-beat.ts): the build (2 s) and its 0.9 s move plus the first leg make
 // three bars, so the music's part ends as the camera reaches the drawings; the second leg is one bar, so the last
 // chord lands as the camera stops at the liquid sphere.
 const CORRIDOR_MOVE = { arrive: 3 * BAR - 2.9, leave: BAR } as const;
-const DRAWINGS_AT = 0.955;
-const DRAWINGS_ARC = PASSAGE_LENGTH * DRAWINGS_AT;
+// Distance from the passage entrance. The camera looks back along the route: here the projector sheet
+// (centred at arc 133) fills the left foreground while the bend stays in view.
+const DRAWINGS_ARC = 153;
 /** The page-return pace, kept from the old unbroken walk (the passage's second half in 2.4 s). */
 const CORRIDOR_EXIT_SPEED = (PASSAGE_LENGTH - STOP_ARC) / 2.4;
 /** Passage pose at an arc from its start. */
@@ -992,7 +991,7 @@ export default function FullJourney({ metrics, orbit }: { metrics: MetricsStore;
     }
     else if (!s.back && s.phase === "approach") leadStageLighting(1, smooth(t));
     if (s.phase === "screens") {
-      // First leg from the projector: into the passage and along it to where the drawings end.
+      // First leg from the projector to the left-wall projector drawing.
       const total = s.lead + DRAWINGS_ARC,
         u = eased * total;
       corridorPose(Math.max(0, u - s.lead), points.position, points.rotation);
@@ -1086,7 +1085,7 @@ export default function FullJourney({ metrics, orbit }: { metrics: MetricsStore;
           metrics.update({ waitingForCorridor: true });
         }
       }
-      // The walk rests where the drawings end; the next step goes on to the liquid.
+      // The walk rests beside the projector drawing; the next step goes on to the liquid.
       else if (s.phase === "screens") change("drawings");
       else if (s.phase === "corridor") {
         change("panel");

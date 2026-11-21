@@ -1,34 +1,26 @@
 import { CanvasTexture, LinearFilter, LinearMipmapLinearFilter, SRGBColorSpace } from "three";
 import { CONTENT_SIZE, type FilmProduct } from "./film-data";
 
-type FilmFonts = { sans: string; mono: string };
-
-/** The site's own fonts, ready for drawing on a canvas. */
-export async function filmFonts(): Promise<FilmFonts> {
-  const style = getComputedStyle(document.documentElement);
-  const sans = style.getPropertyValue("--font-read").trim() || "sans-serif",
-    mono = style.getPropertyValue("--font-geist-mono").trim() || "monospace";
+/** The site's reading font, ready for drawing on a canvas. */
+export async function filmFont(): Promise<string> {
+  const sans = getComputedStyle(document.documentElement).getPropertyValue("--font-read").trim() || "sans-serif";
   await Promise.all([
     document.fonts.load(`600 80px ${sans}`),
     document.fonts.load(`400 40px ${sans}`),
-    document.fonts.load(`400 30px ${mono}`),
   ]).catch(() => undefined);
-  return { sans, mono };
+  return sans;
 }
 
 const spaced = (context: CanvasRenderingContext2D, pixels: number) => {
   if ("letterSpacing" in context) context.letterSpacing = `${pixels}px`;
 };
 
-/** Baselines (canvas pixels, top down): the number/brand row, the name, the rule under it, and the product's line. */
-const ROWS = { meta: 70, name: 184, rule: 214, line: 274 };
+const ROWS = { name: 150, rule: 191, line: 257 };
 
-/** The text strip under a picture: frame number, brand name, product name and its one short line. */
+/** The product name and its one-line description below the photograph. */
 export function contentTexture(
   product: FilmProduct,
-  index: number,
-  total: number,
-  fonts: FilmFonts,
+  font: string,
   anisotropy: number,
 ) {
   const { width, height } = CONTENT_SIZE,
@@ -40,16 +32,6 @@ export function contentTexture(
   context.fillStyle = "#0c0c0c";
   context.fillRect(0, 0, width, height);
   context.textBaseline = "alphabetic";
-  const number = String(index + 1).padStart(2, "0"),
-    count = String(total).padStart(2, "0");
-
-  context.fillStyle = "#8f8d88";
-  context.font = `400 26px ${fonts.mono}`;
-  spaced(context, 6);
-  context.textAlign = "left";
-  context.fillText(`${number} / ${count}`, edge, ROWS.meta);
-  context.textAlign = "right";
-  context.fillText(product.brand.toUpperCase(), width - edge, ROWS.meta);
 
   // The name is large when it is short, and shrinks to fit when it is long.
   let size = 108;
@@ -57,7 +39,7 @@ export function contentTexture(
   context.textAlign = "left";
   do {
     size -= 4;
-    context.font = `600 ${size}px ${fonts.sans}`;
+    context.font = `600 ${size}px ${font}`;
   } while (context.measureText(product.name).width > width - edge * 2 && size > 40);
   context.fillStyle = "#ecebe6";
   context.fillText(product.name, edge - 4, ROWS.name);
@@ -66,7 +48,7 @@ export function contentTexture(
   context.fillRect(edge, ROWS.rule, width - edge * 2, 2);
 
   context.fillStyle = "#aeaca6";
-  context.font = `400 40px ${fonts.sans}`;
+  context.font = `400 40px ${font}`;
   spaced(context, 0);
   context.fillText(product.line, edge - 2, ROWS.line);
 

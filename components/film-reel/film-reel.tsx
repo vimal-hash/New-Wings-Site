@@ -186,7 +186,7 @@ function Rig({
 const live = (shot: ReelShot) => {
   const index = Math.round(shot.position),
     product = FILM_PRODUCTS[index];
-  return `Frame ${index + 1} of ${FILM_PRODUCTS.length}: ${product.name}, ${product.brand}. ${product.line}`;
+  return `${product.name}. ${product.line}`;
 };
 
 /**
@@ -376,7 +376,7 @@ export default function FilmReel({
       <ol className="film-reel-list">
         {FILM_PRODUCTS.map((product) => (
           <li key={product.picture}>
-            {product.name}, {product.brand}. {product.line}
+            {product.name}. {product.line}
           </li>
         ))}
       </ol>

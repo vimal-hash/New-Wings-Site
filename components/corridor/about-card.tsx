@@ -46,8 +46,12 @@ const CSS = `
 .nw-about-frame{position:relative;display:grid;grid-template-rows:auto 1fr;gap:clamp(18px,3vh,32px);box-sizing:border-box;width:min(76vw,100%,(100dvh - 96px)*1.85);aspect-ratio:1.85/1;padding:clamp(60px,8.6vw,160px);color:#0e0e0e;
   background:radial-gradient(120% 95% at 50% 42%,#f6f6f4 0%,#ececea 46%,#d6d6d3 82%,#c9c9c6 100%)}
 .nw-about-label{font:500 11px/1.4 var(--font-geist-mono),monospace;letter-spacing:.18em;text-transform:uppercase;color:#4a4a48}
-.nw-about-line{align-self:end;max-width:22ch;margin:0;font:400 clamp(1.55rem,3.4vw,3.6rem)/1.06 var(--font-brand),sans-serif;letter-spacing:-.015em}
+.nw-about-copy{--intro-size:clamp(18px,2.15vw,32px);align-self:end;display:grid;gap:clamp(14px,2vh,24px)}
+.nw-about-intro{max-width:28em;margin:0;font:400 var(--intro-size)/1.4 var(--font-read),sans-serif;text-wrap:balance}
+.nw-about-line{align-self:end;max-width:20em;margin:0;font:400 calc(var(--intro-size) + 10px)/1.06 var(--font-brand),sans-serif;letter-spacing:-.015em;text-wrap:balance}
 @media (max-aspect-ratio:1/1){.nw-about-frame{width:100%;aspect-ratio:auto;min-height:min(68vh,620px)}}
+@media (max-width:600px),(max-height:560px){.nw-about-frame{padding:clamp(18px,5vmin,36px)}}
+@media (orientation:landscape) and (max-height:560px){.nw-about-frame{width:min(90vw,100%,(100dvh - 64px)*1.85)}}
 /* Afterwards the whole frame drifts a couple of pixels, slowly, so it is never frozen. */
 .nw-about-stage[data-drift="on"]{animation:nw-about-drift 18s ease-in-out infinite}
 @keyframes nw-about-drift{0%,100%{transform:none}25%{transform:translate(2px,-1.5px)}50%{transform:translate(.5px,-2.5px)}75%{transform:translate(-2px,-1px)}}
@@ -219,10 +223,15 @@ const AboutCard = forwardRef<AboutHandle, { live?: boolean; start?: Start; line?
         <div ref={stage} className="nw-about-stage">
           <div ref={frame} className="nw-about-frame">
             <span className="nw-about-label">About us</span>
-            {/* Draft line for the client to confirm: the problem cinemas face, and how New Wings answers it. */}
-            <p className="nw-about-line">
-              A cinema is many parts from many makers. We bring them into one plan, so the room works as one.
-            </p>
+            <div className="nw-about-copy">
+              <p className="nw-about-intro">
+                New Wings Solutions designs and fits out theatres for cinema owners. We plan the interior,
+                fit the seats and bring the screen, projector, sound and 3D systems together.
+              </p>
+              <p className="nw-about-line">
+                We make the kind of theatre people choose before they’ve even picked a film.
+              </p>
+            </div>
           </div>
           {live ? <canvas ref={canvas} className="nw-about-film" aria-hidden="true" /> : null}
         </div>

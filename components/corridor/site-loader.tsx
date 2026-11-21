@@ -5,6 +5,7 @@ import { DefaultLoadingManager } from "three";
 import { journeyControls } from "./journey-controls";
 import { projectorControls } from "./projector-controls";
 import { traceMark } from "./loading-trace";
+import OverviewLink from "../overview/overview-link";
 
 /** Six cinema objects, drawn as one-weight line icons. */
 const ICONS: { name: string; d: string; transform?: string }[] = [
@@ -48,6 +49,10 @@ export default function SiteLoader({ sceneFailed }: { sceneFailed: boolean }) {
     start = useRef(0);
   const ready = journey.openingPrepared && projector.ready;
   const failed = sceneFailed || projector.failed;
+
+  useEffect(() => {
+    if (failed) window.location.replace("?view=overview");
+  }, [failed]);
 
   useEffect(() => {
     const manager = DefaultLoadingManager,
@@ -111,9 +116,7 @@ export default function SiteLoader({ sceneFailed }: { sceneFailed: boolean }) {
     return (
       <div className="site-loader" role="alert">
         <p>The 3D journey couldn’t load.</p>
-        <button type="button" onClick={() => window.location.reload()}>
-          Reload view
-        </button>
+        <OverviewLink />
       </div>
     );
   const done = value >= 100;
@@ -139,6 +142,7 @@ export default function SiteLoader({ sceneFailed }: { sceneFailed: boolean }) {
         <i style={{ transform: `scaleX(${value / 100})` }} />
       </div>
       <p className="site-loader__brand">New Wings Solutions</p>
+      {!done && <OverviewLink />}
     </div>
   );
 }

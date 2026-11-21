@@ -38,7 +38,7 @@ a:focus-visible {
   outline: 2px solid #d6f88a;
   outline-offset: 5px;
 }
-.corridor-study {
+.corridor-study, .overview-page {
   position: relative;
   --contact-bottom: max(22px, env(safe-area-inset-bottom));
   --contact-icon-height: 48px;
@@ -509,7 +509,7 @@ dd {
   background: #11151a12;
   color: #000;
 }
-.contact-bar__links svg {
+.contact-bar__links img {
   width: 25px;
   height: 25px;
 }
@@ -859,7 +859,7 @@ dd {
   background: #11151a0d;
   border-color: #11151a40;
 }
-.enquiry__links svg {
+.enquiry__links img {
   width: 20px;
   height: 20px;
 }
@@ -914,6 +914,21 @@ dd {
   opacity: 0;
   visibility: hidden;
   transition-delay: 0.05s;
+}
+.overview-link {
+  position: absolute;
+  inset: auto 0 18% 0;
+  margin: auto;
+  width: max-content;
+  padding: 12px;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  animation: overview-link-wait 8s step-end both;
+}
+.site-loader[role="alert"] .overview-link { animation: none; }
+@keyframes overview-link-wait {
+  from { visibility: hidden; }
+  to { visibility: visible; }
 }
 .site-loader__icon {
   position: relative;

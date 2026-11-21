@@ -13,7 +13,7 @@ import {
   TextureLoader,
 } from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
-import { contentTexture, filmFonts } from "./film-content";
+import { contentTexture, filmFont } from "./film-content";
 import { FILM_MODEL, FILM_PRODUCTS, FRAME_PITCH } from "./film-data";
 import { filmLooks } from "./film-material";
 import { wearTexture } from "./film-wear";
@@ -101,10 +101,10 @@ export function FilmStrip({
     let live = true,
       frame = 0;
     const made: Texture[] = [];
-    void filmFonts().then((fonts) => {
+    void filmFont().then((font) => {
       if (!live) return;
       const make = (index: number) => {
-        const map = contentTexture(FILM_PRODUCTS[index], index, COUNT, fonts, anisotropy);
+        const map = contentTexture(FILM_PRODUCTS[index], font, anisotropy);
         made.push(map);
         looks.contents[index].uniforms.uMap.value = map;
       };

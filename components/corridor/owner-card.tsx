@@ -44,7 +44,7 @@ export const OWNER_WALL = "#0e0b09";
 
 // --old and --colour (0..1) drive every film layer and the black-and-white; the timeline sets them on the root.
 const CSS = `
-.nw-owner{--h:min(100dvh - 96px,(100vw - 48px)/2.39);--cols:1fr calc(var(--h)*.6) 1fr;--old:0;--colour:1;position:absolute;inset:0;display:grid;place-items:center;overflow:hidden;background:${OWNER_WALL}}
+.nw-owner{--h:min(100dvh - 96px,(100vw - 48px)/2.39);--old:0;--colour:1;position:absolute;inset:0;display:grid;place-items:center;overflow:hidden;background:${OWNER_WALL}}
 .nw-owner[data-era="old"]{--old:1;--colour:0}
 .nw-owner::after{content:"";position:absolute;inset:0;pointer-events:none;background:var(--nw-owner-grain,none);mix-blend-mode:multiply;opacity:.5}
 .nw-owner-stage{position:relative;width:calc(var(--h)*2.39);height:var(--h);filter:grayscale(calc(1 - var(--colour))) contrast(calc(1 + (1 - var(--colour))*(.3 - .15*var(--old)))) brightness(calc(1 + (1 - var(--colour))*(.08 - .28*var(--old))))}
@@ -53,17 +53,17 @@ const CSS = `
 .nw-owner-frame{position:absolute;inset:0;overflow:hidden}
 .nw-owner-picture{position:absolute;inset:-3px}
 .nw-owner-blocks{position:absolute;inset:0;background:#c4a461}
-/* Red meets yellow on one straight line through the portrait. */
+/* The two colour fields divide the title and the note. */
 .nw-owner-blocks::after{content:"";position:absolute;inset:0 0 0 50%;background:#a05848}
 .nw-owner-circle{position:absolute;z-index:1;left:50%;top:50%;width:calc(var(--h)*.74);height:calc(var(--h)*.74);transform:translate(-50%,-50%);border-radius:50%;overflow:hidden;background:#6b8c92}
 .nw-owner-circle svg{position:absolute;inset:18% 0 0;width:100%;height:82%;fill:#527078}
-.nw-owner-words{position:absolute;inset:0;display:grid;grid-template-columns:var(--cols)}
+.nw-owner-words{position:absolute;inset:0;display:grid;grid-template-columns:1fr 1fr}
 .nw-owner-hot,.nw-owner-lamp{position:absolute;pointer-events:none}
 .nw-owner-hot{inset:0;mix-blend-mode:screen;background:radial-gradient(46% 72% at 50% 46%,rgba(255,238,206,.26),rgba(255,238,206,0) 100%)}
 .nw-owner-lamp{inset:0;background:radial-gradient(74% 104% at 50% 47%,rgba(12,9,7,0) 38%,rgba(12,9,7,.5) 100%)}
 .nw-owner-side{box-sizing:border-box;display:flex;flex-direction:column;justify-content:space-between;padding:calc(var(--h)*.07)}
 .nw-owner-name{color:#231a10}
-.nw-owner-note{color:#f1e6cf;justify-content:flex-end;padding-left:calc(var(--h)*.27)}
+.nw-owner-note{color:#f1e6cf;justify-content:flex-end}
 .nw-owner-label{font:500 11px/1.4 var(--font-geist-mono),monospace;letter-spacing:.18em;text-transform:uppercase}
 .nw-owner-title{margin:0;font:400 calc(var(--h)*.125)/1 var(--font-brand),sans-serif;letter-spacing:-.015em}
 .nw-owner-text{margin:0;font-size:max(15px,calc(var(--h)*.036));line-height:1.3}
@@ -95,11 +95,10 @@ const CSS = `
 @media (max-aspect-ratio:1/1){
   .nw-owner{--h:min(100dvh - 48px,(100vw - 32px)*1.6)}
   .nw-owner-stage{width:calc(var(--h)/1.6)}
-  .nw-owner-words{grid-template-columns:1fr;grid-template-rows:1fr .8fr 1fr}
+  .nw-owner-words{grid-template-columns:1fr;grid-template-rows:1fr 1fr}
   .nw-owner-blocks::after{inset:50% 0 0}
   .nw-owner-circle{width:calc(var(--h)*.32);height:calc(var(--h)*.32)}
   .nw-owner-title{font-size:calc(var(--h)*.075)}
-  .nw-owner-note{padding-left:calc(var(--h)*.05)}
 }
 @media (prefers-reduced-motion:reduce){.nw-owner *{animation:none!important}}
 `;
@@ -256,29 +255,30 @@ const OwnerCard = forwardRef<OwnerHandle, { live?: boolean; start?: Start }>(fun
         <div className="nw-owner-frame">
           <div ref={picture} className="nw-owner-picture">
             <div className="nw-owner-blocks" aria-hidden="true">
+              {/* Portrait hidden until the team supplies its photo.
               <div className="nw-owner-circle">
                 <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMax meet">
                   <circle cx="50" cy="38" r="17" />
                   <path d="M12 100c0-26 17-42 38-42s38 16 38 42z" />
                 </svg>
               </div>
+              */}
             </div>
             <div className="nw-owner-hot" aria-hidden="true" />
             <div className="nw-owner-lamp" aria-hidden="true" />
             <div className="nw-owner-scratches" aria-hidden="true">
               <i />
             </div>
-            {/* Placeholders until the team's own names, portrait and words arrive; the note is a draft to confirm. */}
             <div className="nw-owner-words">
               <div className="nw-owner-side nw-owner-name">
                 <span className="nw-owner-label">New Wings Solutions</span>
                 <h2 className="nw-owner-title">The team</h2>
               </div>
-              <div />
               <div className="nw-owner-side nw-owner-note">
                 <p className="nw-owner-text">
-                  The people who plan, fit and tune each room, and care how every film looks and sounds. Names
-                  and faces coming soon.
+                  We work with cinema owners on the things a catalogue can’t tell you. How high should the
+                  screen sit? What can someone in the front row see comfortably? Our team helps answer those
+                  questions while the theatre is still a drawing.
                 </p>
               </div>
             </div>

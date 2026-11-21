@@ -1,5 +1,5 @@
-import CorridorExperience from "@/components/corridor/experience";
+import ExperienceEntry from "@/components/experience-entry";
 
 export default function Home() {
-  return <CorridorExperience />;
+  return <ExperienceEntry />;
 }

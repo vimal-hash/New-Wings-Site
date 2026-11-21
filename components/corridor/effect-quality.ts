@@ -3,6 +3,7 @@ import { isMobileDevice } from "./texture-quality";
 import { gpuSpeed, measureGpuSpeed, richFits, RICH_COST, speedReused, type DrawingCost } from "./gpu-speed";
 import { targetDpr } from "./render-resolution";
 import { traceMark } from "./loading-trace";
+import { supportsTheatreGraphics } from "./graphics-support";
 
 /** "desktop" is the richer picture, "laptop" the lighter one, "mobile" the phone one. The names are the pictures', not
  * the devices': a fast laptop gets "desktop" and a slow desktop "laptop". */
@@ -56,7 +57,7 @@ export function effectQuality(gl: WebGLRenderer): EffectQuality {
   return choice;
 }
 
-let ropeDevice: EffectQuality | undefined, webgl2: boolean | undefined;
+let ropeDevice: EffectQuality | undefined;
 /**
  * The same choice for the rope flight between the sections, which has its own canvas (pixel ratio 1 to 1.5). Phones,
  * and anything without WebGL 2, have no flight yet. Asked before the speed test has finished (only a very early menu
@@ -67,12 +68,7 @@ export function ropeFlightDevice(): EffectQuality {
   const test = testOverride();
   if (test) return (ropeDevice = test);
   if (isMobileDevice()) return (ropeDevice = "mobile");
-  if (webgl2 === undefined) {
-    const context = document.createElement("canvas").getContext("webgl2");
-    webgl2 = !!context;
-    context?.getExtension("WEBGL_lose_context")?.loseContext();
-  }
-  if (!webgl2) return (ropeDevice = "mobile");
+  if (!supportsTheatreGraphics()) return (ropeDevice = "mobile");
   if (gpuSpeed() === undefined) return "laptop";
   return (ropeDevice = choose(RICH_COST.rope, ropePixelRatio()));
 }

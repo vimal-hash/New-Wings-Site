@@ -1,4 +1,5 @@
 "use client";
+import { testimonials as QUOTES } from "./testimonials";
 import { forwardRef, useEffect, useImperativeHandle, useLayoutEffect, useRef, useState } from "react";
 import { createSpecks, type Specks } from "./feedback-specks";
 import { ropeFlightDevice } from "./effect-quality";
@@ -63,27 +64,7 @@ export function whenCalm(run: () => void) {
   return () => cancelAnimationFrame(frame);
 }
 
-// Placeholders until the client's own testimonials arrive.
-const QUOTES = [
-  {
-    text: "Placeholder — a theatre owner's words about their new screen and sound.",
-    name: "Client name",
-    place: "Cinema, City",
-    colour: "#efb02e",
-  },
-  {
-    text: "Placeholder — a project partner on planning and delivery with New Wings.",
-    name: "Client name",
-    place: "Company, City",
-    colour: "#2a9fb3",
-  },
-  {
-    text: "Placeholder — a cinema group on the seating and finishes in their halls.",
-    name: "Client name",
-    place: "Cinema group, City",
-    colour: "#d4472f",
-  },
-];
+
 const LAST = QUOTES.length - 1;
 /** The last card: where the section is left for the corridor, and where it is found again coming back. */
 export const FEEDBACK_LAST = LAST;
@@ -192,7 +173,7 @@ const CSS = `
 .nw-fb-card{flex:none;position:relative;width:var(--w);height:var(--h);backface-visibility:hidden;will-change:transform}
 .nw-fb-face{position:absolute;inset:0;box-sizing:border-box;margin:0;padding:clamp(12px,calc(var(--w)*.05),72px);display:grid;grid-template-rows:auto 1fr auto}
 .nw-fb-top,.nw-fb-who{display:flex;justify-content:space-between;align-items:baseline;gap:16px;font:500 clamp(9px,calc(var(--w)*.015),15px)/1.3 var(--font-geist-mono),monospace;letter-spacing:.16em;text-transform:uppercase}
-.nw-fb-text{align-self:center;max-width:22ch;margin:0;font-size:clamp(13px,calc(var(--w)*.046),68px);font-weight:500;line-height:1.08;letter-spacing:-.03em}
+.nw-fb-text{align-self:center;width:calc(var(--w)/2);margin:0;font-size:clamp(13px,calc(var(--w)*.046 - 20px),48px);font-weight:500;line-height:1.08;letter-spacing:-.03em}
 .nw-fb-name{font:500 clamp(12px,calc(var(--w)*.024),30px)/1.2 var(--font-read),system-ui,sans-serif;letter-spacing:-.01em;text-transform:none}
 /* The films of the older eras, over the whole picture. Each fades as a whole; its parts animate inside it. */
 .nw-fb-film,.nw-fb-scratches{position:absolute;inset:0;overflow:hidden;pointer-events:none}
@@ -221,9 +202,9 @@ const CSS = `
 @keyframes nw-fb-drift{0%{transform:translateX(0);opacity:.3}25%{transform:translateX(2px);opacity:.2}50%{transform:translateX(1px);opacity:.32}75%{transform:translateX(-1px);opacity:.24}}
 @keyframes nw-fb-flicker{0%{opacity:.03}20%{opacity:.08}40%{opacity:.02}60%{opacity:.1}80%{opacity:.05}}
 @media (max-aspect-ratio:1/1){
-  .nw-fb{--w:min(58vw,(100dvh - 22dvh - 40px)/1.45,520px);--h:calc(var(--w)*1.45);--left:max(16px,100vw - var(--w)*1.5 - var(--gap))}
+  .nw-fb{--w:min(max(58vw,224px),(100dvh - 22dvh - 40px)/1.45,520px);--h:calc(var(--w)*1.45);--left:max(16px,100vw - var(--w)*1.5 - var(--gap))}
   .nw-fb-face{padding:clamp(14px,calc(var(--w)*.07),28px)}
-  .nw-fb-text{font-size:clamp(14px,calc(var(--w)*.078),36px)}
+  .nw-fb-text{font-size:clamp(14px,calc(var(--w)*.078 - 20px),16px)}
   .nw-fb-who{flex-direction:column;align-items:flex-start;gap:6px}
 }
 @media (orientation:landscape) and (max-height:500px){
@@ -618,9 +599,6 @@ const FeedbackScene = forwardRef<FeedbackHandle, { live?: boolean; start?: Start
                 <figure className="nw-fb-face" style={{ background: q.colour }}>
                   <div className="nw-fb-top">
                     <span>Client feedback</span>
-                    <span>
-                      {String(i + 1).padStart(2, "0")} / {String(QUOTES.length).padStart(2, "0")}
-                    </span>
                   </div>
                   <blockquote className="nw-fb-text">{q.text}</blockquote>
                   <figcaption className="nw-fb-who">

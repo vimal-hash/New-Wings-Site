@@ -21,7 +21,7 @@ import { openEnquiry } from "./enquiry";
 const WHOLE_THEATRE = "A complete theatre";
 
 /** One shared feather reveals white and the colour mark across the silver pupil. */
-export default function DiagonalSection() {
+export default function DiagonalSection({ onOverviewCover }: { onOverviewCover?: (covered: boolean) => void } = {}) {
   const section = useRef<HTMLElement>(null);
   const logo = useRef<HTMLDivElement>(null);
   const artwork = useRef<HTMLDivElement>(null);
@@ -34,7 +34,10 @@ export default function DiagonalSection() {
       last = 0;
     const artMotion = createBrandMotion(element, artwork.current!, preference);
     const brandCamera = createBrandCamera(element);
-    const active = () => journeyControls.read().phase === "logoDone";
+    // The same sweep starts at the eye in 3D, or at the foot of the scrollable testimonials.
+    const active = () => onOverviewCover
+      ? motion.read().progress > 0 || window.scrollY + innerHeight >= document.documentElement.scrollHeight - 2
+      : journeyControls.read().phase === "logoDone";
     function paint(progress: number) {
       const feather = diagonalFeatherControls.read(),
         mask = diagonalSectionMask(progress, innerWidth, innerHeight, feather);
@@ -66,6 +69,10 @@ export default function DiagonalSection() {
       element!.setAttribute("aria-hidden", progress > 0 ? "false" : "true");
     }
     function publish(covered: boolean) {
+      if (onOverviewCover) {
+        onOverviewCover(covered);
+        return;
+      }
       if (journeyControls.read().finalCovered !== covered) journeyControls.update({ finalCovered: covered });
     }
     function tick(now: number) {
@@ -100,6 +107,7 @@ export default function DiagonalSection() {
     function key(event: KeyboardEvent) {
       if (!active() || ownInput(event) || event.ctrlKey || event.metaKey || event.altKey) return;
       if (event.key !== "Home" && event.key !== "End") return;
+      if (onOverviewCover && event.key === "Home" && motion.read().progress === 0) return;
       event.preventDefault();
       event.stopImmediatePropagation();
       motion.seek(event.key === "Home" ? 0 : 1);
@@ -153,7 +161,7 @@ export default function DiagonalSection() {
       diagonalTransition.setProgress(0);
       publish(false);
     };
-  }, []);
+  }, [onOverviewCover]);
   return (
     <section
       ref={section}

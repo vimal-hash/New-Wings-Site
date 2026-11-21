@@ -2,7 +2,8 @@
 
 import { useEffect, useMemo, useRef } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
-import { Color, Matrix4, PerspectiveCamera, Quaternion, Vector2, Vector3 } from "three";
+import { Color, Matrix4, PerspectiveCamera, Quaternion, Vector3 } from "three";
+import StopMouseLook from "./stop-mouse-look";
 import reference from "./reference-camera.json";
 import route from "./scene-route.json";
 import projector from "./projector-assets.json";
@@ -41,7 +42,7 @@ import { createViewOneLens } from "./view-one-lens";
 import { viewOneLensWeight } from "./lens-motion";
 import { cinemaGlasses } from "./cinema-glasses-state";
 import { CORRIDOR_STOP } from "./corridor-screen-state";
-import { sceneIdleUrgent, sceneMotion } from "./scene-idle";
+import { sceneIdleUrgent } from "./scene-idle";
 import { effectQuality } from "./effect-quality";
 import { LOGO_KEY, logoKey, logoKeyAmount } from "./logo-material";
 import { createEndBox } from "./end-box";
@@ -219,9 +220,6 @@ export default function FullJourney({ metrics, orbit }: { metrics: MetricsStore;
   const exitStages = useRef(createExitStages());
   const jumpProjector = useRef(() => {});
   const openingClock = useRef(createTheatreOpeningClock());
-  /** Pace of the theatre view following the mouse (see the idle frame below). */
-  const GAZE_FOLLOW = 4.2;
-  const theatreLook = useRef({ target: new Vector2(), current: new Vector2(), velocity: new Vector2() });
 
   const openingReview = useMemo(
     () => (typeof window === "undefined" ? undefined : openingReviewTime(location.search, location.hostname)),
@@ -255,8 +253,11 @@ export default function FullJourney({ metrics, orbit }: { metrics: MetricsStore;
     const [x, y, z] = projector.centre_blender;
     const centre = new Vector3(x, z, -y);
     const returned = centre.clone().add(new Vector3(0, 0.1, -6));
+    const drawingsRotation = new Quaternion();
+    corridorPose(DRAWINGS_ARC, new Vector3(), drawingsRotation);
     return {
       centre,
+      drawingsRotation,
       wide: centre.clone().add(new Vector3(0, 0.25, -9.5)),
       close: centre.clone().add(new Vector3(-2.7, 1.8, -2.7)),
       returned,
@@ -445,8 +446,6 @@ export default function FullJourney({ metrics, orbit }: { metrics: MetricsStore;
         s.focus.copy(points.seatFocus);
         camera.position.copy(points.seat);
         camera.lookAt(s.focus);
-        theatreLook.current.target.set(0, 0);
-        theatreLook.current.current.set(0, 0);
         s.phase = "idle";
         journeyControls.update({ ...common, phase: "idle", pageSection: null, cinemaStage: "wearing" });
         invalidate();
@@ -572,38 +571,15 @@ export default function FullJourney({ metrics, orbit }: { metrics: MetricsStore;
       return true;
     });
     const query = matchMedia("(prefers-reduced-motion: reduce)");
-    const gaze = theatreLook.current;
-    const clearGaze = () => {
-      gaze.target.set(0, 0);
-      invalidate();
-    };
-    const gazePointer = (event: PointerEvent) => {
-      if (s.phase !== "idle" || orbit || s.reduce) return;
-      if (
-        event.pointerType !== "mouse" ||
-        (event.target instanceof Element && event.target.closest("button,a,input,[data-cinema-controls]"))
-      ) {
-        clearGaze();
-        return;
-      }
-      gaze.target.set(
-        (1 - (event.clientX / innerWidth) * 2) * 0.065,
-        (1 - (event.clientY / innerHeight) * 2) * 0.042,
-      );
-      invalidate();
-    };
     const preference = () => {
       s.reduce = query.matches;
-      if (s.reduce) clearGaze();
+      invalidate();
     };
     preference();
     const visibility = () => {
       s.last = performance.now();
       if (!document.hidden) invalidate();
     };
-    window.addEventListener("pointermove", gazePointer, { passive: true });
-    window.addEventListener("blur", clearGaze);
-    document.documentElement.addEventListener("pointerleave", clearGaze);
     document.addEventListener("visibilitychange", visibility);
     query.addEventListener("change", preference);
     return () => {
@@ -613,9 +589,6 @@ export default function FullJourney({ metrics, orbit }: { metrics: MetricsStore;
       window.removeEventListener("journey-jump", jump);
       stopListening();
       cancelAnimationFrame(hideFrame);
-      window.removeEventListener("pointermove", gazePointer);
-      window.removeEventListener("blur", clearGaze);
-      document.documentElement.removeEventListener("pointerleave", clearGaze);
       document.removeEventListener("visibilitychange", visibility);
       query.removeEventListener("change", preference);
     };
@@ -850,37 +823,7 @@ export default function FullJourney({ metrics, orbit }: { metrics: MetricsStore;
       return;
     }
     if (s.phase === "idle" || s.phase === "glassesExit") {
-      const gaze = theatreLook.current;
-      gaze.velocity ??= new Vector2(); // a hot reload can keep an older ref without it
-      if (s.phase === "glassesExit" || s.reduce) gaze.target.set(0, 0);
-      // Critically damped follow: the view eases into motion and settles without any jolt.
-      // GAZE_FOLLOW sets the pace; lower is slower (most of the move takes about 1/GAZE_FOLLOW s).
-      if (s.reduce) {
-        gaze.current.copy(gaze.target);
-        gaze.velocity.set(0, 0);
-      } else {
-        const step = Math.min(dt, 0.05) / 4;
-        for (let i = 0; i < 4; i++) {
-          gaze.velocity.x +=
-            (GAZE_FOLLOW * GAZE_FOLLOW * (gaze.target.x - gaze.current.x) -
-              2 * GAZE_FOLLOW * gaze.velocity.x) *
-            step;
-          gaze.velocity.y +=
-            (GAZE_FOLLOW * GAZE_FOLLOW * (gaze.target.y - gaze.current.y) -
-              2 * GAZE_FOLLOW * gaze.velocity.y) *
-            step;
-          gaze.current.x += gaze.velocity.x * step;
-          gaze.current.y += gaze.velocity.y * step;
-        }
-      }
-      const moving = gaze.current.distanceToSquared(gaze.target) > 1.6e-7 || gaze.velocity.lengthSq() > 1e-8;
-      if (!moving) {
-        gaze.current.copy(gaze.target);
-        gaze.velocity.set(0, 0);
-      }
       camera.lookAt(s.focus);
-      camera.rotateY(gaze.current.x);
-      camera.rotateX(gaze.current.y);
       // Back in the seat after scrolling back: the screen powers up again as the glasses come down.
       if (s.phase === "idle" && theatreOpening.screenPower.value < 1) {
         theatreOpening.screenPower.value = s.reduce
@@ -888,12 +831,9 @@ export default function FullJourney({ metrics, orbit }: { metrics: MetricsStore;
           : Math.min(1, theatreOpening.screenPower.value + Math.min(dt, 0.05) / 1.1);
         invalidate();
       }
-      // Background GPU preparation waits until the glide has settled (scene-idle).
-      if (moving) {
-        invalidate();
-        sceneMotion.at = performance.now();
-      }
     }
+    // Mouse-look starts from the same blueprint orientation on every resting frame, from either direction.
+    if (s.phase === "drawings") camera.quaternion.copy(points.drawingsRotation);
     if (["idle", "reveal", "awaitAssembly", "done", "drawings", "panel", "page"].includes(s.phase)) return;
     s.elapsed += dt;
     if (s.phase === "glassesExit") {
@@ -1094,5 +1034,5 @@ export default function FullJourney({ metrics, orbit }: { metrics: MetricsStore;
     }
   }, -1);
   /* eslint-enable react-hooks/immutability */
-  return null;
+  return <StopMouseLook journey={state} orbit={orbit} />;
 }

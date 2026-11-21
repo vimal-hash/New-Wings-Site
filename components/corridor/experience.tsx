@@ -198,6 +198,7 @@ export default function CorridorExperience() {
   });
   const [metrics] = useState(createMetricsStore);
   const [sceneFailed, setSceneFailed] = useState(false);
+  const viewport = useRef<HTMLDivElement>(null);
   const progressElement = useRef<HTMLDivElement>(null);
   // Only what the page itself shows; each changes a few times, so the page re-renders only then.
   const [firstFrame, setFirstFrame] = useState(false);
@@ -210,6 +211,14 @@ export default function CorridorExperience() {
   const orbitActive = orbit || (journey.phase === "logoDone" && endOrbit);
   const fullPage = journey.phase === "page" || journey.phase === "pageReturnLoading" || journey.pageReturning;
   const [prepareFlight, setPrepareFlight] = useState(false);
+  useEffect(() => {
+    const element = viewport.current;
+    if (!element || journey.loaderDone) return;
+    // A lost opening canvas may never produce a first frame or throw a React error.
+    const lost = () => setSceneFailed(true);
+    element.addEventListener("webglcontextlost", lost, true);
+    return () => element.removeEventListener("webglcontextlost", lost, true);
+  }, [journey.loaderDone]);
   useEffect(() => {
     if (journey.phase !== "done" || ropeFlightDevice() !== "desktop") return;
     // Desktop flies the rope GLB. It used to load and parse only when the pages opened (a ~210 ms freeze on that
@@ -284,6 +293,7 @@ export default function CorridorExperience() {
       )}
       <div
         id="corridor-viewport"
+        ref={viewport}
         className="scene-fixed"
         style={{ pointerEvents: orbitActive ? "auto" : "none" }}
       >

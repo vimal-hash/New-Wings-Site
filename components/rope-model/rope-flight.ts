@@ -239,6 +239,8 @@ export type FlightGlide = {
   leadShare: number;
   units: (share: number) => number;
   take?: ((step: number) => boolean) | null;
+  driving?: boolean;
+  publish?: (share: number) => void;
 };
 
 /** A leg's shape over its time, from its speed: 0 at the start, 1 at the end. */
@@ -273,13 +275,22 @@ export function createFlightGlide(element: HTMLElement, profile: FlightProfile, 
   let last = element.scrollTop,
     direction = 0,
     frame = 0,
-    gliding = false;
+    scrollRange = 0;
   const room = () => element.scrollHeight - element.clientHeight;
+  const resized = () => {
+    scrollRange = room();
+  };
   const launch = (way: number) => {
     cancelAnimationFrame(frame);
+    const total = room();
+    scrollRange = total;
+    if (total <= 0) {
+      glide.driving = false;
+      direction = 0;
+      return;
+    }
     element.style.overflowY = "hidden";
-    const total = room(),
-      from = profile.holdFrom * total,
+    const from = profile.holdFrom * total,
       to = profile.holdTo * total;
     let top = element.scrollTop,
       wait = 0;
@@ -305,8 +316,9 @@ export function createFlightGlide(element: HTMLElement, profile: FlightProfile, 
       top = leadShare * total;
       wait = lead * 1000;
     }
+    glide.driving = true;
     element.scrollTop = top;
-    last = element.scrollTop;
+    glide.publish?.(top / total);
     // A whole leg's time comes from its length on this side of the stop; a leg turned round part way takes less.
     const stopping = !profile.through && (target === from || target === to),
       below = target <= from && top <= from;
@@ -319,23 +331,26 @@ export function createFlightGlide(element: HTMLElement, profile: FlightProfile, 
     const begin = performance.now() + wait,
       time = legSeconds(side, stopping) * Math.sqrt(Math.min(span / Math.max(side, 1e-3), 1)) * 1000 + 1,
       shape = stopping ? toStop : toWhite;
-    gliding = true;
     direction = way;
     const step = (now: number) => {
       const u = Math.min(Math.max((now - begin) / time, 0), 1);
-      element.scrollTop = top + (target - top) * shape(u);
-      last = element.scrollTop;
+      const share = (top + (target - top) * shape(u)) / total;
+      element.scrollTop = share * scrollRange;
       if (u < 1) {
+        glide.publish?.(share);
         frame = requestAnimationFrame(step);
         return;
       }
-      gliding = false;
+      last = element.scrollTop;
+      glide.driving = false;
+      const currentRoom = room();
+      glide.publish?.(currentRoom > 0 ? last / currentRoom : 0);
       direction = 0;
     };
     frame = requestAnimationFrame(step);
   };
   const scrolled = () => {
-    if (gliding) return;
+    if (glide.driving) return;
     const top = element.scrollTop,
       way = Math.sign(top - last);
     last = top;
@@ -346,7 +361,7 @@ export function createFlightGlide(element: HTMLElement, profile: FlightProfile, 
   const take = (step: number) => {
     const way = Math.sign(step);
     if (!way) return true;
-    if (gliding) {
+    if (glide.driving) {
       if (way === -direction) launch(way);
       return true;
     }
@@ -358,10 +373,15 @@ export function createFlightGlide(element: HTMLElement, profile: FlightProfile, 
   glide.take = take;
   element.style.overflowY = "hidden";
   element.addEventListener("scroll", scrolled, { passive: true });
+  window.addEventListener("resize", resized);
   return () => {
     cancelAnimationFrame(frame);
     element.removeEventListener("scroll", scrolled);
-    if (glide.take === take) glide.take = null;
+    window.removeEventListener("resize", resized);
+    if (glide.take === take) {
+      glide.driving = false;
+      glide.take = null;
+    }
   };
 }
 

@@ -21,7 +21,10 @@ import { openEnquiry } from "./enquiry";
 const WHOLE_THEATRE = "A complete theatre";
 
 /** One shared feather reveals white and the colour mark across the silver pupil. */
-export default function DiagonalSection({ onOverviewCover }: { onOverviewCover?: (covered: boolean) => void } = {}) {
+export default function DiagonalSection({ onOverviewCover, onOverviewStep }: {
+  onOverviewCover?: (covered: boolean) => void;
+  onOverviewStep?: (step: number) => boolean;
+} = {}) {
   const section = useRef<HTMLElement>(null);
   const logo = useRef<HTMLDivElement>(null);
   const artwork = useRef<HTMLDivElement>(null);
@@ -39,12 +42,13 @@ export default function DiagonalSection({ onOverviewCover }: { onOverviewCover?:
       ? motion.read().progress > 0 || window.scrollY + innerHeight >= document.documentElement.scrollHeight - 2
       : journeyControls.read().phase === "logoDone";
     function paint(progress: number) {
+      const width = innerWidth, height = innerHeight;
       const feather = diagonalFeatherControls.read(),
-        mask = diagonalSectionMask(progress, innerWidth, innerHeight, feather);
+        mask = diagonalSectionMask(progress, width, height, feather);
       element!.style.clipPath = diagonalSectionClip(
         progress,
-        innerWidth,
-        innerHeight,
+        width,
+        height,
         mask === "none" ? 0 : feather,
       );
       element!.style.maskImage = mask;
@@ -58,11 +62,11 @@ export default function DiagonalSection({ onOverviewCover }: { onOverviewCover?:
       element!.dataset.eyeZoom = zoom.toFixed(4);
       // The camera supplies the real, unzoomed projected pupil diameter. Keep
       // source pixels intact; the SVG viewBox removes only the PNG's margins.
-      const diameter = diagonalTransition.pupilDiameter || Math.min(innerWidth, innerHeight) * 0.245;
+      const diameter = diagonalTransition.pupilDiameter || Math.min(width, height) * 0.245;
       const logoWidth = diameter * zoom * 1.17;
       if (logo.current) logo.current.style.width = `${logoWidth.toFixed(3)}px`;
       element!.style.setProperty("--brand-logo-width", `${logoWidth.toFixed(3)}px`);
-      const entrancePoint = brandRevealPoint(innerWidth, innerHeight, logoWidth, feather);
+      const entrancePoint = brandRevealPoint(width, height, logoWidth, feather);
       element!.dataset.brandEntrancePoint = entrancePoint.toFixed(5);
       artMotion.update(progress >= entrancePoint, progress > 0);
       brandCamera.update(progress, entrancePoint);
@@ -96,7 +100,12 @@ export default function DiagonalSection({ onOverviewCover }: { onOverviewCover?:
     const stopSteps = listenSteps(
       window,
       (step, _pixels, event) => {
-        if (!active() || !motion.step(step)) return false;
+        if (!active()) return false;
+        if (onOverviewStep && motion.read().progress === 0 && motion.read().target === 0 && onOverviewStep(step)) {
+          event.stopImmediatePropagation();
+          return true;
+        }
+        if (!motion.step(step)) return false;
         event.stopImmediatePropagation();
         if (step) wake();
         return true;
@@ -137,6 +146,8 @@ export default function DiagonalSection({ onOverviewCover }: { onOverviewCover?:
     window.addEventListener("eye-diagonal-preview", preview);
     const unsubscribe = journeyControls.subscribe(() => {
       if (active()) return;
+      const { progress, target } = motion.read();
+      if (!frame && !progress && !target) return;
       cancelAnimationFrame(frame);
       frame = 0;
       last = 0;
@@ -161,7 +172,7 @@ export default function DiagonalSection({ onOverviewCover }: { onOverviewCover?:
       diagonalTransition.setProgress(0);
       publish(false);
     };
-  }, [onOverviewCover]);
+  }, [onOverviewCover, onOverviewStep]);
   return (
     <section
       ref={section}

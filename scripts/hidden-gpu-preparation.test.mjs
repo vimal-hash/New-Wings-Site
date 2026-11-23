@@ -101,7 +101,7 @@ test("private GPU preparation restores invisibility and renderer state even afte
       throw Error("draw failed");
     },
   };
-  assert.throws(() => prepareHiddenGPU(renderer, scene, new PerspectiveCamera(), [root]), /draw failed/);
+  assert.throws(() => prepareHiddenGPU(renderer, scene, new PerspectiveCamera(), [mesh, root, mesh]), /draw failed/);
   assert.equal(root.visible, false);
   assert.equal(mesh.visible, false);
   assert.equal(mesh.frustumCulled, true);

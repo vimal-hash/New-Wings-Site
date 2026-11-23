@@ -5,7 +5,7 @@ import { DefaultLoadingManager } from "three";
 import { journeyControls } from "./journey-controls";
 import { projectorControls } from "./projector-controls";
 import { traceMark } from "./loading-trace";
-import OverviewLink from "../overview/overview-link";
+import { releaseOpeningDownloads } from "./opening-files";
 
 /** Six cinema objects, drawn as one-weight line icons. */
 const ICONS: { name: string; d: string; transform?: string }[] = [
@@ -33,13 +33,9 @@ const ICONS: { name: string; d: string; transform?: string }[] = [
  * an eased clock carries it to 90% within a few seconds, then it completes when
  * the theatre and the next projector shot are ready.
  */
-export default function SiteLoader({ sceneFailed }: { sceneFailed: boolean }) {
-  const journey = useSyncExternalStore(journeyControls.subscribe, journeyControls.read, journeyControls.read);
-  const projector = useSyncExternalStore(
-    projectorControls.subscribe,
-    projectorControls.read,
-    projectorControls.read,
-  );
+export default function SiteLoader() {
+  const theatreReady = useSyncExternalStore(journeyControls.subscribe, readTheatreReady, readTheatreReady);
+  const projectorReady = useSyncExternalStore(projectorControls.subscribe, readProjectorReady, readProjectorReady);
   const [value, setValue] = useState(0),
     [icon, setIcon] = useState(0),
     [gone, setGone] = useState(false);
@@ -47,12 +43,7 @@ export default function SiteLoader({ sceneFailed }: { sceneFailed: boolean }) {
     real = useRef(0),
     finish = useRef<number | null>(null),
     start = useRef(0);
-  const ready = journey.openingPrepared && projector.ready;
-  const failed = sceneFailed || projector.failed;
-
-  useEffect(() => {
-    if (failed) window.location.replace("?view=overview");
-  }, [failed]);
+  const ready = theatreReady && projectorReady;
 
   useEffect(() => {
     const manager = DefaultLoadingManager,
@@ -67,24 +58,30 @@ export default function SiteLoader({ sceneFailed }: { sceneFailed: boolean }) {
   }, []);
 
   useEffect(() => {
-    if (gone || failed) return;
+    if (gone) return;
     const timer = window.setInterval(() => setIcon((i) => (i + 1) % ICONS.length), 620);
     return () => window.clearInterval(timer);
-  }, [gone, failed]);
+  }, [gone]);
 
   useEffect(() => {
-    if (gone || failed) return;
+    if (gone) return;
+    if (ready) releaseOpeningDownloads();
     let frame = 0;
     let removeTimer = 0;
-    start.current ||= performance.now();
+    let lastTick = performance.now();
+    start.current ||= lastTick;
     const tick = (now: number, catchUp = false) => {
       const seconds = (now - start.current) / 1000;
+      const elapsedMs = Math.max(0, now - lastTick);
+      lastTick = now;
       if (ready && finish.current === null) finish.current = now;
       const clock = 0.9 * (1 - Math.exp(-seconds / 1.7));
       let target = Math.max(clock, 0.9 * real.current);
       if (finish.current !== null)
         target = Math.min(1, Math.max(shown.current, target) + (now - finish.current) / 420);
-      shown.current = Math.max(shown.current, shown.current + (target - shown.current) * (catchUp ? 1 : 0.18));
+      // Same easing as 18% per frame at 60 Hz, including when shader work delays a frame.
+      const follow = catchUp ? 1 : 1 - Math.pow(0.82, elapsedMs / (1000 / 60));
+      shown.current += Math.max(0, target - shown.current) * follow;
       if (finish.current !== null && target >= 1 && shown.current > 0.995) shown.current = 1;
       if (document.hidden && ready) shown.current = 1;
       setValue(Math.floor(shown.current * 100));
@@ -109,16 +106,9 @@ export default function SiteLoader({ sceneFailed }: { sceneFailed: boolean }) {
       window.clearTimeout(removeTimer);
       document.removeEventListener("visibilitychange", refresh);
     };
-  }, [ready, gone, failed]);
+  }, [ready, gone]);
 
   if (gone) return null;
-  if (failed)
-    return (
-      <div className="site-loader" role="alert">
-        <p>The 3D journey couldn’t load.</p>
-        <OverviewLink />
-      </div>
-    );
   const done = value >= 100;
   return (
     <div
@@ -142,7 +132,9 @@ export default function SiteLoader({ sceneFailed }: { sceneFailed: boolean }) {
         <i style={{ transform: `scaleX(${value / 100})` }} />
       </div>
       <p className="site-loader__brand">New Wings Solutions</p>
-      {!done && <OverviewLink />}
     </div>
   );
 }
+
+const readTheatreReady = () => journeyControls.read().openingPrepared;
+const readProjectorReady = () => projectorControls.read().ready;

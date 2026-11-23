@@ -1,6 +1,15 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { createQuality, firstStep, STEPS } from "../components/rope-laptop/laptop-quality.ts";
+import { createQuality, firstStep, qualityOverrides, STEPS } from "../components/rope-laptop/laptop-quality.ts";
+
+test("tunnel review links accept real steps and bounded whole draw counts", () => {
+  const read = (query) => qualityOverrides(new URLSearchParams(query));
+  assert.deepEqual(read("step=0&bench=40"), { fixedStep: 0, bench: 40 });
+  assert.deepEqual(read("step=7&bench=1"), { fixedStep: 7, bench: 1 });
+  for (const query of ["", "step=abc&bench=Infinity", "step=1.5&bench=0", "step=8&bench=100000", "step=-4"]) {
+    assert.deepEqual(read(query), { fixedStep: null, bench: 1 });
+  }
+});
 
 // A pretend graphics chip, run frame by frame in the page's own order. Its numbers are from the user's real laptop report.
 const REPORT_CHIP = [28.1, 22.4, 17.3, 11.1, 13.2, 9, 7, 5];
@@ -64,7 +73,7 @@ function play({
         downs.push({ at: Math.round((now - settledAt) / 100) / 10, to: index });
       },
     },
-    { sweep, timerWhileWatching: watchingTimer },
+    { sweep, adaptWhileWatching: watchingTimer },
   );
   while (now < seconds * 1000) {
     tick++;
@@ -114,6 +123,18 @@ test("one slow moment does not lower the picture", () => {
   const spike = (step, at) => (at > 30000 && at < 31000 ? 24 : REPORT_CHIP[step]);
   const r = play({ chip: spike, frame: (step, at) => (at > 30000 && at < 31000 ? 30 : 16.7) });
   assert.deepEqual(r.downs, []);
+});
+
+test("visible journey tunnels keep their calibrated size, with or without GPU timestamps", () => {
+  for (const timer of [true, false]) {
+    const r = play({
+      timer, watchingTimer: false, chip: (_, at) => at > 30000 ? 24 : 5,
+      frame: (_, at) => at > 30000 ? 33.3 : 16.7,
+    });
+    assert.equal(r.settledStep, 0);
+    assert.equal(r.step, r.settledStep);
+    assert.deepEqual(r.downs, []);
+  }
 });
 
 test("a browser with no chip timer, held at 30 fps, stays on a middle step", () => {

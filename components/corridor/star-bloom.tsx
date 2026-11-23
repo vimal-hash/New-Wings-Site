@@ -409,7 +409,7 @@ export function prepareLegacyResponse(root: Object3D) {
 }
 function renderBase(gl: WebGLRenderer, scene: Scene, camera: Camera, legacy: LegacyResponse) {
   activeLegacy = legacy;
-  preserveLegacyResponse(scene, legacy);
+  preserveLegacyResponse(scene, legacy, true);
   const auto = gl.autoClear;
   try {
     gl.autoClear = true;
@@ -418,35 +418,38 @@ function renderBase(gl: WebGLRenderer, scene: Scene, camera: Camera, legacy: Leg
     gl.autoClear = auto;
   }
 }
-function preserveLegacyResponse(root: Object3D, legacy: LegacyResponse) {
+function preserveLegacyResponse(root: Object3D, legacy: LegacyResponse, visibleOnly = false) {
   // The previous Canvas default was ACES, despite the intended NoToneMapping
   // setup. Retain that *existing* response only on ordinary mapped materials.
   // Every custom particle/LUT material is excluded. A global switch alone
   // would otherwise brighten the corridor and change the approved base image.
-  root.traverse((object) => {
+  function patch(material: Material) {
+    if (!material.toneMapped || material instanceof ShaderMaterial || legacy.has(material)) return;
+    const compile = material.onBeforeCompile,
+      key = material.customProgramCacheKey,
+      cacheKey = key.call(material);
+    legacy.set(material, { compile, key });
+    material.onBeforeCompile = function (shader, renderer) {
+      compile.call(this, shader, renderer);
+      shader.uniforms.toneMappingExposure = { value: renderer.toneMappingExposure };
+      shader.fragmentShader =
+        ShaderChunk.tonemapping_pars_fragment +
+        "\n" +
+        shader.fragmentShader.replace(
+          "#include <tonemapping_fragment>",
+          "gl_FragColor.rgb=ACESFilmicToneMapping(gl_FragColor.rgb);",
+        );
+    };
+    material.customProgramCacheKey = () => cacheKey + "|preserve-authored-response";
+    material.needsUpdate = true;
+  }
+  function visit(object: Object3D) {
     if (!(object instanceof Mesh)) return;
-    const materials: Material[] = Array.isArray(object.material) ? object.material : [object.material];
-    for (const material of materials) {
-      if (!material.toneMapped || material instanceof ShaderMaterial || legacy.has(material)) continue;
-      const compile = material.onBeforeCompile,
-        key = material.customProgramCacheKey,
-        cacheKey = key.call(material);
-      legacy.set(material, { compile, key });
-      material.onBeforeCompile = function (shader, renderer) {
-        compile.call(this, shader, renderer);
-        shader.uniforms.toneMappingExposure = { value: renderer.toneMappingExposure };
-        shader.fragmentShader =
-          ShaderChunk.tonemapping_pars_fragment +
-          "\n" +
-          shader.fragmentShader.replace(
-            "#include <tonemapping_fragment>",
-            "gl_FragColor.rgb=ACESFilmicToneMapping(gl_FragColor.rgb);",
-          );
-      };
-      material.customProgramCacheKey = () => cacheKey + "|preserve-authored-response";
-      material.needsUpdate = true;
-    }
-  });
+    if (Array.isArray(object.material)) object.material.forEach(patch);
+    else patch(object.material);
+  }
+  if (visibleOnly) root.traverseVisible(visit);
+  else root.traverse(visit);
 }
 
 function renderFrame(
@@ -454,6 +457,7 @@ function renderFrame(
   scene: Scene,
   camera: Camera,
   phase: JourneyPhase,
+  eye: Mesh | undefined,
   legacy: LegacyResponse,
   pipeline: ReturnType<typeof createStarBloom> | null,
   grade: ReturnType<typeof createSpaceGrade> | null,
@@ -469,7 +473,6 @@ function renderFrame(
   gl.info.reset();
   try {
     contact?.();
-    const eye = scene.getObjectByName(EYE_NAME) as Mesh | undefined;
     tones?.apply(
       eye?.material instanceof ShaderMaterial ? eye.material : null,
       silverToneAmount(phase, camera.position.y),
@@ -705,11 +708,10 @@ export default function StarBloom() {
     };
   }, [gl, scene, camera, invalidate, mobile]);
   useFrame(() => {
-    if (journeyControls.read().finalCovered) return;
-    const journeyPhase = journeyControls.read().phase;
+    const { phase: journeyPhase, finalCovered } = journeyControls.read();
+    if (finalCovered || (journeyPhase === "page" && !pageReturn.warming)) return;
     const eye = scene.getObjectByName(EYE_NAME) as Mesh | undefined;
     const eyeReady = !LOGO_PARTICLE_EYE_ENABLED || eye?.userData.eyePrepared;
-    if (journeyPhase === "page" && !pageReturn.warming) return;
     const coveredReturn = journeyPhase === "pageReturnLoading";
     const warming = journeyPhase === "page";
     const phase = coveredReturn || warming ? "logoReveal" : journeyPhase;
@@ -750,6 +752,7 @@ export default function StarBloom() {
       scene,
       camera,
       phase,
+      eye,
       legacy.current,
       pipeline.current,
       grade.current,

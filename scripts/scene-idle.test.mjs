@@ -6,6 +6,35 @@ import ts from "typescript";
 const code = ts.transpileModule(fs.readFileSync("components/corridor/scene-idle.ts", "utf8"), {
   compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 },
 }).outputText;
+
+test("an idle job can queue more work or fail without doubling or stranding the next tick", () => {
+  const pending = [];
+  const fixture = { exports: {} };
+  vm.runInNewContext(code, {
+    exports: fixture.exports,
+    document: { hidden: false },
+    window: { addEventListener() {} },
+    performance: { now: () => 1000 },
+    setTimeout: (fn) => pending.push(fn),
+    require: (id) => id === "./journey-controls"
+      ? { journeyControls: { read: () => ({ phase: "page" }) } }
+      : { projectorControls: { read: () => ({ phase: "assembled" }) } },
+  });
+  const { scheduleSceneIdle } = fixture.exports;
+  const order = [];
+  scheduleSceneIdle(() => {
+    order.push("first");
+    scheduleSceneIdle(() => order.push("last"));
+  });
+  scheduleSceneIdle(() => { throw new Error("failed preparation"); });
+  pending.shift()();
+  assert.equal(pending.length, 1);
+  assert.throws(pending.shift(), /failed preparation/);
+  assert.equal(pending.length, 1);
+  pending.shift()();
+  assert.deepEqual(order, ["first", "last"]);
+  assert.equal(pending.length, 0);
+});
 test("page-return loading runs critical mounts while movement still defers background work", () => {
   let phase = "pageReturnLoading",
     tick;
@@ -97,6 +126,7 @@ for (const [mobile, hidden] of [[false, false], [true, false], [false, true], [t
   test(`projector prepares under the opening loader (${mobile ? "phone" : "computer"}, ${hidden ? "hidden" : "visible"})`, () => {
     let prepared = false,
       moving = false,
+      nextDelay,
       tick;
     const order = [],
       fixture = { exports: {} };
@@ -111,8 +141,9 @@ for (const [mobile, hidden] of [[false, false], [true, false], [false, true], [t
       document: { hidden },
       window: { addEventListener() {} },
       performance: { now: () => 1000 },
-      setTimeout: (callback) => {
+      setTimeout: (callback, delay) => {
         tick = callback;
+        nextDelay = delay;
         return 1;
       },
       require: (name) => modules[name],
@@ -128,10 +159,13 @@ for (const [mobile, hidden] of [[false, false], [true, false], [false, true], [t
       order.push("theatre");
       prepared = true;
     }, -100);
+    assert.equal(nextDelay, 16);
     tick();
     assert.deepEqual(order, ["theatre"]);
+    assert.equal(nextDelay, 16);
     tick();
     assert.deepEqual(order, ["theatre", "projector"]);
+    assert.equal(nextDelay, 80);
     moving = true;
     tick();
     assert.deepEqual(order, ["theatre", "projector"]);

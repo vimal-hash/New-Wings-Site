@@ -13,6 +13,16 @@ export const STEPS = [
 ];
 type QualityStep = (typeof STEPS)[number];
 
+/** Diagnostic links may pin a real quality step and repeat a draw to measure load. */
+export function qualityOverrides(search: URLSearchParams) {
+  const step = Number(search.get("step"));
+  const draws = Number(search.get("bench"));
+  return {
+    fixedStep: search.has("step") && Number.isInteger(step) && step >= 0 && step < STEPS.length ? step : null,
+    bench: Number.isSafeInteger(draws) && draws >= 1 && draws <= 64 ? draws : 1,
+  };
+}
+
 const BUDGET = 12.5; // ms of chip work a frame may take: the browser and the rest of the laptop need the remainder of a 60 Hz frame
 const TOO_SLOW = 1000 / 54; // ms a frame may take when the chip has no timer: a 60 Hz screen shows 16.7, a little more is normal
 const TEST_SKIP = 3; // frames ignored after a change, while the graphics card catches up
@@ -44,16 +54,17 @@ export function firstStep(canvasWidth: number) {
 const middle = (values: number[]) => [...values].sort((a, b) => a - b)[Math.floor(values.length / 2)];
 
 /**
- * Test: while the canvas is still hidden, draw each step for a few frames and keep the first the chip can hold. No later step is ever climbed to, so the picture does not change while being watched.
- * Slow frames alone never lower the picture: the browser can hold a page at 30 fps with the chip idle, and a smaller picture would not help. Only the chip's own time, lastingly too long, takes it down, and only once. With no chip timer at all, lasting slow frames count instead, also once.
- * `sweep` tests every step and reports them, for the diagnostics report. `timerWhileWatching` is off in diagnostics, where the report's meter uses the same timer, so the picture simply holds there.
+ * Try rendering steps on the hidden canvas and keep the first that fits the frame budget.
+ * The embedded journey locks that choice for the visible flight. Standalone studies may step down
+ * once under sustained load, measured by GPU time when available and frame time otherwise.
+ * `sweep` tests every step for the diagnostics report, which then owns the GPU timer.
  */
 export function createQuality(
   gl: WebGLRenderer,
   start: number,
   fixed: boolean,
   hooks: Hooks,
-  { sweep, timerWhileWatching }: { sweep: boolean; timerWhileWatching: boolean },
+  { sweep, adaptWhileWatching }: { sweep: boolean; adaptWhileWatching: boolean },
 ) {
   const context = gl.getContext() as WebGL2RenderingContext;
   const timer = context.getExtension("EXT_disjoint_timer_query_webgl2") as Timer | null;
@@ -80,7 +91,7 @@ export function createQuality(
     chipCount = 0,
     slowWindows = 0,
     dropped = false;
-  const timerOn = () => !!timer && (testing || timerWhileWatching);
+  const timerOn = () => !!timer && (testing || (adaptWhileWatching && !fixed));
   const apply = (next: number) => {
     step = next;
     generation++;
@@ -107,11 +118,10 @@ export function createQuality(
     begin() {
       if (!timerOn() || waiting) return;
       query ??= context.createQuery();
-      {
-        context.beginQuery(timer!.TIME_ELAPSED_EXT, query);
-        open = true;
-        asked = generation;
-      }
+      if (!query) return;
+      context.beginQuery(timer!.TIME_ELAPSED_EXT, query);
+      open = true;
+      asked = generation;
     },
     end() {
       if (open) {
@@ -162,7 +172,7 @@ export function createQuality(
         apply(Math.min(last, step + (chip !== null && chip > BUDGET * 2.2 && !sweep ? 2 : 1)));
         return;
       }
-      if (fixed || milliseconds > IGNORE_LONGER) return;
+      if (!adaptWhileWatching || fixed || milliseconds > IGNORE_LONGER) return;
       sum += milliseconds;
       if (++seen < WINDOW) return;
       const average = sum / seen,

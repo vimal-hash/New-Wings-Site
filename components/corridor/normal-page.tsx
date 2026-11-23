@@ -14,6 +14,7 @@ import SectionWhite, { type WhiteHandle } from "./section-white";
 import { SECTION_LINES, TITLE } from "./title-card";
 import FeedbackScene, { FEEDBACK_LAST, FEEDBACK_WALL, whenCalm, type FeedbackHandle } from "./feedback-scene";
 import { listenSteps } from "./scroll-step";
+import { onVisibleLoadTimeout, switchToOverview } from "./overview-fallback";
 
 // Section 1's reel can prepare while the page is still covered.
 const FilmReel = dynamic(() => import("../film-reel/film-reel"), { ssr: false });
@@ -72,19 +73,25 @@ export function PageReturnCover() {
 }
 
 function firstSection() {
+  if (typeof location !== "undefined" && location.pathname === "/sections") {
+    const query = new URLSearchParams(location.search);
+    if (query.has("end")) return SECTION_TITLES.length;
+    const section = Math.trunc(Number(query.get("section"))) || 1;
+    return Math.max(1, Math.min(SECTION_TITLES.length, section));
+  }
   const jumped = journeyControls.read().pageSection;
   if (jumped) return jumped; // opened from the menu
   if (journeyControls.read().pageAtEnd) return 4;
-  if (typeof location !== "undefined" && location.pathname === "/sections")
-    return Math.max(1, Math.min(4, Number(new URLSearchParams(location.search).get("section")) || 1));
   return 1;
 }
 export default function NormalPage({
   returnToCorridor = false,
   active = true,
+  visibleSection = 1,
 }: {
   returnToCorridor?: boolean;
   active?: boolean;
+  visibleSection?: number;
 }) {
   const panel = useRef<HTMLDivElement>(null);
   const interactive = useRef(active);
@@ -119,6 +126,12 @@ export default function NormalPage({
     covering = useRef(false),
     cardUntil = useRef(0); // A section's title card is on its arrival white: until its line has gone, a scroll down waits (it never skips the card).
   // Scrolling back up still turns back, and the line goes with the white.
+  useEffect(() => {
+    if (!returnToCorridor || !active || visibleSection !== 1 || film.current?.ready()) return;
+    return onVisibleLoadTimeout(() => {
+      if (!film.current?.ready()) switchToOverview();
+    });
+  }, [returnToCorridor, active, visibleSection]);
   const holdForCard = useCallback(() => {
     if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches)
       cardUntil.current = performance.now() + (TITLE.write + TITLE.hold + TITLE.out) * 1000;
@@ -200,6 +213,11 @@ export default function NormalPage({
     [flight.index, holdForCard],
   );
   const flightFailed = useCallback(() => {
+    if (returnToCorridor && interactive.current && control.current.where === "flight" &&
+        (flight.autoEnter || film.current?.showing() === false)) {
+      switchToOverview();
+      return;
+    }
     const node = panel.current;
     if (control.current.where === "flight" && flight.autoEnter && flight.startAtEnd && flight.index === 0)
       about.current?.uncover();
@@ -208,7 +226,7 @@ export default function NormalPage({
     if (node) node.style.overflow = "";
     traceMark("Section flight unavailable; native scroll restored");
     setFlightUnavailable(true);
-  }, [flight.autoEnter, flight.startAtEnd, flight.index]);
+  }, [returnToCorridor, flight.autoEnter, flight.startAtEnd, flight.index]);
   // With native scrolling, About Us is cleaned as it comes into view from above.
   useEffect(() => {
     const handle = about.current,
@@ -292,8 +310,11 @@ export default function NormalPage({
   }, [flying, active]);
   useLayoutEffect(() => {
     const node = panel.current;
-    if (node && active) node.scrollTop = (wentBack.current ? 0 : initialSection - 1) * node.clientHeight;
-  }, [active, initialSection]);
+    if (!node || !active) return;
+    const section = wentBack.current ? 1 : initialSection;
+    node.scrollTop = (section - 1) * node.clientHeight;
+    if (returnToCorridor) journeyControls.update({ visiblePageSection: section });
+  }, [active, initialSection, returnToCorridor]);
   useEffect(() => {
     if (!active || !flying || wentBack.current) return;
     // Opened straight onto a section (or from the menu), its white carries the title line too.

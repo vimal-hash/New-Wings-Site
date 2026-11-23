@@ -14,6 +14,7 @@ import { BLUE_PORTAL, PORTAL } from "../rope-model/rope-portal";
 import type { RopeLink } from "../rope-model/rope-link";
 import { createSectionFade } from "../rope-model/section-fade";
 import { journeyControls } from "./journey-controls";
+import { onVisibleLoadTimeout } from "./overview-fallback";
 
 const RopeModel = dynamic(() => import("../rope-model/rope-model"), { ssr: false });
 const RopeLaptop = dynamic(() => import("../rope-laptop/rope-laptop"), { ssr: false });
@@ -107,6 +108,9 @@ export default function SectionFlight({
           ? profile.holdTo + ((share - profile.holdTo) * (endSpan - END_DOOR)) / endSpan
           : share;
     let element: HTMLDivElement | null = null,
+      scrollShare = startAtEnd ? 1 : 0,
+      departureHidden: boolean | undefined,
+      lastArrivalSize = -1,
       ready = false,
       away = false,
       launchFrame = 0,
@@ -116,11 +120,14 @@ export default function SectionFlight({
       lastBehind = -Infinity,
       lastAt = NaN, // NaN: the first frame of a leg is never "returning"
       way = 0;
-    const share = () => {
-      if (!element) return 0;
-      const room = element.scrollHeight - element.clientHeight;
-      return room > 0 ? element.scrollTop / room : 0;
-    };
+    let stopWaiting: (() => void) | undefined;
+    function waitForFlight() {
+      if (ready || !interactive.current || stopWaiting) return;
+      stopWaiting = onVisibleLoadTimeout(() => {
+        stopWaiting = undefined;
+        if (!ready && interactive.current && control.current.where === "flight") onFailure();
+      });
+    }
     const whiteOut = (at: number) => {
       const turned = smooth(at / whiteOutAt),
         gone = smooth(at / (whiteOutAt * 0.7));
@@ -135,7 +142,7 @@ export default function SectionFlight({
       }
     };
     const wake = () => {
-      const at = share();
+      const at = scrollShare;
       if (
         ready &&
         made.covered &&
@@ -154,37 +161,46 @@ export default function SectionFlight({
       fadeTime = now;
       whiteOut(fade.value * whiteOutAt);
       wake();
-      if (made.covered && away && share() <= 0.0005 && fade.value === 0 && control.current.where === "flight")
+      if (made.covered && away && scrollShare <= 0.0005 && fade.value === 0 && control.current.where === "flight")
         made.camera(home);
       // A reversing fade can finish after the camera reaches its start.
       made.wake?.();
       if (moving) fadeFrame = requestAnimationFrame(animateFade);
       else fadeTime = 0;
     };
-    const scroll = () => {
-      const at = share();
-      fadeTarget = clamp01(at / whiteOutAt);
-      if (eased) {
-        if (!fadeFrame) fadeFrame = requestAnimationFrame(animateFade);
-      } else {
-        fade.snap(fadeTarget);
-        whiteOut(at);
+    const scroll = (at: number) => {
+      scrollShare = at;
+      const next = clamp01(at / whiteOutAt);
+      if (next !== fadeTarget) {
+        fadeTarget = next;
+        if (eased) {
+          if (!fadeFrame) fadeFrame = requestAnimationFrame(animateFade);
+        } else {
+          fade.snap(next);
+          whiteOut(at);
+        }
       }
       if (startAtEnd ? at < 0.9995 : at > 0.0005) away = true;
+      if (away && control.current.where === "flight") waitForFlight();
       // Reversing during the white fade never wakes the covered canvas. Finish
       // that return here so Section 2 can immediately scroll back into red.
       if (made.covered && away && at <= 0.0005 && control.current.where === "flight" && !fadeFrame)
         made.camera(home);
       wake();
     };
-    const made: RopeLink & { entry: number; step(way: number): boolean; dispose(): void } = {
+    const made: RopeLink & { entry: number; waitForFlight(): void; step(way: number): boolean; dispose(): void } = {
       entry,
+      scroll,
+      waitForFlight,
       startZ: startAtEnd ? -END_DOOR : home,
       covered: true,
       wake: null,
       shouldWarm() {
         const phase = journeyControls.read().phase;
-        return interactive.current || phase === "done" || phase === "page";
+        return (
+          interactive.current || phase === "awaitAssembly" || phase === "done" ||
+          phase === "drawings" || phase === "page"
+        );
       },
       attach(found) {
         element = found;
@@ -192,8 +208,7 @@ export default function SectionFlight({
         found.style.overflowY = "hidden";
         found.tabIndex = -1;
         found.scrollTop = startAtEnd ? found.scrollHeight : 0;
-        whiteOut(share());
-        found.addEventListener("scroll", scroll, { passive: true });
+        whiteOut(scrollShare);
       },
       flightShare(at) {
         return fromHome(eased && !startAtEnd && fade.value < 0.98 ? 0 : sectionFlightShare(at, profile));
@@ -206,15 +221,22 @@ export default function SectionFlight({
       camera(z) {
         const flown = z - home,
           behind = -z,
-          at = share(),
+          at = scrollShare,
           a = section.current,
           b = arriving.current;
-        if (a) a.style.visibility = flown > 0.01 ? "hidden" : "inherit"; // inherit: a plane never shows through the hidden layer
+        const hidden = flown > 0.01;
+        if (a && departureHidden !== hidden) {
+          departureHidden = hidden;
+          a.style.visibility = hidden ? "hidden" : "inherit";
+        }
         if (b) {
           const size = behind < ARRIVE_AT * 0.8 ? ARRIVE_AT / (ARRIVE_AT - behind) : 5;
-          b.style.transform = `scale(${size})`;
-          b.style.opacity = String(1 - clamp01((size - 1.4) / 3.6));
-          b.style.visibility = size >= 5 ? "hidden" : "inherit";
+          if (size !== lastArrivalSize) {
+            lastArrivalSize = size;
+            b.style.transform = `scale(${size})`;
+            b.style.opacity = String(1 - clamp01((size - 1.4) / 3.6));
+            b.style.visibility = size >= 5 ? "hidden" : "inherit";
+          }
         }
         if (control.current.where === "rest") {
           made.covered = true;
@@ -249,6 +271,7 @@ export default function SectionFlight({
       ready() {
         if (!element || ready) return;
         ready = true;
+        stopWaiting?.();
         if (autoEnter) {
           control.current.where = "flight";
           element.focus({ preventScroll: true });
@@ -267,6 +290,7 @@ export default function SectionFlight({
       // One step of the site's scroll. With motion the glide flies the leg (rope-flight.ts); with reduced motion there is
       // no glide, and the step goes straight to the next resting place, as the glide would end it.
       step(way) {
+        if (way) waitForFlight();
         if (!element || !way) return true;
         if (made.glide.take) return made.glide.take(way);
         const total = element.scrollHeight - element.clientHeight,
@@ -293,9 +317,10 @@ export default function SectionFlight({
         return true;
       },
       dispose() {
+        stopWaiting?.();
+        stopWaiting = undefined;
         cancelAnimationFrame(launchFrame);
         cancelAnimationFrame(fadeFrame);
-        element?.removeEventListener("scroll", scroll);
       },
     };
     return made;
@@ -342,6 +367,7 @@ export default function SectionFlight({
       arriving.current.style.opacity = "1";
     }
     if (layer.current) layer.current.style.visibility = startAtEnd && !autoEnter ? "hidden" : "visible";
+    if (autoEnter) link.waitForFlight();
     return () => link.dispose();
   }, [link, startAtEnd, autoEnter]);
   const plane = { position: "absolute", inset: 0, pointerEvents: "none" } as const;

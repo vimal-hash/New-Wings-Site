@@ -57,7 +57,7 @@ import ProjectorParticles from "./projector-particles";
 import { effectQuality, type EffectQuality } from "./effect-quality";
 import { loadCompressedBuffer } from "./compressed-buffer";
 import { particleProfiles } from "./projector-particle-profiles";
-import { createClipClock } from "./clip-clock";
+import { createClipClock, frameTime } from "./clip-clock";
 import { yieldDuringLoading } from "./loading-step";
 import { OPENING_PROJECTOR_PRIORITY, scheduleSceneIdle } from "./scene-idle";
 import { compileHiddenGPUGradually, prepareHiddenGPU, prepareMobileMeshes } from "./hidden-gpu-preparation";
@@ -795,7 +795,7 @@ outgoingLight+=uRim*vec3(.70,.78,.92)*pow(rimFacing,3.)*max(dot(normal,normalize
     if (state.phase === "disassembling" || state.phase === "dissolving") {
       // Scrolling back: the build plays in reverse, a little quicker. Room light is owned by the journey here.
       if (document.hidden) return;
-      state.elapsed = clock.current.elapsed(performance.now());
+      state.elapsed = clock.current.elapsed(frameTime());
       const dissolve = state.phase === "dissolving",
         seconds = (dissolve ? metadata.particleSeconds : metadata.assemblySeconds) * REVERSE_PACE;
       const t = Math.min(1, state.elapsed / seconds),
@@ -840,7 +840,7 @@ outgoingLight+=uRim*vec3(.70,.78,.92)*pow(rimFacing,3.)*max(dot(normal,normalize
       return;
     }
     if (document.hidden) return;
-    state.elapsed = clock.current.elapsed(performance.now());
+    state.elapsed = clock.current.elapsed(frameTime());
     const seconds = state.phase === "particles" ? metadata.particleSeconds : metadata.assemblySeconds;
     const inspecting = state.phase === "particles" && inspectFrame !== null;
     const t = inspecting ? (inspectFrame - 1) / 95 : Math.min(1, state.elapsed / seconds);

@@ -6,6 +6,7 @@ import type {
   ShaderMaterial,
 } from "three";
 import { WHITE } from "./rope-materials";
+import { indexRopeSamples } from "./rope-picking";
 
 /** White spreading along a rope from the point under the mouse. Distances are in world units; the tunnel is about 32 long. */
 const SPREAD = {
@@ -43,6 +44,7 @@ const HOLD_SPOTS = [
   [-0.3, -0.6],
 ];
 type Spread = {
+  nearest: ReturnType<typeof indexRopeSamples>;
   samples: Float32Array;
   x: number;
   y: number;
@@ -78,9 +80,11 @@ function readSamples(geometry: BufferGeometry, matrix: Matrix4, stored?: Int16Ar
 
 export function createHover(sources: RopeSource[], ropeCount: number) {
   const spreads: Spread[] = [];
-  for (const { index, geometry, matrix, stored } of sources)
+  for (const { index, geometry, matrix, stored } of sources) {
+    const samples = readSamples(geometry, matrix, stored);
     spreads[index] = {
-      samples: readSamples(geometry, matrix, stored),
+      samples,
+      nearest: indexRopeSamples(samples),
       x: 0,
       y: 0,
       z: 0,
@@ -90,9 +94,13 @@ export function createHover(sources: RopeSource[], ropeCount: number) {
       pace: 0,
       wanted: false,
     };
+  }
   let current = -1,
     kept = -1,
     lastZ = Infinity,
+    lastAcross = 0,
+    lastUp = 0,
+    lastWidth = 0,
     lastRope = -2,
     lastOn = false,
     active = false,
@@ -118,23 +126,10 @@ export function createHover(sources: RopeSource[], ropeCount: number) {
       ky = 0,
       kz = 0;
     for (let rope = 0; rope < ropeCount; rope++) {
-      const samples = spreads[rope].samples;
-      let depthHere = Infinity,
-        sx = 0,
-        sy = 0,
-        sz = 0;
-      for (let i = 0; i < samples.length; i += 3) {
-        const depth = z - samples[i + 2];
-        if (depth < SPREAD.nearest || depth >= depthHere) continue;
-        const ex = samples[i] - dx * depth,
-          ey = samples[i + 1] - dy * depth,
-          reach = Math.max(SPREAD.catchWorld, SPREAD.catchPixels * perPixel * depth);
-        if (ex * ex + ey * ey > reach * reach) continue;
-        depthHere = depth;
-        sx = samples[i];
-        sy = samples[i + 1];
-        sz = samples[i + 2];
-      }
+      const { samples, nearest } = spreads[rope];
+      const i = nearest(z, dx, dy, SPREAD.nearest, SPREAD.catchWorld, SPREAD.catchPixels * perPixel);
+      if (i < 0) continue;
+      const sx = samples[i], sy = samples[i + 1], sz = samples[i + 2], depthHere = z - sz;
       if (depthHere < bestDepth) {
         best = rope;
         bestDepth = depthHere;
@@ -168,6 +163,9 @@ export function createHover(sources: RopeSource[], ropeCount: number) {
     get rope() {
       return current;
     },
+    get hasWhite() {
+      return active;
+    },
     /** Moves everything on by one frame. Returns true while more frames are needed. */
     update(
       delta: number,
@@ -195,7 +193,8 @@ export function createHover(sources: RopeSource[], ropeCount: number) {
           spread.pace = Math.min(SPREAD.paceFastest, SPREAD.paceBase + hitDepth * SPREAD.pacePerDepth);
         }
       };
-      if (pointer.on && (pointer.moved || cameraZ !== lastZ)) {
+      const lensChanged = across !== lastAcross || up !== lastUp || width !== lastWidth;
+      if (pointer.on && (pointer.moved || cameraZ !== lastZ || lensChanged)) {
         current = pick(pointer, across, up, width, camera);
         if (current >= 0) {
           begin();
@@ -220,6 +219,9 @@ export function createHover(sources: RopeSource[], ropeCount: number) {
       }
       pointer.moved = false;
       lastZ = cameraZ;
+      lastAcross = across;
+      lastUp = up;
+      lastWidth = width;
       let anyOn = false;
       for (let rope = 0; rope < ropeCount; rope++) {
         const spread = spreads[rope];

@@ -12,8 +12,9 @@ import {
   ShaderMaterial,
   Vector3,
   type BufferGeometry,
+  type Object3D,
 } from "three";
-import { PlanarMirror, viewFrustum } from "./planar-mirror";
+import { PlanarMirror } from "./planar-mirror";
 import { isMobileDevice } from "./texture-quality";
 import pieces from "./moon-surfaces.json";
 import { stageBakedMaterial, stageLighting } from "./stage-lighting";
@@ -100,7 +101,18 @@ export default function DesignMoons({
       mesh.name = `Moon ${spec.role} | ${spec.name}`;
       return { mesh, material, spec };
     });
-    return { mirrors, meshes, frustum: new Frustum(), matrix: new Matrix4(), previousCamera: new Matrix4() };
+    const faces = ["left", "right"].map((wall) =>
+      meshes.filter((m) => m.spec.role === "mirror" && m.spec.wall === wall).map((m) => m.mesh),
+    );
+    const hidden: Object3D[] = faces.flat();
+    const faceCount = hidden.length;
+    const excludeOptics = (object: Object3D) => {
+      if (object.userData.excludeFromMirror) hidden.push(object);
+    };
+    return {
+      mirrors, meshes, faces, hidden, faceCount, excludeOptics,
+      frustum: new Frustum(), matrix: new Matrix4(), previousCamera: new Matrix4(),
+    };
   }, [surfaces, mobile]);
   useEffect(() => {
     invalidate();
@@ -149,27 +161,27 @@ export default function DesignMoons({
     } else if (!moved && stageLighting.active && elapsed - lastCapture.current < 1 / 15) return;
     rig.previousCamera.copy(camera.matrixWorld);
     lastCapture.current = elapsed;
-    viewFrustum(gl, camera, rig.frustum);
-    const hidden = rig.meshes.filter((m) => m.spec.role === "mirror").map((m) => m.mesh);
+    rig.frustum.setFromProjectionMatrix(
+      rig.matrix.multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse), gl.coordinateSystem,
+    );
+    let foundOptics = false;
     for (let index = 0; index < rig.mirrors.length; index++) {
       const i = mobile ? (capture.next + index) % rig.mirrors.length : index,
         entry = rig.mirrors[i];
       if (mobile && capture.captured[i]) continue;
-      if (
-        !rig.meshes.some(
-          (m) =>
-            m.spec.role === "mirror" &&
-            m.spec.wall === (i === 0 ? "left" : "right") &&
-            rig.frustum.intersectsObject(m.mesh),
-        )
-      ) {
+      if (!rig.faces[i].some((mesh) => rig.frustum.intersectsObject(mesh))) {
         if (mobile) capture.captured[i] = true;
         continue;
       }
       entry.mirror.normal.copy(entry.normal).transformDirection(root.current!.matrixWorld);
       entry.mirror.point.copy(entry.point).applyMatrix4(root.current!.matrixWorld);
       entry.worldBounds.copy(entry.bounds).applyMatrix4(root.current!.matrixWorld);
-      const rendered = entry.mirror.render(gl, scene, camera, hidden, entry.worldBounds, mobile);
+      if (!foundOptics) {
+        rig.hidden.length = rig.faceCount;
+        scene.traverseVisible(rig.excludeOptics);
+        foundOptics = true;
+      }
+      const rendered = entry.mirror.render(gl, scene, camera, rig.hidden, entry.worldBounds, mobile);
       if (rendered) {
         entry.capturedRoom = stageLighting.room.value;
         entry.gain.value = 1;

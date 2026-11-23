@@ -2,7 +2,7 @@
 import { testimonials as QUOTES } from "./testimonials";
 import { forwardRef, useEffect, useImperativeHandle, useLayoutEffect, useRef, useState } from "react";
 import { createSpecks, type Specks } from "./feedback-specks";
-import { ropeFlightDevice } from "./effect-quality";
+import { isMobileDevice } from "./texture-quality";
 
 /**
  * Section 4, Client Feedback: the whole history of the cinema image, ending in today's.
@@ -230,7 +230,12 @@ type Parts = {
 };
 
 function createController({ root, light, stage, track, cards, shown, card }: Parts): Controller {
-  const reduced = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const motionPreference = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const reduced = () => motionPreference.matches;
+  const oldFilm = root.current?.querySelector<HTMLElement>(".nw-fb-old");
+  const scratches = root.current?.querySelector<HTMLElement>(".nw-fb-scratches");
+  const vintage = root.current?.querySelector<HTMLElement>(".nw-fb-vintage");
+  let paintedEra = NaN;
   // One clock for the arrival, the cards and the specks. pos follows goal like a soft spring; each step of the scroll
   // moves goal one whole card. pitch: pixels from one card to the next, which carries the specks with the cards.
   const c = {
@@ -245,6 +250,7 @@ function createController({ root, light, stage, track, cards, shown, card }: Par
     time: 0,
     shown: card,
     drawnDepth: NaN,
+    drawnPosition: NaN,
     light: 0,
     pitch: 0,
     specks: null as Specks | null,
@@ -268,16 +274,14 @@ function createController({ root, light, stage, track, cards, shown, card }: Par
   // The era's look on the picture and its films.
   const paintEra = () => {
     const el = root.current;
-    if (!el) return;
+    if (!el || c.era === paintedEra) return;
+    paintedEra = c.era;
     const tint = (value: string) => {
       for (const card of cards.current) if (card) put(card, "filter", value);
     };
-    const film = (name: string) => el.querySelector<HTMLElement>(name);
-    const old = film(".nw-fb-old"),
-      scratches = film(".nw-fb-scratches"),
-      vintage = film(".nw-fb-vintage");
     const films = (o: number, v: number) => {
-      for (const layer of [old, scratches]) if (layer) put(layer, "opacity", o.toFixed(3));
+      if (oldFilm) put(oldFilm, "opacity", o.toFixed(3));
+      if (scratches) put(scratches, "opacity", o.toFixed(3));
       if (vintage) put(vintage, "opacity", v.toFixed(3));
     };
     if (c.era >= 3) {
@@ -298,6 +302,8 @@ function createController({ root, light, stage, track, cards, shown, card }: Par
   // The cards: where the strip is and, with the depth, how far each stands from the lens. All face straight on.
   const placeCards = () => {
     const d = c.depth;
+    if (d === c.drawnDepth && c.pos === c.drawnPosition) return;
+    c.drawnPosition = c.pos;
     if (track.current)
       put(track.current, "transform", `translateX(calc(${(-c.pos).toFixed(4)} * (var(--w) + var(--gap))))`);
     const lens = c.layout.height / 2 / Math.tan((fov() * Math.PI) / 360);
@@ -481,9 +487,9 @@ function createController({ root, light, stage, track, cards, shown, card }: Par
       wake();
     },
     specks(canvas) {
-      const device = ropeFlightDevice();
+      const phone = isMobileDevice();
       // Fewer on phones; the canvas at one pixel per CSS pixel on computers, a little sharper on phones.
-      c.specks = createSpecks(canvas, device === "mobile" ? 0.6 : 1, device === "mobile" ? 1.25 : 1);
+      c.specks = createSpecks(canvas, phone ? 0.6 : 1, phone ? 1.25 : 1);
       made.resize();
       c.specks.warm(); // its sprites are first drawn now, while the section is still hidden
       return () => {

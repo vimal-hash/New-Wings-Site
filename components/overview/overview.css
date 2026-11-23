@@ -34,7 +34,7 @@
 .overview-menu,
 .overview-back {
   position: fixed;
-  top: 24px;
+  top: max(24px, env(safe-area-inset-top));
   left: 0;
   z-index: 35;
   border-radius: 0 8px 8px 0;
@@ -47,6 +47,9 @@
 .overview-menu nav {
   display: grid;
   padding: 4px 12px 14px;
+  max-height: calc(100svh - max(24px, env(safe-area-inset-top)) - 44px - env(safe-area-inset-bottom));
+  overflow-y: auto;
+  overscroll-behavior: contain;
 }
 .overview-menu nav > * {
   display: block;
@@ -64,101 +67,67 @@
   background: white;
   z-index: 3;
 }
-.overview-section:focus-within .overview-intro {
+.overview-section:focus-within:not(:focus) .overview-intro {
   visibility: hidden;
 }
-.overview-products,
 .overview-feedback {
-  padding: clamp(64px, 9vh, 110px) max(6vw, 20px) 100px;
-}
-.overview-products h2,
-.overview-feedback h2 {
-  font-size: clamp(32px, 4vw, 64px);
-  line-height: 1.1;
-  margin-bottom: 32px;
-}
-.overview-product-list,
-.overview-quotes {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: clamp(18px, 3vw, 48px);
-}
-.overview-product-list article {
-  border-bottom: 1px solid #ffffff50;
-  padding-bottom: 20px;
-}
-.overview-product-list button {
-  display: block;
-  width: 100%;
-  text-align: left;
-}
-.overview-product-list img {
-  width: 100%;
-  aspect-ratio: 16/9;
-  object-fit: contain;
-  background: #fff;
-}
-.overview-product-list span {
-  display: block;
-  margin-top: 14px;
-  font-size: clamp(20px, 1.55vw, 30px);
-  line-height: 1.2;
-}
-.overview-product-list p {
-  margin-top: 6px;
-  color: #cfcecb;
-}
-.overview-product-list button:hover span {
-  text-decoration: underline;
-  text-underline-offset: 4px;
-}
-.overview-feedback {
-  display: grid;
-  align-content: center;
-  background: #101813;
-}
-.overview-quotes {
-  gap: 16px;
-}
-.overview-quotes figure {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 32px;
-  padding: clamp(22px, 2.5vw, 44px);
-  color: #101010;
-}
-.overview-quotes blockquote {
-  font-size: clamp(18px, 1.35vw, 25px);
-  line-height: 1.45;
-}
-.overview-quotes figcaption {
-  font-weight: 600;
-}
-.overview-quotes figcaption span {
-  display: block;
-  font-weight: 400;
+  background: #101010;
 }
 .overview-vision-button {
-  justify-self: end;
-  margin-top: 24px;
-  padding: 12px 0 12px 16px;
+  position: absolute;
+  right: max(16px, 3vw);
+  bottom: max(20px, env(safe-area-inset-bottom));
+  z-index: 1;
+  padding: 10px 16px;
+  border-radius: 6px;
+  color: white;
+  background: #141414;
   text-decoration: underline;
   text-underline-offset: 4px;
 }
 @media (max-width: 720px) {
-  .overview-product-list {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-  .overview-quotes {
-    grid-template-columns: 1fr;
-  }
   .overview-theatre > a {
     bottom: 90px;
   }
 }
-@media (max-width: 420px) {
-  .overview-product-list {
-    grid-template-columns: 1fr;
+@media (max-width: 520px) {
+  .overview-vision-button {
+    top: max(24px, env(safe-area-inset-top));
+    right: max(12px, env(safe-area-inset-right));
+    bottom: auto;
+  }
+}
+@media (orientation: landscape) and (max-height: 500px) {
+  .overview-page {
+    --contact-bottom: max(6px, env(safe-area-inset-bottom));
+    --contact-icon-height: 44px;
+    --contact-padding: 3px;
+    --overview-foot: calc(var(--contact-bottom) + var(--contact-icon-height) + 2 * var(--contact-padding) + 8px);
+  }
+  .overview-menu, .overview-back {
+    top: max(6px, env(safe-area-inset-top));
+  }
+  .overview-page .nw-about-stage {
+    inset: 44px 0 var(--overview-foot);
+    padding: 0 16px;
+  }
+  .overview-page .nw-about-frame {
+    width: min(88vw, 720px);
+    aspect-ratio: auto;
+    gap: 8px;
+    padding: 12px 20px;
+  }
+  .overview-page .nw-owner {
+    --h: min(100svh - 44px - var(--overview-foot), (100vw - 32px) / 2.39);
+    padding-block: 44px var(--overview-foot);
+  }
+  .overview-page .nw-fb-text {
+    width: max(50%, min(32ch, 100%));
+  }
+}
+@media (orientation: landscape) and (max-height: 360px) {
+  .overview-page .nw-about-copy {
+    --intro-size: 16px;
+    gap: 8px;
   }
 }

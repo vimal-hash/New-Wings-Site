@@ -18,8 +18,7 @@ const started = new WeakMap<WebGLRenderer, { sofas: boolean }>();
 
 /** Match each consumer's exact loader/URL batch so Suspense reuses the work.
  * Only opening assets belong here; the corridor still starts after first frame.
- * On computers startOpeningDownloads (opening-files.ts) has already begun these downloads during the graphics speed
- * test: keep its list in step with this one. */
+ * The file loaders reuse the opening transfers already started by opening-files.ts. */
 export function preloadOpeningAssets(gl: WebGLRenderer, includeSofas: boolean, connectedTheatre: boolean) {
   let state = started.get(gl);
   if (!state) {

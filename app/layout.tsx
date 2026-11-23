@@ -26,8 +26,8 @@ const geistMono = Geist_Mono({
 const description = "New Wings Solutions — cinema equipment, from the first light to the last seat.";
 
 export const metadata: Metadata = {
-  // Set NEXT_PUBLIC_SITE_URL to the live domain so share previews use absolute links.
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
+  // Use the client's domain when configured. On Vercel, Next can resolve the deployment URL itself.
+  metadataBase: process.env.NEXT_PUBLIC_SITE_URL ? new URL(process.env.NEXT_PUBLIC_SITE_URL) : undefined,
   title: "New Wings Solutions",
   description,
   openGraph: { title: "New Wings Solutions", description, type: "website", siteName: "New Wings Solutions" },

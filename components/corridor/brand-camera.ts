@@ -49,12 +49,13 @@ export function createBrandCamera(section: HTMLElement) {
       preference.matches || (touch.matches && !usingMouse),
     );
     last = now;
+    const width = innerWidth, height = innerHeight;
     for (const target of targets) {
       const p = projectBrandPlane(
         target.cx,
         target.cy,
-        innerWidth,
-        innerHeight,
+        width,
+        height,
         target.depth,
         values,
         sample,
@@ -116,6 +117,7 @@ export function createBrandCamera(section: HTMLElement) {
   return {
     update(progress: number, entrance: number) {
       const t = Math.max(0, Math.min(1, (progress - entrance) / Math.max(0.01, 1 - entrance)));
+      if (t === 0 && weight === 0) return;
       weight = t * t * (3 - 2 * t);
       const next = `${innerWidth}/${innerHeight}/${section.style.getPropertyValue("--brand-logo-width")}`;
       if (next !== layout) {

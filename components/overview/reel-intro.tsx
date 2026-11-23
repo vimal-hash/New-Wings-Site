@@ -10,7 +10,7 @@ import TitleLine, {
   writeTitle,
 } from "../corridor/title-card";
 
-export default function ReelIntro({ reel }: { reel: number }) {
+export default function ReelIntro({ reel, onFinish }: { reel: number; onFinish?: () => void }) {
   const paper = useRef<HTMLDivElement>(null);
   const line = useRef<HTMLParagraphElement>(null);
   useEffect(() => {
@@ -18,6 +18,7 @@ export default function ReelIntro({ reel }: { reel: number }) {
     if (!el) return;
     if (typeof IntersectionObserver === "undefined") {
       el.hidden = true;
+      onFinish?.();
       return;
     }
     let frame = 0;
@@ -34,7 +35,10 @@ export default function ReelIntro({ reel }: { reel: number }) {
           const fade = reduce ? Number(t >= 1) : Math.min(1, Math.max(0, (t - CARD_WAIT) / TITLE.lift));
           el!.style.opacity = String(1 - fade);
           if (fade < 1) frame = requestAnimationFrame(tick);
-          else el!.hidden = true;
+          else {
+            el!.hidden = true;
+            onFinish?.();
+          }
         }
         frame = requestAnimationFrame(tick);
       },
@@ -45,7 +49,7 @@ export default function ReelIntro({ reel }: { reel: number }) {
       observer.disconnect();
       cancelAnimationFrame(frame);
     };
-  }, []);
+  }, [onFinish]);
   return (
     <div className="overview-intro" ref={paper} aria-hidden="true">
       <TitleLine ref={line} text={SECTION_LINES[reel]} />

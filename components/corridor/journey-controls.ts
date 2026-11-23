@@ -28,6 +28,7 @@ type Snapshot = {
   openingPrepared: boolean;
   loaderDone: boolean;
   pageSection: number | null;
+  visiblePageSection: number;
   pageJump: number;
   cameraMoving: boolean;
   panelStage: number;
@@ -57,6 +58,7 @@ let snapshot: Snapshot = {
   openingPrepared: false,
   loaderDone: false,
   pageSection: null,
+  visiblePageSection: 1,
   pageJump: 0,
   cameraMoving: false,
   panelStage: 0,

@@ -42,7 +42,6 @@ function currentTarget(phase: JourneyPhase, section: number | null, covered: boo
 export default function SiteChrome() {
   const journey = useSyncExternalStore(journeyControls.subscribe, journeyControls.read, journeyControls.read);
   const [open, setOpen] = useState(false);
-  const [visibleSection, setVisibleSection] = useState<{ jump: number; section: number }>();
   const menu = useRef<HTMLDivElement>(null);
   const tab = useRef<HTMLButtonElement>(null);
   const started = journey.loaderDone && journey.phase !== "intro";
@@ -51,11 +50,7 @@ export default function SiteChrome() {
     ((journey.phase === "logoReveal" || journey.phase === "logoDone") &&
       !journey.cameraMoving &&
       !journey.pageReturning);
-  const section =
-    visibleSection?.jump === journey.pageJump
-      ? visibleSection.section
-      : journey.pageSection ?? (journey.pageAtEnd ? 4 : 1);
-  const active = currentTarget(journey.phase, section, journey.finalCovered);
+  const active = currentTarget(journey.phase, journey.visiblePageSection, journey.finalCovered);
 
   useEffect(() => {
     if (journey.phase !== "page") return;
@@ -65,8 +60,7 @@ export default function SiteChrome() {
     const watch = new IntersectionObserver(
       (entries) => {
         const visible = entries.find((entry) => entry.intersectionRatio >= 0.5);
-        if (visible)
-          setVisibleSection({ jump: journey.pageJump, section: sections.indexOf(visible.target) + 1 });
+        if (visible) journeyControls.update({ visiblePageSection: sections.indexOf(visible.target) + 1 });
       },
       { root: page, threshold: 0.5 },
     );

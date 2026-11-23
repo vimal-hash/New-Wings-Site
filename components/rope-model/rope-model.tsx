@@ -20,11 +20,11 @@ import {
   Vector4,
 } from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
-import { MeshoptDecoder } from "three/examples/jsm/libs/meshopt_decoder.module.js";
+import { configureRopeLoader } from "./rope-loader";
 import { createFinish } from "./rope-finish";
 import { compileFlight } from "./prepare-flight";
 import { createHover, type RopePointer } from "./rope-hover";
-import type { RopeLink } from "./rope-link";
+import { observeRopeScroll, type RopeLink } from "./rope-link";
 import { placePortal, portalMaterial } from "./rope-portal";
 import { threadGeometries, type RopeChunk } from "./rope-geometry";
 import {
@@ -43,7 +43,7 @@ import {
 } from "./rope-materials";
 import { RopeTuningPanel, TUNING_BASE, type RopeTuningView } from "./rope-tuning";
 import { createRopeMeter, RopeReportPanel, type RopeMeter } from "./rope-report";
-import { traceGLTF, traceMark } from "../corridor/loading-trace";
+import { traceMark } from "../corridor/loading-trace";
 import { assetURL } from "../corridor/asset-url";
 import {
   BLUE_FLIGHT,
@@ -69,6 +69,9 @@ import { YELLOW_PALETTE } from "./rope-yellow";
 import { createRopeCard, RopeCard, type RopeCardControl } from "./rope-card";
 
 export const ROPE_MODEL = assetURL("/rope-model/rope-red.glb");
+export function preloadRopeModel() {
+  useLoader.preload(GLTFLoader, ROPE_MODEL, configureRopeLoader);
+}
 const MAPS = [assetURL("/rope-model/maps/grain.png")];
 const SCROLL_SCREENS = 14;
 const TRAVEL = 24; // how far forward the last scroll takes the camera; the ropes end at 30, so walls still fill the view here
@@ -164,10 +167,7 @@ function Rope({
   const gltf = useLoader(
     GLTFLoader,
     ROPE_MODEL,
-    (loader) => {
-      loader.setMeshoptDecoder(MeshoptDecoder);
-      traceGLTF(loader);
-    },
+    configureRopeLoader,
     (event) => {
       if (event.total) onLoad(event.loaded / event.total);
     },
@@ -364,8 +364,8 @@ function Rope({
   // ?still shows the look matched to Blender, ?flowAt=.3 holds the light at one moment. Both are for comparing pictures. People who ask for less motion get the still look.
   const review = useMemo(() => {
     const query = new URLSearchParams(window.location.search),
-      at = query.get("flowAt");
-    return { still: query.has("still"), at: at === null ? null : Number(at) };
+      at = Number(query.get("flowAt"));
+    return { still: query.has("still"), at: query.has("flowAt") ? (Number.isFinite(at) ? at : 0) : null };
   }, []);
   const calm = useMemo(() => window.matchMedia("(prefers-reduced-motion: reduce)"), []);
   const flowClock = useRef(0);
@@ -416,7 +416,7 @@ function Rope({
       warm.current = null;
       state.gl.setRenderTarget(finish.target);
       state.gl.setClearColor(finish.backdrop, 1);
-      state.gl.clear();
+      if (!state.gl.autoClear) state.gl.clear();
       state.gl.render(state.scene, state.camera);
       finish.render(state.gl);
       setPreparedFor(parts);
@@ -514,7 +514,7 @@ function Rope({
     state.gl.setRenderTarget(finish.target);
     state.gl.setClearColor(clearTo, 1);
     meter.current?.sceneStart(progress.current);
-    state.gl.clear();
+    if (!state.gl.autoClear) state.gl.clear();
     state.gl.render(state.scene, state.camera);
     meter.current?.sceneEnd();
     finish.render(state.gl);
@@ -597,11 +597,10 @@ export default function RopeModel({
   }, [ready, link]);
   useEffect(() => {
     const element = scroller.current!;
-    const read = () => {
-      const room = element.scrollHeight - element.clientHeight;
-      progress.current = room > 0 ? element.scrollTop / room : 0;
+    const stopScroll = observeRopeScroll(element, (share) => {
+      progress.current = share;
       invalidate.current?.();
-    };
+    }, link);
     // Only a real mouse: touch has no hover. It never moves the camera, it only says which rope turns white.
     const hover = (event: PointerEvent) => {
       if (event.pointerType !== "mouse") return;
@@ -626,18 +625,14 @@ export default function RopeModel({
       card.release();
       invalidate.current?.();
     };
-    read();
     element.addEventListener("pointermove", hover, { passive: true });
     element.addEventListener("pointerleave", away);
-    element.addEventListener("scroll", read, { passive: true });
-    window.addEventListener("resize", read);
     return () => {
       element.removeEventListener("pointermove", hover);
       element.removeEventListener("pointerleave", away);
-      element.removeEventListener("scroll", read);
-      window.removeEventListener("resize", read);
+      stopScroll();
     };
-  }, [card]);
+  }, [card, link]);
   useEffect(() => {
     const query = new URLSearchParams(window.location.search);
     if (
@@ -655,6 +650,7 @@ export default function RopeModel({
     <div style={{ position: "fixed", inset: 0, background: "#000" }}>
       <Canvas
         frameloop="demand"
+        resize={{ scroll: false }}
         dpr={[1, 1.5]}
         // The threads are drawn into the finish's own 8-sample picture; only full-screen passes reach the screen, so it
         // needs no edge samples, depth or stencil of its own (as on the laptop canvas).

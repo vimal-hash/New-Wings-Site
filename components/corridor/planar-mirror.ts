@@ -1,7 +1,6 @@
 import {
   DepthTexture,
   Box3,
-  Frustum,
   HalfFloatType,
   LinearFilter,
   UnsignedByteType,
@@ -18,15 +17,6 @@ import {
   type WebGLRenderer,
 } from "three";
 
-/** What `camera` sees: three's culling frustum. */
-export function viewFrustum(renderer: WebGLRenderer, camera: Camera, frustum = new Frustum()) {
-  camera.updateMatrixWorld();
-  return frustum.setFromProjectionMatrix(
-    new Matrix4().multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse),
-    renderer.coordinateSystem,
-  );
-}
-
 /**
  * A planar mirror rendered from the reflected camera (three's Reflector camera maths, without its
  * geometry): shaders sample `target` at `textureMatrix * worldPosition` (projective). Linear HDR,
@@ -39,11 +29,18 @@ export class PlanarMirror {
   /** NDC (with the oblique near plane) -> world, for the depth texture. */
   readonly unproject = new Matrix4();
   private readonly camera = new PerspectiveCamera();
+  private readonly hiddenForDraw: Object3D[] = [];
   private readonly plane = new Plane();
   private readonly size = new Vector2();
   private readonly crop = new Matrix4();
   private readonly corner = new Vector3();
   private readonly projected = new Matrix4();
+  private readonly eye = new Vector3();
+  private readonly view = new Vector3();
+  private readonly rotation = new Matrix4();
+  private readonly targetPoint = new Vector3();
+  private readonly clip = new Vector4();
+  private readonly q = new Vector4();
 
   /** normal and point in three.js world space; scale = mirror resolution / drawing buffer. */
   constructor(
@@ -72,13 +69,13 @@ export class PlanarMirror {
     renderer: WebGLRenderer,
     scene: Scene,
     camera: Camera,
-    hidden: Object3D[],
+    hidden: readonly Object3D[],
     bounds?: Box3,
     reuseShadows = false,
   ) {
     const { normal, point, camera: mirrored } = this;
-    const eye = new Vector3().setFromMatrixPosition(camera.matrixWorld);
-    const view = new Vector3().subVectors(point, eye);
+    const eye = this.eye.setFromMatrixPosition(camera.matrixWorld);
+    const view = this.view.subVectors(point, eye);
     if (view.dot(normal) > 0) return false;
 
     // Some WebGL2 phones cannot render into half-float targets. Keep real reflections in LDR there.
@@ -87,9 +84,9 @@ export class PlanarMirror {
 
     // Mirrored eye, look-at target and up vector (Reflector.onBeforeRender).
     view.reflect(normal).negate().add(point);
-    const rotation = new Matrix4().extractRotation(camera.matrixWorld);
-    const lookAt = new Vector3(0, 0, -1).applyMatrix4(rotation).add(eye);
-    const target = new Vector3().subVectors(point, lookAt).reflect(normal).negate().add(point);
+    const rotation = this.rotation.extractRotation(camera.matrixWorld);
+    const lookAt = this.corner.set(0, 0, -1).applyMatrix4(rotation).add(eye);
+    const target = this.targetPoint.subVectors(point, lookAt).reflect(normal).negate().add(point);
     mirrored.position.copy(view);
     mirrored.up.set(0, 1, 0).applyMatrix4(rotation).reflect(normal);
     mirrored.lookAt(target);
@@ -101,16 +98,16 @@ export class PlanarMirror {
     mirrored.projectionMatrixInverse.copy(camera.projectionMatrixInverse);
 
     // Oblique near plane just in front of the mirror (Lengyel), so nothing behind or on it is drawn.
-    const clipPoint = new Vector3().copy(normal).multiplyScalar(this.clipOffset).add(point);
+    const clipPoint = this.corner.copy(normal).multiplyScalar(this.clipOffset).add(point);
     this.plane.setFromNormalAndCoplanarPoint(normal, clipPoint).applyMatrix4(mirrored.matrixWorldInverse);
-    const clip = new Vector4(
+    const clip = this.clip.set(
       this.plane.normal.x,
       this.plane.normal.y,
       this.plane.normal.z,
       this.plane.constant,
     );
     const p = mirrored.projectionMatrix.elements;
-    const q = new Vector4(
+    const q = this.q.set(
       (Math.sign(clip.x) + p[8]) / p[0],
       (Math.sign(clip.y) + p[9]) / p[5],
       -1,
@@ -186,20 +183,18 @@ export class PlanarMirror {
     this.crop.makeScale(width / this.target.width, height / this.target.height, 1);
     this.textureMatrix.premultiply(this.crop);
 
-    // Transmissive optics in a tiny distant reflection do not justify another full-scene transmission pass.
-    const excluded: Object3D[] = [];
-    scene.traverse((object) => {
-      if (object.userData.excludeFromMirror) excluded.push(object);
-    });
-    hidden = hidden.concat(excluded);
-    const visibility = hidden.map((object) => object.visible);
-    hidden.forEach((object) => (object.visible = false));
     const previous = renderer.getRenderTarget();
     const clearAlpha = renderer.getClearAlpha();
     const shadowMap = reuseShadows ? renderer.shadowMap : null;
     const auto = shadowMap?.autoUpdate ?? false,
       needs = shadowMap?.needsUpdate ?? false;
     try {
+      for (const object of hidden) {
+        if (object.visible) {
+          this.hiddenForDraw.push(object);
+          object.visible = false;
+        }
+      }
       if (shadowMap) {
         shadowMap.autoUpdate = false;
         shadowMap.needsUpdate = false;
@@ -216,7 +211,8 @@ export class PlanarMirror {
       }
       renderer.setRenderTarget(previous);
       renderer.setClearAlpha(clearAlpha);
-      hidden.forEach((object, i) => (object.visible = visibility[i]));
+      for (const object of this.hiddenForDraw) object.visible = true;
+      this.hiddenForDraw.length = 0;
     }
     return true;
   }

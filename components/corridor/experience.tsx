@@ -1,8 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { preload } from "react-dom";
-import { Component, useEffect, useRef, useState, useSyncExternalStore, type ReactNode } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { createMetrics, createMetricsStore, type MetricsStore } from "./metrics";
 import theatreAssets from "./theatre-assets.json";
 import corridorAssets from "./corridor-assets.json";
@@ -17,12 +16,11 @@ import SoundToggle from "./sound-toggle";
 import EnquiryDialog from "./enquiry-dialog";
 import LoadingDiagnostics from "./loading-diagnostics";
 import { traceMark } from "./loading-trace";
-import { assetURL } from "./asset-url";
 import CinemaPanel from "./cinema-panel";
 import DiagonalSection from "./diagonal-section";
 import { prepareQuality, ropeFlightDevice } from "./effect-quality";
 import { scheduleSceneIdle } from "./scene-idle";
-import { isMobileDevice } from "./texture-quality";
+import { onVisibleLoadTimeout, switchToOverview } from "./overview-fallback";
 
 const Scene = dynamic(
   () => {
@@ -31,13 +29,7 @@ const Scene = dynamic(
       traceMark("Scene import resolved");
       return module;
     });
-    // The scene's code and, on computers, the opening's files download while the graphics speed test runs; the scene
-    // mounts once the code and the test are done, so each effect is chosen from this device's measured speed. Phones
-    // skip the test and load as before.
-    if (!isMobileDevice())
-      void import("./opening-files")
-        .then(({ startOpeningDownloads }) => startOpeningDownloads())
-        .catch(() => {}); // The scene's own loaders still fetch everything.
+    // The entry point already started the measurement. Mount once it and the scene are ready.
     return Promise.all([scene, prepareQuality()]).then(([module]) => module);
   },
   { ssr: false },
@@ -46,27 +38,6 @@ const Scene = dynamic(
 const SOFA_TRIANGLES = SOFAS_ENABLED ? sofaAssets.sourceTriangles * sofaAssets.count : 0;
 /** Theatre models, the corridor, the sofas and the projector. */
 const MODEL_COUNT = theatreAssets.models + 1 + (SOFAS_ENABLED ? 1 : 0) + 1;
-
-class SceneBoundary extends Component<{ children: ReactNode; onFailure: () => void }, { failed: boolean }> {
-  state = { failed: false };
-  static getDerivedStateFromError() {
-    return { failed: true };
-  }
-  componentDidCatch() {
-    this.props.onFailure();
-  }
-  render() {
-    if (this.state.failed)
-      return (
-        <div className="scene-message" role="alert">
-          <h1>The 3D view couldn’t load.</h1>
-          <p>Check that WebGL is enabled, then reload to try again.</p>
-          <button onClick={() => window.location.reload()}>Reload view</button>
-        </div>
-      );
-    return this.props.children;
-  }
-}
 
 /** Polls the metrics twice a second on its own, so only this panel re-renders. */
 function PerformancePanel({ metrics }: { metrics: MetricsStore }) {
@@ -183,22 +154,7 @@ const REVIEW_BUTTON = {
 } as const;
 
 export default function CorridorExperience() {
-  // Emit fetch hints in the initial HTML, before canvas/texture requests can
-  // occupy the HTTP/1.1 connection slots. Match Three's fetch credentials so
-  // its normal loaders consume the same responses, without another decoder.
-  preload(assetURL("/draco/draco_wasm_wrapper.js"), {
-    as: "fetch",
-    crossOrigin: "anonymous",
-    fetchPriority: "high",
-  });
-  preload(assetURL("/draco/draco_decoder.wasm"), {
-    as: "fetch",
-    crossOrigin: "anonymous",
-    fetchPriority: "high",
-  });
   const [metrics] = useState(createMetricsStore);
-  const [sceneFailed, setSceneFailed] = useState(false);
-  const viewport = useRef<HTMLDivElement>(null);
   const progressElement = useRef<HTMLDivElement>(null);
   // Only what the page itself shows; each changes a few times, so the page re-renders only then.
   const [firstFrame, setFirstFrame] = useState(false);
@@ -211,33 +167,26 @@ export default function CorridorExperience() {
   const orbitActive = orbit || (journey.phase === "logoDone" && endOrbit);
   const fullPage = journey.phase === "page" || journey.phase === "pageReturnLoading" || journey.pageReturning;
   const [prepareFlight, setPrepareFlight] = useState(false);
+  const atPreparationStop =
+    journey.phase === "awaitAssembly" || journey.phase === "done" || journey.phase === "drawings";
   useEffect(() => {
-    const element = viewport.current;
-    if (!element || journey.loaderDone) return;
-    // A lost opening canvas may never produce a first frame or throw a React error.
-    const lost = () => setSceneFailed(true);
-    element.addEventListener("webglcontextlost", lost, true);
-    return () => element.removeEventListener("webglcontextlost", lost, true);
-  }, [journey.loaderDone]);
+    if (!journey.loaderDone || (!waitingForCorridor && !waitingForProjector && journey.phase !== "pageReturnLoading")) return;
+    return onVisibleLoadTimeout(() => {
+      const current = metrics.read();
+      if (current.waitingForCorridor || current.waitingForProjector || journeyControls.read().phase === "pageReturnLoading")
+        switchToOverview();
+    });
+  }, [journey.loaderDone, journey.phase, waitingForCorridor, waitingForProjector, metrics]);
   useEffect(() => {
-    if (journey.phase !== "done" || ropeFlightDevice() !== "desktop") return;
+    if (!atPreparationStop || ropeFlightDevice() !== "desktop") return;
     // Desktop flies the rope GLB. It used to load and parse only when the pages opened (a ~210 ms freeze on that
     // move); parse it at a resting stop into the same R3F loader cache rope-model.tsx reads (same loader + URL).
     return scheduleSceneIdle(() => {
-      void Promise.all([
-        import("@react-three/fiber"),
-        import("three/examples/jsm/loaders/GLTFLoader.js"),
-        import("three/examples/jsm/libs/meshopt_decoder.module.js"),
-        import("../rope-model/rope-model"),
-      ])
-        .then(([{ useLoader }, { GLTFLoader }, { MeshoptDecoder }, { ROPE_MODEL }]) =>
-          useLoader.preload(GLTFLoader, ROPE_MODEL, (loader) => {
-            loader.setMeshoptDecoder(MeshoptDecoder);
-          }),
-        )
+      void import("../rope-model/rope-model")
+        .then(({ preloadRopeModel }) => preloadRopeModel())
         .catch(() => {}); // The page still loads it itself if this fails.
-    }, 20);
-  }, [journey.phase]);
+    }, 18);
+  }, [atPreparationStop]);
   useEffect(() => {
     if ((journey.phase !== "awaitAssembly" && journey.phase !== "done") || ropeFlightDevice() !== "laptop")
       return;
@@ -246,13 +195,14 @@ export default function CorridorExperience() {
       .catch(() => {}); // The visible flight can retry a failed preload.
   }, [journey.phase]);
   useEffect(() => {
-    if (prepareFlight || journey.phase !== "done") return;
+    if (prepareFlight || !atPreparationStop) return;
     const device = ropeFlightDevice();
     // Mount the page and its film reel while the camera is resting so the
     // liquid handoff only has to reveal them.
-    return scheduleSceneIdle(() => setPrepareFlight(true), device === "mobile" ? 12 : 20);
-  }, [journey.phase, prepareFlight]);
-  const hiddenFlight = prepareFlight && ["done", "screens", "drawings", "corridor", "panel"].includes(journey.phase);
+    return scheduleSceneIdle(() => setPrepareFlight(true), device === "mobile" ? 12 : 19);
+  }, [atPreparationStop, prepareFlight]);
+  const hiddenFlight = prepareFlight &&
+    ["awaitAssembly", "returnHold", "return", "done", "screens", "drawings", "corridor", "panel"].includes(journey.phase);
 
   useEffect(() => {
     const timer = window.setInterval(() => {
@@ -289,17 +239,14 @@ export default function CorridorExperience() {
       {/* Section 4's white on screen until the camera starts back; then the white panel fixed in the corridor takes over (end-box.ts). */}
       {journey.pageReturning && <PageReturnCover />}
       {!journey.pageReturning && (fullPage || hiddenFlight) && (
-        <NormalPage key={journey.pageJump} returnToCorridor active={fullPage} />
+        <NormalPage key={journey.pageJump} returnToCorridor active={fullPage} visibleSection={journey.visiblePageSection} />
       )}
       <div
         id="corridor-viewport"
-        ref={viewport}
         className="scene-fixed"
         style={{ pointerEvents: orbitActive ? "auto" : "none" }}
       >
-        <SceneBoundary onFailure={() => setSceneFailed(true)}>
-          <Scene metrics={metrics} orbit={orbitActive} />
-        </SceneBoundary>
+        <Scene metrics={metrics} orbit={orbitActive} />
       </div>
       <header className="study-header">
         <div>
@@ -371,7 +318,7 @@ export default function CorridorExperience() {
       <LoadingDiagnostics />
       <SiteChrome />
       <EnquiryDialog />
-      <SiteLoader sceneFailed={sceneFailed} />
+      <SiteLoader />
       <SoundToggle />
       {waitingForCorridor && (
         <div className="loading-card" role="status" aria-live="polite">

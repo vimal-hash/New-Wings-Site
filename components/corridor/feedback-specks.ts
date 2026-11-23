@@ -113,9 +113,12 @@ export function createSpecks(canvas: HTMLCanvasElement, share: number, maxDpr: n
       height = Math.max(1, h);
       dpr = Math.min(maxDpr, window.devicePixelRatio || 1);
       scale = Math.min(width, height * 1.6) / 1440;
-      canvas.width = Math.round(width * dpr);
-      canvas.height = Math.round(height * dpr);
-      blank = true;
+      const pixelsWide = Math.round(width * dpr), pixelsHigh = Math.round(height * dpr);
+      if (canvas.width !== pixelsWide || canvas.height !== pixelsHigh) {
+        if (canvas.width !== pixelsWide) canvas.width = pixelsWide;
+        if (canvas.height !== pixelsHigh) canvas.height = pixelsHigh;
+        blank = true;
+      } else this.clear();
     },
     // Draws the sprites once, far too faint to see, so the browser has them ready before the specks first appear.
     warm() {

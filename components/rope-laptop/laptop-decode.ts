@@ -30,6 +30,10 @@ export type Meta = {
 export type RopeSamples = { index: number; points: Float32Array };
 
 async function gunzip(bytes: Uint8Array) {
+  if (typeof DecompressionStream === "undefined") {
+    const { gunzipSync } = await import("three/examples/jsm/libs/fflate.module.js");
+    return gunzipSync(bytes);
+  }
   const stream = new Blob([bytes as BlobPart]).stream().pipeThrough(new DecompressionStream("gzip"));
   return new Uint8Array(await new Response(stream).arrayBuffer());
 }

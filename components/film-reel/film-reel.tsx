@@ -14,32 +14,20 @@ import { advance, Canvas, useFrame, useThree } from "@react-three/fiber";
 import { type Group, MathUtils, type PerspectiveCamera } from "three";
 import { FILM_PRODUCTS, FILM_VOID, FRAME_PITCH } from "./film-data";
 import { FilmStrip, type FilmLooks } from "./film-strip";
+import { FILM_RATE, flickerAt, weaveAt } from "./projection-timing";
 import { reelClick } from "./reel-click";
 import { createReelMotion, type ReelMotion, type ReelShot } from "./reel-motion";
 import { listenSteps } from "../corridor/scroll-step";
+import { frameTime } from "../corridor/clip-clock";
 import { sceneMotion } from "../corridor/scene-idle";
 import { uploadTexturesGradually } from "../corridor/hidden-gpu-preparation";
 import { traceMark, traceSpan } from "../corridor/loading-trace";
-import TitleLine, { CARD_WAIT, cardStrength, showTitle, writeTitle } from "../corridor/title-card";
+import TitleLine, { CARD_WAIT, TITLE, cardStrength, showTitle, writeTitle } from "../corridor/title-card";
 
 const FOV = 28;
 // Review only (?drive on /film-study or /sections): a hand-turned clock, so the reel can be stepped and checked frame by frame in a browser that is not painting.
 let driven: number | null = null;
-const clock = () => driven ?? performance.now();
-const FILM_RATE = 24; // the grain, the flicker and the scratch lines change at the speed film ran through a projector
-const noise = (n: number) => {
-  const v = Math.sin(n * 12.9898 + 78.233) * 43758.5453;
-  return v - Math.floor(v);
-};
-/** Exposure of film frame n: a small random wobble each frame over a slower drift, never more than a few percent. */
-const flickerAt = (n: number) =>
-  1 + 0.048 * (noise(n) - 0.5) + 0.018 * Math.sin(n * 0.083) + 0.012 * Math.sin(n * 0.31 + 1.7);
-/** Gate weave: film never sits exactly still in a projector gate. Each frame lands a pixel or so off, over a slow drift. In frame units. */
-const weaveAt = (n: number) => [
-  0.0016 * (noise(n * 1.73 + 0.4) - 0.5) + 0.0012 * Math.sin(n * 0.11 + 0.8),
-  0.0045 * (noise(n * 2.31 + 9.1) - 0.5) + 0.0035 * Math.sin(n * 0.17 + 2.3),
-];
-
+const clock = () => driven ?? frameTime();
 /** What the page around the reel may ask of it. */
 export type ReelHandle = {
   /** One step of the site's scroll (scroll-step.ts): 1 forward, -1 back, 0 the rest of a gesture. True when the reel
@@ -49,6 +37,7 @@ export type ReelHandle = {
   atEnd(): void;
   /** True while the reel covers the screen. */
   showing(): boolean;
+  ready(): boolean;
 };
 
 function Rig({
@@ -162,7 +151,8 @@ function Rig({
     }
     if (shot.landed >= 0) reelClick();
     onShot(shot);
-    gl.render(scene, camera);
+    // The DOM title is solid white here. Its clock still runs, and the first draw warms the reel.
+    if (!told.current || (shot.visible && shot.white < 1)) gl.render(scene, camera);
     if (!told.current) {
       told.current = true;
       queueMicrotask(onReady);
@@ -236,6 +226,7 @@ export default function FilmReel({
   // `line`: the section's title line, on the opening white page only (the house lights), never on the last frame's burn.
   // It writes in on the reel's own clock, holds, then fades into the still-white page, gone as the lights start down.
   const title = useRef<HTMLParagraphElement>(null);
+  const titleTime = useRef(-1);
   const looks = useRef<FilmLooks | null>(null),
     wake = useRef<(() => void) | null>(null),
     showing = useRef(!ended);
@@ -254,7 +245,11 @@ export default function FilmReel({
       if (white.current) white.current.style.opacity = shot.white.toFixed(4);
       if (title.current) {
         showTitle(title.current, shot.burn === 0 && shot.held > 0 ? cardStrength(shot.held) * shot.line : 0);
-        writeTitle(title.current, calm ? Infinity : shot.held);
+        const seconds = calm ? TITLE.write : Math.min(shot.held, TITLE.write);
+        if (titleTime.current !== seconds) {
+          writeTitle(title.current, seconds);
+          titleTime.current = seconds;
+        }
       }
       if (shot.exited) onExit?.();
       if (shot.raised) onBack?.();
@@ -295,8 +290,9 @@ export default function FilmReel({
         wake.current?.();
       },
       showing: () => showing.current,
+      ready: () => ready,
     }),
-    [take, motion],
+    [take, motion, ready],
   );
 
   useEffect(() => {
@@ -351,6 +347,7 @@ export default function FilmReel({
       <Canvas
         flat
         frameloop="demand"
+        resize={{ scroll: false }}
         dpr={[1, 1.5]}
         gl={{ antialias: true, alpha: false, powerPreference: "high-performance" }}
         camera={{ position: [0, 0, 14], fov: FOV, near: 0.1, far: 120 }}

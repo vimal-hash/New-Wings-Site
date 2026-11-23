@@ -4,6 +4,7 @@ import { useFrame, useLoader, useThree } from "@react-three/fiber";
 import { useGLTF } from "@react-three/drei";
 import { Mesh, PerspectiveCamera, TextureLoader, type WebGLRenderTarget } from "three";
 import { theatreOpening } from "./theatre-opening-state";
+import { frameTime } from "./clip-clock";
 import { traceGLTF } from "./loading-trace";
 import { createCinemaOptics } from "./cinema-optics";
 import { glassesControls } from "./glasses-controls";
@@ -69,7 +70,7 @@ export default function CinemaGlasses() {
     };
   }, [invalidate]);
   useFrame(({ camera, scene }) => {
-    const now = performance.now();
+    const now = frameTime();
     if (cinemaGlasses.tick(now)) invalidate();
     const phase = journeyControls.read().phase,
       position = cinemaGlasses.position;

@@ -26,6 +26,20 @@ let previousPhase = "",
 function tick() {
   timer = undefined;
   if (!queue.size) return;
+  try {
+    runNext();
+  } finally {
+    scheduleTick();
+  }
+}
+function scheduleTick() {
+  if (!queue.size || timer !== undefined) return;
+  const shot = journeyControls.read();
+  const preparingOpening = shot.phase === "intro" && !shot.openingMoving && !shot.loaderDone &&
+    [...queue.values()].some((job) => job.priority <= OPENING_PROJECTOR_PRIORITY);
+  timer = setTimeout(tick, preparingOpening ? 16 : 80);
+}
+function runNext() {
   const fx = projectorControls.read().phase;
   const shot = journeyControls.read(),
     holding = shot.phase === "intro" && !shot.openingMoving;
@@ -73,7 +87,6 @@ function tick() {
       next[0]();
     }
   }
-  if (queue.size) timer = setTimeout(tick, 80);
 }
 /** Serial background work only at authored resting stops, after input settles. */
 export function scheduleSceneIdle(job: () => void, priority = 0, allowed = () => true) {
@@ -85,7 +98,7 @@ export function scheduleSceneIdle(job: () => void, priority = 0, allowed = () =>
     listening = true;
   }
   queue.set(job, { priority, allowed });
-  if (!timer) timer = setTimeout(tick, 80);
+  scheduleTick();
   return () => {
     queue.delete(job);
   };

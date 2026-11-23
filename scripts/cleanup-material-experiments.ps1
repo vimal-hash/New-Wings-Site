@@ -10,6 +10,11 @@ function Add-CleanupFile([string]$path) {
   if (Test-Path -LiteralPath $absolute -PathType Leaf) { $targets.Add($absolute) }
 }
 $manifest = Get-Content -Raw -LiteralPath (Join-Path $projectRoot 'components/corridor/theatre-ceiling-assets.json') | ConvertFrom-Json
+# This one-time cleanup predates the separate desktop and mobile ceiling textures.
+if (@($manifest.textures.PSObject.Properties.Name) -notcontains 'ceiling-surface-edges.ktx2') {
+  Write-Output 'Historical cleanup skipped. The current theatre uses a different ceiling asset set.'
+  return
+}
 $ceilingFolder = Join-Path $projectRoot 'public/textures/theatre/ceiling'
 $acceptedTextures = @($manifest.textures.PSObject.Properties.Name)
 Get-ChildItem -LiteralPath $ceilingFolder -File | Where-Object Name -NotIn $acceptedTextures | ForEach-Object { Add-CleanupFile $_.FullName }

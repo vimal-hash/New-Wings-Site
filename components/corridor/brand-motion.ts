@@ -11,7 +11,7 @@ export function createBrandMotion(section: HTMLElement, root: HTMLElement, prefe
   }));
   const entrances = new Set<Animation>();
   let ready = false,
-    visible = false,
+    visible: boolean | undefined,
     generation = 0,
     frame = 0,
     last = 0,
@@ -147,6 +147,7 @@ export function createBrandMotion(section: HTMLElement, root: HTMLElement, prefe
               Number(target.element.dataset.brandRing || 0),
             )
           : { x: 0, y: 0 };
+      if (offset.x === target.x && offset.y === target.y) return;
       target.x += (offset.x - target.x) * blend;
       target.y += (offset.y - target.y) * blend;
       if (Math.hypot(offset.x - target.x, offset.y - target.y) < 0.02) {
@@ -165,8 +166,9 @@ export function createBrandMotion(section: HTMLElement, root: HTMLElement, prefe
     }
   }
   function pointerMove(event: PointerEvent) {
-    root.dataset.pointerKind = event.pointerType;
-    if (event.pointerType !== "mouse" || !visible || document.hidden || preference.matches) return;
+    if (!visible || document.hidden || preference.matches) return;
+    if (root.dataset.pointerKind !== event.pointerType) root.dataset.pointerKind = event.pointerType;
+    if (event.pointerType !== "mouse") return;
     pointer =
       event.target instanceof Element && event.target.closest("[data-cinema-controls]")
         ? null
@@ -196,8 +198,10 @@ export function createBrandMotion(section: HTMLElement, root: HTMLElement, prefe
   preference.addEventListener("change", reduced);
   return {
     update(next: boolean, shown: boolean) {
+      const changed = shown !== visible || next !== ready;
       visible = shown;
       dirty = true;
+      if (!changed) return;
       reveal(next);
       lifecycle();
     },

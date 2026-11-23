@@ -8,6 +8,7 @@ import {
   type InstancedMesh,
   Matrix4,
   type Mesh,
+  RepeatWrapping,
   SRGBColorSpace,
   type Texture,
   TextureLoader,
@@ -16,11 +17,15 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { contentTexture, filmFont } from "./film-content";
 import { FILM_MODEL, FILM_PRODUCTS, FRAME_PITCH } from "./film-data";
 import { filmLooks } from "./film-material";
-import { wearTexture } from "./film-wear";
 
 const COUNT = FILM_PRODUCTS.length;
 const LEADER = 3; // blank frames of black leader before the first frame and after the last, so the strip never ends on screen
 const PICTURES = FILM_PRODUCTS.map((product) => product.picture);
+const withWear = {
+  full: [...PICTURES, "/film/wear-full.webp"],
+  small: [...PICTURES, "/film/wear-small.webp"],
+};
+const stripMaps = () => withWear[Math.min(window.screen.width, window.screen.height) < 600 ? "small" : "full"];
 const PARTS = ["Frame", "Image", "Content"] as const;
 type Part = (typeof PARTS)[number];
 export type FilmLooks = ReturnType<typeof filmLooks>;
@@ -35,7 +40,7 @@ const screenTriangle = () => {
 /** Fetch and parse the strip ahead of time (a resting stop in the 3D journey), so Section 1 opens without waiting on the network. */
 export function preloadFilmStrip() {
   useLoader.preload(GLTFLoader, FILM_MODEL);
-  useLoader.preload(TextureLoader, PICTURES);
+  useLoader.preload(TextureLoader, stripMaps());
 }
 
 /**
@@ -50,7 +55,9 @@ export function FilmStrip({
   onReady?: () => void;
 }) {
   const gltf = useLoader(GLTFLoader, FILM_MODEL);
-  const pictures = useLoader(TextureLoader, PICTURES);
+  const maps = useLoader(TextureLoader, stripMaps());
+  const pictures = useMemo(() => maps.slice(0, COUNT), [maps]);
+  const wear = maps[COUNT];
   const gl = useThree((state) => state.gl),
     invalidate = useThree((state) => state.invalidate);
   const anisotropy = Math.min(8, gl.capabilities.getMaxAnisotropy());
@@ -84,17 +91,14 @@ export function FilmStrip({
     }
   }, [pictures, anisotropy]);
 
-  // The handling marks. A phone gets the half-size drawing.
-  useEffect(() => {
-    const small = Math.min(window.screen.width, window.screen.height) < 600;
-    const wear = wearTexture(small, anisotropy);
+  // The authored scratch, dust and haze channels are baked once by bake-overview-film.mjs.
+  useLayoutEffect(() => {
+    wear.flipY = false;
+    wear.wrapS = RepeatWrapping;
+    wear.anisotropy = anisotropy;
+    wear.needsUpdate = true;
     looks.wear.value = wear;
-    invalidate();
-    return () => {
-      looks.wear.value = looks.blank;
-      wear.dispose();
-    };
-  }, [looks, anisotropy, invalidate]);
+  }, [looks, wear, anisotropy]);
 
   // The text under each picture, written with the site's fonts. The strip is ready once it is drawn.
   useEffect(() => {
@@ -170,8 +174,8 @@ export function FilmStrip({
       />
       {FILM_PRODUCTS.map((product, index) => (
         <group key={product.picture} position={[index * FRAME_PITCH, 0, 0]}>
-          <mesh geometry={shapes.Image} material={looks.pictures[index]} frustumCulled={false} />
-          <mesh geometry={shapes.Content} material={looks.contents[index]} frustumCulled={false} />
+          <mesh geometry={shapes.Image} material={looks.pictures[index]} />
+          <mesh geometry={shapes.Content} material={looks.contents[index]} />
         </group>
       ))}
     </group>

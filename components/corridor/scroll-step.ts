@@ -11,8 +11,9 @@ export const SCROLL = { step: 30, gap: 220 } as const;
 export type Step = -1 | 0 | 1;
 
 /** A wheel event's travel in CSS pixels, down positive: lines are 16 px, pages one page height. */
-export function wheelPixels(event: WheelEvent, page = typeof innerHeight === "number" ? innerHeight : 800) {
-  return event.deltaY * (event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? page : 1);
+export function wheelPixels(event: WheelEvent, page?: number) {
+  if (event.deltaMode === 2) return event.deltaY * (page ?? (typeof innerHeight === "number" ? innerHeight : 800));
+  return event.deltaY * (event.deltaMode === 1 ? 16 : 1);
 }
 
 /** Which way a key steps: down/page down/space forwards, up/page up/shift-space back, anything else 0. */

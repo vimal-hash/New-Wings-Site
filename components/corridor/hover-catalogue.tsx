@@ -138,8 +138,9 @@ export default function HoverCatalogue() {
     invalidate = useThree((s) => s.invalidate);
   const tools = useMemo(() => createTools(), []);
   const state = useRef({
-    x: -1,
-    y: -1,
+    clientX: -1,
+    clientY: -1,
+    inspecting: false,
     pointer: false,
     lastMove: 0,
     still: new Float32Array(32),
@@ -198,8 +199,9 @@ export default function HoverCatalogue() {
       }
       // The pixel is read back asynchronously (no GPU stall); a newer pick or a change of stop discards older answers.
       const ticket = ++s.ticket;
+      const rect = gl.domElement.getBoundingClientRect();
       void tools
-        .pick(gl, scene, camera, mode, s.x, s.y)
+        .pick(gl, scene, camera, mode, (s.clientX - rect.left) / rect.width, (s.clientY - rect.top) / rect.height)
         .then((id) => {
           if (ticket !== s.ticket || !s.pointer || currentMode() !== mode) return;
           select(tools.target(id, mode));
@@ -232,9 +234,8 @@ export default function HoverCatalogue() {
     const move = (e: PointerEvent) => {
       if (e.pointerType === "touch") return;
       s.pointer = !ui(e.target);
-      const rect = gl.domElement.getBoundingClientRect();
-      s.x = (e.clientX - rect.left) / rect.width;
-      s.y = (e.clientY - rect.top) / rect.height;
+      s.clientX = e.clientX;
+      s.clientY = e.clientY;
       if (s.pointer && currentMode() === "theatre") repick.current();
       else pick();
     };
@@ -322,10 +323,12 @@ export default function HoverCatalogue() {
     // Projector stops: any camera or pose change hides the inspection and restarts the settle timer.
     // Theatre: the camera glides after the mouse, so a lit outline redraws its mask with this frame's camera and moves
     // with the room (the ID buffer waits for the next pick).
-    const s = state.current,
-      signature = s.still,
-      next = stillSignature(camera, scene),
-      mode = currentMode();
+    const s = state.current, mode = currentMode();
+    const entering = !!mode && !s.inspecting;
+    s.inspecting = !!mode;
+    // The catalogue only has a picture at its inspection stops. Finish any outgoing fade or tour first.
+    if (!mode && !s.selected && s.fade === 0 && s.tour !== 1 && s.tourStop < 0) return;
+    const signature = s.still, next = stillSignature(camera, mode === "theatre" ? null : scene);
     // The room tour (user 2026-11-19), once: as the house lights come up, each object lights on one repeat of the
     // opening cue's echo (story-beat.ts), with its name on the screen; then nothing lights until the mouse finds it.
     let tourStop = -1;
@@ -361,7 +364,7 @@ export default function HoverCatalogue() {
       } else if (!s.selected) theatreScreenCatalogue.name = null;
     }
     const touring = tourStop >= 0 && !s.selected;
-    let changed = false;
+    let changed = entering;
     for (let i = 0; i < next.length; i++)
       if (Math.abs(next[i] - signature[i]) > 1e-6) {
         changed = true;
@@ -401,10 +404,10 @@ function currentMode(): HoverMode | null {
 }
 
 const signatureScratch = new Float32Array(32);
-function stillSignature(camera: Camera, scene: Scene) {
+function stillSignature(camera: Camera, scene: Scene | null) {
   signatureScratch.set(camera.matrixWorld.elements, 0);
   signatureScratch.set(camera.projectionMatrix.elements, 16);
-  const projector = scene.getObjectByName("Projector | Opaque original materials");
+  const projector = scene?.getObjectByName("Projector | Opaque original materials");
   const uniforms = projector?.userData.projectorHover?.uniforms;
   if (uniforms)
     signatureScratch[15] +=

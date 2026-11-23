@@ -23,9 +23,10 @@ function testOverride(): EffectQuality | null {
  * Starts the graphics speed test (gpu-speed.ts) on computers. Pages wait for it before their first 3D canvas, so each
  * picture below is chosen once, from this device's measured speed. Phones skip it: they always get the phone picture.
  */
+let preparing: Promise<void> | undefined;
 export function prepareQuality(): Promise<void> {
   if (testOverride() || isMobileDevice()) return Promise.resolve();
-  return measureGpuSpeed().then(() => {
+  return preparing ??= measureGpuSpeed().then(() => {
     const speed = gpuSpeed();
     traceMark(
       speed

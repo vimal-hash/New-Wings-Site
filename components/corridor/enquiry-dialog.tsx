@@ -15,6 +15,7 @@ export default function EnquiryDialog() {
   const [errors, setErrors] = useState<Partial<Record<keyof Enquiry, string>>>({});
   const [status, setStatus] = useState<Status>("idle");
   const [extra, setExtra] = useState<string | null>(null);
+  const pending = useRef<{ product: string } | null>(null);
   const first = useRef<HTMLInputElement>(null),
     returnFocus = useRef<Element | null>(null),
     dialog = useRef<HTMLDivElement>(null);
@@ -22,6 +23,11 @@ export default function EnquiryDialog() {
   useEffect(() => {
     const show = (event: Event) => {
       const product = (event as CustomEvent).detail as string | null;
+      if (product && pending.current && product !== pending.current.product) {
+        // The earlier enquiry can finish sending while the visitor starts a different one.
+        pending.current = null;
+        setStatus("idle");
+      }
       returnFocus.current = document.activeElement;
       if (product && !ENQUIRY_PRODUCTS.includes(product)) setExtra(product);
       setForm((old) => ({ ...old, product: product ?? old.product }));
@@ -30,7 +36,10 @@ export default function EnquiryDialog() {
       setOpen(true);
     };
     window.addEventListener("product-enquiry", show);
-    return () => window.removeEventListener("product-enquiry", show);
+    return () => {
+      pending.current = null;
+      window.removeEventListener("product-enquiry", show);
+    };
   }, []);
 
   useEffect(() => {
@@ -87,6 +96,7 @@ export default function EnquiryDialog() {
 
   const submit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (pending.current) return;
     const honeypot = (event.currentTarget.elements.namedItem("website") as HTMLInputElement | null)?.value;
     const { errors: found, enquiry } = validateEnquiry(form);
     setErrors(found);
@@ -94,6 +104,8 @@ export default function EnquiryDialog() {
       (event.currentTarget.querySelector(`[name="${Object.keys(found)[0]}"]`) as HTMLElement | null)?.focus();
       return;
     }
+    const request = { product: enquiry.product };
+    pending.current = request;
     setStatus("sending");
     try {
       const response = await fetch("/api/enquiry", {
@@ -101,6 +113,7 @@ export default function EnquiryDialog() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ...enquiry, website: honeypot }),
       });
+      if (pending.current !== request) return;
       if (response.ok) {
         setStatus("sent");
         setForm((old) => ({ ...EMPTY, product: old.product }));
@@ -108,7 +121,9 @@ export default function EnquiryDialog() {
       }
       setStatus(response.status === 503 ? "offline" : "failed");
     } catch {
-      setStatus("failed");
+      if (pending.current === request) setStatus("failed");
+    } finally {
+      if (pending.current === request) pending.current = null;
     }
   };
 

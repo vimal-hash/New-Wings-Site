@@ -339,20 +339,22 @@ export function createCinemaOptics(gl: WebGLRenderer, source: Group) {
         root.quaternion.copy(camera.quaternion);
         root.updateMatrixWorld(true);
       };
-      const key = mobile
-        ? [
-            camera.fov,
-            camera.zoom,
-            camera.aspect,
-            controls.distance,
-            controls.width,
-            controls.lockWidth,
-            controls.height,
-            controls.blur,
-            controls.innerBlur,
-          ].join(",")
-        : "";
-      const refreshFrame = !mobile || frameKey !== key;
+      const cameraChanged =
+        !previousCamera.equals(camera.matrixWorld) || !previousProjection.equals(camera.projectionMatrix);
+      const key = [
+        camera.fov,
+        camera.zoom,
+        camera.aspect,
+        controls.distance,
+        controls.width,
+        controls.lockWidth,
+        controls.height,
+        controls.blur,
+        controls.innerBlur,
+        mobile ? 0 : lift,
+        gl.getPixelRatio(),
+      ].join(",");
+      const refreshFrame = frameKey !== key || (!mobile && cameraChanged);
       if (refreshFrame) pose(mobile ? 0 : lift);
       // Follow only the authored straight inner rims, between the two marked
       // junctions. Upper/lower outer curves retain their independent 5 px blur.
@@ -384,6 +386,7 @@ export function createCinemaOptics(gl: WebGLRenderer, source: Group) {
           screenMask.frustumCulled = false;
           screenScene.add(screenMask);
           maskReady = false;
+          viewKey = undefined;
         }
       }
       if (screenSource && screenMask) {
@@ -392,10 +395,9 @@ export function createCinemaOptics(gl: WebGLRenderer, source: Group) {
         if (!previousScreen.equals(screenSource.matrixWorld)) {
           previousScreen.copy(screenSource.matrixWorld);
           maskReady = false;
+          viewKey = undefined;
         }
       }
-      const cameraChanged =
-        !previousCamera.equals(camera.matrixWorld) || !previousProjection.equals(camera.projectionMatrix);
       if (cameraChanged) {
         previousCamera.copy(camera.matrixWorld);
         previousProjection.copy(camera.projectionMatrix);
@@ -415,13 +417,13 @@ export function createCinemaOptics(gl: WebGLRenderer, source: Group) {
         gl.shadowMap.autoUpdate = false;
         gl.autoClear = true;
         gl.setClearColor(0, 0);
-        if (!mobile || !maskReady) {
+        if (!maskReady) {
           gl.setRenderTarget(screenTarget);
           gl.render(screenScene, camera);
           maskReady = true;
         }
         const viewAmount = view && view.amount > 0.001 ? view.amount : 0;
-        if (view && viewAmount && (!mobile || view.key === undefined || view.key !== viewKey)) {
+        if (view && viewAmount && (view.key === undefined || view.key !== viewKey)) {
           view.render(viewTarget);
           gl.autoClear = true;
           gl.setClearColor(0, 0);
@@ -442,8 +444,8 @@ export function createCinemaOptics(gl: WebGLRenderer, source: Group) {
             (phoneVertical.material as ShaderMaterial).uniforms.uAxis.value.set(0, 1 / height);
             gl.setRenderTarget(phoneFrame);
             phoneVertical.render(gl);
-            frameKey = key;
           } else composite.uniforms.uAxis.value.set(0, 1 / height);
+          frameKey = key;
         }
         if (mobile) {
           pose(lift);

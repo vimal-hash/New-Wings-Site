@@ -741,6 +741,7 @@ function CorridorScene({ metrics, orbit = false }: { metrics: MetricsStore; orbi
       flat
       shadows="soft"
       frameloop="demand"
+      resize={{ scroll: false }}
       dpr={dpr}
       onCreated={({ gl, camera }) => {
         gl.transmissionResolutionScale = isMobileDevice() ? 0.5 : 0.75;

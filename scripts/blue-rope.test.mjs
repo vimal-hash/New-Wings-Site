@@ -23,6 +23,7 @@ import {
 } from "../components/rope-model/rope-flight.ts";
 import { Vector3 } from "three";
 import { createSectionFade } from "../components/rope-model/section-fade.ts";
+import { observeRopeScroll } from "../components/rope-model/rope-link.ts";
 // Compile this module as Next does: its bundler resolves extensionless TS imports.
 const portalFixture = { exports: {} },
   nativeRequire = createRequire(import.meta.url);
@@ -38,6 +39,66 @@ vm.runInNewContext(
   },
 );
 const { BLUE_PORTAL, PORTAL, portalFade, portalMaterial, placePortal } = portalFixture.exports;
+
+test("a tunnel leg drives the camera and page together between native scroll events", (t) => {
+  const frames = new Map();
+  let nextId = 0;
+  const viewport = new EventTarget();
+  const browser = {
+    window: viewport,
+    requestAnimationFrame(callback) { frames.set(++nextId, callback); return nextId; },
+    cancelAnimationFrame(id) { frames.delete(id); },
+  };
+  for (const [key, value] of Object.entries(browser)) {
+    const original = Object.getOwnPropertyDescriptor(globalThis, key);
+    Object.defineProperty(globalThis, key, { configurable: true, value });
+    t.after(() => {
+      if (original) Object.defineProperty(globalThis, key, original);
+      else delete globalThis[key];
+    });
+  }
+  const element = Object.assign(new EventTarget(), { clientHeight: 1000, scrollHeight: 11000, style: {} });
+  let top = 0;
+  Object.defineProperty(element, "scrollTop", { get: () => top, set: value => { top = Math.round(value); } });
+  const camera = [], page = [];
+  const glide = { lead: 0, leadShare: 0, units: share => share * BLUE_FLIGHT.travel };
+  const unobserve = observeRopeScroll(element, share => camera.push(share), { glide, scroll: share => page.push(share) });
+  const dispose = flight.createFlightGlide(element, BLUE_FLIGHT, glide);
+  const paint = (now) => {
+    assert.equal(frames.size, 1);
+    const [[id, callback]] = frames;
+    frames.delete(id);
+    callback(now);
+  };
+  try {
+    assert.equal(glide.take(1), true);
+    const start = performance.now();
+    paint(start + 400);
+    const position = camera.at(-1);
+    assert.ok(position > 0 && position < 1);
+    assert.equal(top, Math.round(position * 10000));
+    const updates = camera.length;
+    element.dispatchEvent(new Event("scroll"));
+    assert.equal(camera.length, updates);
+    assert.equal(glide.take(1), true);
+    element.scrollHeight = 21000;
+    viewport.dispatchEvent(new Event("resize"));
+    paint(start + 600);
+    assert.ok(camera.at(-1) > position);
+    assert.equal(top, Math.round(camera.at(-1) * 20000));
+    assert.equal(glide.take(-1), true);
+    paint(start + 10000);
+    assert.equal(glide.driving, false);
+    assert.equal(top, 0);
+    assert.equal(glide.take(-1), false);
+    assert.deepEqual(camera, page);
+  } finally {
+    dispose();
+    unobserve();
+  }
+  assert.equal(frames.size, 0);
+  assert.equal(glide.publish, undefined);
+});
 
 test("both sections finish their white handoff after the same physical scroll distance", () => {
   for (const height of [768, 900, 1080]) {

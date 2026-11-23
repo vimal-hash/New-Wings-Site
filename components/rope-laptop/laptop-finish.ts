@@ -383,16 +383,21 @@ export function createLaptopFinish(
       let scene = target.texture;
       if (!blends() || stillness === 0) framesKept = 0; // while the camera moves none of this is paid for
       else {
-        blend.uniforms.uA.value = earlier[0].texture;
-        blend.uniforms.uB.value = earlier[1].texture;
-        blend.uniforms.uC.value = earlier[2].texture;
-        blend.uniforms.uShare.value = framesKept >= earlier.length ? stillness * 0.75 : 0;
-        pass(gl, blend, averaged);
+        // The first three frames have no history to contribute. Read today's picture directly.
+        if (framesKept === earlier.length) {
+          blend.uniforms.uA.value = earlier[0].texture;
+          blend.uniforms.uB.value = earlier[1].texture;
+          blend.uniforms.uC.value = earlier[2].texture;
+          blend.uniforms.uShare.value = stillness * 0.75;
+          pass(gl, blend, averaged);
+          scene = averaged!.texture;
+        } else {
+          gl.setRenderTarget(null);
+        }
         gl.initRenderTarget(earlier[oldest]);
         gl.copyTextureToTexture(target.texture, earlier[oldest].texture);
         oldest = (oldest + 1) % earlier.length;
         framesKept = Math.min(framesKept + 1, earlier.length);
-        scene = averaged!.texture;
       }
       first.uniforms.uSource.value = scene;
       final.uniforms.uScene.value = scene;

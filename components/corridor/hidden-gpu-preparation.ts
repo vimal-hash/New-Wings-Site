@@ -1,4 +1,5 @@
 import {
+  Group,
   Texture,
   WebGLRenderTarget,
   type Camera,
@@ -40,11 +41,8 @@ export async function compileHiddenGPU(
   }
 }
 
-/** Same programs as compileHiddenGPU, one object at a time. Windows Chrome (ANGLE/D3D11) links in the GPU process and
- * stops presenting until a whole batch is linked: the 25-program projector batch froze the seated theatre stop for
- * ~3.7 s. Here a frame is presented after every object that created a new program, so the longest pause is one
- * program. Objects that only hit the program cache are walked on, yielding every ~8 ms. Lights come from `scene`,
- * exactly as in a real draw. */
+/** Interactive stops link one drawable at a time. Behind the opening loader, independent materials can
+ * link together while a frame is presented. Both paths use the real scene's lights and output variants. */
 const nextFrame = () => new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
 export async function compileHiddenGPUGradually(
   renderer: WebGLRenderer,
@@ -55,7 +53,8 @@ export async function compileHiddenGPUGradually(
   visibleOnly = false,
   frame = nextFrame,
 ) {
-  const objects: Object3D[] = [];
+  type Drawable = Object3D & { material: Material | Material[] };
+  const objects: Drawable[] = [];
   const collect = (object: Object3D) => {
     const o = object as Object3D & {
       isMesh?: boolean;
@@ -64,40 +63,67 @@ export async function compileHiddenGPUGradually(
       isSprite?: boolean;
       material?: unknown;
     };
-    if ((o.isMesh || o.isPoints || o.isLine || o.isSprite) && o.material) objects.push(object);
+    if ((o.isMesh || o.isPoints || o.isLine || o.isSprite) && o.material) objects.push(object as Drawable);
   };
   if (visibleOnly) root.traverseVisible(collect);
   else root.traverse(collect);
   const target = new WebGLRenderTarget(1, 1);
   const linking: Promise<unknown>[] = [];
+  const opening = frame === yieldDuringLoading;
+  const batch = new Group();
+  const materials = new Set<Material>();
   try {
     let slice = performance.now();
-    for (const object of objects)
+    for (let i = 0; i < objects.length;) {
+      const first = objects[i++];
+      let root: Object3D = first;
+      if (opening && first.children.length === 0) {
+        // compileAsync only traverses this list. Keep every mesh attached to its real parent.
+        batch.children.length = 0;
+        materials.clear();
+        batch.children.push(first);
+        for (const m of Array.isArray(first.material) ? first.material : [first.material]) materials.add(m);
+        const limit = document.hidden ? 8 : 3;
+        while (i < objects.length && batch.children.length < limit) {
+          const next = objects[i];
+          const nextMaterials = Array.isArray(next.material) ? next.material : [next.material];
+          // Three tracks the currently linking program per material. Wait before reusing it on another mesh.
+          if (next.children.length || nextMaterials.some((m) => materials.has(m))) break;
+          for (const m of nextMaterials) materials.add(m);
+          batch.children.push(next);
+          i++;
+        }
+        if (batch.children.length > 1) root = batch;
+      }
       for (const output of [null, target]) {
-        if (!alive()) return;
+        if (!alive()) {
+          await Promise.all(linking);
+          return;
+        }
         const before = renderer.info.programs?.length ?? 0,
           previous = renderer.getRenderTarget();
         let ready: Promise<unknown>;
-        // Children are walked again by their own entry; that is a cache hit, not a second link.
         try {
           renderer.setRenderTarget(output);
-          ready = renderer.compileAsync(object, camera, scene);
+          ready = renderer.compileAsync(root, camera, scene);
         } finally {
           renderer.setRenderTarget(previous);
         }
-        if ((renderer.info.programs?.length ?? 0) !== before) linking.push(ready);
-        // In the background the browser can throttle every link check. Let a few opening programs
-        // link together. A visible loader still presents a frame after every new program.
-        const batchSize = frame === yieldDuringLoading && document.hidden ? 8 : 1;
-        if (linking.length >= batchSize || performance.now() - slice > 8) {
+        linking.push(ready);
+        if ((renderer.info.programs?.length ?? 0) !== before || performance.now() - slice > 8) {
+          // During startup the loader can paint while the GPU links the program.
+          // At an interactive stop keep a separate frame after the link to protect camera movement.
+          if (opening) linking.push(frame());
           await Promise.all(linking);
           linking.length = 0;
-          await frame();
+          if (!opening) await frame();
           slice = performance.now();
         }
       }
+    }
     await Promise.all(linking);
   } finally {
+    batch.children.length = 0;
     target.dispose();
   }
 }
@@ -235,22 +261,23 @@ export function prepareHiddenGPU(
     previous = renderer.getRenderTarget(),
     auto = renderer.shadowMap.autoUpdate,
     needs = renderer.shadowMap.needsUpdate;
-  const saved: { object: Object3D; visible: boolean; culled: boolean }[] = [];
-  roots.forEach((root) =>
-    root.traverse((object) => {
-      saved.push({ object, visible: object.visible, culled: object.frustumCulled });
-      object.visible = true;
-      object.frustumCulled = false;
-    }),
-  );
+  const saved = new Map<Object3D, { visible: boolean; culled: boolean }>();
+  function include(object: Object3D) {
+    if (saved.has(object)) return;
+    saved.set(object, { visible: object.visible, culled: object.frustumCulled });
+    object.visible = true;
+    object.frustumCulled = false;
+    object.children.forEach(include);
+  }
   try {
+    roots.forEach(include);
     renderer.shadowMap.autoUpdate = false;
     renderer.shadowMap.needsUpdate = !!shadow;
     if (shadow) shadow.needsUpdate = true;
     renderer.setRenderTarget(target);
     renderer.render(scene, camera);
   } finally {
-    saved.forEach(({ object, visible, culled }) => {
+    saved.forEach(({ visible, culled }, object) => {
       object.visible = visible;
       object.frustumCulled = culled;
     });

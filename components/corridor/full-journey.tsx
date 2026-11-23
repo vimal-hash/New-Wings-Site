@@ -16,6 +16,7 @@ import { createLogoReveal, LOGO_FOV } from "./logo-reveal";
 import { createPageDescent, pageReturn } from "./page-exit";
 import { createExitStages, type ExitStage } from "./exit-stages";
 import { listenSteps, type Step } from "./scroll-step";
+import { frameTime } from "./clip-clock";
 import logoBounds from "./logo-reveal.json";
 import layout from "./blender-layout.json";
 import { traceMark } from "./loading-trace";
@@ -425,6 +426,7 @@ export default function FullJourney({ metrics, orbit }: { metrics: MetricsStore;
           ...common,
           phase: "page",
           pageSection: target,
+          visiblePageSection: target,
           pageJump: journeyControls.read().pageJump + 1,
           cinemaStage: "clear",
         });
@@ -610,7 +612,7 @@ export default function FullJourney({ metrics, orbit }: { metrics: MetricsStore;
   /* eslint-disable react-hooks/immutability -- Camera projection/clipping are imperative Three.js state. */
   useFrame(() => {
     const s = state.current,
-      now = performance.now();
+      now = frameTime();
     sceneIdleUrgent.value = s.pendingProjector || s.pendingScreens;
     theatreOpening.active.value = s.phase === "intro" ? 1 : 0;
     if (s.phase !== "intro") theatreOpening.room.value = 1;

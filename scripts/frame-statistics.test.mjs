@@ -16,3 +16,20 @@ test("long foreground freezes are retained instead of discarded", () => {
   assert.equal(next.freezes, 1);
   assert.equal(next.worstFrame, 400);
 });
+
+test("frame percentiles and averages expire old gaps, including repeated values", () => {
+  const clock = createFrameStatistics();
+  const gaps = [];
+  let time = 0;
+  clock.sample(time);
+  for (let frame = 0; frame < 360; frame++) {
+    const gap = frame < 120 && frame % 5 === 0 ? 80 : 14 + (frame % 7);
+    time += gap;
+    gaps.push(gap);
+    if (gaps.length > 120) gaps.shift();
+    const sorted = [...gaps].sort((a, b) => a - b);
+    const result = clock.sample(time);
+    assert.equal(result.p95, sorted[Math.ceil(sorted.length * 0.95) - 1]);
+    assert.equal(result.frameMs, gaps.reduce((sum, value) => sum + value, 0) / gaps.length);
+  }
+});

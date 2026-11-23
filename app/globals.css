@@ -915,21 +915,6 @@ dd {
   visibility: hidden;
   transition-delay: 0.05s;
 }
-.overview-link {
-  position: absolute;
-  inset: auto 0 18% 0;
-  margin: auto;
-  width: max-content;
-  padding: 12px;
-  text-decoration: underline;
-  text-underline-offset: 4px;
-  animation: overview-link-wait 8s step-end both;
-}
-.site-loader[role="alert"] .overview-link { animation: none; }
-@keyframes overview-link-wait {
-  from { visibility: hidden; }
-  to { visibility: visible; }
-}
 .site-loader__icon {
   position: relative;
   width: 44px;

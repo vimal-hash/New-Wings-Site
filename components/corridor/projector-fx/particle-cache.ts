@@ -188,14 +188,15 @@ export function createParticleCache(
 /** Windows (ANGLE/D3D11) needs ~3.5 s of GPU-process time to compile this program and presents nothing meanwhile. It
  * used to compile at the first seated theatre stop (a visible 3.5 s freeze). Start it at canvas creation instead, while
  * the opening assets download. The material stays alive so three keeps the linked program for the real cache. */
-let warmed: ShaderMaterial | undefined;
-export function warmParticleCacheProgram(gl: WebGLRenderer) {
-  if (warmed || !gl.extensions.has("EXT_color_buffer_float")) return;
-  warmed = particleCacheMaterial();
+const warmed = new WeakMap<WebGLRenderer, ShaderMaterial>();
+export async function warmParticleCacheProgram(gl: WebGLRenderer) {
+  if (warmed.has(gl) || !gl.extensions.has("EXT_color_buffer_float")) return;
+  const material = particleCacheMaterial();
+  warmed.set(gl, material);
   const geometry = new BufferGeometry();
   geometry.setAttribute("position", new Float32BufferAttribute([-1, -1, 0, 3, -1, 0, -1, 3, 0], 3));
   const scene = new Scene(),
-    mesh = new Mesh(geometry, warmed);
+    mesh = new Mesh(geometry, material);
   mesh.frustumCulled = false;
   scene.add(mesh);
   const target = new WebGLRenderTarget(1, 1, {
@@ -206,15 +207,21 @@ export function warmParticleCacheProgram(gl: WebGLRenderer) {
       depthBuffer: false,
     }),
     previous = gl.getRenderTarget();
-  let ready: Promise<unknown>;
   try {
-    gl.setRenderTarget(target);
-    ready = gl.compileAsync(scene, new OrthographicCamera());
+    let ready: Promise<unknown>;
+    try {
+      gl.setRenderTarget(target);
+      ready = gl.compileAsync(scene, new OrthographicCamera());
+    } finally {
+      gl.setRenderTarget(previous);
+    }
+    await ready;
+  } catch (error) {
+    warmed.delete(gl);
+    material.dispose();
+    throw error;
   } finally {
-    gl.setRenderTarget(previous);
-  }
-  return ready.finally(() => {
     target.dispose();
     geometry.dispose();
-  });
+  }
 }

@@ -7,9 +7,6 @@ import {
   RepeatWrapping,
 } from "three";
 
-/** One copy of the wear map covers this much strip, in strip units. It repeats along the strip. */
-export const WEAR_SPAN = 5;
-
 const WIDE = 2048,
   TALL = 1024; // drawing size; a small screen gets half of it
 const TURN = Math.PI * 2;

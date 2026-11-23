@@ -27,7 +27,7 @@ import {
   setLaptopFlow,
   SPREAD_SLOTS,
 } from "./laptop-materials";
-import { createQuality, firstStep, STEPS } from "./laptop-quality";
+import { createQuality, firstStep, qualityOverrides, STEPS } from "./laptop-quality";
 import {
   BLUE_FLIGHT,
   YELLOW_FLIGHT,
@@ -49,7 +49,7 @@ import {
 import { BLUE_PALETTE_LAPTOP, blueRopeLook, prepareBluePalette } from "../rope-model/rope-blue";
 import { YELLOW_PALETTE_LAPTOP } from "../rope-model/rope-yellow";
 import { createRopeCard, RopeCard, type RopeCardControl } from "../rope-model/rope-card";
-import type { RopeLink } from "../rope-model/rope-link";
+import { observeRopeScroll, type RopeLink } from "../rope-model/rope-link";
 import { placePortal, portalMaterial } from "../rope-model/rope-portal";
 import { compileFlight } from "../rope-model/prepare-flight";
 
@@ -77,14 +77,11 @@ function fitLens(camera: PerspectiveCamera, rope: LaptopRope, aspect: number) {
 // Test switches only: ?still and ?flowAt show one moment, ?step fixes the quality step, ?bench draws N times a frame to put the chip under load.
 function query() {
   const search = new URLSearchParams(window.location.search),
-    at = search.get("flowAt"),
-    step = search.get("step"),
-    bench = search.get("bench");
+    at = Number(search.get("flowAt"));
   return {
     still: search.has("still"),
-    at: at === null ? null : Number(at),
-    fixedStep: step === null ? null : Number(step),
-    bench: bench === null ? 1 : Number(bench),
+    at: search.has("flowAt") ? (Number.isFinite(at) ? at : 0) : null,
+    ...qualityOverrides(search),
   };
 }
 
@@ -145,10 +142,8 @@ function Scene({
   const invalidate = useThree((state) => state.invalidate);
   const embedded = !!link;
   const review = useMemo(() => query(), []);
-  const start = useMemo(
-    () => review.fixedStep ?? firstStep(size.width * gl.getPixelRatio()),
-    [review, size.width, gl],
-  );
+  // Resizing the viewport resizes the target below. Re-running calibration on a visible canvas exposes its trial steps.
+  const [start] = useState(() => review.fixedStep ?? firstStep(size.width * gl.getPixelRatio()));
   const finish = useMemo(
     () =>
       createLaptopFinish(
@@ -301,7 +296,7 @@ function Scene({
           );
         },
       },
-      { sweep: !embedded && diagnosticsEnabled(), timerWhileWatching: !diagnosticsEnabled() },
+      { sweep: !embedded && diagnosticsEnabled(), adaptWhileWatching: !embedded && !diagnosticsEnabled() },
     );
   }, [gl, finish, start, invalidate, review, embedded]);
   /* eslint-enable react-hooks/refs, react-hooks/purity */
@@ -406,7 +401,7 @@ function Scene({
       green.threads.uniforms.uDim.value = greenDim(position.z);
     }
     // The white: same logic as the desktop page, collected into one list per rope.
-    hover.update(
+    const hoverMoving = hover.update(
       Math.min(delta, 0.1),
       pointer.current,
       state.camera as PerspectiveCamera,
@@ -428,18 +423,16 @@ function Scene({
     )
       moving = true;
     const u = threads.uniforms;
-    let anyWhite = 0;
-    for (let i = 0; i < SPREAD_SLOTS; i++) {
-      collect.uniforms.uSpreadAmount.value = 0;
-      hover.apply(collect, i < 18 ? i : -1);
-      const amount = collect.uniforms.uSpreadAmount.value as number;
-      u.uAmounts.value[i] = amount;
-      if (amount > 0) {
-        u.uSpreads.value[i].copy(collect.uniforms.uSpread.value as Vector4);
-        anyWhite = 1;
+    u.uAnyWhite.value = hover.hasWhite ? 1 : 0;
+    if (hover.hasWhite) {
+      for (let i = 0; i < SPREAD_SLOTS; i++) {
+        collect.uniforms.uSpreadAmount.value = 0;
+        hover.apply(collect, i < 18 ? i : -1);
+        const amount = collect.uniforms.uSpreadAmount.value as number;
+        u.uAmounts.value[i] = amount;
+        if (amount > 0) u.uSpreads.value[i].copy(collect.uniforms.uSpread.value as Vector4);
       }
     }
-    u.uAnyWhite.value = anyWhite;
     u.uShine.value = look.red.shine;
     u.uWhiteShine.value = look.white.shine;
     u.uWhiteStored.value = whiteStored(look);
@@ -502,14 +495,14 @@ function Scene({
     for (let i = 1; i < review.bench; i++) {
       state.gl.setRenderTarget(finish.target);
       state.gl.setClearColor(backdrop, 1);
-      state.gl.clear();
+      if (!state.gl.autoClear) state.gl.clear();
       state.gl.render(state.scene, state.camera);
       finish.render(state.gl);
     }
     state.gl.setRenderTarget(finish.target);
     state.gl.setClearColor(backdrop, 1);
     meter.current?.sceneStart(progress.current);
-    state.gl.clear();
+    if (!state.gl.autoClear) state.gl.clear();
     const still = finish.lookAside(state.camera, Math.abs(position.z - cameraWas));
     threads.uniforms.uThinPx.value = thinMoving.current + (thinRest.current - thinMoving.current) * still;
     state.gl.render(state.scene, state.camera);
@@ -519,7 +512,7 @@ function Scene({
     meter.current?.frameEnd();
     quality.end();
     chained.current =
-      quality.testing || (!calm.matches && !review.still && review.at === null) || moving || finish.settling;
+      quality.testing || (!calm.matches && !review.still && review.at === null) || moving || hoverMoving || finish.settling;
     if (chained.current) state.invalidate();
   }, 1);
 
@@ -651,11 +644,10 @@ export default function RopeLaptop({
   }, [flight]);
   useEffect(() => {
     const element = scroller.current!;
-    const read = () => {
-      const room = element.scrollHeight - element.clientHeight;
-      progress.current = room > 0 ? element.scrollTop / room : 0;
+    const stopScroll = observeRopeScroll(element, (share) => {
+      progress.current = share;
       invalidate.current?.();
-    };
+    }, link);
     // Only a real mouse. It never moves the camera, it only says which rope turns white.
     const hover = (event: PointerEvent) => {
       if (event.pointerType !== "mouse") return;
@@ -680,18 +672,14 @@ export default function RopeLaptop({
       card.release();
       invalidate.current?.();
     };
-    read();
     element.addEventListener("pointermove", hover, { passive: true });
     element.addEventListener("pointerleave", away);
-    element.addEventListener("scroll", read, { passive: true });
-    window.addEventListener("resize", read);
     return () => {
       element.removeEventListener("pointermove", hover);
       element.removeEventListener("pointerleave", away);
-      element.removeEventListener("scroll", read);
-      window.removeEventListener("resize", read);
+      stopScroll();
     };
-  }, [card]);
+  }, [card, link]);
   useEffect(() => {
     const search = new URLSearchParams(window.location.search);
     if (
@@ -709,6 +697,7 @@ export default function RopeLaptop({
     <div style={{ position: "fixed", inset: 0, background: "#000" }}>
       <Canvas
         frameloop="demand"
+        resize={{ scroll: false }}
         dpr={[1, 1.5]}
         gl={{
           antialias: false,

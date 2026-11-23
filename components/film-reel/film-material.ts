@@ -1,6 +1,5 @@
 import { DataTexture, ShaderMaterial, type Texture, Vector2 } from "three";
-import { FILM_PRODUCTS, FRAME_PITCH } from "./film-data";
-import { WEAR_SPAN } from "./film-wear";
+import { FILM_PRODUCTS, FRAME_PITCH, WEAR_SPAN } from "./film-data";
 
 // The film look, made in code. Three small programs: the dark base with its holes and window, the picture and text sheets, and the open holes.
 // There is no scene light and no environment map. The film shows two things only: what the room reflects in its gloss, and what the lamp sends through it.
@@ -49,7 +48,10 @@ float lampAt(vec2 strip){
   vec2 q=vec2((strip.x-centre)*.75,strip.y);
   return uLamp*(1.+8.*uBurn*uBurn)*max(gate,next)*(1.-.16*dot(q,q));
 }
-float floodAt(vec2 strip){return uBurn*uBurn*1.6*exp(-.9*max(0.,abs(strip.x-uLampX)-.9));}`;
+float floodAt(vec2 strip){
+  if(uBurn==0.)return 0.;
+  return uBurn*uBurn*1.6*exp(-.9*max(0.,abs(strip.x-uLampX)-.9));
+}`;
 
 const WEAR = `
 uniform sampler2D uWear;
@@ -81,7 +83,7 @@ float shineAt(vec3 wear){
 // The old-film look of this section, laid over the finished picture in screen space: a light that wavers, dark corners,
 // grain that changes with every film frame, and now and then a thin scratch line running down the picture.
 // uFrame counts film frames at 24 a second; uFlicker is the exposure of the current one.
-const LOOK = `
+export const FILM_LOOK = `
 uniform vec2 uScreen;
 uniform float uFrame,uFlicker,uScratch;
 float hash12(vec2 p){vec3 q=fract(vec3(p.xyx)*.1031);q+=dot(q,q.yzx+33.33);return fract((q.x+q.y)*q.z);}
@@ -91,16 +93,21 @@ float cornersAt(){
   return 1.-.6*smoothstep(.3,1.08,length(d)); // an oval fall-off, as from an old lens
 }
 vec3 filmLook(vec3 c){
-  c*=uFlicker*cornersAt();
+  float falloff=cornersAt();
+  c*=uFlicker*falloff;
   float seed=mod(floor(uFrame/2.),113.); // grain and dust change twelve times a second; the scratch lines keep the full film rate
   vec2 at=gl_FragCoord.xy;
   // The whole section is the projected film, so even its black is never empty: a little light gets through the densest film,
   // and the grain lives in it. Grain at two sizes, new every frame, strongest in the middle tones.
-  float fine=hash12(at+seed*17.31)+hash12(at*1.37+seed*5.13)-1.;
-  float clump=hash12(floor(at*.5)+seed*9.71)-.5;
-  float tone=dot(c,vec3(.3333));
-  c+=.012*uScratch*cornersAt();
-  c+=(fine*.6+clump*.45)*(.05+.115*tone*(1.-tone))*mix(.4,1.,uScratch);
+  #ifndef FILM_NO_GRAIN
+    float tone=dot(c,vec3(.3333));
+    float fine=hash12(at+seed*17.31)+hash12(at*1.37+seed*5.13)-1.;
+    float clump=hash12(floor(at*.5)+seed*9.71)-.5;
+  #endif
+  c+=.012*uScratch*falloff;
+  #ifndef FILM_NO_GRAIN
+    c+=(fine*.6+clump*.45)*(.05+.115*tone*(1.-tone))*mix(.4,1.,uScratch);
+  #endif
   // Uneven density: the emulsion was never quite even, so broad soft patches breathe lighter and darker each frame.
   float mottle=(vnoise(at/230.+vec2(uFrame*.011,uFrame*.007))-.5)+.5*(vnoise(at/90.+vec2(-uFrame*.009,uFrame*.013))-.5);
   c=c*(1.+.045*mottle*uScratch)+.005*mottle*uScratch;
@@ -122,6 +129,7 @@ vec3 filmLook(vec3 c){
     float x=hash12(vec2(life*.7,slot+4.2))*uScreen.x+(hash12(vec2(uFrame,slot+7.))-.5)*1.4;
     float width=.25+.4*hash12(vec2(life,slot+9.));
     float line=1.-smoothstep(width,width+.7,abs(at.x-x));
+    if(line==0.)continue;
     float along=.55+.45*sin(at.y*(.004+.01*hash12(vec2(life,slot+3.)))+life*2.3+sin(at.y*.031+slot));
     c+=line*along*(.11+.16*hash12(vec2(life,slot+5.)))*(.6+.4*hash12(vec2(uFrame,slot+11.)));
   }
@@ -130,10 +138,12 @@ vec3 filmLook(vec3 c){
 
 const FINISH = `
   #include <colorspace_fragment>
+  #ifndef FILM_SURFACE_ONLY
   gl_FragColor.rgb=filmLook(gl_FragColor.rgb);
+  #endif
   gl_FragColor.rgb+=(fract(52.9829189*fract(dot(gl_FragCoord.xy,vec2(.06711056,.00583715))))-.5)/255.; // one step of noise, so dark slopes do not band`;
 
-const BASE = `${LAMP}${WEAR}${SHINE}${LOOK}
+const BASE = `${LAMP}${WEAR}${SHINE}${FILM_LOOK}
 float box(vec2 p,vec2 size){vec2 d=abs(p)-size;return length(max(d,0.))+min(max(d.x,d.y),0.);}
 // Lamp light also creeps a short way into the base round the picture window. The sprocket holes stay dark.
 float creepAt(vec2 at){
@@ -153,7 +163,7 @@ void main(){
   gl_FragColor=vec4(vec3(level),1.);${FINISH}
 }`;
 
-const SHEET = `${LAMP}${WEAR}${SHINE}${LOOK}
+const SHEET = `${LAMP}${WEAR}${SHINE}${FILM_LOOK}
 uniform sampler2D uMap;
 void main(){
   vec3 wear=wearAt(vStrip);
@@ -172,7 +182,7 @@ void main(){
 const VOID_VERTEX = `
 varying vec2 vScreen;
 void main(){vScreen=position.xy;gl_Position=vec4(position.xy,.9999,1.);}`;
-const VOID = `${LOOK}
+const VOID = `${FILM_LOOK}
 uniform float uBurn,uAspect;
 varying vec2 vScreen;
 void main(){

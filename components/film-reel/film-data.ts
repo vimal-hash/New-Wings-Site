@@ -2,6 +2,7 @@
 // Shapes come from Frame_1.blend through scripts/export-film-frame.py.
 export const FILM_MODEL = "/models/film/film-frame.glb";
 export const FRAME_PITCH = 2; // a frame is 2 x 2, and frames join edge to edge
+export const WEAR_SPAN = 5; // strip units covered by one repeat of the handling marks
 export const FILM_VOID = "#050506"; // the dark the strip hangs in
 export const CONTENT_SIZE = { width: 1400, height: 320 }; // pixels; the text strip seen through the window is 1.783 x 0.407
 
